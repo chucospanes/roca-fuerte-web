@@ -2,6 +2,7 @@ import { site } from "@/config/site";
 
 const enlaces = [
   { href: "#la-casa", texto: "La casa" },
+  { href: "#calidad", texto: "Calidad" },
   { href: "#materiales", texto: "Materiales" },
   { href: "#bitacora", texto: "Bitácora" },
   { href: "#opciones", texto: "Precios" },

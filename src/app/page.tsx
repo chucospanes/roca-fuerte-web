@@ -1,4 +1,5 @@
 import { Bitacora } from "@/components/Bitacora";
+import { Calidad } from "@/components/Calidad";
 import { ComoTrabajamos } from "@/components/ComoTrabajamos";
 import { Contacto } from "@/components/Contacto";
 import { Encabezado } from "@/components/Encabezado";
@@ -19,6 +20,7 @@ export default function Home() {
         <Hero />
         <PorQue />
         <LaCasa />
+        <Calidad />
         <Materiales />
         <Bitacora />
         <Opciones />

@@ -10,8 +10,8 @@ export function LaCasa() {
     <Seccion
       id="la-casa"
       numero="02"
-      etiqueta="El modelo"
-      titulo="La Casa Bonaire"
+      etiqueta="La casa"
+      titulo="Modelo Bonaire"
       intro={`${bonaire.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta.`}
       fondo="blanco"
     >

@@ -5,7 +5,7 @@ export function Contacto() {
   return (
     <Seccion
       id="contacto"
-      numero="08"
+      numero="09"
       etiqueta="Contacto"
       titulo="Cuéntanos qué buscas"
       intro="Unas pocas preguntas para saber si la Bonaire es para ti. Después seguimos la conversación por WhatsApp."

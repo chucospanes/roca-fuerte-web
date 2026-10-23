@@ -14,9 +14,10 @@ export function Materiales() {
   return (
     <Seccion
       id="materiales"
-      numero="03"
+      numero="04"
       etiqueta="Especificaciones"
       titulo="Materiales y especificaciones"
+      fondo="blanco"
       intro="Qué material se usa, con qué especificación, de qué marca y por qué. Lo que aún no está confirmado aparece como pendiente."
     >
       {/* Móvil: tarjetas */}

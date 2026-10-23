@@ -5,13 +5,22 @@
 
 import { PENDIENTE, type Pendiente } from "@/config/site";
 
+/** Punto numerado de las secciones Por qué y Calidad. */
+export type Punto = {
+  titulo: string;
+  texto: string;
+  /** Datos por confirmar del punto; se muestran con el sello de pendiente. */
+  pendientes?: string[];
+  enlace?: { href: string; texto: string };
+};
+
 export const hero = {
   titulo: "Construcción honesta, a la vista de todos.",
   bajada:
     "Cada material y cada etapa de la obra, mostrados en video. Así sabes exactamente qué estás comprando.",
 };
 
-export const porQue = [
+export const porQue: Punto[] = [
   {
     titulo: "Cada material, en video",
     texto: "Mostramos qué usamos, de qué marca y por qué, antes de que quede tapado por el repello.",
@@ -28,6 +37,35 @@ export const porQue = [
     titulo: "Desde donde estés",
     texto:
       "Si vives fuera de El Salvador, ves el avance desde tu celular, sin depender de que alguien te cuente.",
+  },
+];
+
+/**
+ * Calidad y resistencia: solo puntos verificables. Sin superlativos ni promesas de
+ * resistencia (ver DECISIONES.md). Lo no confirmado va en `pendientes`.
+ */
+export const calidad: Punto[] = [
+  {
+    titulo: "Diseño sismorresistente según la norma",
+    texto:
+      "Referencia: reglamento técnico salvadoreño para vivienda de una y dos plantas, RTS 91.01.02:21.",
+    pendientes: ["Confirmar con el ingeniero responsable"],
+  },
+  {
+    titulo: "Plano revisado y firmado por un profesional",
+    texto: "El plano de construcción lo revisa y firma un arquitecto o ingeniero antes de construir.",
+    pendientes: ["Nombre del profesional pendiente", "Número de registro pendiente"],
+  },
+  {
+    titulo: "Control de calidad en obra, en video",
+    texto:
+      "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda grabado en la bitácora de obra.",
+    enlace: { href: "#bitacora", texto: "Ver la bitácora" },
+  },
+  {
+    titulo: "Cada material con su especificación",
+    texto: "Qué material se usa, con qué especificación, de qué marca y por qué, a la vista en la tabla de materiales.",
+    enlace: { href: "#materiales", texto: "Ver los materiales" },
   },
 ];
 

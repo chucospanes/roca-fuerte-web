@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Punto } from "@/content/landing";
 
 /** Marca visible para datos no confirmados. Nunca se reemplaza por un dato inventado. */
 export function Pendiente({ texto = "Pendiente" }: { texto?: string }) {
@@ -51,6 +52,40 @@ export function Seccion({
         <div className="mt-10">{children}</div>
       </div>
     </section>
+  );
+}
+
+/** Cuadrícula de puntos numerados (Por qué construimos así, Calidad y resistencia). */
+export function PuntosNumerados({ puntos }: { puntos: Punto[] }) {
+  return (
+    <ul className="grid gap-px overflow-hidden rounded-lg border border-piedra-200 bg-piedra-200 sm:grid-cols-2">
+      {puntos.map((p, i) => (
+        <li key={p.titulo} className="flex flex-col bg-blanco p-6">
+          <span className="font-display text-sm font-semibold text-terracota">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <h3 className="mt-1 font-display text-xl font-bold">{p.titulo}</h3>
+          <p className="mt-2 text-piedra-600">{p.texto}</p>
+          {p.pendientes && p.pendientes.length > 0 && (
+            <ul className="mt-3 space-y-1.5">
+              {p.pendientes.map((texto) => (
+                <li key={texto}>
+                  <Pendiente texto={texto} />
+                </li>
+              ))}
+            </ul>
+          )}
+          {p.enlace && (
+            <a
+              href={p.enlace.href}
+              className="mt-4 self-start font-semibold text-terracota underline-offset-4 hover:underline"
+            >
+              {p.enlace.texto} →
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 }
 

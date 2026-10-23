@@ -15,9 +15,10 @@ export function Opciones() {
   return (
     <Seccion
       id="opciones"
-      numero="05"
+      numero="06"
       etiqueta="Precios"
-      titulo="Dos formas de tener tu Bonaire"
+      fondo="blanco"
+      titulo="Dos formas de tener tu casa"
       intro="Publicamos el precio desde el inicio, para que decidas con la información completa."
     >
       <div className="grid gap-6 md:grid-cols-2">
