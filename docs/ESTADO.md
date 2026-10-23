@@ -8,7 +8,7 @@
 
 ## Fase actual
 **Fase 3 en revisión visual del usuario** (rama `feat/fase-3-landing`, sin merge ni tag).
-Landing completa con las 8 secciones del plan + encabezado, pie y botón flotante de
+Landing con 9 secciones (las 8 del plan + "Calidad y resistencia") + encabezado, pie y botón flotante de
 WhatsApp. El formulario es un espacio reservado: se hace en la Fase 4.
 Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
 
@@ -54,6 +54,8 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
 - Texto del aviso de privacidad (necesario antes del formulario de la Fase 4).
 - Ubicación del terreno y detalle de lo incluido en "Comprar esta casa".
 - Video o foto principal para el hero.
+- Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
+  del profesional que firma el plano → `calidad` en `src/content/landing.ts`.
 - Crear proyecto nuevo en Supabase (separado de los bots).
 - Conectar el repo de GitHub a Vercel.
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.

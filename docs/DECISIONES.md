@@ -93,3 +93,19 @@ Next 16 bloquea los recursos de desarrollo pedidos desde hosts distintos a `loca
 Para revisar `npm run dev` desde el celular se permiten los rangos privados (`10.*`,
 `192.168.*`, `172.*`) en vez de una IP fija, porque la IP de la PC cambia con la red
 (cambió durante esta misma sesión). Solo afecta desarrollo.
+
+## 2026-10-23 — Sin superlativos ni promesas de resistencia
+En todo el sitio, y en especial en "Calidad y resistencia": nada de "los mejores",
+"máxima calidad", "resiste cualquier sismo" ni garantías que no se puedan comprobar. Cada
+afirmación técnica debe ser verificable por el visitante (norma citada, profesional que
+firma, control grabado en la bitácora, especificación en la tabla) y lo no confirmado va
+como PENDIENTE. Motivo: el público teme ser engañado; una promesa no comprobable contradice
+la transparencia que es el diferencial de la marca, y una promesa de resistencia que no se
+cumpla es un riesgo legal. Principio: mostrar, no prometer.
+
+## 2026-10-23 — Sección "Calidad y resistencia" y renombres (ajustes de Fase 3)
+Nueva sección 03 entre "La casa" y "Materiales"; las siguientes se renumeran (04–09).
+Cita el RTS 91.01.02:21 (vivienda de 1 y 2 plantas) como PENDIENTE de confirmar con el
+ingeniero responsable, y nombre y registro del profesional que firma el plano como
+PENDIENTE. Sección 02: etiqueta "La casa", título "Modelo Bonaire". Sección de precios:
+"Dos formas de tener tu casa".
