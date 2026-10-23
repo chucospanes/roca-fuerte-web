@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
+/*
+ * Paleta: concreto, gris cálido, acento terracota y blanco.
+ * El sitio es solo en modo claro (sobrio, como una hoja de obra).
+ */
+@theme {
+  --color-blanco: #ffffff;
+  --color-concreto: #efece7;
+  --color-concreto-oscuro: #e2ddd6;
+
+  --color-piedra-50: #f7f5f2;
+  --color-piedra-100: #ece8e2;
+  --color-piedra-200: #d8d1c7;
+  --color-piedra-300: #bdb3a6;
+  --color-piedra-500: #857a6d;
+  --color-piedra-600: #6b6157;
+  --color-piedra-700: #514941;
+  --color-piedra-800: #37322d;
+  --color-piedra-900: #23201d;
+
+  --color-terracota: #b0502c;
+  --color-terracota-oscuro: #8c3d20;
+  --color-terracota-claro: #f4e3da;
+
+  --color-pendiente: #8a6a12;
+  --color-pendiente-fondo: #fbf3d9;
+
+  --font-sans: var(--font-texto), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-titulos), ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* deja espacio para el encabezado fijo al saltar a una sección */
+  scroll-padding-top: 4.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-piedra-50);
+  color: var(--color-piedra-900);
+}
+
+/* Fondo de cuadrícula tipo papel de plano */
+.fondo-plano {
+  background-color: var(--color-concreto);
+  background-image:
+    linear-gradient(to right, rgb(35 32 29 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(35 32 29 / 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+dialog::backdrop {
+  background: rgb(35 32 29 / 0.85);
 }

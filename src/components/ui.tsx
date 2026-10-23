@@ -1,0 +1,83 @@
+import type { ReactNode } from "react";
+
+/** Marca visible para datos no confirmados. Nunca se reemplaza por un dato inventado. */
+export function Pendiente({ texto = "Pendiente" }: { texto?: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded border border-dashed border-pendiente/60 bg-pendiente-fondo px-1.5 py-0.5 text-xs font-semibold tracking-wide text-pendiente uppercase">
+      {texto}
+    </span>
+  );
+}
+
+export function Seccion({
+  id,
+  numero,
+  etiqueta,
+  titulo,
+  intro,
+  fondo = "claro",
+  children,
+}: {
+  id: string;
+  numero: string;
+  etiqueta: string;
+  titulo: string;
+  intro?: ReactNode;
+  fondo?: "claro" | "blanco" | "oscuro";
+  children: ReactNode;
+}) {
+  const fondos = {
+    claro: "bg-piedra-50",
+    blanco: "bg-blanco",
+    oscuro: "bg-piedra-900 text-piedra-50",
+  };
+  const oscuro = fondo === "oscuro";
+  return (
+    <section id={id} className={`${fondos[fondo]} py-16 sm:py-20`}>
+      <div className="mx-auto max-w-5xl px-4">
+        <p
+          className={`font-display text-xs font-semibold tracking-[0.2em] uppercase ${oscuro ? "text-terracota-claro" : "text-terracota"}`}
+        >
+          {numero} — {etiqueta}
+        </p>
+        <h2 className="mt-2 font-display text-3xl leading-tight font-extrabold tracking-tight text-balance sm:text-4xl">
+          {titulo}
+        </h2>
+        {intro && (
+          <div className={`mt-3 max-w-2xl text-lg ${oscuro ? "text-piedra-200" : "text-piedra-600"}`}>
+            {intro}
+          </div>
+        )}
+        <div className="mt-10">{children}</div>
+      </div>
+    </section>
+  );
+}
+
+const estilosBoton = {
+  primario:
+    "bg-terracota text-blanco hover:bg-terracota-oscuro focus-visible:outline-terracota",
+  secundario:
+    "border-2 border-piedra-900 bg-blanco text-piedra-900 hover:bg-piedra-900 hover:text-blanco focus-visible:outline-piedra-900",
+} as const;
+
+export function Boton({
+  href,
+  variante = "primario",
+  children,
+  className = "",
+}: {
+  href: string;
+  variante?: keyof typeof estilosBoton;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <a
+      href={href}
+      className={`inline-flex min-h-12 items-center justify-center rounded-md px-6 py-3 text-center font-display text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${estilosBoton[variante]} ${className}`}
+    >
+      {children}
+    </a>
+  );
+}

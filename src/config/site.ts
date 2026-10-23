@@ -49,7 +49,7 @@ export const site = {
     "Los extras se cotizan aparte.",
   ],
 
-  /** URLs de redes sociales. PENDIENTE = no se muestra el enlace. */
+  /** URLs de redes sociales. PENDIENTE = se muestra el nombre marcado como pendiente, sin enlace. */
   redes: {
     tiktok: PENDIENTE,
     instagram: PENDIENTE,
