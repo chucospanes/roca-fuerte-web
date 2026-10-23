@@ -8,6 +8,7 @@ Responde siempre en español.
 @docs/CONTEXTO.md
 @docs/ESTADO.md
 @docs/DECISIONES.md
+@AGENTS.md
 
 La especificación completa de la versión 1 está en `docs/PLAN_V1.md`. Léela antes de
 trabajar en cualquier fase del portal.
