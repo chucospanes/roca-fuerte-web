@@ -1,0 +1,29 @@
+# dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# Vercel
+.vercel
+
+# variables de entorno (nunca se commitean)
+.env
+.env*.local
+
+# instrucciones personales de Claude Code
+CLAUDE.local.md
+
+# sistema y logs
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.pem
