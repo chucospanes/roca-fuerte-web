@@ -48,12 +48,20 @@ trabajar en cualquier fase del portal.
 - Etiqueta versiones al cerrar cada fase del plan: `v0.1.0`, `v0.2.0`, ...
 
 ## Comandos
-(Se completan cuando exista el proyecto Next.js.)
-- `npm run dev` — servidor local
-- `npm run build` — build de producción
-- `npm run lint` — lint
+Next.js 16.4.3 (Turbopack), React 19.3, TypeScript 5, Tailwind 4, ESLint 9.
+- `npm run dev` — servidor local en http://localhost:3000
+- `npm run build` — build de producción (verificar antes de cerrar cada fase)
+- `npm run start` — sirve el build de producción
+- `npm run lint` — lint (ESLint flat config en `eslint.config.mjs`)
 
 ## Estructura
 - `docs/` — contexto, estado vivo, decisiones y plan. Fuente de verdad del proyecto.
 - `assets/` — material fuente (plano PNG/PDF y su script generador). No se sirve en web;
   copia a `public/` lo que la web necesite.
+- `src/app/` — App Router (layout, página y estilos globales).
+- `src/config/` — configuración editable (`site.ts`: marca, WhatsApp, precios, redes).
+- `src/content/` — contenido del modelo y bitácora de obra.
+- `src/components/` — secciones y componentes de la landing.
+- `src/lib/` — utilidades de servidor (Supabase, validación).
+- `supabase/migrations/` — SQL de la base de datos.
+- `public/` — archivos servidos tal cual (incluye `plano-bonaire.png`).

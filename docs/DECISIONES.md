@@ -36,3 +36,22 @@ haya precio confirmado, se muestra "Precio próximamente".
 ## 2026-10-23 — Marca configurable en un solo lugar
 "Roca Fuerte" está pendiente de búsqueda de marca en el CNR. El nombre vive solo en
 `src/config/site.ts` para cambiarlo sin tocar componentes.
+
+## 2026-10-23 — Versiones fijadas por create-next-app 16.4.3
+Se aceptan las versiones que fija el generador en lugar de las "últimas" de npm:
+React/React DOM 19.3.0 (no 19.3.1), TypeScript ^5 (no 7.x, la reescritura nativa),
+`@types/node` ^20, ESLint ^9. Tailwind 4 se integra con `@tailwindcss/turbopack` en vez
+de `@tailwindcss/postcss` (no hay `postcss.config`). Motivo: es la combinación probada
+por Next para esta versión; desviarse no aporta nada en v1.
+
+## 2026-10-23 — `cacheComponents` y `partialPrefetching` activos por defecto (revisar en Fase 4)
+`next.config.ts` viene con `cacheComponents: true` y `partialPrefetching: true`. Se dejan
+como están. **Pendiente en Fase 4:** verificar que no interfieran con el Server Action del
+formulario ni con la lectura de UTM, referrer e IP (límite de envíos), que dependen de
+cada request y no deben quedar cacheados.
+
+## 2026-10-23 — AGENTS.md de Next.js importado en CLAUDE.md
+`create-next-app` genera `AGENTS.md`, que pide leer la documentación incluida en
+`node_modules/next/dist/docs/` antes de escribir código (Next 16 trae cambios que rompen
+compatibilidad), y `next dev` lo regenera si se borra. Se commitea y se importa con
+`@AGENTS.md` en CLAUDE.md para que se cargue en cada sesión.
