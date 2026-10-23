@@ -17,6 +17,8 @@ export type Ambiente = {
 
 export type Material = {
   material: string;
+  /** Qué datos debe incluir la especificación cuando se confirme. */
+  seEspecifica?: string;
   especificacion: string | Pendiente;
   marca: string | Pendiente;
   porQue: string | Pendiente;
@@ -90,8 +92,29 @@ export const bonaire = {
       porQue: PENDIENTE,
     },
     { material: "Cemento", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
+    {
+      material: "Concreto",
+      seEspecifica: "Resistencia f'c y proporción de mezcla.",
+      especificacion: PENDIENTE,
+      marca: PENDIENTE,
+      porQue: PENDIENTE,
+    },
+    {
+      material: "Agregados",
+      seEspecifica: "Arena y grava.",
+      especificacion: PENDIENTE,
+      marca: PENDIENTE,
+      porQue: PENDIENTE,
+    },
     { material: "Acero de refuerzo", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
-    { material: "Techo", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
+    {
+      material: "Estructura de techo",
+      seEspecifica: "Polines: calibre y separación.",
+      especificacion: PENDIENTE,
+      marca: PENDIENTE,
+      porQue: PENDIENTE,
+    },
+    { material: "Cubierta de techo", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
     { material: "Piso", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
     { material: "Puertas y ventanas", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
     { material: "Instalación eléctrica", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },

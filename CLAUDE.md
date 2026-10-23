@@ -55,6 +55,8 @@ Next.js 16.4.3 (Turbopack), React 19.3, TypeScript 5, Tailwind 4, ESLint 9.
 - `npm run build` — build de producción (verificar antes de cerrar cada fase)
 - `npm run start` — sirve el build de producción
 - `npm run lint` — lint (ESLint flat config en `eslint.config.mjs`)
+- `npm run typecheck` — genera tipos de rutas (`next typegen`) y corre `tsc --noEmit`.
+  No usar `tsc` suelto: sin `next typegen` faltan `LayoutProps`/`PageProps`.
 
 ## Estructura
 - `docs/` — contexto, estado vivo, decisiones y plan. Fuente de verdad del proyecto.

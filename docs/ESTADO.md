@@ -29,10 +29,6 @@ La página de inicio sigue siendo la plantilla de `create-next-app`.
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
   lectura de UTM/referrer/IP (ver DECISIONES.md).
-- `npx tsc --noEmit` suelto falla si existen a la vez `.next/types` (build) y
-  `.next/dev/types` (dev) desactualizado: este último declara `LayoutRoutes = never`. No es
-  error del código: `npm run build` verifica tipos bien. Para chequear con tsc, borrar
-  `.next/dev` o volver a correr `npm run dev`.
 - `npm ls` marca 6 paquetes wasm opcionales como "extraneous"; están en el lockfile y
   `npm prune` no los toca. Aviso conocido, inofensivo.
 - npm marca ESLint 9.39.5 como "no longer supported" (lo fija `eslint-config-next`).
