@@ -55,3 +55,17 @@ cada request y no deben quedar cacheados.
 `node_modules/next/dist/docs/` antes de escribir código (Next 16 trae cambios que rompen
 compatibilidad), y `next dev` lo regenera si se borra. Se commitea y se importa con
 `@AGENTS.md` en CLAUDE.md para que se cargue en cada sesión.
+
+## 2026-10-23 — PENDIENTE como constante tipada
+`PENDIENTE` vive en `src/config/site.ts` como constante con su propio tipo. Precios, redes,
+materiales, fechas y avance de obra aceptan `valor | PENDIENTE`, así TypeScript obliga a
+los componentes a manejar el caso pendiente en vez de mostrar un dato inventado. Un precio
+pendiente se muestra como "Precio próximamente".
+
+## 2026-10-23 — Avance de "Terreno y trazo" como PENDIENTE
+La etapa está en proceso, pero no hay porcentaje medido. Se deja PENDIENTE en vez de poner
+un número; las etapas que no han empezado van en 0 %.
+
+## 2026-10-23 — Remoto en GitHub y push al cerrar fase
+Remoto `origin` = `chucospanes/roca-fuerte-web`. Al cerrar cada fase se hace
+`git push origin main --tags` después del merge y el tag.
