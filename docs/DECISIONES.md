@@ -69,3 +69,27 @@ un número; las etapas que no han empezado van en 0 %.
 ## 2026-10-23 — Remoto en GitHub y push al cerrar fase
 Remoto `origin` = `chucospanes/roca-fuerte-web`. Al cerrar cada fase se hace
 `git push origin main --tags` después del merge y el tag.
+
+## 2026-10-23 — Diseño de la landing (Fase 3, en revisión)
+Tipografía Archivo (títulos) + Source Sans 3 (texto) vía `next/font` (se sirven desde el
+propio sitio). Paleta en `globals.css`: concreto, gris cálido ("piedra"), terracota y
+blanco, solo modo claro. Fondo de cuadrícula tipo papel de plano en el hero. Secciones
+numeradas (01–08) como hoja de obra.
+
+## 2026-10-23 — Cómo se muestra lo PENDIENTE
+Sello punteado amarillo "PENDIENTE" para todo dato no confirmado. En la bitácora, el
+estado "pendiente" de una etapa se muestra como "Por iniciar" para no confundirlo con un
+dato pendiente, y las etapas por iniciar no muestran barra de 0 %. Materiales con los tres
+campos pendientes se muestran en una sola línea en móvil. El precio pendiente se muestra
+solo como "Precio próximamente", sin sello extra.
+
+## 2026-10-23 — WhatsApp mientras el número sea placeholder
+El botón flotante y los enlaces de WhatsApp apuntan a `#contacto` mientras
+`site.whatsapp` sea `50300000000`, para no mandar a nadie a un número inexistente. Al
+poner el número real pasan a `wa.me` sin tocar componentes.
+
+## 2026-10-23 — allowedDevOrigins con rangos de IP privada
+Next 16 bloquea los recursos de desarrollo pedidos desde hosts distintos a `localhost`.
+Para revisar `npm run dev` desde el celular se permiten los rangos privados (`10.*`,
+`192.168.*`, `172.*`) en vez de una IP fija, porque la IP de la PC cambia con la red
+(cambió durante esta misma sesión). Solo afecta desarrollo.
