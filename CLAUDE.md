@@ -46,6 +46,8 @@ trabajar en cualquier fase del portal.
 - Commits en español con prefijo: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:`.
 - Un commit por unidad lógica de trabajo; nunca commits gigantes de "varios cambios".
 - Etiqueta versiones al cerrar cada fase del plan: `v0.1.0`, `v0.2.0`, ...
+- Remoto: `origin` (GitHub `chucospanes/roca-fuerte-web`). Al cerrar cada fase, después
+  del merge y el tag: `git push origin main --tags`.
 
 ## Comandos
 Next.js 16.4.3 (Turbopack), React 19.3, TypeScript 5, Tailwind 4, ESLint 9.
