@@ -102,7 +102,7 @@ esté puesto el captcha (ver ESTADO.md).
 Solo con sesión verificada. Nombre, WhatsApp y correo llegan precargados desde la sesión;
 actualiza el mismo registro, nunca crea otro. Campos: país de residencia (El Salvador /
 Estados Unidos / Otro), interés (comprar la casa / construir en mi terreno). Solo si elige
-construir: departamento y municipio del terreno, ¿terreno escriturado a su nombre? (sí /
+construir: departamento y "Municipio o distrito" (texto libre) del terreno, ¿terreno escriturado a su nombre? (sí /
 no / en trámite). Forma de pago (contado / FSV / crédito bancario / otro), ¿cuándo quiere
 iniciar? (inmediato / 3 meses / 6 meses / más de 6 meses), comentario opcional. Al final:
 confirmación y botón a `wa.me` con mensaje prellenado (nombre, interés, ubicación, forma

@@ -1,10 +1,9 @@
-import { site, whatsappEsPlaceholder } from "@/config/site";
-import { whatsappHref } from "@/lib/whatsapp";
+import { mensajesVenta, whatsappEsExterno, whatsappHref } from "@/lib/whatsapp";
 
 /** Botón de WhatsApp fijo, siempre visible en móvil. */
 export function WhatsAppFlotante() {
-  const href = whatsappHref(`Hola, me interesa la ${site.modelo}.`);
-  const externo = !whatsappEsPlaceholder();
+  const href = whatsappHref(mensajesVenta.general);
+  const externo = whatsappEsExterno();
   return (
     <a
       href={href}

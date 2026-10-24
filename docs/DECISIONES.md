@@ -186,3 +186,15 @@ fines de 2026 y recomienda estos nombres.
   correo integrado de Supabase solo envía al equipo del proyecto y 2 por hora.
 - **Aviso de privacidad**: borrador en `docs/AVISO_PRIVACIDAD.md`, pendiente de revisión
   legal antes de publicarse.
+
+## 2026-10-23 — "Municipio o distrito" como texto libre
+En la calificación, el campo se llama "Municipio o distrito" y es texto libre. Motivo:
+desde la reforma de 2024 hay 44 municipios y los anteriores son distritos; la gente sigue
+usando los nombres viejos. El departamento sí es una lista cerrada (los 14).
+
+## 2026-10-23 — El interruptor del acceso premium solo se enciende en producción con código
+`site.accesoPremium` lee `NEXT_PUBLIC_ACCESO_PREMIUM=1` solo fuera de producción. En un
+build de producción la variable no tiene efecto: encenderlo exige un cambio de código
+revisado. Las Server Actions también lo revisan, porque se pueden invocar con un POST
+aunque la página no exista. Motivo: los bloqueos (datos reales y Turnstile) no deben
+poder saltarse cambiando una variable en Vercel.

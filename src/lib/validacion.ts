@@ -150,7 +150,7 @@ export const esquemaCalificacion = z
       ctx.addIssue({ code: "custom", path: ["departamento"], message: "Elige el departamento del terreno." });
     }
     if (!datos.municipio) {
-      ctx.addIssue({ code: "custom", path: ["municipio"], message: "Escribe el municipio del terreno." });
+      ctx.addIssue({ code: "custom", path: ["municipio"], message: "Escribe el municipio o distrito del terreno." });
     }
     if (!datos.terreno_escriturado) {
       ctx.addIssue({

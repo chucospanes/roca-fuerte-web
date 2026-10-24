@@ -28,6 +28,15 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     de la sesión) y calificación. Probados con 23 casos.
   - Verificado contra Supabase: la clave secreta lee `leads`; la publishable no puede leer
     (401) ni insertar (42501).
+  - Botones de venta ("Quiero esta casa", "Construir Bonaire en mi terreno") en hero,
+    precios y contacto: WhatsApp directo con mensaje por opción (`BotonWhatsApp`,
+    `mensajesVenta`). La sección Contacto ya no tiene formulario.
+  - Server Actions `registrarLead` y `calificarLead` (`src/app/acciones.ts`) sobre la capa
+    `src/lib/leads.ts`. Lógica de base probada contra Supabase con un registro de prueba
+    (borrado): upsert sin duplicados, UTM de primer contacto intacto, "comprar" borra datos
+    del terreno, checks rechazan valores fuera de lista.
+  - `site.accesoPremium`: apagado; en desarrollo se prueba con `NEXT_PUBLIC_ACCESO_PREMIUM=1`,
+    en producción solo se activa cambiando el código.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
@@ -47,12 +56,11 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Fase 4, en este orden: botones de venta a WhatsApp directo (mensaje por opción) →
-   Server Actions `registrarLead` y `calificarLead` → página `/bonaire/ficha` (detrás de
-   `site.accesoPremium`, apagado) con paso 1, código y paso 2 → ruta `/descargas/[archivo]`
-   con los PDF en carpeta privada → captura de UTM y referrer.
-2. Probar el flujo completo en local con un correo del equipo del proyecto (el correo
-   integrado de Supabase solo envía a ellos, 2 por hora).
+1. Fase 4: página `/bonaire/ficha` (paso 1 con código, paso 2 con datos precargados) →
+   ruta `/descargas/[archivo]` con los PDF en carpeta privada → captura de UTM y referrer.
+2. El usuario cambia las plantillas "Confirm signup" y "Magic link" de Supabase para que
+   envíen el código (`{{ .Token }}`). Luego probar el flujo completo en local con un correo
+   del equipo del proyecto (el correo integrado solo envía a ellos, 2 por hora).
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
@@ -67,6 +75,8 @@ El formulario es un espacio reservado: se hace en la Fase 4.
   `public/` con el mismo nombre, en desarrollo se sigue viendo el viejo hasta borrar
   `.next/dev/cache/images`. No verificado si en Vercel se invalida solo al desplegar; si
   no, cambiar el nombre del archivo cuando cambie el plano.
+- Las plantillas de correo de Supabase llevan el nombre de la marca escrito a mano (viven en
+  el panel de Supabase, fuera del repo): si cambia la marca, cambiarlas también.
 - Revisar en celular con `npm run dev`: la IP de la PC cambia con la red; usar la URL
   "Network" que imprime el servidor.
 

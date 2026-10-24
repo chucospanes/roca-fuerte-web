@@ -1,5 +1,6 @@
 import { esPendiente, site, textoPrecio, type Precio } from "@/config/site";
-import { Boton, Pendiente, Seccion } from "./ui";
+import { BotonWhatsApp } from "./BotonWhatsApp";
+import { Pendiente, Seccion } from "./ui";
 
 function Precio({ precio }: { precio: Precio }) {
   return (
@@ -45,9 +46,9 @@ export function Opciones() {
             </li>
           </ul>
           <div className="mt-auto pt-6">
-            <Boton href="#contacto" className="w-full">
+            <BotonWhatsApp opcion="comprar" className="w-full">
               Quiero esta casa
-            </Boton>
+            </BotonWhatsApp>
           </div>
         </article>
 
@@ -69,9 +70,9 @@ export function Opciones() {
             ))}
           </ul>
           <div className="mt-auto pt-6">
-            <Boton href="#contacto" variante="secundario" className="w-full">
+            <BotonWhatsApp opcion="construir" variante="secundario" className="w-full">
               Construir Bonaire en mi terreno
-            </Boton>
+            </BotonWhatsApp>
           </div>
         </article>
       </div>
