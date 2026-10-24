@@ -41,7 +41,7 @@ export const DEPARTAMENTOS = [
 const nombre = z
   .string({ error: "Escribe tu nombre." })
   .trim()
-  .min(2, { error: "Escribe tu nombre." })
+  .min(2, { error: "El nombre es demasiado corto." })
   .max(120, { error: "El nombre es demasiado largo." });
 
 /**

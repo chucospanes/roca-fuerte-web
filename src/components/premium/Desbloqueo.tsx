@@ -9,6 +9,7 @@ import { crearClienteNavegador } from "@/lib/supabase/navegador";
 import { erroresPorCampo, esBot, esquemaCodigo, esquemaDesbloqueo } from "@/lib/validacion";
 import { whatsappHref } from "@/lib/whatsapp";
 import * as e from "./estilos";
+import { useHidratado } from "./useHidratado";
 
 /** Códigos de país más probables para el público (El Salvador y diáspora). */
 const CODIGOS_PAIS = [
@@ -39,6 +40,7 @@ type Errores = Record<string, string>;
  */
 export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) {
   const router = useRouter();
+  const hidratado = useHidratado();
   const [paso, setPaso] = useState<Paso>("datos");
   const [nombre, setNombre] = useState("");
   const [codigoPais, setCodigoPais] = useState("+503");
@@ -175,7 +177,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
 
   if (paso === "codigo") {
     return (
-      <form onSubmit={enviarCodigo} noValidate className="max-w-md">
+      <form method="post" onSubmit={enviarCodigo} noValidate className="max-w-md">
         <p className="text-piedra-700">
           Te enviamos un código de 6 dígitos a <strong className="break-all">{correo}</strong>.
           Escríbelo aquí, en esta misma página.
@@ -205,7 +207,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
           Si no lo ves, revisa la carpeta de spam o promociones. El código vence en 10 minutos.
         </p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <button type="submit" disabled={enviando} className={e.botonPrimario}>
+          <button type="submit" disabled={enviando || !hidratado} className={e.botonPrimario}>
             {enviando ? "Verificando…" : "Ver la ficha técnica"}
           </button>
           <button
@@ -237,7 +239,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
   }
 
   return (
-    <form onSubmit={enviarDatos} noValidate className="max-w-xl space-y-5">
+    <form method="post" onSubmit={enviarDatos} noValidate className="max-w-xl space-y-5">
       <div>
         <label htmlFor="nombre" className={e.etiqueta}>
           {campos.nombre}
@@ -348,7 +350,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
         {errores.aceptoPrivacidad && <p className={e.error}>{errores.aceptoPrivacidad}</p>}
       </div>
 
-      <button type="submit" disabled={enviando} className={e.botonPrimario}>
+      <button type="submit" disabled={enviando || !hidratado} className={e.botonPrimario}>
         {enviando ? "Enviando…" : correoVerificado ? "Ver la ficha técnica" : "Enviarme el código"}
       </button>
       {avisoVisible}

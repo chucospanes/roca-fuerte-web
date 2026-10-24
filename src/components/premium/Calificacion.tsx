@@ -13,6 +13,7 @@ import {
 import type { LeadVisible } from "@/lib/leads";
 import { DEPARTAMENTOS } from "@/lib/validacion";
 import * as e from "./estilos";
+import { useHidratado } from "./useHidratado";
 
 type Opciones = Record<string, string>;
 
@@ -62,6 +63,7 @@ function Radios({
  * correo de la sesión; al guardar, actualiza ese mismo registro.
  */
 export function Calificacion({ inicial }: { inicial: LeadVisible }) {
+  const hidratado = useHidratado();
   const [pais, setPais] = useState<string>(inicial.pais_residencia ?? "");
   const [interes, setInteres] = useState<string>(inicial.interes ?? "");
   const [departamento, setDepartamento] = useState<string>(inicial.departamento ?? "");
@@ -121,7 +123,7 @@ export function Calificacion({ inicial }: { inicial: LeadVisible }) {
   }
 
   return (
-    <form onSubmit={enviar} noValidate className="max-w-2xl space-y-6">
+    <form method="post" onSubmit={enviar} noValidate className="max-w-2xl space-y-6">
       <p className="text-sm text-piedra-600">
         Registrado como <strong>{inicial.nombre}</strong> · {inicial.whatsapp} ·{" "}
         <span className="break-all">{inicial.correo}</span>
@@ -187,7 +189,7 @@ export function Calificacion({ inicial }: { inicial: LeadVisible }) {
         />
       </div>
 
-      <button type="submit" disabled={estado === "enviando"} className={e.botonPrimario}>
+      <button type="submit" disabled={estado === "enviando" || !hidratado} className={e.botonPrimario}>
         {estado === "enviando" ? "Guardando…" : "Guardar y seguir por WhatsApp"}
       </button>
 
