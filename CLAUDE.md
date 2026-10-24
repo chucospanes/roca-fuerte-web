@@ -31,8 +31,11 @@ trabajar en cualquier fase del portal.
 - **Si una instalación rompe algo:** NO lo arregles con más instalaciones. Revierte con
   git primero y explica qué pasó.
 - **Antes de instalar, muestra la lista de dependencias y espera aprobación.**
-- **Secretos:** la `SUPABASE_SERVICE_ROLE_KEY` solo se usa en servidor. Nunca en código
-  cliente ni en variables `NEXT_PUBLIC_*`. `.env.local` nunca se commitea.
+- **Secretos:** la `SUPABASE_SECRET_KEY` (`sb_secret_...`, salta RLS) solo se usa en
+  servidor, en archivos con `import "server-only"`. Nunca en código cliente ni en variables
+  `NEXT_PUBLIC_*`. Las únicas variables públicas de Supabase son `NEXT_PUBLIC_SUPABASE_URL`
+  y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. `.env.local` nunca se commitea, y no se lee ni
+  se muestra en el chat.
 - **Contenido:** no inventes testimonios, cifras, garantías, certificaciones ni precios.
   Todo dato no confirmado va como `PENDIENTE`, visible.
 - **Marca:** el nombre "Roca Fuerte" está pendiente de registro de marca. Debe vivir en un

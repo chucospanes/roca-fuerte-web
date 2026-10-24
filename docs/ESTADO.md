@@ -14,6 +14,7 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 
 ## Hecho
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
+- Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
@@ -21,7 +22,8 @@ El formulario es un espacio reservado: se hace en la Fase 4.
   (PENDIENTE salvo el bloque, cuyo espesor viene del plano). Las áreas cuadran: suma de
   ambientes = 38.07 m² útiles; 8×5 + 1.5×2.4 = 43.60 m² construidos.
 - `src/content/bitacora.ts`: 7 etapas; Terreno y trazo en proceso, el resto pendientes.
-- `.env.example` con `NEXT_PUBLIC_SITE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+- `.env.example` con `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` y `SUPABASE_SECRET_KEY` (solo servidor).
 - Fase 3: componentes en `src/components/`, textos generales en `src/content/landing.ts`
   (FAQ con respuestas PENDIENTE), utilidades `src/lib/whatsapp.ts` y `src/lib/video.ts`.
   Revisado con capturas a 390 px (móvil) y 1280 px: sin desborde horizontal; plano
@@ -56,15 +58,19 @@ El formulario es un espacio reservado: se hace en la Fase 4.
   "Network" que imprime el servidor.
 
 ## Bloqueos y pendientes del usuario
-- **Bloqueo de la Fase 4:** no activar el acceso premium hasta que la ficha técnica y la
-  lista de materiales (con marcas y cantidades) tengan datos reales.
+- **Bloqueos para activar `site.accesoPremium` en producción** (los dos son obligatorios):
+  - La ficha técnica y la lista de materiales (con marcas y cantidades) tienen datos reales.
+  - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
+- SMTP de Resend configurado en Supabase, con los registros DNS en Namecheap (sin esto,
+  ningún prospecto recibe su código).
+- Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
+  responsable: razón social, correo de contacto y plazo de conservación.
 - Precios "desde" → `site.precios`.
 - Número de WhatsApp Business → `site.whatsapp`.
 - URLs de redes sociales → `site.redes`.
 - Especificaciones y marcas de materiales → `bonaire.materiales`.
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
-- Texto del aviso de privacidad (necesario antes del formulario de la Fase 4).
 - Ubicación del terreno y detalle de lo incluido en "Comprar esta casa".
 - Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
@@ -72,7 +78,5 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el
   corredor hasta el lindero cumplen la normativa.
 - Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).
-- Crear proyecto nuevo en Supabase (separado de los bots).
-- Proveedor SMTP para los correos de acceso en producción (propuesta en la Fase 4).
 - Conectar el repo de GitHub a Vercel.
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.

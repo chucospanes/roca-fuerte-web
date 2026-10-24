@@ -156,3 +156,33 @@ verificada, nunca de lo escrito en un formulario.
 No se activa el acceso premium hasta que la ficha técnica y la lista de materiales tengan
 datos reales. Motivo: pedir correo a cambio de una ficha llena de "Próximamente" quema la
 confianza del prospecto justo cuando entrega sus datos.
+
+## 2026-10-23 — Botones de venta a WhatsApp directo, sin correo ni código
+"Quiero esta casa" y "Construir Bonaire en mi terreno" abren WhatsApp con un mensaje
+prellenado distinto según la opción, sin pedir correo ni código. El correo con código es
+solo para el contenido premium. Motivo: quien ya quiere comprar no debe encontrar ninguna
+barrera; la verificación se reserva para quien pide el detalle técnico. Consecuencia: esos
+contactos no quedan en Supabase ni con su UTM; se registran solo los que piden el premium.
+
+## 2026-10-23 — Claves nuevas de Supabase y nombres de variables
+Se usan las claves nuevas: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+(`sb_publishable_`, pública) y `SUPABASE_SECRET_KEY` (`sb_secret_`, solo servidor, con
+`createClient` de `@supabase/supabase-js`). Reemplazan a `SUPABASE_URL` y
+`SUPABASE_SERVICE_ROLE_KEY`. Motivo: Supabase retira las claves `anon` y `service_role` a
+fines de 2026 y recomienda estos nombres.
+
+## 2026-10-23 — Detalles técnicos de la Fase 4
+- **Validación con zod** (no a mano): es entrada externa que llega al servidor. Versión
+  4.6.7: la 4.6.5 tiene una vulnerabilidad alta (GHSA-mrhx-c7xc-m3w5) corregida en 4.6.6.
+- **PDF** por la ruta del servidor `/descargas/[archivo]`, desde una carpeta privada del
+  repo, verificando la sesión. Sin Storage: el PDF se actualiza con un commit.
+- **Sin límite por IP propio**: escribir en `leads` exige correo verificado y Supabase ya
+  limita los códigos por IP y por correo. No se guarda la IP. Cloudflare Turnstile es
+  obligatorio antes de activar el acceso premium en producción.
+- **Código pedido desde el navegador**, para que los límites por IP de Supabase apliquen a
+  cada visitante y no al servidor.
+- **UTM y referrer de primer contacto**: un trigger impide sobrescribirlos.
+- **SMTP: Resend** con el dominio `constructorarocafuerte.com` (comprado en Namecheap). El
+  correo integrado de Supabase solo envía al equipo del proyecto y 2 por hora.
+- **Aviso de privacidad**: borrador en `docs/AVISO_PRIVACIDAD.md`, pendiente de revisión
+  legal antes de publicarse.
