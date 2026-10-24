@@ -43,7 +43,7 @@ export default function FichaPage() {
             Ficha técnica y planos en PDF
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-piedra-600">
-            Planos imprimibles, ficha técnica, materiales con marcas y cantidades, y qué incluye el
+            Planos imprimibles, ficha técnica completa, cantidades de materiales y qué incluye el
             precio. Te pedimos tus datos una sola vez y confirmamos tu correo con un código.
           </p>
 

@@ -5,7 +5,7 @@ Landing de una sola página, mobile-first, que vende la Casa Bonaire en construc
 servicio de construir el modelo en el terreno del cliente. Los botones de venta llevan
 directo a WhatsApp, sin pedir datos; los prospectos que piden el contenido premium quedan
 registrados en Supabase. La landing es 100 % pública; solo el contenido premium
-(PDF de plano y fachada, ficha técnica, materiales con marcas y cantidades, desglose del
+(PDF de plano y fachada, ficha técnica completa, cantidades de materiales, desglose del
 precio) se desbloquea con correo validado por código.
 
 ## Stack
@@ -74,7 +74,7 @@ La landing sigue 100 % pública, incluidos el plano y la fachada ampliables (PNG
 - PDF imprimibles de plano y fachada, servidos por `/descargas/[archivo]` desde una
   carpeta privada del repo (no `public/`); la ruta verifica la sesión antes de entregarlos.
 - Ficha técnica.
-- Lista de materiales con marcas y cantidades (requiere agregar `cantidad` a `Material` en
+- Cantidades de materiales; la marca sigue pública en la landing (requiere `cantidad` en `Material` en
   `bonaire.ts`).
 - Desglose de qué incluye el precio. Las tarjetas públicas de "Dos formas de tener tu casa"
   conservan el resumen.

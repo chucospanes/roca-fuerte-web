@@ -3,7 +3,7 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-23
+**Última actualización:** 2026-10-24
 **Versión:** v0.3.0 — secciones de la landing
 
 ## Fase actual
@@ -65,11 +65,10 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Revisión visual de `/bonaire/ficha`: el usuario agrega `NEXT_PUBLIC_ACCESO_PREMIUM=1` a
-   `.env.local` y reinicia `npm run dev`.
-2. Prueba de punta a punta con el correo del usuario: **pedir permiso antes** (crea un
-   registro real en `leads` y un usuario en Supabase Auth).
-3. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado.
+1. Prueba de punta a punta: la hace el usuario en el navegador con su correo (dueño del
+   proyecto en Supabase). Después, Claude verifica **solo con lecturas** el usuario en
+   Supabase Auth y el registro en `leads`. No se borra nada: lo borra el usuario.
+2. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado en producción.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
@@ -91,7 +90,7 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 
 ## Bloqueos y pendientes del usuario
 - **Bloqueos para activar `site.accesoPremium` en producción** (los dos son obligatorios):
-  - La ficha técnica y la lista de materiales (con marcas y cantidades) tienen datos reales.
+  - La ficha técnica completa y las cantidades de materiales tienen datos reales.
   - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
 - SMTP de Resend configurado en Supabase, con los registros DNS en Namecheap (sin esto,
   ningún prospecto recibe su código).

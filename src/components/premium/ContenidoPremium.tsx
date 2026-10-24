@@ -127,7 +127,7 @@ export function ContenidoPremium() {
         </ul>
       </Bloque>
 
-      <Bloque titulo="Materiales: marcas y cantidades">
+      <Bloque titulo="Materiales y cantidades">
         <ul className="divide-y divide-piedra-200 rounded-lg border border-piedra-200 bg-blanco">
           {bonaire.materiales.map((mat) => (
             <li key={mat.material} className="p-4">

@@ -214,3 +214,9 @@ insertó y borró un registro de prueba sin pedir permiso; el proyecto es el de 
   aviso de privacidad lo menciona.
 - `Material.cantidad` y `bonaire.desglosePrecio` se agregan como PENDIENTE; en el área
   premium lo pendiente se muestra como "Próximamente".
+
+## 2026-10-24 — La marca de cada material es pública; premium son las cantidades
+La columna "Marca" se queda en la tabla pública de materiales de la landing: mostrar qué
+marca se usa es parte de la transparencia. Lo premium es: cantidades de materiales, ficha
+técnica completa, desglose de qué incluye el precio y los PDF imprimibles. Reemplaza la
+mención de "materiales con marcas y cantidades" como premium en las entradas anteriores.
