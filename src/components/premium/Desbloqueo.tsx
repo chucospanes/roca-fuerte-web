@@ -16,6 +16,7 @@ import {
 } from "@/lib/validacion";
 import { whatsappHref } from "@/lib/whatsapp";
 import * as e from "./estilos";
+import { useEnvioUnico } from "./useEnvioUnico";
 import { useHidratado } from "./useHidratado";
 
 /** Códigos de país más probables para el público (El Salvador y diáspora). */
@@ -58,7 +59,8 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
   const [codigo, setCodigo] = useState("");
   const [errores, setErrores] = useState<Errores>({});
   const [aviso, setAviso] = useState<{ texto: string; whatsapp?: boolean } | null>(null);
-  const [enviando, setEnviando] = useState(false);
+  const { enviando, ejecutar } = useEnvioUnico();
+  const reenvio = useEnvioUnico();
   const [espera, setEspera] = useState(0);
 
   useEffect(() => {
@@ -94,17 +96,28 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
     return true;
   }
 
-  async function registrar() {
-    const resultado = await registrarLead({
-      nombre,
-      whatsapp: `${codigoPais}${numero}`,
-      aceptoPrivacidad: true,
-      sitioWeb,
-      origen: leerOrigen(),
-    });
+  /** `true` si quedó registrado (la página pasa al contenido premium). */
+  async function registrar(): Promise<boolean> {
+    let resultado: Awaited<ReturnType<typeof registrarLead>>;
+    try {
+      resultado = await registrarLead({
+        nombre,
+        whatsapp: `${codigoPais}${numero}`,
+        aceptoPrivacidad: true,
+        sitioWeb,
+        origen: leerOrigen(),
+      });
+    } catch {
+      // Sin conexión o el servidor no respondió
+      setAviso({
+        texto: "No pudimos conectar. Revisa tu conexión e inténtalo de nuevo, o escríbenos por WhatsApp.",
+        whatsapp: true,
+      });
+      return false;
+    }
     if (resultado.ok) {
       router.refresh(); // el servidor vuelve a leer la sesión y muestra el contenido
-      return;
+      return true;
     }
     if (resultado.error === "datos_invalidos") {
       setErrores(resultado.errores ?? {});
@@ -118,6 +131,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
         whatsapp: true,
       });
     }
+    return false;
   }
 
   async function enviarDatos(ev: React.FormEvent) {
@@ -129,20 +143,14 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
       return;
     }
     setErrores({});
-    setEnviando(true);
-    try {
-      if (esBot(r.data)) return; // campo trampa: no se envía nada
-      if (correoVerificado) {
-        await registrar();
-        return;
-      }
+    await ejecutar(async () => {
+      if (esBot(r.data)) return true; // campo trampa: no se envía nada y el botón no se reactiva
+      if (correoVerificado) return registrar();
       if (await pedirCodigo(r.data.correo)) {
         setCorreo(r.data.correo);
         setPaso("codigo");
       }
-    } finally {
-      setEnviando(false);
-    }
+    });
   }
 
   async function enviarCodigo(ev: React.FormEvent) {
@@ -154,8 +162,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
       return;
     }
     setErrores({});
-    setEnviando(true);
-    try {
+    await ejecutar(async () => {
       const { error } = await crearClienteNavegador().auth.verifyOtp({
         email: correo,
         token: r.data,
@@ -163,12 +170,12 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
       });
       if (error) {
         setErrores({ codigo: "El código no es correcto o ya venció. Revísalo o pide uno nuevo." });
-        return;
+        return false;
       }
-      await registrar();
-    } finally {
-      setEnviando(false);
-    }
+      // Un código ya usado no sirve otra vez: si el registro sale bien, el botón queda
+      // desactivado hasta que aparece el contenido
+      return registrar();
+    });
   }
 
   const avisoVisible = aviso && (
@@ -214,19 +221,26 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
           Si no lo ves, revisa la carpeta de spam o promociones. El código vence en 10 minutos.
         </p>
         <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <button type="submit" disabled={enviando || !hidratado} className={e.botonPrimario}>
-            {enviando ? "Verificando…" : "Ver la ficha técnica"}
+          <button type="submit" disabled={enviando || !hidratado}
+            aria-busy={enviando} className={e.botonPrimario}>
+            {enviando ? "Enviando…" : "Ver la ficha técnica"}
           </button>
           <button
             type="button"
-            disabled={espera > 0 || enviando}
-            onClick={async () => {
-              setAviso(null);
-              await pedirCodigo(correo);
-            }}
+            disabled={espera > 0 || enviando || reenvio.enviando}
+            onClick={() =>
+              reenvio.ejecutar(async () => {
+                setAviso(null);
+                await pedirCodigo(correo);
+              })
+            }
             className={e.botonTexto}
           >
-            {espera > 0 ? `Pedir otro código en ${espera} s` : "Pedir otro código"}
+            {reenvio.enviando
+              ? "Enviando…"
+              : espera > 0
+                ? `Pedir otro código en ${espera} s`
+                : "Pedir otro código"}
           </button>
         </div>
         <button
@@ -357,7 +371,8 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
         {errores.aceptoPrivacidad && <p className={e.error}>{errores.aceptoPrivacidad}</p>}
       </div>
 
-      <button type="submit" disabled={enviando || !hidratado} className={e.botonPrimario}>
+      <button type="submit" disabled={enviando || !hidratado}
+            aria-busy={enviando} className={e.botonPrimario}>
         {enviando ? "Enviando…" : correoVerificado ? "Ver la ficha técnica" : "Enviarme el código"}
       </button>
       {avisoVisible}

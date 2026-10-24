@@ -12,7 +12,9 @@ import {
 } from "@/content/formularios";
 import type { LeadVisible } from "@/lib/leads";
 import { DEPARTAMENTOS } from "@/lib/validacion";
+import { whatsappHref } from "@/lib/whatsapp";
 import * as e from "./estilos";
+import { useEnvioUnico } from "./useEnvioUnico";
 import { useHidratado } from "./useHidratado";
 
 type Opciones = Record<string, string>;
@@ -64,6 +66,7 @@ function Radios({
  */
 export function Calificacion({ inicial }: { inicial: LeadVisible }) {
   const hidratado = useHidratado();
+  const { enviando, ejecutar } = useEnvioUnico();
   const [pais, setPais] = useState<string>(inicial.pais_residencia ?? "");
   const [interes, setInteres] = useState<string>(inicial.interes ?? "");
   const [departamento, setDepartamento] = useState<string>(inicial.departamento ?? "");
@@ -73,33 +76,39 @@ export function Calificacion({ inicial }: { inicial: LeadVisible }) {
   const [inicio, setInicio] = useState<string>(inicial.inicio ?? "");
   const [comentario, setComentario] = useState(inicial.comentario ?? "");
   const [errores, setErrores] = useState<Record<string, string>>({});
-  const [estado, setEstado] = useState<"editando" | "enviando" | "listo" | "error">("editando");
+  const [estado, setEstado] = useState<"editando" | "listo" | "error">("editando");
   const [whatsapp, setWhatsapp] = useState<string | undefined>();
 
   const vacio = (s: string) => (s ? s : undefined);
 
   async function enviar(ev: React.FormEvent) {
     ev.preventDefault();
-    setEstado("enviando");
-    const resultado = await calificarLead({
-      pais_residencia: vacio(pais),
-      interes: vacio(interes),
-      departamento: vacio(departamento),
-      municipio: vacio(municipio),
-      terreno_escriturado: vacio(escriturado),
-      forma_pago: vacio(pago),
-      inicio: vacio(inicio),
-      comentario: vacio(comentario),
-    });
-    if (resultado.ok) {
-      setErrores({});
+    await ejecutar(async () => {
+      let resultado: Awaited<ReturnType<typeof calificarLead>>;
+      try {
+        resultado = await calificarLead({
+        pais_residencia: vacio(pais),
+        interes: vacio(interes),
+        departamento: vacio(departamento),
+        municipio: vacio(municipio),
+        terreno_escriturado: vacio(escriturado),
+        forma_pago: vacio(pago),
+        inicio: vacio(inicio),
+        comentario: vacio(comentario),
+        });
+      } catch {
+        setEstado("error"); // sin conexión: se ofrece WhatsApp
+        return;
+      }
       setWhatsapp(resultado.whatsapp);
-      setEstado("listo");
-      return;
-    }
-    setErrores(resultado.errores ?? {});
-    setWhatsapp(resultado.whatsapp);
-    setEstado(resultado.error === "datos_invalidos" ? "editando" : "error");
+      if (resultado.ok) {
+        setErrores({});
+        setEstado("listo");
+        return;
+      }
+      setErrores(resultado.errores ?? {});
+      setEstado(resultado.error === "datos_invalidos" ? "editando" : "error");
+    });
   }
 
   if (estado === "listo") {
@@ -189,18 +198,21 @@ export function Calificacion({ inicial }: { inicial: LeadVisible }) {
         />
       </div>
 
-      <button type="submit" disabled={estado === "enviando" || !hidratado} className={e.botonPrimario}>
-        {estado === "enviando" ? "Guardando…" : "Guardar y seguir por WhatsApp"}
+      <button
+        type="submit"
+        disabled={enviando || !hidratado}
+        aria-busy={enviando}
+        className={e.botonPrimario}
+      >
+        {enviando ? "Enviando…" : "Guardar y seguir por WhatsApp"}
       </button>
 
       {estado === "error" && (
         <div role="alert" className="rounded-md border border-terracota/40 bg-terracota/5 p-4">
           <p>No pudimos guardar tus respuestas. Puedes escribirnos directamente por WhatsApp.</p>
-          {whatsapp && (
-            <a href={whatsapp} className={`mt-2 inline-block ${e.botonTexto}`}>
-              Escribir por WhatsApp →
-            </a>
-          )}
+          <a href={whatsapp ?? whatsappHref()} className={`mt-2 inline-block ${e.botonTexto}`}>
+            Escribir por WhatsApp →
+          </a>
         </div>
       )}
     </form>

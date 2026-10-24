@@ -55,6 +55,12 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     minúsculas, WhatsApp en E.164, fechas de aviso y verificación, `estado = 'nuevo'`.
     Sin UTM (no se entró con parámetros) y sin calificación (paso 2 no enviado).
   - El código acepta 6 a 8 dígitos (la causa del primer fallo fue Email OTP Length = 8).
+  - Sin doble envío (`useEnvioUnico`): los botones de enviar del paso 1, del código y del
+    paso 2 se desactivan y muestran "Enviando…" desde el primer toque; si el envío sale
+    bien no se reactivan mientras carga lo siguiente. "Pedir otro código" también se
+    bloquea. Si la red falla en una Server Action, se avisa y se ofrece WhatsApp. Probado
+    en el navegador con todo el tráfico a Supabase interceptado (paso 1 y código; el
+    paso 2 usa el mismo mecanismo pero requiere sesión real).
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
