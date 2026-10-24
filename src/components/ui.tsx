@@ -78,7 +78,7 @@ export function PuntosNumerados({ puntos }: { puntos: Punto[] }) {
           {p.enlace && (
             <a
               href={p.enlace.href}
-              className="mt-4 self-start font-semibold text-terracota underline-offset-4 hover:underline"
+              className="mt-2 inline-flex min-h-11 items-center self-start font-semibold text-terracota underline-offset-4 hover:underline"
             >
               {p.enlace.texto} →
             </a>

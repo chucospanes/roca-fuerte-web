@@ -78,7 +78,7 @@ export function Pie() {
         <p className="mt-2">
           <Pendiente texto="Texto del aviso pendiente" />
         </p>
-        <p className="mt-6 text-piedra-500">
+        <p className="mt-6 text-piedra-300">
           © {site.marca}
         </p>
       </div>

@@ -19,6 +19,26 @@ aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
   responden 401 (`permission denied` en la vista). Bloqueo de escritura comprobado por el
   usuario en el SQL Editor con rol `anon` dentro de una transacción con `rollback`:
   `ERROR 42501 permission denied for table clics_venta`.
+- Fase 5, implementado y verificado:
+  - **SEO:** metadata con descripción, canonical, Open Graph y Twitter; imagen
+    `opengraph-image.tsx` (fachada + modelo + marca, 1200×630); `robots.txt` (excluye
+    `/bonaire/ficha`, `/descargas/`, `/api/`); `sitemap.xml` (solo la landing); schema.org
+    `HomeAndConstructionBusiness` solo con datos confirmados (teléfono y redes se agregan
+    solos cuando sean reales). Verificado en el build de producción.
+  - **Conteo de clics de venta:** `data-venta`/`data-ubicacion` en los 8 botones de
+    WhatsApp; el script en línea cuenta el clic (aunque React no haya cargado) y agrega
+    "(Ref: fuente · campaña)" al mensaje si hay UTM; `POST /api/clic` valida Origin,
+    Sec-Fetch-Site, tamaño y zod. Probado con número ficticio temporal (sin commit) y todo
+    el tráfico interceptado: 9 comprobaciones en navegador + 7 rechazos de peticiones
+    inválidas; `clics_venta` siguió en 0 filas. **Falta la prueba real** con el número de
+    WhatsApp definitivo.
+  - **Lighthouse 13.5.0** (móvil, build de producción en el puerto 3100): Performance
+    79–85 (mediana 82), Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.9–3.2 s
+    (párrafo del hero), CLS 0, peso 288 KB. La primera corrida tras arrancar el servidor
+    sale siempre baja (arranque en frío) y la máquina mete ruido: se toman varias.
+  - Contraste corregido (gris `piedra-500` → `piedra-600` en fondos claros, `piedra-300`
+    en el pie, verde del botón flotante `#1c8147`) y objetivos táctiles de al menos 44 px.
+    Sin desborde horizontal a 360, 390 y 412 px.
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
 - Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
 - Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
@@ -102,11 +122,13 @@ aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. **Fase 5** (rama `feat/fase-5-seo`): SEO (metadata, Open Graph, `sitemap.xml`,
-   `robots.txt`, schema.org), rendimiento y revisión en móvil, según PLAN_V1.md.
-2. Datos de prueba en Supabase para que el usuario los borre: 4 usuarios en Auth y 3
-   filas en `leads` (su correo, los alias `+prueba1` y `+prueba2`, y `c***`, sin fila).
-3. Completar en `docs/CONFIGURACION_EXTERNA.md`: DMARC y límite de correos por hora.
+1. Decisión del usuario sobre el salto de diseño por fuentes (CLS 0.30 en 1 de cada ~4
+   cargas, cuando las fuentes llegan tarde): ver propuesta en la sesión del 2026-10-24.
+2. Revisión del usuario en un celular real y aprobación para cerrar la Fase 5 (`v0.5.0`).
+3. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
+   verificación con lecturas en `clics_venta`).
+4. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
+   schema.org toman la URL de ahí (en local salen con `localhost:3000`).
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la

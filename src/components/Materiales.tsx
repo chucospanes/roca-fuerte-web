@@ -28,7 +28,7 @@ export function Materiales() {
               <div>
                 <p className="font-display text-lg font-bold">{mat.material}</p>
                 {"seEspecifica" in mat && mat.seEspecifica && (
-                  <p className="text-sm text-piedra-500">{mat.seEspecifica}</p>
+                  <p className="text-sm text-piedra-600">{mat.seEspecifica}</p>
                 )}
               </div>
               {todoPendiente(mat) && (
@@ -39,15 +39,15 @@ export function Materiales() {
             </div>
             {!todoPendiente(mat) && (
             <dl className="mt-3 grid grid-cols-[6.5rem_1fr] gap-x-3 gap-y-2 text-sm">
-              <dt className="text-piedra-500">Especificación</dt>
+              <dt className="text-piedra-600">Especificación</dt>
               <dd>
                 <Valor valor={mat.especificacion} />
               </dd>
-              <dt className="text-piedra-500">Marca</dt>
+              <dt className="text-piedra-600">Marca</dt>
               <dd>
                 <Valor valor={mat.marca} />
               </dd>
-              <dt className="text-piedra-500">Por qué</dt>
+              <dt className="text-piedra-600">Por qué</dt>
               <dd>
                 <Valor valor={mat.porQue} />
               </dd>
@@ -74,7 +74,7 @@ export function Materiales() {
                 <th scope="row" className="px-4 py-3 font-semibold">
                   {mat.material}
                   {"seEspecifica" in mat && mat.seEspecifica && (
-                    <span className="block text-xs font-normal text-piedra-500">{mat.seEspecifica}</span>
+                    <span className="block text-xs font-normal text-piedra-600">{mat.seEspecifica}</span>
                   )}
                 </th>
                 <td className="px-4 py-3">

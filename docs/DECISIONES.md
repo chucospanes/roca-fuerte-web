@@ -265,3 +265,12 @@ conversaciones de venta. El diseño queda pendiente de aprobación del usuario.
   marca (desde `site.ts`).
 - **Rendimiento:** se mide con `npx lighthouse` sobre el build de producción
   (`npm run build` + `npm start` en otro puerto), no sobre el servidor de desarrollo.
+
+## 2026-10-24 — Ajustes de accesibilidad de la Fase 5
+- El gris `piedra-500` sobre blanco (4.2:1) no cumple el contraste mínimo para texto
+  pequeño (4.5:1): en fondos claros se usa `piedra-600` (6.0:1) y en el pie oscuro
+  `piedra-300`. El verde del botón flotante pasa de `#1f8a4c` (4.4:1) a `#1c8147` (4.9:1).
+- Enlaces y botones con al menos 44 px de alto en móvil (encabezado y enlaces "Ver la
+  bitácora" / "Ver los materiales").
+- La imagen Open Graph usa la fuente por defecto de ImageResponse (sin negrita); usar
+  Archivo requeriría agregar su archivo TTF al repo.

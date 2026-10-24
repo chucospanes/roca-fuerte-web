@@ -5,7 +5,7 @@ import { Pendiente, Seccion } from "./ui";
 function Precio({ precio }: { precio: Precio }) {
   return (
     <p
-      className={`font-display text-2xl font-extrabold ${esPendiente(precio) ? "text-piedra-500" : ""}`}
+      className={`font-display text-2xl font-extrabold ${esPendiente(precio) ? "text-piedra-600" : ""}`}
     >
       {textoPrecio(precio)}
     </p>

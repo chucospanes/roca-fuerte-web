@@ -13,7 +13,7 @@ export function Encabezado() {
   return (
     <header className="sticky top-0 z-30 border-b border-piedra-200 bg-concreto/95 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-        <a href="#inicio" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight">
+        <a href="#inicio" className="flex min-h-11 items-center gap-2 font-display text-lg font-extrabold tracking-tight">
           <span aria-hidden className="block size-3 bg-terracota" />
           {site.marca}
         </a>
@@ -30,7 +30,7 @@ export function Encabezado() {
         </nav>
         <a
           href="#contacto"
-          className="rounded-md bg-piedra-900 px-4 py-2 text-sm font-semibold text-blanco hover:bg-terracota"
+          className="flex min-h-11 items-center rounded-md bg-piedra-900 px-4 text-sm font-semibold text-blanco hover:bg-terracota"
         >
           Contactar
         </a>
