@@ -15,6 +15,19 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 ## Hecho
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
 - Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
+- Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
+  (2026-10-23) y verificada: RLS activo y los dos triggers creados.
+- Fase 4 en curso (rama `feat/fase-4-leads`): dependencias instaladas
+  (`@supabase/supabase-js` 2.117.3, `@supabase/ssr` 0.12.7, `zod` 4.6.7).
+  - `src/lib/supabase/`: `navegador.ts` (publishable, pide y verifica el código),
+    `servidor.ts` (sesión en cookies + `sesionVerificada()` con `getClaims()`), `admin.ts`
+    (clave secreta, `server-only`), `tipos.ts` (tipos de `leads`), `entorno.ts`.
+  - `src/proxy.ts`: renueva la sesión solo en `/bonaire/ficha` y `/descargas`; la landing
+    sigue estática.
+  - `src/lib/validacion.ts`: esquemas zod de desbloqueo, código, registro (sin correo: sale
+    de la sesión) y calificación. Probados con 23 casos.
+  - Verificado contra Supabase: la clave secreta lee `leads`; la publishable no puede leer
+    (401) ni insertar (42501).
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
@@ -34,12 +47,12 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. **Fase 4** (rama `feat/fase-4-leads`): formulario de leads + acceso con correo a
-   contenido premium, según PLAN_V1.md (OTP de 6 dígitos, tabla única `leads` con upsert
-   por correo, PDF en Storage privado). **Antes de instalar nada:** mostrar al usuario el
-   diseño de la tabla, el flujo y las dependencias, y esperar aprobación. Incluye verificar
-   en la documentación de Supabase la plantilla de correo para el código, los límites del
-   correo integrado y proponer un proveedor SMTP.
+1. Fase 4, en este orden: botones de venta a WhatsApp directo (mensaje por opción) →
+   Server Actions `registrarLead` y `calificarLead` → página `/bonaire/ficha` (detrás de
+   `site.accesoPremium`, apagado) con paso 1, código y paso 2 → ruta `/descargas/[archivo]`
+   con los PDF en carpeta privada → captura de UTM y referrer.
+2. Probar el flujo completo en local con un correo del equipo del proyecto (el correo
+   integrado de Supabase solo envía a ellos, 2 por hora).
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
