@@ -8,7 +8,9 @@ Requiere SMTP propio (Resend) en proyectos gratuitos creados después de junio d
 
 - Sin enlaces a propósito: algunos correos abren los enlaces para revisarlos y gastan el
   acceso antes que la persona.
-- "10 minutos" asume **Email OTP Expiration = 600** segundos.
+- "10 minutos" asume **Email OTP Expiration = 600** segundos, y el código es de 6 dígitos
+  con **Email OTP Length = 6** (por defecto puede venir en 8).
+- Resto de la configuración externa: `docs/CONFIGURACION_EXTERNA.md`.
 - La marca está escrita a mano (la plantilla vive fuera del repo): si cambia la marca en
   `src/config/site.ts`, cambiarla también aquí y en Supabase.
 

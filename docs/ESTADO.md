@@ -46,6 +46,15 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     el despliegue de la ruta (verificado en la traza del build).
   - Captura de UTM y referrer externo de la primera visita en `localStorage`
     (`src/lib/origen.ts`, `CapturaOrigen` en el layout); se envía con `registrarLead`.
+  - SMTP de Resend configurado por el usuario (dominio verificado), plantillas con el
+    código y Email OTP Length = 6 / Expiration = 600. Todo lo que vive fuera del repo
+    está en `docs/CONFIGURACION_EXTERNA.md`.
+  - **Prueba de punta a punta exitosa (2026-10-24, la hizo el usuario):** el código
+    desbloqueó la ficha. Verificado con lecturas: usuario en Supabase Auth con correo
+    confirmado; una fila en `leads` con `user_id` y correo que coinciden, correo en
+    minúsculas, WhatsApp en E.164, fechas de aviso y verificación, `estado = 'nuevo'`.
+    Sin UTM (no se entró con parámetros) y sin calificación (paso 2 no enviado).
+  - El código acepta 6 a 8 dígitos (la causa del primer fallo fue Email OTP Length = 8).
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
@@ -65,15 +74,13 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. **Bloqueo actual: SMTP propio.** Sin él no se pueden editar las plantillas de correo (plan
-   gratuito, proyecto creado después de junio de 2026) y el correo no lleva el código.
-   El usuario configura Resend: dominio `constructorarocafuerte.com` verificado (DNS en
-   Namecheap) → SMTP en Supabase → plantillas "Magic link" y "Confirm signup" con
-   `{{ .Token }}` (texto en `docs/PLANTILLA_CORREO_CODIGO.md`).
-2. Prueba de punta a punta: la hace el usuario en el navegador con su correo (dueño del
-   proyecto en Supabase). Después, Claude verifica **solo con lecturas** el usuario en
-   Supabase Auth y el registro en `leads`. No se borra nada: lo borra el usuario.
-3. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado en producción.
+1. Opcional antes de cerrar: probar el paso 2 (calificación), la descarga de los PDF y
+   la captura de UTM (`/?utm_source=prueba&utm_campaign=e2e` → ficha) con la sesión
+   actual; verificar con lecturas.
+2. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado en producción.
+3. Datos de prueba en Supabase para que el usuario los borre cuando quiera: el usuario
+   de la prueba en Auth y su fila en `leads`, y un segundo usuario en Auth
+   (creado 2026-10-24 06:10 UTC, confirmado, nunca inició sesión, sin fila en `leads`).
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la

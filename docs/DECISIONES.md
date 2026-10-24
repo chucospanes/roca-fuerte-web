@@ -229,3 +229,9 @@ puede probar. Por eso el SMTP de Resend con `constructorarocafuerte.com` (DNS en
 Namecheap) pasa de pendiente de producción a requisito para la prueba de punta a punta.
 La clave de Resend vive solo en la configuración SMTP de Supabase, no en el repo ni en
 `.env.local`. Corrige lo anotado antes: las plantillas no quedaron cambiadas.
+
+## 2026-10-24 — El código acepta de 6 a 8 dígitos; Supabase configurado en 6
+La primera prueba falló porque Supabase enviaba códigos de 8 dígitos (Email OTP Length)
+y el formulario esperaba 6. Se configuró Supabase en 6 y la validación acepta de 6 a 8,
+para que un cambio de configuración no vuelva a romper el acceso. La configuración externa
+(SMTP, plantillas, longitud y duración del código) queda en `docs/CONFIGURACION_EXTERNA.md`.
