@@ -248,3 +248,20 @@ Se agrega a la Fase 5 contar los clics en los botones de venta de WhatsApp con e
 primer contacto, sin datos personales. Motivo: los botones abren WhatsApp sin pedir datos
 (decisión del 2026-10-23), así que hoy no se sabe qué red ni qué video generan las
 conversaciones de venta. El diseño queda pendiente de aprobación del usuario.
+
+## 2026-10-24 — Diseño del conteo de clics, referencia en WhatsApp y Open Graph (Fase 5)
+- **Conteo aprobado** con hora exacta: tabla `clics_venta` (migración 002) con botón,
+  ubicación, UTM de primer contacto y solo el dominio del referrer. Sin IP, navegador,
+  identificador ni datos de contacto: se cuentan clics, no personas. Lo captura el script
+  en línea (cuenta aunque React no haya cargado) y lo envía con `sendBeacon` a
+  `POST /api/clic`, que valida con zod y el encabezado `Origin`. No se cuenta mientras el
+  WhatsApp sea el número de prueba. Límite conocido: sin IP no hay tope por persona, los
+  conteos se pueden inflar; son indicativos.
+- **Referencia en el mensaje de WhatsApp:** si hay UTM de primer contacto, se agrega al
+  final del mensaje prellenado, por ejemplo "(Ref: tiktok · video12)"; sin UTM, nada.
+  Motivo: el dueño ve en la conversación de qué campaña viene la persona. La referencia
+  viaja a WhatsApp (Meta): se menciona en el aviso de privacidad.
+- **Open Graph:** imagen generada con la fachada, el texto "Casa Modelo Bonaire" y la
+  marca (desde `site.ts`).
+- **Rendimiento:** se mide con `npx lighthouse` sobre el build de producción
+  (`npm run build` + `npm start` en otro puerto), no sobre el servidor de desarrollo.

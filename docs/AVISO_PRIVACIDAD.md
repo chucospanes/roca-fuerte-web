@@ -71,6 +71,12 @@ contenido desbloqueado en ese navegador. Además, si llegas desde un enlace con 
 de campaña o desde otro sitio, guardamos ese origen en el almacenamiento local de tu
 navegador, y solo se envía a nosotros si pides el acceso a la ficha técnica. No usamos
 cookies de publicidad.
+
+Contamos de forma anónima los clics en los botones de WhatsApp, junto con la campaña o red
+social de la que llegaste: no guardamos tu IP ni ningún dato que te identifique. Si
+llegaste desde una campaña, el mensaje que se abre en WhatsApp incluye al final una
+referencia corta a esa campaña (por ejemplo "Ref: tiktok · video12"), que puedes borrar
+antes de enviarlo.
 [PENDIENTE: actualizar si se agrega analítica o un píxel de redes sociales.]
 
 ## Cuánto tiempo los guardamos
