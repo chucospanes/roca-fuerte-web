@@ -1,7 +1,8 @@
 /**
  * Contenido de la Casa Modelo Bonaire.
  *
- * Fuente: plano v3 (`assets/plano-bonaire.png`) y `docs/CONTEXTO.md`.
+ * Fuente: plano y fachada v3, corregidos para casa entre colindancias
+ * (`assets/plano-bonaire.pdf`, `assets/fachada-bonaire.pdf`) y `docs/CONTEXTO.md`.
  * Las especificaciones de materiales son PENDIENTE hasta que el constructor las confirme.
  */
 
@@ -26,7 +27,7 @@ export type Material = {
 
 export const bonaire = {
   nombre: "Casa Modelo Bonaire",
-  version: "Plano v3",
+  version: "Plano v3, corregido para casa entre colindancias",
   resumen: "Casa de una planta en forma de L, 2 dormitorios y 1 baño.",
   dormitorios: 2,
   banos: 1,
@@ -47,6 +48,26 @@ export const bonaire = {
     interioresM: 0.1,
   },
 
+  /** Sin retiro lateral: los terrenos vecinos son de terceros (ver DECISIONES.md). */
+  implantacion: "Entre colindancias: los muros laterales no tienen ventanas ni aleros.",
+
+  techo: {
+    cubierta: "Lámina a dos aguas",
+    cumbrera: "Paralela a la fachada",
+    /** Verificar el mínimo con la ficha técnica de la lámina que se elija. */
+    pendientePct: 15,
+    desague: "El agua cae al frente (canal y bajante) y al fondo, no hacia los vecinos.",
+    /** Alturas sobre el nivel de piso terminado. */
+    aleroM: 2.6,
+    cumbreraM: 3.31,
+  },
+
+  /** Fuera del área construida. La columna aún no tiene diseño estructural. */
+  corredor: {
+    fondoM: 1.5,
+    descripcion: "Corredor techado frente al Dormitorio 1, con columna en la esquina.",
+  },
+
   ambientes: [
     {
       nombre: "Dormitorio 1",
@@ -64,13 +85,16 @@ export const bonaire = {
       nombre: "Baño",
       medidas: "1.50 × 2.50 m",
       areaM2: 3.75,
-      notas: ["Con ducha, sin tina."],
+      notas: ["Con ducha, sin tina.", "Extractor y lámina traslúcida en el techo."],
     },
     {
       nombre: "Sala, comedor, cocina y lavado",
       medidas: "9.20 × 2.10 m",
       areaM2: 19.32,
-      notas: ["Espacio abierto.", "Cocina en L.", "Pila dentro de la casa."],
+      notas: [
+        "Espacio abierto, con lámina traslúcida sobre el comedor.",
+        "Cocina en L: pila y fregadero en el muro del fondo, bajo una ventana de 1.20 m; estufa y refrigeradora en el muro lateral.",
+      ],
     },
   ] satisfies Ambiente[],
 
@@ -79,10 +103,21 @@ export const bonaire = {
 
   plano: {
     src: "/plano-bonaire.png",
-    alt: "Plano de la Casa Modelo Bonaire v3: planta en L con 2 dormitorios, baño y sala-comedor-cocina-lavado abierta.",
-    aviso:
-      "Plano referencial. Requiere firma de arquitecto o ingeniero antes de construir.",
+    alt: "Plano de la Casa Modelo Bonaire: planta en L entre colindancias, con 2 dormitorios, baño, sala-comedor-cocina-lavado abierta y corredor techado en la fachada.",
+    ancho: 3550,
+    alto: 2775,
   },
+
+  fachada: {
+    src: "/fachada-bonaire.png",
+    alt: "Fachada principal de la Casa Modelo Bonaire: techo de lámina a dos aguas, ventana de la sala y corredor techado frente al Dormitorio 1, entre muros de colindancia.",
+    ancho: 3150,
+    alto: 2250,
+    texto: "Fachada principal — vista desde la calle",
+  },
+
+  avisoPlanos:
+    "Plano y fachada referenciales. Requieren firma de arquitecto o ingeniero antes de construir.",
 
   materiales: [
     {
@@ -114,7 +149,13 @@ export const bonaire = {
       marca: PENDIENTE,
       porQue: PENDIENTE,
     },
-    { material: "Cubierta de techo", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
+    {
+      material: "Cubierta de techo",
+      seEspecifica: "Lámina: tipo y calibre; pendiente mínima según el fabricante (diseño: 15 %).",
+      especificacion: PENDIENTE,
+      marca: PENDIENTE,
+      porQue: PENDIENTE,
+    },
     { material: "Piso", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
     { material: "Puertas y ventanas", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
     { material: "Instalación eléctrica", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },

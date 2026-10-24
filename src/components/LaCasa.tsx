@@ -1,5 +1,5 @@
 import { bonaire } from "@/content/bonaire";
-import { PlanoAmpliable } from "./PlanoAmpliable";
+import { ImagenAmpliable } from "./ImagenAmpliable";
 import { Seccion } from "./ui";
 
 const m2 = (n: number) => `${n.toFixed(2)} m²`;
@@ -15,8 +15,24 @@ export function LaCasa() {
       intro={`${bonaire.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta.`}
       fondo="blanco"
     >
-      <PlanoAmpliable src={bonaire.plano.src} alt={bonaire.plano.alt} />
-      <p className="mt-3 text-sm text-piedra-600">{bonaire.plano.aviso}</p>
+      <div className="grid gap-6 md:grid-cols-2 md:items-end">
+        {[
+          { ...bonaire.plano, texto: "Planta — distribución y medidas" },
+          bonaire.fachada,
+        ].map((img) => (
+          <figure key={img.src}>
+            <ImagenAmpliable
+              src={img.src}
+              alt={img.alt}
+              ancho={img.ancho}
+              alto={img.alto}
+              sizes="(max-width: 768px) 100vw, 480px"
+            />
+            <figcaption className="mt-2 font-semibold text-piedra-800">{img.texto}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <p className="mt-3 text-sm text-piedra-600">{bonaire.avisoPlanos}</p>
 
       <div className="mt-10 grid gap-8 md:grid-cols-[1fr_1.4fr]">
         {/* Cuadro de áreas */}
@@ -45,7 +61,20 @@ export function LaCasa() {
             <dd>{m(bonaire.muros.exterioresM)}</dd>
             <dt className="text-piedra-300">Interiores</dt>
             <dd>{m(bonaire.muros.interioresM)}</dd>
+            <dt className="text-piedra-300">Techo</dt>
+            <dd>
+              {bonaire.techo.cubierta}, {`${bonaire.techo.pendientePct} %`}
+            </dd>
+            <dt className="text-piedra-300">Alero / cumbrera</dt>
+            <dd>
+              {m(bonaire.techo.aleroM)} / {m(bonaire.techo.cumbreraM)}
+            </dd>
+            <dt className="text-piedra-300">Corredor techado</dt>
+            <dd>{m(bonaire.corredor.fondoM)}</dd>
           </dl>
+          <p className="mt-4 border-t border-piedra-700 pt-4 text-sm text-piedra-300">
+            {bonaire.implantacion} {bonaire.techo.desague}
+          </p>
         </div>
 
         {/* Ambientes */}

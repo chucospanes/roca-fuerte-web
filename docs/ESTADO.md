@@ -26,6 +26,9 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
   (FAQ con respuestas PENDIENTE), utilidades `src/lib/whatsapp.ts` y `src/lib/video.ts`.
   Revisado con capturas a 390 px (móvil) y 1280 px: sin desborde horizontal; plano
   ampliable verificado abriéndose.
+- Plano y fachada corregidos para casa entre colindancias (techo a dos aguas, sin ventanas
+  laterales): en `assets/` y `public/`, fachada visible y ampliable en "La casa". Los PNG
+  se generaron desde los PDF (no venían los PNG corregidos en Descargas).
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
@@ -56,6 +59,9 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
 - Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
   del profesional que firma el plano → `calidad` en `src/content/landing.ts`.
+- Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el
+  corredor hasta el lindero cumplen la normativa.
+- Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).
 - Crear proyecto nuevo en Supabase (separado de los bots).
 - Conectar el repo de GitHub a Vercel.
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.

@@ -109,3 +109,15 @@ Cita el RTS 91.01.02:21 (vivienda de 1 y 2 plantas) como PENDIENTE de confirmar 
 ingeniero responsable, y nombre y registro del profesional que firma el plano como
 PENDIENTE. Sección 02: etiqueta "La casa", título "Modelo Bonaire". Sección de precios:
 "Dos formas de tener tu casa".
+
+## 2026-10-23 — Casa entre colindancias: techo a dos aguas con cumbrera paralela a la fachada y sin ventanas laterales
+El plano y la fachada se corrigen para construir sin retiro lateral. Los muros laterales
+son de colindancia: sin ventanas ni aleros. El techo de lámina va a dos aguas con la
+cumbrera paralela a la fachada (pendiente 15 %, alero a 2.60 m, cumbrera a 3.31 m), de
+modo que el agua cae al frente (canal y bajante) y al fondo. Cocina en L con pila y
+fregadero en el muro del fondo bajo una ventana de 1.20 m; estufa y refrigeradora en el
+muro lateral. Ventilación e iluminación cenital: extractor y lámina traslúcida en el baño,
+lámina traslúcida sobre el comedor. Corredor techado de 1.50 m frente al Dormitorio 1,
+con columna en la esquina. Áreas sin cambio (43.60 m² construidos, 38.07 m² útiles).
+Motivo: los terrenos vecinos son de terceros; no puede caer agua ni haber aleros hacia
+ellos. Se agrega la fachada a la sección "La casa", ampliable igual que el plano.
