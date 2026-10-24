@@ -7,11 +7,9 @@
 **Versión:** v0.4.0 — leads y acceso premium
 
 ## Fase actual
-**Fase 4 cerrada** (aprobada por el usuario, merge a `main`, tag `v0.4.0`, push a
-`origin`). Botones de venta a WhatsApp directo; acceso premium con código por correo
-(`/bonaire/ficha`, descargas de PDF, calificación, captura de UTM) **apagado en
-producción** (`site.accesoPremium`) hasta cumplir los bloqueos de abajo.
-Siguiente fase: 5 — SEO, rendimiento y revisión en móvil.
+**Fase 5 en curso** (rama `feat/fase-5-seo`): SEO, rendimiento, revisión en móvil y
+conteo anónimo de clics en los botones de venta (alcance agregado; diseño pendiente de
+aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
 
 ## Hecho
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.

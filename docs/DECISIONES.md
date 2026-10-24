@@ -242,3 +242,9 @@ página. En la prueba real se perdió el UTM porque se tocó el enlace a la fich
 tráfico desde el navegador interno de TikTok y datos móviles lentos, ese caso es común y
 pierde justo el dato de qué video trajo a la persona. Ahora un script mínimo en línea en
 el layout guarda el origen al leer el HTML.
+
+## 2026-10-24 — Cambio de alcance: contar clics de venta con su UTM (Fase 5)
+Se agrega a la Fase 5 contar los clics en los botones de venta de WhatsApp con el UTM de
+primer contacto, sin datos personales. Motivo: los botones abren WhatsApp sin pedir datos
+(decisión del 2026-10-23), así que hoy no se sabe qué red ni qué video generan las
+conversaciones de venta. El diseño queda pendiente de aprobación del usuario.
