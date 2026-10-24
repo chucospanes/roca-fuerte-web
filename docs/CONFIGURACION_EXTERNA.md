@@ -18,6 +18,8 @@
   2026-10-23).
 - Verificar después: RLS activo en `leads` y los dos triggers creados
   (`leads_updated_at`, `leads_origen_fijo`).
+- Ejecutar `supabase/migrations/002_clics_venta.sql` (aplicada el 2026-10-24). Verificar:
+  RLS activo en `clics_venta` y la vista `clics_venta_resumen` con `security_invoker`.
 
 ## 3. Supabase — Auth (correo con código)
 En *Authentication*:

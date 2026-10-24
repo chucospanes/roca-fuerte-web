@@ -12,6 +12,13 @@ conteo anónimo de clics en los botones de venta (alcance agregado; diseño pend
 aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
 
 ## Hecho
+- **Fase 5 (en curso):** migración `002_clics_venta.sql` aplicada por el usuario desde el
+  SQL Editor (2026-10-24); él verificó RLS activo y la vista con `security_invoker`.
+  Verificado con lecturas: con la clave secreta, `clics_venta` (9 columnas) y
+  `clics_venta_resumen` existen y están vacías; con la publishable, la tabla y la vista
+  responden 401 (`permission denied` en la vista). No se probó insertar con la clave
+  publishable para no escribir en producción: el bloqueo de escritura se apoya en RLS y
+  el `revoke` de la migración.
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
 - Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
 - Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
