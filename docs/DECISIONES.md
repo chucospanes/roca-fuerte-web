@@ -121,3 +121,13 @@ lámina traslúcida sobre el comedor. Corredor techado de 1.50 m frente al Dormi
 con columna en la esquina. Áreas sin cambio (43.60 m² construidos, 38.07 m² útiles).
 Motivo: los terrenos vecinos son de terceros; no puede caer agua ni haber aleros hacia
 ellos. Se agrega la fachada a la sección "La casa", ampliable igual que el plano.
+
+## 2026-10-23 — Acceso con correo solo al contenido premium (reemplaza "Sin login en v1")
+La landing sigue 100 % pública. El contenido premium (plano y fachada en PDF, ficha técnica
+completa y materiales detallados) se desbloquea con correo validado por enlace (Supabase
+Auth, sin contraseñas), pidiendo nombre, WhatsApp y correo, con aceptación del aviso de
+privacidad. Los PDF salen de `public/` y se sirven de forma privada (Storage con URLs
+firmadas de corta duración o ruta del servidor que verifica la sesión). Se integra a la
+Fase 4 junto al formulario de leads. Motivo: captar prospectos serios sin cerrar la página
+a quien llega desde redes. El login con Google para el portal de clientes sigue reservado
+para la fase 2.

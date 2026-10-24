@@ -3,11 +3,14 @@
 ## Objetivo
 Landing de una sola página, mobile-first, que vende la Casa Bonaire en construcción y el
 servicio de construir el modelo en el terreno del cliente. Captura leads calificados en
-Supabase y los lleva a WhatsApp. Sin login.
+Supabase y los lleva a WhatsApp. La landing es 100 % pública; solo el contenido premium
+(planos en PDF, ficha técnica completa y materiales detallados) se desbloquea con correo
+validado.
 
 ## Stack
 - Next.js (App Router) + TypeScript + Tailwind CSS, versiones estables actuales.
-- Supabase (Postgres) solo para la tabla `leads`.
+- Supabase: Postgres (leads y registros de acceso), Auth sin contraseñas (enlace mágico
+  o código por correo) y Storage privado para los PDF.
 - Despliegue en Vercel. Dominio `constructorarocafuerte.com` (registrado en Namecheap).
 
 ## Inicialización
@@ -77,6 +80,42 @@ Migración `supabase/migrations/001_leads.sql`: tabla `leads` (id uuid, created_
 formulario, UTM, referrer, `estado` con valor por defecto `'nuevo'`), RLS activado sin
 políticas públicas.
 
+## Acceso con correo a contenido premium
+La landing sigue 100 % pública. Con correo validado se desbloquea:
+- Plano y fachada descargables en PDF (`assets/plano-bonaire.pdf`,
+  `assets/fachada-bonaire.pdf`).
+- Ficha técnica completa y lista de materiales detallada. Mientras los datos sigan en
+  `PENDIENTE`, dentro del área desbloqueada se muestran como "Próximamente".
+
+Flujo:
+1. Formulario de desbloqueo: nombre*, WhatsApp con código de país*, correo* y aceptación
+   del aviso de privacidad*.
+2. Validación del correo con Supabase Auth, sin contraseñas: enlace mágico o código.
+3. Al confirmar el correo se crea o actualiza el registro en Supabase con nombre, WhatsApp,
+   correo, UTM y referrer, y el contenido premium queda accesible en ese navegador (sesión
+   de Supabase Auth en cookie).
+4. Los PDF **no** van en `public/`: se sirven desde un bucket privado de Supabase Storage
+   con URLs firmadas de corta duración, o desde una ruta del servidor que verifique la
+   sesión antes de entregarlos.
+5. Verificar en la documentación de Supabase los límites del envío de correos integrado y
+   proponer un proveedor SMTP para producción.
+
+A definir y mostrar al usuario antes de instalar nada (inicio de la Fase 4):
+- Diseño de tablas: si el registro de acceso vive en `leads` o en una tabla propia, y
+  cómo se relaciona con el formulario de calificación (ambos piden nombre y WhatsApp).
+- Enlace mágico o código: el tráfico llega desde los navegadores internos de TikTok,
+  Instagram y Facebook; un enlace mágico abierto desde la app de correo puede abrir otro
+  navegador y la sesión no queda en el que la persona estaba usando. Un código de 6 dígitos
+  escrito en la misma pestaña evita ese problema. Probar ambos en celular.
+- Qué pasa con `public/plano-bonaire.png` y `public/fachada-bonaire.png`: hoy están a
+  resolución completa y ampliables en la landing, así que el plano ya es visible sin
+  registro. Decidir si la landing muestra una versión reducida y el detalle queda en el
+  área premium.
+- Variables de entorno nuevas (URL y clave pública de Supabase para Auth en el cliente;
+  la service role key sigue solo en servidor) y dependencias (`@supabase/supabase-js`,
+  `@supabase/ssr` u otras), verificadas contra la documentación de Next 16 incluida en
+  `node_modules/next/dist/docs/`.
+
 ## Diseño
 - Sobrio, sólido y confiable: tonos concreto, gris cálido, acento terracota y blanco.
   Tipografía clara. Nada que parezca plantilla genérica.
@@ -94,9 +133,10 @@ estructurados schema.org `HomeAndConstructionBusiness`.
 1. Inicializar Next.js y estructura de carpetas → `v0.1.0`
 2. Archivos de configuración y contenido → `v0.2.0`
 3. Secciones de la landing con datos de ejemplo → `v0.3.0`
-4. Formulario + Server Action + migración Supabase → `v0.4.0`
+4. Formulario de leads + acceso con correo a contenido premium (Supabase Auth, Storage
+   privado para los PDF) + Server Actions + migraciones Supabase → `v0.4.0`
 5. SEO, rendimiento y revisión en móvil → `v0.5.0`
 6. README de despliegue (local, migración Supabase, Vercel, DNS desde Namecheap) → `v1.0.0`
 
 ## Fuera de alcance en v1
-Login, panel de administración de leads, portal de clientes, pagos en línea, blog.
+Panel de administración de leads, portal de clientes, pagos en línea, blog.

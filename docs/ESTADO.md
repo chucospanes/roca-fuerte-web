@@ -33,7 +33,8 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
 
 ## Siguiente
 1. Aprobación visual de la Fase 3 (y ajustes que salgan de ahí).
-2. Fase 4: formulario + Server Action + migración Supabase.
+2. Fase 4: formulario de leads + acceso con correo a contenido premium (ver PLAN_V1.md).
+   Antes de instalar: mostrar al usuario diseño de tablas, flujo y dependencias.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
@@ -63,5 +64,6 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
   corredor hasta el lindero cumplen la normativa.
 - Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).
 - Crear proyecto nuevo en Supabase (separado de los bots).
+- Proveedor SMTP para los correos de acceso en producción (propuesta en la Fase 4).
 - Conectar el repo de GitHub a Vercel.
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.
