@@ -36,6 +36,9 @@ trabajar en cualquier fase del portal.
   `NEXT_PUBLIC_*`. Las únicas variables públicas de Supabase son `NEXT_PUBLIC_SUPABASE_URL`
   y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. `.env.local` nunca se commitea, y no se lee ni
   se muestra en el chat.
+- **Datos en Supabase (producción):** nunca escribas, modifiques ni borres datos en Supabase
+  sin aprobación explícita previa del usuario, aunque sean registros de prueba y se borren
+  después. Las lecturas de verificación sí están permitidas.
 - **Contenido:** no inventes testimonios, cifras, garantías, certificaciones ni precios.
   Todo dato no confirmado va como `PENDIENTE`, visible.
 - **Marca:** el nombre "Roca Fuerte" está pendiente de registro de marca. Debe vivir en un
