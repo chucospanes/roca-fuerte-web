@@ -3,17 +3,81 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-23
-**Versión:** v0.3.0 — secciones de la landing
+**Última actualización:** 2026-10-24
+**Versión:** v0.4.0 — leads y acceso premium
 
 ## Fase actual
-**Fase 3 cerrada** (aprobada visualmente, merge a `main`, tag `v0.3.0`, push a `origin`).
-Landing con 9 secciones (las 8 del plan + "Calidad y resistencia"), plano y fachada
-corregidos para casa entre colindancias, encabezado, pie y botón flotante de WhatsApp.
-El formulario es un espacio reservado: se hace en la Fase 4.
+**Fase 4 cerrada** (aprobada por el usuario, merge a `main`, tag `v0.4.0`, push a
+`origin`). Botones de venta a WhatsApp directo; acceso premium con código por correo
+(`/bonaire/ficha`, descargas de PDF, calificación, captura de UTM) **apagado en
+producción** (`site.accesoPremium`) hasta cumplir los bloqueos de abajo.
+Siguiente fase: 5 — SEO, rendimiento y revisión en móvil.
 
 ## Hecho
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
+- Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
+- Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
+  (2026-10-23) y verificada: RLS activo y los dos triggers creados.
+- Fase 4 en curso (rama `feat/fase-4-leads`): dependencias instaladas
+  (`@supabase/supabase-js` 2.117.3, `@supabase/ssr` 0.12.7, `zod` 4.6.7).
+  - `src/lib/supabase/`: `navegador.ts` (publishable, pide y verifica el código),
+    `servidor.ts` (sesión en cookies + `sesionVerificada()` con `getClaims()`), `admin.ts`
+    (clave secreta, `server-only`), `tipos.ts` (tipos de `leads`), `entorno.ts`.
+  - `src/proxy.ts`: renueva la sesión solo en `/bonaire/ficha` y `/descargas`; la landing
+    sigue estática.
+  - `src/lib/validacion.ts`: esquemas zod de desbloqueo, código, registro (sin correo: sale
+    de la sesión) y calificación. Probados con 23 casos.
+  - Verificado contra Supabase: la clave secreta lee `leads`; la publishable no puede leer
+    (401) ni insertar (42501).
+  - Botones de venta ("Quiero esta casa", "Construir Bonaire en mi terreno") en hero,
+    precios y contacto: WhatsApp directo con mensaje por opción (`BotonWhatsApp`,
+    `mensajesVenta`). La sección Contacto ya no tiene formulario.
+  - Server Actions `registrarLead` y `calificarLead` (`src/app/acciones.ts`) sobre la capa
+    `src/lib/leads.ts`. Lógica de base probada contra Supabase con un registro de prueba
+    (borrado): upsert sin duplicados, UTM de primer contacto intacto, "comprar" borra datos
+    del terreno, checks rechazan valores fuera de lista.
+  - `site.accesoPremium`: apagado; en desarrollo se prueba con `NEXT_PUBLIC_ACCESO_PREMIUM=1`,
+    en producción solo se activa cambiando el código.
+  - Página `/bonaire/ficha` (`src/components/premium/`): sin sesión, paso 1 con código;
+    con sesión y registro, contenido premium (PDF, ficha técnica, materiales con marca y
+    cantidad, qué incluye el precio; lo pendiente como "Próximamente") + paso 2 precargado
+    + cerrar sesión. Lee la sesión dentro de `<Suspense>`; `noindex`.
+  - Ruta `/descargas/[archivo]`: lista cerrada de 2 PDF leídos de `assets/`, exige sesión
+    verificada y registro; `Cache-Control: private, no-store`. Solo esos 2 PDF entran en
+    el despliegue de la ruta (verificado en la traza del build).
+  - Captura de UTM y referrer externo de la primera visita en `localStorage` con un
+    script en línea en el layout (`SCRIPT_CAPTURA_ORIGEN` en `src/lib/origen.ts`), que
+    corre al leer el HTML, sin esperar a React; se envía con `registrarLead`.
+  - SMTP de Resend configurado por el usuario (dominio verificado), plantillas con el
+    código y Email OTP Length = 6 / Expiration = 600. Todo lo que vive fuera del repo
+    está en `docs/CONFIGURACION_EXTERNA.md`.
+  - **Prueba de punta a punta exitosa (2026-10-24, la hizo el usuario):** el código
+    desbloqueó la ficha. Verificado con lecturas: usuario en Supabase Auth con correo
+    confirmado; una fila en `leads` con `user_id` y correo que coinciden, correo en
+    minúsculas, WhatsApp en E.164, fechas de aviso y verificación, `estado = 'nuevo'`.
+    Sin UTM (no se entró con parámetros) y sin calificación (paso 2 no enviado).
+  - El código acepta 6 a 8 dígitos (la causa del primer fallo fue Email OTP Length = 8).
+  - Sin doble envío (`useEnvioUnico`): los botones de enviar del paso 1, del código y del
+    paso 2 se desactivan y muestran "Enviando…" desde el primer toque; si el envío sale
+    bien no se reactivan mientras carga lo siguiente. "Pedir otro código" también se
+    bloquea. Si la red falla en una Server Action, se avisa y se ofrece WhatsApp. Probado
+    en el navegador con todo el tráfico a Supabase interceptado (paso 1 y código; el
+    paso 2 usa el mismo mecanismo pero requiere sesión real).
+  - Corregido: con sesión, `/bonaire/ficha` daba en desarrollo el error "Next.js
+    encountered the unstable value `Date.now()` while prerendering" (supabase-js compara
+    el vencimiento de la sesión con la hora). `AreaPremium` llama a `connection()` antes
+    de leer la sesión. Reproducido con una cookie de sesión ficticia: sin la corrección
+    aparece, con ella no.
+  - Verificado con lecturas (2026-10-24): la fila de la prueba tiene la calificación
+    (construir, La Libertad, "Municipio o distrito" lleno) en un solo registro.
+  - Prueba de UTM del usuario (alias `+prueba1`, 08:17 UTC): la fila se creó bien pero
+    **sin UTM**. Diagnóstico: el formulario y el servidor procesan bien el UTM (verificado
+    con el tráfico interceptado), pero se capturaba solo después de hidratar (~6 s en
+    desarrollo); al tocar "Ver la ficha técnica" antes, se perdía. Corregido con el
+    script en línea: ahora queda guardado al ~1 s, antes de hidratar. Prueba real repetida
+    con `+prueba2` tocando el enlace de inmediato: la fila tiene `utm_source = prueba` y
+    `utm_campaign = e2e` (verificado con lecturas).
+  - El usuario confirmó que los dos PDF se descargan y abren bien.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
@@ -21,7 +85,8 @@ El formulario es un espacio reservado: se hace en la Fase 4.
   (PENDIENTE salvo el bloque, cuyo espesor viene del plano). Las áreas cuadran: suma de
   ambientes = 38.07 m² útiles; 8×5 + 1.5×2.4 = 43.60 m² construidos.
 - `src/content/bitacora.ts`: 7 etapas; Terreno y trazo en proceso, el resto pendientes.
-- `.env.example` con `NEXT_PUBLIC_SITE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+- `.env.example` con `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` y `SUPABASE_SECRET_KEY` (solo servidor).
 - Fase 3: componentes en `src/components/`, textos generales en `src/content/landing.ts`
   (FAQ con respuestas PENDIENTE), utilidades `src/lib/whatsapp.ts` y `src/lib/video.ts`.
   Revisado con capturas a 390 px (móvil) y 1280 px: sin desborde horizontal; plano
@@ -32,12 +97,11 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. **Fase 4** (rama `feat/fase-4-leads`): formulario de leads + acceso con correo a
-   contenido premium, según PLAN_V1.md (OTP de 6 dígitos, tabla única `leads` con upsert
-   por correo, PDF en Storage privado). **Antes de instalar nada:** mostrar al usuario el
-   diseño de la tabla, el flujo y las dependencias, y esperar aprobación. Incluye verificar
-   en la documentación de Supabase la plantilla de correo para el código, los límites del
-   correo integrado y proponer un proveedor SMTP.
+1. **Fase 5** (rama `feat/fase-5-seo`): SEO (metadata, Open Graph, `sitemap.xml`,
+   `robots.txt`, schema.org), rendimiento y revisión en móvil, según PLAN_V1.md.
+2. Datos de prueba en Supabase para que el usuario los borre: 4 usuarios en Auth y 3
+   filas en `leads` (su correo, los alias `+prueba1` y `+prueba2`, y `c***`, sin fila).
+3. Completar en `docs/CONFIGURACION_EXTERNA.md`: DMARC y límite de correos por hora.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
@@ -52,19 +116,23 @@ El formulario es un espacio reservado: se hace en la Fase 4.
   `public/` con el mismo nombre, en desarrollo se sigue viendo el viejo hasta borrar
   `.next/dev/cache/images`. No verificado si en Vercel se invalida solo al desplegar; si
   no, cambiar el nombre del archivo cuando cambie el plano.
+- Las plantillas de correo de Supabase llevan el nombre de la marca escrito a mano (viven en
+  el panel de Supabase, fuera del repo): si cambia la marca, cambiarlas también.
 - Revisar en celular con `npm run dev`: la IP de la PC cambia con la red; usar la URL
   "Network" que imprime el servidor.
 
 ## Bloqueos y pendientes del usuario
-- **Bloqueo de la Fase 4:** no activar el acceso premium hasta que la ficha técnica y la
-  lista de materiales (con marcas y cantidades) tengan datos reales.
+- **Bloqueos para activar `site.accesoPremium` en producción** (los dos son obligatorios):
+  - La ficha técnica completa y las cantidades de materiales tienen datos reales.
+  - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
+- Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
+  responsable: razón social, correo de contacto y plazo de conservación.
 - Precios "desde" → `site.precios`.
 - Número de WhatsApp Business → `site.whatsapp`.
 - URLs de redes sociales → `site.redes`.
 - Especificaciones y marcas de materiales → `bonaire.materiales`.
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
-- Texto del aviso de privacidad (necesario antes del formulario de la Fase 4).
 - Ubicación del terreno y detalle de lo incluido en "Comprar esta casa".
 - Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
@@ -72,7 +140,5 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el
   corredor hasta el lindero cumplen la normativa.
 - Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).
-- Crear proyecto nuevo en Supabase (separado de los bots).
-- Proveedor SMTP para los correos de acceso en producción (propuesta en la Fase 4).
 - Conectar el repo de GitHub a Vercel.
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.

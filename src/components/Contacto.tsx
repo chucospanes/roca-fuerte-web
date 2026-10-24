@@ -1,6 +1,7 @@
-import { Pendiente, Seccion } from "./ui";
+import { site, whatsappEsPlaceholder } from "@/config/site";
+import { BotonWhatsApp } from "./BotonWhatsApp";
+import { Boton, Pendiente, Seccion } from "./ui";
 
-// PROVISIONAL: el formulario de calificación con Server Action y Supabase se hace en la Fase 4.
 export function Contacto() {
   return (
     <Seccion
@@ -8,15 +9,35 @@ export function Contacto() {
       numero="09"
       etiqueta="Contacto"
       titulo="Cuéntanos qué buscas"
-      intro="Unas pocas preguntas para saber si la Bonaire es para ti. Después seguimos la conversación por WhatsApp."
+      intro="Elige una opción y se abre WhatsApp con el mensaje listo. No tienes que registrarte."
     >
-      <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-piedra-300 bg-blanco p-6 text-center">
-        <Pendiente texto="Formulario pendiente (Fase 4)" />
-        <p className="max-w-md text-sm text-piedra-600">
-          Aquí irá el formulario de calificación: nombre, WhatsApp, país, interés, terreno, forma de
-          pago y cuándo quieres iniciar.
-        </p>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <BotonWhatsApp opcion="comprar">Quiero esta casa</BotonWhatsApp>
+        <BotonWhatsApp opcion="construir" variante="secundario">
+          Construir Bonaire en mi terreno
+        </BotonWhatsApp>
       </div>
+
+      {whatsappEsPlaceholder() && (
+        <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-piedra-600">
+          <Pendiente texto="Número de WhatsApp pendiente" />
+          Mientras tanto, los botones no abren WhatsApp.
+        </p>
+      )}
+
+      {site.accesoPremium && (
+        <div className="mt-10 rounded-lg border border-piedra-200 bg-blanco p-6">
+          <h3 className="font-display text-xl font-bold">Ficha técnica y planos en PDF</h3>
+          <p className="mt-2 max-w-2xl text-piedra-600">
+            Planos imprimibles, ficha técnica completa, cantidades de materiales y el
+            desglose de qué incluye el precio. Te pedimos tu correo y te enviamos un código para
+            darte acceso.
+          </p>
+          <Boton href="/bonaire/ficha" variante="secundario" className="mt-4">
+            Ver la ficha técnica
+          </Boton>
+        </div>
+      )}
     </Seccion>
   );
 }

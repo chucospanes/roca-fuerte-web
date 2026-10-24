@@ -2,9 +2,10 @@
 
 ## Objetivo
 Landing de una sola página, mobile-first, que vende la Casa Bonaire en construcción y el
-servicio de construir el modelo en el terreno del cliente. Captura leads calificados en
-Supabase y los lleva a WhatsApp. La landing es 100 % pública; solo el contenido premium
-(PDF de plano y fachada, ficha técnica, materiales con marcas y cantidades, desglose del
+servicio de construir el modelo en el terreno del cliente. Los botones de venta llevan
+directo a WhatsApp, sin pedir datos; los prospectos que piden el contenido premium quedan
+registrados en Supabase. La landing es 100 % pública; solo el contenido premium
+(PDF de plano y fachada, ficha técnica completa, cantidades de materiales, desglose del
 precio) se desbloquea con correo validado por código.
 
 ## Stack
@@ -55,80 +56,82 @@ Instalaciones eléctricas e hidráulicas, Acabados, Entrega (pendientes).
    construcción documentada → entrega.
 8. **Preguntas frecuentes:** financiamiento (contado, FSV, banco), clientes en el exterior,
    tiempos, garantía, permisos. Respuestas `PENDIENTE` para que el usuario las complete.
-9. **Formulario de calificación.**
+9. **Contacto:** botones "Quiero esta casa" y "Construir Bonaire en mi terreno" que abren
+   WhatsApp directo con un mensaje distinto para cada opción, y acceso a la ficha técnica
+   (contenido premium) cuando `site.accesoPremium` esté activo.
 10. **Footer:** contacto, redes y aviso de privacidad.
 
-## Formulario de calificación (paso 2, opcional)
-Solo para quien ya validó su correo (paso 1 del acceso premium, ver abajo). Nombre, WhatsApp
-y correo llegan precargados desde la sesión validada; actualiza el mismo registro de
-`leads` (upsert por correo), nunca crea otro.
-
-Campos: nombre*, WhatsApp con código de país*, país de residencia (El Salvador / Estados
-Unidos / Otro), interés (comprar la casa / construir en mi terreno). Solo si elige construir:
-departamento y municipio del terreno, ¿terreno escriturado a su nombre? (sí / no / en
-trámite). Forma de pago (contado / FSV / crédito bancario / otro), ¿cuándo quiere iniciar?
-(inmediato / 3 meses / 6 meses / más de 6 meses), comentario opcional, aceptación del aviso
-de privacidad*.
-
-Flujo:
-1. Validación en cliente y servidor (zod o equivalente).
-2. Server Action actualiza el lead del correo de la sesión en Supabase, con la service
-   role key solo en servidor. El correo sale de la sesión verificada, nunca del formulario.
-3. Guarda UTM (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`) y referrer para
-   saber qué red y qué video trajo cada lead.
-4. Anti-spam: campo honeypot y límite básico de envíos por IP.
-5. Confirmación en pantalla + botón a `wa.me` con mensaje prellenado (nombre, interés,
-   ubicación, forma de pago).
-6. Si Supabase falla, igual permite continuar a WhatsApp y registra el error en servidor.
-
-Migración `supabase/migrations/001_leads.sql`: una sola tabla `leads` con el correo como
-identificador (único, sin distinguir mayúsculas), id uuid, created_at, updated_at, datos
-del paso 1, campos de calificación del paso 2 (opcionales), UTM, referrer y `estado` con
-valor por defecto `'nuevo'`. RLS activado sin políticas públicas. El diseño final se
-muestra al usuario antes de crearla.
+## Botones de venta: WhatsApp directo
+"Quiero esta casa" y "Construir Bonaire en mi terreno" (hero, tarjetas de precios y
+contacto) **no piden correo ni código**: abren `wa.me` con un mensaje prellenado distinto
+según la opción. El correo con código es solo para el contenido premium (ver
+DECISIONES.md). Mientras `site.whatsapp` sea el número de prueba, los botones no envían a
+nadie a un número inexistente.
 
 ## Acceso con correo a contenido premium
 La landing sigue 100 % pública, incluidos el plano y la fachada ampliables (PNG en
-`public/`). Con correo validado se desbloquea:
-- PDF imprimibles de plano y fachada (`assets/plano-bonaire.pdf`,
-  `assets/fachada-bonaire.pdf`).
+`public/`). Con correo validado se desbloquea, en la página `/bonaire/ficha`:
+- PDF imprimibles de plano y fachada, servidos por `/descargas/[archivo]` desde una
+  carpeta privada del repo (no `public/`); la ruta verifica la sesión antes de entregarlos.
 - Ficha técnica.
-- Lista de materiales con marcas y cantidades (requiere agregar `cantidad` a `Material` en
+- Cantidades de materiales; la marca sigue pública en la landing (requiere `cantidad` en `Material` en
   `bonaire.ts`).
 - Desglose de qué incluye el precio. Las tarjetas públicas de "Dos formas de tener tu casa"
   conservan el resumen.
 
 Mientras un dato siga en `PENDIENTE`, dentro del área desbloqueada se muestra como
-"Próximamente". **No se activa el acceso premium en producción hasta que la ficha técnica
-y la lista de materiales tengan datos reales** (ver ESTADO.md).
+"Próximamente". El interruptor `site.accesoPremium` (apagado por defecto) controla si la
+landing enlaza la página; apagado, `/bonaire/ficha` responde 404. **No se activa en
+producción** hasta que la ficha técnica y la lista de materiales tengan datos reales y
+esté puesto el captcha (ver ESTADO.md).
 
-Flujo:
-1. **Paso 1, desbloqueo:** nombre*, WhatsApp con código de país*, correo* y aceptación del
-   aviso de privacidad*.
-2. Supabase Auth envía un **código de 6 dígitos** (OTP) al correo; la persona lo escribe en
-   la misma pestaña. No se usa enlace mágico (ver DECISIONES.md). Verificar en la
-   documentación de Supabase cómo se configura la plantilla de correo para enviar el código.
-3. Al verificar el código se hace upsert en `leads` por correo con nombre, WhatsApp, UTM y
-   referrer, y el contenido premium queda accesible en ese navegador (sesión de Supabase
-   Auth en cookie). Sin duplicados: un correo, un registro.
-4. **Paso 2, calificación (opcional):** formulario de calificación con los datos del paso 1
-   precargados (ver sección anterior).
-5. Los PDF **no** van en `public/`: se sirven desde un bucket privado de Supabase Storage
-   con URLs firmadas de corta duración, o desde una ruta del servidor que verifique la
-   sesión antes de entregarlos.
-6. Verificar en la documentación de Supabase los límites del envío de correos integrado y
-   proponer un proveedor SMTP para producción.
+### Paso 1, desbloqueo
+1. Formulario: nombre*, WhatsApp con código de país*, correo*, aceptación del aviso de
+   privacidad* y campo trampa (honeypot). Validación con zod en cliente y servidor.
+2. El navegador pide el código con `signInWithOtp` (clave publishable). Se pide desde el
+   navegador para que los límites por IP de Supabase sean por visitante y no por el
+   servidor. La plantilla de correo "Magic Link" de Supabase debe incluir `{{ .Token }}`.
+3. La persona escribe el código de 6 dígitos en la misma pestaña; `verifyOtp` con
+   `type: 'email'` deja la sesión en una cookie (`@supabase/ssr`). Sin enlace mágico.
+4. La Server Action `registrarLead` verifica la sesión con `getClaims()`, toma el correo
+   **de la sesión** y hace upsert en `leads` por correo con la clave secreta, junto con
+   nombre, WhatsApp, UTM y referrer (estos dos solo en el primer registro).
+5. Si Supabase falla, se registra el error en el servidor y se ofrece igual WhatsApp.
 
-Seguridad: el upsert y la precarga solo usan el correo de la sesión verificada. Nunca se
-precargan datos a partir de un correo escrito en un formulario sin validar, para que nadie
-pueda ver o sobrescribir los datos de otra persona.
+### Paso 2, calificación (opcional)
+Solo con sesión verificada. Nombre, WhatsApp y correo llegan precargados desde la sesión;
+actualiza el mismo registro, nunca crea otro. Campos: país de residencia (El Salvador /
+Estados Unidos / Otro), interés (comprar la casa / construir en mi terreno). Solo si elige
+construir: departamento y "Municipio o distrito" (texto libre) del terreno, ¿terreno escriturado a su nombre? (sí /
+no / en trámite). Forma de pago (contado / FSV / crédito bancario / otro), ¿cuándo quiere
+iniciar? (inmediato / 3 meses / 6 meses / más de 6 meses), comentario opcional. Al final:
+confirmación y botón a `wa.me` con mensaje prellenado (nombre, interés, ubicación, forma
+de pago).
 
-A mostrar al usuario antes de instalar nada (inicio de la Fase 4):
-- Diseño final de la tabla `leads`, flujo completo y dependencias (`@supabase/supabase-js`,
-  `@supabase/ssr` u otras).
-- Variables de entorno nuevas (URL y clave pública de Supabase para Auth en el cliente; la
-  service role key sigue solo en servidor), verificadas contra la documentación de Next 16
-  incluida en `node_modules/next/dist/docs/`.
+### Seguridad y abuso
+- El upsert y la precarga solo usan el correo de la sesión verificada, nunca uno escrito
+  en un formulario. Cada Server Action y la ruta de descargas vuelven a verificar la sesión.
+- Sin límite por IP propio: escribir en `leads` exige un correo verificado, y Supabase ya
+  limita los envíos de código por IP y por correo. No se guarda la IP.
+- Cloudflare Turnstile en el paso 1 es **obligatorio antes de activar el acceso premium en
+  producción** (evita que un bot pida códigos para correos ajenos).
+
+### Base de datos
+`supabase/migrations/001_leads.sql`: una sola tabla `leads`, correo único (siempre en
+minúsculas), datos del paso 1, calificación opcional del paso 2, UTM y referrer de primer
+contacto (un trigger impide sobrescribirlos), `estado` (`nuevo`, `contactado`,
+`calificado`, `descartado`, `cliente`), `created_at`, `updated_at`. RLS activado sin
+políticas; solo el servidor escribe con la clave secreta.
+
+### Correo
+El correo integrado de Supabase solo envía a miembros del equipo del proyecto, 2 por hora,
+y no es para producción. Producción: SMTP de Resend con el dominio
+`constructorarocafuerte.com` (registros DNS en Namecheap).
+
+### Dependencias (versiones exactas)
+`@supabase/supabase-js` 2.117.3, `@supabase/ssr` 0.12.7, `zod` 4.6.7. La sesión se
+renueva en `src/proxy.ts` (en Next 16, `middleware.ts` se llama `proxy.ts`). La página
+premium lee la sesión dentro de `<Suspense>` por `cacheComponents`.
 
 ## Diseño
 - Sobrio, sólido y confiable: tonos concreto, gris cálido, acento terracota y blanco.
@@ -141,7 +144,9 @@ Metadata en español, Open Graph con imagen del plano, `sitemap.xml`, `robots.tx
 estructurados schema.org `HomeAndConstructionBusiness`.
 
 ## Variables de entorno
-`.env.example` con `NEXT_PUBLIC_SITE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+`.env.example` con `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` y `SUPABASE_SECRET_KEY` (solo servidor; claves nuevas
+de Supabase, las `anon`/`service_role` se retiran a fines de 2026).
 
 ## Fases (commit al cerrar cada una, tag de versión y actualización de ESTADO.md)
 1. Inicializar Next.js y estructura de carpetas → `v0.1.0`

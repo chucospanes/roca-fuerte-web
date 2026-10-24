@@ -156,3 +156,89 @@ verificada, nunca de lo escrito en un formulario.
 No se activa el acceso premium hasta que la ficha técnica y la lista de materiales tengan
 datos reales. Motivo: pedir correo a cambio de una ficha llena de "Próximamente" quema la
 confianza del prospecto justo cuando entrega sus datos.
+
+## 2026-10-23 — Botones de venta a WhatsApp directo, sin correo ni código
+"Quiero esta casa" y "Construir Bonaire en mi terreno" abren WhatsApp con un mensaje
+prellenado distinto según la opción, sin pedir correo ni código. El correo con código es
+solo para el contenido premium. Motivo: quien ya quiere comprar no debe encontrar ninguna
+barrera; la verificación se reserva para quien pide el detalle técnico. Consecuencia: esos
+contactos no quedan en Supabase ni con su UTM; se registran solo los que piden el premium.
+
+## 2026-10-23 — Claves nuevas de Supabase y nombres de variables
+Se usan las claves nuevas: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+(`sb_publishable_`, pública) y `SUPABASE_SECRET_KEY` (`sb_secret_`, solo servidor, con
+`createClient` de `@supabase/supabase-js`). Reemplazan a `SUPABASE_URL` y
+`SUPABASE_SERVICE_ROLE_KEY`. Motivo: Supabase retira las claves `anon` y `service_role` a
+fines de 2026 y recomienda estos nombres.
+
+## 2026-10-23 — Detalles técnicos de la Fase 4
+- **Validación con zod** (no a mano): es entrada externa que llega al servidor. Versión
+  4.6.7: la 4.6.5 tiene una vulnerabilidad alta (GHSA-mrhx-c7xc-m3w5) corregida en 4.6.6.
+- **PDF** por la ruta del servidor `/descargas/[archivo]`, desde una carpeta privada del
+  repo, verificando la sesión. Sin Storage: el PDF se actualiza con un commit.
+- **Sin límite por IP propio**: escribir en `leads` exige correo verificado y Supabase ya
+  limita los códigos por IP y por correo. No se guarda la IP. Cloudflare Turnstile es
+  obligatorio antes de activar el acceso premium en producción.
+- **Código pedido desde el navegador**, para que los límites por IP de Supabase apliquen a
+  cada visitante y no al servidor.
+- **UTM y referrer de primer contacto**: un trigger impide sobrescribirlos.
+- **SMTP: Resend** con el dominio `constructorarocafuerte.com` (comprado en Namecheap). El
+  correo integrado de Supabase solo envía al equipo del proyecto y 2 por hora.
+- **Aviso de privacidad**: borrador en `docs/AVISO_PRIVACIDAD.md`, pendiente de revisión
+  legal antes de publicarse.
+
+## 2026-10-23 — "Municipio o distrito" como texto libre
+En la calificación, el campo se llama "Municipio o distrito" y es texto libre. Motivo:
+desde la reforma de 2024 hay 44 municipios y los anteriores son distritos; la gente sigue
+usando los nombres viejos. El departamento sí es una lista cerrada (los 14).
+
+## 2026-10-23 — El interruptor del acceso premium solo se enciende en producción con código
+`site.accesoPremium` lee `NEXT_PUBLIC_ACCESO_PREMIUM=1` solo fuera de producción. En un
+build de producción la variable no tiene efecto: encenderlo exige un cambio de código
+revisado. Las Server Actions también lo revisan, porque se pueden invocar con un POST
+aunque la página no exista. Motivo: los bloqueos (datos reales y Turnstile) no deben
+poder saltarse cambiando una variable en Vercel.
+
+## 2026-10-23 — Sin escrituras en Supabase (producción) sin aprobación previa
+Regla en CLAUDE.md: nunca escribir, modificar ni borrar datos en Supabase sin aprobación
+explícita previa del usuario, aunque sean registros de prueba que se borren después. Las
+lecturas de verificación sí están permitidas. Motivo: en la prueba de las Server Actions se
+insertó y borró un registro de prueba sin pedir permiso; el proyecto es el de producción.
+
+## 2026-10-23 — PDF premium servidos desde `assets/`, origen en `localStorage`
+- La "carpeta privada en el repo" para los PDF es `assets/` (ya era la fuente y no se
+  sirve): sin copias que se desincronicen. La ruta usa una lista cerrada de 2 archivos y
+  la configuración de despliegue incluye solo esos PDF.
+- UTM y referrer de la primera visita con datos se guardan en el `localStorage` del
+  navegador y viajan con el registro; una visita directa sin datos no ocupa ese lugar. El
+  aviso de privacidad lo menciona.
+- `Material.cantidad` y `bonaire.desglosePrecio` se agregan como PENDIENTE; en el área
+  premium lo pendiente se muestra como "Próximamente".
+
+## 2026-10-24 — La marca de cada material es pública; premium son las cantidades
+La columna "Marca" se queda en la tabla pública de materiales de la landing: mostrar qué
+marca se usa es parte de la transparencia. Lo premium es: cantidades de materiales, ficha
+técnica completa, desglose de qué incluye el precio y los PDF imprimibles. Reemplaza la
+mención de "materiales con marcas y cantidades" como premium en las entradas anteriores.
+
+## 2026-10-24 — SMTP propio (Resend) es requisito para probar el código, no solo para producción
+Los proyectos gratuitos de Supabase creados después de junio de 2026 no permiten editar
+las plantillas de correo sin SMTP propio (lo comprobó el usuario en el panel). Sin la
+plantilla con `{{ .Token }}`, el correo no lleva el código de 6 dígitos y el flujo no se
+puede probar. Por eso el SMTP de Resend con `constructorarocafuerte.com` (DNS en
+Namecheap) pasa de pendiente de producción a requisito para la prueba de punta a punta.
+La clave de Resend vive solo en la configuración SMTP de Supabase, no en el repo ni en
+`.env.local`. Corrige lo anotado antes: las plantillas no quedaron cambiadas.
+
+## 2026-10-24 — El código acepta de 6 a 8 dígitos; Supabase configurado en 6
+La primera prueba falló porque Supabase enviaba códigos de 8 dígitos (Email OTP Length)
+y el formulario esperaba 6. Se configuró Supabase en 6 y la validación acepta de 6 a 8,
+para que un cambio de configuración no vuelva a romper el acceso. La configuración externa
+(SMTP, plantillas, longitud y duración del código) queda en `docs/CONFIGURACION_EXTERNA.md`.
+
+## 2026-10-24 — El UTM se captura con un script en línea, sin esperar a React
+La captura dependía de un componente de React y solo corría al terminar de cargar la
+página. En la prueba real se perdió el UTM porque se tocó el enlace a la ficha antes. Con
+tráfico desde el navegador interno de TikTok y datos móviles lentos, ese caso es común y
+pierde justo el dato de qué video trajo a la persona. Ahora un script mínimo en línea en
+el layout guarda el origen al leer el HTML.

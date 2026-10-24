@@ -56,6 +56,16 @@ export const site = {
     facebook: PENDIENTE,
     youtube: PENDIENTE,
   } as Record<RedSocial, string>,
+
+  /**
+   * Acceso con correo al contenido premium (`/bonaire/ficha`). Apagado: la landing no lo
+   * enlaza y la página responde 404. NO activar en producción hasta que la ficha técnica y
+   * los materiales tengan datos reales y esté puesto Cloudflare Turnstile (ver ESTADO.md).
+   * Para probarlo en `npm run dev`: NEXT_PUBLIC_ACCESO_PREMIUM=1 en .env.local. En un build
+   * de producción esa variable no tiene efecto: activarlo exige cambiar este código.
+   */
+  accesoPremium:
+    process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_ACCESO_PREMIUM === "1",
 };
 
 /** WhatsApp aún sin configurar (placeholder). */

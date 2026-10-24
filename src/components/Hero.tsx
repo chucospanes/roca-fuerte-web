@@ -1,7 +1,8 @@
 import { site } from "@/config/site";
 import { bonaire } from "@/content/bonaire";
 import { hero } from "@/content/landing";
-import { Boton, Pendiente } from "./ui";
+import { BotonWhatsApp } from "./BotonWhatsApp";
+import { Pendiente } from "./ui";
 
 export function Hero() {
   return (
@@ -21,10 +22,10 @@ export function Hero() {
           </h1>
           <p className="mt-5 max-w-xl text-lg text-piedra-700">{hero.bajada}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Boton href="#opciones">Quiero esta casa</Boton>
-            <Boton href="#opciones" variante="secundario">
+            <BotonWhatsApp opcion="comprar">Quiero esta casa</BotonWhatsApp>
+            <BotonWhatsApp opcion="construir" variante="secundario">
               Construir Bonaire en mi terreno
-            </Boton>
+            </BotonWhatsApp>
           </div>
         </div>
 
