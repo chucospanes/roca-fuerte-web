@@ -49,6 +49,8 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
   "Network" que imprime el servidor.
 
 ## Bloqueos y pendientes del usuario
+- **Bloqueo de la Fase 4:** no activar el acceso premium hasta que la ficha técnica y la
+  lista de materiales (con marcas y cantidades) tengan datos reales.
 - Precios "desde" → `site.precios`.
 - Número de WhatsApp Business → `site.whatsapp`.
 - URLs de redes sociales → `site.redes`.

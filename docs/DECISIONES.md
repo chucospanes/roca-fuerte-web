@@ -131,3 +131,28 @@ firmadas de corta duración o ruta del servidor que verifica la sesión). Se int
 Fase 4 junto al formulario de leads. Motivo: captar prospectos serios sin cerrar la página
 a quien llega desde redes. El login con Google para el portal de clientes sigue reservado
 para la fase 2.
+
+## 2026-10-23 — Validación por código de 6 dígitos, no por enlace mágico
+El correo se valida con un código OTP de Supabase que la persona escribe en la misma
+pestaña. Reemplaza "validación por enlace" de la entrada anterior. Motivo: el tráfico llega
+desde los navegadores internos de TikTok, Instagram y Facebook; un enlace mágico se abre
+desde la app de correo en otro navegador y la sesión no queda donde la persona estaba
+viendo la página.
+
+## 2026-10-23 — Plano y fachada públicos; qué es contenido premium
+El plano y la fachada siguen públicos y ampliables en la landing. Lo premium es: PDF
+imprimibles de plano y fachada, ficha técnica, lista de materiales con marcas y
+cantidades, y desglose de qué incluye el precio. Motivo: el plano visible es parte de la
+transparencia de la marca y lo que atrae desde redes; el detalle útil para cotizar o
+construir es lo que justifica dejar el correo.
+
+## 2026-10-23 — Una sola tabla de leads, correo como identificador
+Desbloqueo = paso 1 (nombre, WhatsApp, correo + código). Calificación = paso 2 opcional,
+con los datos precargados para quien ya está registrado. Upsert por correo: sin
+duplicados. El correo que se usa para el upsert y la precarga sale siempre de la sesión
+verificada, nunca de lo escrito en un formulario.
+
+## 2026-10-23 — Acceso premium bloqueado hasta tener datos reales
+No se activa el acceso premium hasta que la ficha técnica y la lista de materiales tengan
+datos reales. Motivo: pedir correo a cambio de una ficha llena de "Próximamente" quema la
+confianza del prospecto justo cuando entrega sus datos.
