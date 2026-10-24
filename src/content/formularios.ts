@@ -18,7 +18,7 @@ export const campos = {
   whatsapp: "WhatsApp",
   codigoPais: "Código de país",
   correo: "Correo",
-  codigo: "Código de 6 dígitos",
+  codigo: "Código del correo",
   aceptoPrivacidad: "Acepto el aviso de privacidad",
   paisResidencia: "¿Dónde vives?",
   interes: "¿Qué te interesa?",

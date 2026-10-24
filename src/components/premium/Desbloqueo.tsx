@@ -6,7 +6,14 @@ import { registrarLead } from "@/app/acciones";
 import { campos } from "@/content/formularios";
 import { leerOrigen } from "@/lib/origen";
 import { crearClienteNavegador } from "@/lib/supabase/navegador";
-import { erroresPorCampo, esBot, esquemaCodigo, esquemaDesbloqueo } from "@/lib/validacion";
+import {
+  CODIGO_MAX,
+  CODIGO_MIN,
+  erroresPorCampo,
+  esBot,
+  esquemaCodigo,
+  esquemaDesbloqueo,
+} from "@/lib/validacion";
 import { whatsappHref } from "@/lib/whatsapp";
 import * as e from "./estilos";
 import { useHidratado } from "./useHidratado";
@@ -179,7 +186,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
     return (
       <form method="post" onSubmit={enviarCodigo} noValidate className="max-w-md">
         <p className="text-piedra-700">
-          Te enviamos un código de 6 dígitos a <strong className="break-all">{correo}</strong>.
+          Te enviamos un código a <strong className="break-all">{correo}</strong>.
           Escríbelo aquí, en esta misma página.
         </p>
         <label htmlFor="codigo" className={`${e.etiqueta} mt-6`}>
@@ -189,14 +196,14 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
           id="codigo"
           name="codigo"
           value={codigo}
-          onChange={(ev) => setCodigo(ev.target.value.replace(/\D/g, "").slice(0, 6))}
+          onChange={(ev) => setCodigo(ev.target.value.replace(/\D/g, "").slice(0, CODIGO_MAX))}
           inputMode="numeric"
           autoComplete="one-time-code"
-          pattern="\d{6}"
-          maxLength={6}
+          pattern={`[0-9]{${CODIGO_MIN},${CODIGO_MAX}}`}
+          maxLength={CODIGO_MAX}
           aria-invalid={Boolean(errores.codigo)}
           aria-describedby={errores.codigo ? "codigo-error" : undefined}
-          className={`${e.campo} max-w-48 text-center font-display text-2xl tracking-[0.4em]`}
+          className={`${e.campo} max-w-64 text-center font-display text-2xl tracking-[0.3em]`}
         />
         {errores.codigo && (
           <p id="codigo-error" className={e.error}>

@@ -114,10 +114,19 @@ export const esquemaDesbloqueo = z.strictObject({
   sitioWeb,
 });
 
+/**
+ * Código del correo. Supabase está configurado en 6 dígitos (Email OTP Length, ver
+ * docs/CONFIGURACION_EXTERNA.md), pero admite hasta 8: se aceptan 6 a 8 por si cambia.
+ */
+export const CODIGO_MIN = 6;
+export const CODIGO_MAX = 8;
+
 export const esquemaCodigo = z
   .string({ error: "Escribe el código." })
   .trim()
-  .regex(/^\d{6}$/, { error: "El código tiene 6 dígitos." });
+  .regex(new RegExp(`^[0-9]{${CODIGO_MIN},${CODIGO_MAX}}$`), {
+    error: `El código tiene entre ${CODIGO_MIN} y ${CODIGO_MAX} dígitos.`,
+  });
 
 /**
  * Paso 1 en el servidor (Server Action `registrarLead`), después de verificar el código.
