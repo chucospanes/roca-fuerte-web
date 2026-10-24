@@ -46,7 +46,7 @@ export function Opciones() {
             </li>
           </ul>
           <div className="mt-auto pt-6">
-            <BotonWhatsApp opcion="comprar" className="w-full">
+            <BotonWhatsApp opcion="comprar" ubicacion="precios" className="w-full">
               Quiero esta casa
             </BotonWhatsApp>
           </div>
@@ -70,7 +70,7 @@ export function Opciones() {
             ))}
           </ul>
           <div className="mt-auto pt-6">
-            <BotonWhatsApp opcion="construir" variante="secundario" className="w-full">
+            <BotonWhatsApp opcion="construir" ubicacion="precios" variante="secundario" className="w-full">
               Construir Bonaire en mi terreno
             </BotonWhatsApp>
           </div>

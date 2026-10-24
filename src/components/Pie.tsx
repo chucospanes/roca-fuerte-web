@@ -1,5 +1,5 @@
 import { esPendiente, site, whatsappEsPlaceholder, type RedSocial } from "@/config/site";
-import { whatsappHref } from "@/lib/whatsapp";
+import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
 import { Pendiente } from "./ui";
 
 const nombresRedes: Record<RedSocial, string> = {
@@ -32,7 +32,14 @@ export function Pie() {
             {whatsappEsPlaceholder() ? (
               <Pendiente />
             ) : (
-              <a href={whatsappHref()} className="text-blanco underline">
+              <a
+                href={whatsappHref(mensajesVenta.general)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-venta="general"
+                data-ubicacion="pie"
+                className="text-blanco underline"
+              >
                 +{site.whatsapp}
               </a>
             )}

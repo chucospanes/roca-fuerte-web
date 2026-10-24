@@ -1,6 +1,6 @@
 import { site, whatsappEsPlaceholder } from "@/config/site";
 import { formasPago, inicios } from "@/content/formularios";
-import type { DatosCalificacion } from "@/lib/validacion";
+import type { DatosCalificacion, OPCIONES_VENTA, UBICACIONES_VENTA } from "@/lib/validacion";
 
 /**
  * Enlace a WhatsApp con mensaje prellenado.
@@ -19,7 +19,8 @@ export function whatsappEsExterno(): boolean {
 }
 
 /** Opciones de venta: cada botón abre WhatsApp con su propio mensaje, sin pedir datos. */
-export type OpcionVenta = "comprar" | "construir" | "general";
+export type OpcionVenta = (typeof OPCIONES_VENTA)[number];
+export type UbicacionVenta = (typeof UBICACIONES_VENTA)[number];
 
 export const mensajesVenta: Record<OpcionVenta, string> = {
   comprar: `Hola, me interesa comprar la ${site.modelo} que están construyendo. ¿Me pueden dar más información?`,

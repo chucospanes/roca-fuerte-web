@@ -5,6 +5,8 @@
 
 import type {
   ESTADOS_LEAD,
+  OPCIONES_VENTA,
+  UBICACIONES_VENTA,
   FORMAS_PAGO,
   INICIOS,
   INTERESES,
@@ -51,6 +53,21 @@ export type LeadInsert = Omit<Lead, ConDefault | Nullables> &
   Partial<Pick<Lead, ConDefault | Nullables>>;
 export type LeadUpdate = Partial<Lead>;
 
+/** Clic de venta (002_clics_venta.sql). Sin datos personales. */
+export type ClicVenta = {
+  id: number;
+  created_at: string;
+  opcion: Uno<typeof OPCIONES_VENTA>;
+  ubicacion: Uno<typeof UBICACIONES_VENTA>;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_content: string | null;
+  referrer_dominio: string | null;
+};
+
+export type ClicVentaInsert = Omit<ClicVenta, "id" | "created_at">;
+
 export type BaseDeDatos = {
   public: {
     Tables: {
@@ -58,6 +75,12 @@ export type BaseDeDatos = {
         Row: Lead;
         Insert: LeadInsert;
         Update: LeadUpdate;
+        Relationships: [];
+      };
+      clics_venta: {
+        Row: ClicVenta;
+        Insert: ClicVentaInsert;
+        Update: Partial<ClicVentaInsert>;
         Relationships: [];
       };
     };

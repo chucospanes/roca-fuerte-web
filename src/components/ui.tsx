@@ -102,6 +102,7 @@ export function Boton({
   children,
   className = "",
   externo = false,
+  datos,
 }: {
   href: string;
   variante?: keyof typeof estilosBoton;
@@ -109,11 +110,14 @@ export function Boton({
   className?: string;
   /** Abre en otra pestaña (enlaces fuera del sitio, como WhatsApp). */
   externo?: boolean;
+  /** Atributos `data-*` (por ejemplo, para el conteo de clics de venta). */
+  datos?: Record<`data-${string}`, string>;
 }) {
   return (
     <a
       href={href}
       {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...datos}
       className={`inline-flex min-h-12 items-center justify-center rounded-md px-6 py-3 text-center font-display text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${estilosBoton[variante]} ${className}`}
     >
       {children}

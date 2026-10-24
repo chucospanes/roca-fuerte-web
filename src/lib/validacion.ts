@@ -16,6 +16,8 @@ export const TERRENO_ESCRITURADO = ["si", "no", "en_tramite"] as const;
 export const FORMAS_PAGO = ["contado", "fsv", "banco", "otro"] as const;
 export const INICIOS = ["inmediato", "3_meses", "6_meses", "mas_6_meses"] as const;
 export const ESTADOS_LEAD = ["nuevo", "contactado", "calificado", "descartado", "cliente"] as const;
+export const OPCIONES_VENTA = ["comprar", "construir", "general"] as const;
+export const UBICACIONES_VENTA = ["hero", "precios", "contacto", "flotante", "pie"] as const;
 
 /** Los 14 departamentos de El Salvador. */
 export const DEPARTAMENTOS = [
@@ -176,6 +178,28 @@ export const esquemaCalificacion = z
       : { ...datos, departamento: undefined, municipio: undefined, terreno_escriturado: undefined },
   );
 
+/**
+ * Clic en un botón de venta (POST /api/clic). Sin datos personales. Botón y ubicación son
+ * obligatorios; el origen es tolerante: un valor inválido se descarta, no bloquea el conteo.
+ */
+export const esquemaClic = z.strictObject({
+  opcion: z.enum(OPCIONES_VENTA),
+  ubicacion: z.enum(UBICACIONES_VENTA),
+  utm_source: textoOpcional(200).catch(undefined),
+  utm_medium: textoOpcional(200).catch(undefined),
+  utm_campaign: textoOpcional(200).catch(undefined),
+  utm_content: textoOpcional(200).catch(undefined),
+  referrer_dominio: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .max(253)
+    .regex(/^[a-z0-9.-]+$/)
+    .optional()
+    .catch(undefined),
+});
+
+export type DatosClic = z.infer<typeof esquemaClic>;
 export type DatosDesbloqueo = z.infer<typeof esquemaDesbloqueo>;
 export type DatosRegistroLead = z.infer<typeof esquemaRegistroLead>;
 export type DatosCalificacion = z.infer<typeof esquemaCalificacion>;

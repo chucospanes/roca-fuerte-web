@@ -9,6 +9,8 @@ export function WhatsAppFlotante() {
       href={href}
       {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       aria-label="Escribir por WhatsApp"
+      data-venta="general"
+      data-ubicacion="flotante"
       className="fixed right-4 bottom-4 z-40 flex min-h-14 items-center gap-2 rounded-full bg-[#1f8a4c] py-3 pr-5 pl-4 font-display font-semibold text-blanco shadow-lg shadow-piedra-900/30 hover:bg-[#18703d] md:hidden"
     >
       <svg aria-hidden viewBox="0 0 24 24" className="size-6 fill-current">
