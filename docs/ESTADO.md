@@ -69,7 +69,7 @@ El formulario es un espacio reservado: se hace en la Fase 4.
    gratuito, proyecto creado después de junio de 2026) y el correo no lleva el código.
    El usuario configura Resend: dominio `constructorarocafuerte.com` verificado (DNS en
    Namecheap) → SMTP en Supabase → plantillas "Magic link" y "Confirm signup" con
-   `{{ .Token }}` (texto en el historial de la sesión del 2026-10-23).
+   `{{ .Token }}` (texto en `docs/PLANTILLA_CORREO_CODIGO.md`).
 2. Prueba de punta a punta: la hace el usuario en el navegador con su correo (dueño del
    proyecto en Supabase). Después, Claude verifica **solo con lecturas** el usuario en
    Supabase Auth y el registro en `leads`. No se borra nada: lo borra el usuario.
