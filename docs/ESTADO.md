@@ -4,13 +4,13 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-10-23
-**Versión:** v0.2.0 — configuración y contenido
+**Versión:** v0.3.0 — secciones de la landing
 
 ## Fase actual
-**Fase 3 en revisión visual del usuario** (rama `feat/fase-3-landing`, sin merge ni tag).
-Landing con 9 secciones (las 8 del plan + "Calidad y resistencia") + encabezado, pie y botón flotante de
-WhatsApp. El formulario es un espacio reservado: se hace en la Fase 4.
-Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
+**Fase 3 cerrada** (aprobada visualmente, merge a `main`, tag `v0.3.0`, push a `origin`).
+Landing con 9 secciones (las 8 del plan + "Calidad y resistencia"), plano y fachada
+corregidos para casa entre colindancias, encabezado, pie y botón flotante de WhatsApp.
+El formulario es un espacio reservado: se hace en la Fase 4.
 
 ## Hecho
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
@@ -32,9 +32,12 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Aprobación visual de la Fase 3 (y ajustes que salgan de ahí).
-2. Fase 4: formulario de leads + acceso con correo a contenido premium (ver PLAN_V1.md).
-   Antes de instalar: mostrar al usuario diseño de tablas, flujo y dependencias.
+1. **Fase 4** (rama `feat/fase-4-leads`): formulario de leads + acceso con correo a
+   contenido premium, según PLAN_V1.md (OTP de 6 dígitos, tabla única `leads` con upsert
+   por correo, PDF en Storage privado). **Antes de instalar nada:** mostrar al usuario el
+   diseño de la tabla, el flujo y las dependencias, y esperar aprobación. Incluye verificar
+   en la documentación de Supabase la plantilla de correo para el código, los límites del
+   correo integrado y proponer un proveedor SMTP.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
@@ -45,6 +48,10 @@ Al aprobarse: merge a `main`, tag `v0.3.0`, `git push origin main --tags`.
 - El registry de npm responde muy lento en esta red.
 - Los videos embebidos (`VideoLazy` + `lib/video.ts`) no se han probado con URLs reales:
   todavía no hay videos publicados. Probar con el primer video de la obra.
+- `next/image` guarda en caché las imágenes optimizadas por URL: al reemplazar un PNG de
+  `public/` con el mismo nombre, en desarrollo se sigue viendo el viejo hasta borrar
+  `.next/dev/cache/images`. No verificado si en Vercel se invalida solo al desplegar; si
+  no, cambiar el nombre del archivo cuando cambie el plano.
 - Revisar en celular con `npm run dev`: la IP de la PC cambia con la red; usar la URL
   "Network" que imprime el servidor.
 
