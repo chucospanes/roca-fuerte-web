@@ -198,3 +198,19 @@ build de producción la variable no tiene efecto: encenderlo exige un cambio de 
 revisado. Las Server Actions también lo revisan, porque se pueden invocar con un POST
 aunque la página no exista. Motivo: los bloqueos (datos reales y Turnstile) no deben
 poder saltarse cambiando una variable en Vercel.
+
+## 2026-10-23 — Sin escrituras en Supabase (producción) sin aprobación previa
+Regla en CLAUDE.md: nunca escribir, modificar ni borrar datos en Supabase sin aprobación
+explícita previa del usuario, aunque sean registros de prueba que se borren después. Las
+lecturas de verificación sí están permitidas. Motivo: en la prueba de las Server Actions se
+insertó y borró un registro de prueba sin pedir permiso; el proyecto es el de producción.
+
+## 2026-10-23 — PDF premium servidos desde `assets/`, origen en `localStorage`
+- La "carpeta privada en el repo" para los PDF es `assets/` (ya era la fuente y no se
+  sirve): sin copias que se desincronicen. La ruta usa una lista cerrada de 2 archivos y
+  la configuración de despliegue incluye solo esos PDF.
+- UTM y referrer de la primera visita con datos se guardan en el `localStorage` del
+  navegador y viajan con el registro; una visita directa sin datos no ocupa ese lugar. El
+  aviso de privacidad lo menciona.
+- `Material.cantidad` y `bonaire.desglosePrecio` se agregan como PENDIENTE; en el área
+  premium lo pendiente se muestra como "Próximamente".

@@ -23,7 +23,15 @@ export type Material = {
   especificacion: string | Pendiente;
   marca: string | Pendiente;
   porQue: string | Pendiente;
+  /**
+   * Cantidad para la casa completa, con unidad (por ejemplo "1,200 unidades", "35 bolsas").
+   * Solo se muestra en el área premium. Sin definir = PENDIENTE.
+   */
+  cantidad?: string | Pendiente;
 };
+
+/** Desglose de qué incluye un precio: líneas de texto, o PENDIENTE. Solo en el área premium. */
+export type Desglose = string[] | Pendiente;
 
 export const bonaire = {
   nombre: "Casa Modelo Bonaire",
@@ -114,6 +122,12 @@ export const bonaire = {
     ancho: 3150,
     alto: 2250,
     texto: "Fachada principal — vista desde la calle",
+  },
+
+  /** Qué incluye cada precio, partida por partida. Solo en el área premium. */
+  desglosePrecio: {
+    comprarCasa: PENDIENTE as Desglose,
+    construirEnTerreno: PENDIENTE as Desglose,
   },
 
   avisoPlanos:

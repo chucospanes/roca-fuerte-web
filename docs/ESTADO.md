@@ -37,6 +37,15 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     del terreno, checks rechazan valores fuera de lista.
   - `site.accesoPremium`: apagado; en desarrollo se prueba con `NEXT_PUBLIC_ACCESO_PREMIUM=1`,
     en producción solo se activa cambiando el código.
+  - Página `/bonaire/ficha` (`src/components/premium/`): sin sesión, paso 1 con código;
+    con sesión y registro, contenido premium (PDF, ficha técnica, materiales con marca y
+    cantidad, qué incluye el precio; lo pendiente como "Próximamente") + paso 2 precargado
+    + cerrar sesión. Lee la sesión dentro de `<Suspense>`; `noindex`.
+  - Ruta `/descargas/[archivo]`: lista cerrada de 2 PDF leídos de `assets/`, exige sesión
+    verificada y registro; `Cache-Control: private, no-store`. Solo esos 2 PDF entran en
+    el despliegue de la ruta (verificado en la traza del build).
+  - Captura de UTM y referrer externo de la primera visita en `localStorage`
+    (`src/lib/origen.ts`, `CapturaOrigen` en el layout); se envía con `registrarLead`.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
@@ -56,11 +65,11 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Fase 4: página `/bonaire/ficha` (paso 1 con código, paso 2 con datos precargados) →
-   ruta `/descargas/[archivo]` con los PDF en carpeta privada → captura de UTM y referrer.
-2. El usuario cambia las plantillas "Confirm signup" y "Magic link" de Supabase para que
-   envíen el código (`{{ .Token }}`). Luego probar el flujo completo en local con un correo
-   del equipo del proyecto (el correo integrado solo envía a ellos, 2 por hora).
+1. Revisión visual de `/bonaire/ficha`: el usuario agrega `NEXT_PUBLIC_ACCESO_PREMIUM=1` a
+   `.env.local` y reinicia `npm run dev`.
+2. Prueba de punta a punta con el correo del usuario: **pedir permiso antes** (crea un
+   registro real en `leads` y un usuario en Supabase Auth).
+3. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la

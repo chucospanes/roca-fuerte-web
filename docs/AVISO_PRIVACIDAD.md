@@ -67,7 +67,10 @@ sitio funcione:
 
 ## Cookies
 Usamos una cookie de sesión para recordar que verificaste tu correo y mostrarte el
-contenido desbloqueado en ese navegador. No usamos cookies de publicidad.
+contenido desbloqueado en ese navegador. Además, si llegas desde un enlace con parámetros
+de campaña o desde otro sitio, guardamos ese origen en el almacenamiento local de tu
+navegador, y solo se envía a nosotros si pides el acceso a la ficha técnica. No usamos
+cookies de publicidad.
 [PENDIENTE: actualizar si se agrega analítica o un píxel de redes sociales.]
 
 ## Cuánto tiempo los guardamos

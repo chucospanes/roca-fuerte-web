@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Source_Sans_3 } from "next/font/google";
+import { CapturaOrigen } from "@/components/CapturaOrigen";
 import { site } from "@/config/site";
 import "./globals.css";
 
@@ -28,7 +29,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${titulos.variable} ${texto.variable} antialiased`}>
-      <body className="min-h-dvh font-sans text-base leading-relaxed">{children}</body>
+      <body className="min-h-dvh font-sans text-base leading-relaxed">
+        {children}
+        <CapturaOrigen />
+      </body>
     </html>
   );
 }
