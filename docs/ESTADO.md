@@ -16,9 +16,9 @@ aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
   SQL Editor (2026-10-24); él verificó RLS activo y la vista con `security_invoker`.
   Verificado con lecturas: con la clave secreta, `clics_venta` (9 columnas) y
   `clics_venta_resumen` existen y están vacías; con la publishable, la tabla y la vista
-  responden 401 (`permission denied` en la vista). No se probó insertar con la clave
-  publishable para no escribir en producción: el bloqueo de escritura se apoya en RLS y
-  el `revoke` de la migración.
+  responden 401 (`permission denied` en la vista). Bloqueo de escritura comprobado por el
+  usuario en el SQL Editor con rol `anon` dentro de una transacción con `rollback`:
+  `ERROR 42501 permission denied for table clics_venta`.
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
 - Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
 - Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
