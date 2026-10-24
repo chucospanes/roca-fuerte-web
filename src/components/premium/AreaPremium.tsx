@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { leerLeadDeSesion } from "@/lib/leads";
 import { sesionVerificada } from "@/lib/supabase/servidor";
 import { Calificacion } from "./Calificacion";
@@ -12,6 +13,10 @@ import { Salir } from "./Salir";
  * - Con registro: contenido premium + paso 2 opcional precargado.
  */
 export async function AreaPremium() {
+  // La verificación de la sesión compara su vencimiento con la hora actual (`Date.now()`
+  // dentro de supabase-js). Con cacheComponents eso no puede ocurrir al prerenderizar:
+  // `connection()` hace que esta parte espere siempre a una petición real.
+  await connection();
   const sesion = await sesionVerificada();
   if (!sesion) return <Desbloqueo />;
 

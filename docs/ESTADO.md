@@ -61,6 +61,13 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     bloquea. Si la red falla en una Server Action, se avisa y se ofrece WhatsApp. Probado
     en el navegador con todo el tráfico a Supabase interceptado (paso 1 y código; el
     paso 2 usa el mismo mecanismo pero requiere sesión real).
+  - Corregido: con sesión, `/bonaire/ficha` daba en desarrollo el error "Next.js
+    encountered the unstable value `Date.now()` while prerendering" (supabase-js compara
+    el vencimiento de la sesión con la hora). `AreaPremium` llama a `connection()` antes
+    de leer la sesión. Reproducido con una cookie de sesión ficticia: sin la corrección
+    aparece, con ella no.
+  - Verificado con lecturas (2026-10-24): la fila de la prueba tiene la calificación
+    (construir, La Libertad, "Municipio o distrito" lleno) en un solo registro.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.

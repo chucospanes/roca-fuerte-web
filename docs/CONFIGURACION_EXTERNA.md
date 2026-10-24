@@ -51,8 +51,8 @@ Notas:
 | Port | `465` |
 | Username | `resend` |
 | Password | La API key de Resend |
-| Sender email | **[confirmar]** (por ejemplo `codigo@constructorarocafuerte.com`) |
-| Sender name | **[confirmar]** (por ejemplo `Roca Fuerte`) |
+| Sender email | `acceso@constructorarocafuerte.com` |
+| Sender name | `Roca Fuerte` |
 
 Si cambia la marca (`src/config/site.ts`), cambiar también el nombre del remitente y el
 texto de la plantilla.
