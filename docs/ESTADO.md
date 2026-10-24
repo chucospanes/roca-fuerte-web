@@ -4,13 +4,14 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-10-24
-**Versión:** v0.3.0 — secciones de la landing
+**Versión:** v0.4.0 — leads y acceso premium
 
 ## Fase actual
-**Fase 3 cerrada** (aprobada visualmente, merge a `main`, tag `v0.3.0`, push a `origin`).
-Landing con 9 secciones (las 8 del plan + "Calidad y resistencia"), plano y fachada
-corregidos para casa entre colindancias, encabezado, pie y botón flotante de WhatsApp.
-El formulario es un espacio reservado: se hace en la Fase 4.
+**Fase 4 cerrada** (aprobada por el usuario, merge a `main`, tag `v0.4.0`, push a
+`origin`). Botones de venta a WhatsApp directo; acceso premium con código por correo
+(`/bonaire/ficha`, descargas de PDF, calificación, captura de UTM) **apagado en
+producción** (`site.accesoPremium`) hasta cumplir los bloqueos de abajo.
+Siguiente fase: 5 — SEO, rendimiento y revisión en móvil.
 
 ## Hecho
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
@@ -73,8 +74,9 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     **sin UTM**. Diagnóstico: el formulario y el servidor procesan bien el UTM (verificado
     con el tráfico interceptado), pero se capturaba solo después de hidratar (~6 s en
     desarrollo); al tocar "Ver la ficha técnica" antes, se perdía. Corregido con el
-    script en línea: ahora queda guardado al ~1 s, antes de hidratar. Falta repetir la
-    prueba real.
+    script en línea: ahora queda guardado al ~1 s, antes de hidratar. Prueba real repetida
+    con `+prueba2` tocando el enlace de inmediato: la fila tiene `utm_source = prueba` y
+    `utm_campaign = e2e` (verificado con lecturas).
   - El usuario confirmó que los dos PDF se descargan y abren bien.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
@@ -95,13 +97,11 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Opcional antes de cerrar: probar el paso 2 (calificación), la descarga de los PDF y
-   la captura de UTM (`/?utm_source=prueba&utm_campaign=e2e` → ficha) con la sesión
-   actual; verificar con lecturas.
-2. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado en producción.
-3. Datos de prueba en Supabase para que el usuario los borre cuando quiera: el usuario
-   de la prueba en Auth y su fila en `leads`, y un segundo usuario en Auth
-   (creado 2026-10-24 06:10 UTC, confirmado, nunca inició sesión, sin fila en `leads`).
+1. **Fase 5** (rama `feat/fase-5-seo`): SEO (metadata, Open Graph, `sitemap.xml`,
+   `robots.txt`, schema.org), rendimiento y revisión en móvil, según PLAN_V1.md.
+2. Datos de prueba en Supabase para que el usuario los borre: 4 usuarios en Auth y 3
+   filas en `leads` (su correo, los alias `+prueba1` y `+prueba2`, y `c***`, sin fila).
+3. Completar en `docs/CONFIGURACION_EXTERNA.md`: DMARC y límite de correos por hora.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
