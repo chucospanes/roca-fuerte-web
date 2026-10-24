@@ -44,8 +44,9 @@ El formulario es un espacio reservado: se hace en la Fase 4.
   - Ruta `/descargas/[archivo]`: lista cerrada de 2 PDF leídos de `assets/`, exige sesión
     verificada y registro; `Cache-Control: private, no-store`. Solo esos 2 PDF entran en
     el despliegue de la ruta (verificado en la traza del build).
-  - Captura de UTM y referrer externo de la primera visita en `localStorage`
-    (`src/lib/origen.ts`, `CapturaOrigen` en el layout); se envía con `registrarLead`.
+  - Captura de UTM y referrer externo de la primera visita en `localStorage` con un
+    script en línea en el layout (`SCRIPT_CAPTURA_ORIGEN` en `src/lib/origen.ts`), que
+    corre al leer el HTML, sin esperar a React; se envía con `registrarLead`.
   - SMTP de Resend configurado por el usuario (dominio verificado), plantillas con el
     código y Email OTP Length = 6 / Expiration = 600. Todo lo que vive fuera del repo
     está en `docs/CONFIGURACION_EXTERNA.md`.
@@ -68,6 +69,13 @@ El formulario es un espacio reservado: se hace en la Fase 4.
     aparece, con ella no.
   - Verificado con lecturas (2026-10-24): la fila de la prueba tiene la calificación
     (construir, La Libertad, "Municipio o distrito" lleno) en un solo registro.
+  - Prueba de UTM del usuario (alias `+prueba1`, 08:17 UTC): la fila se creó bien pero
+    **sin UTM**. Diagnóstico: el formulario y el servidor procesan bien el UTM (verificado
+    con el tráfico interceptado), pero se capturaba solo después de hidratar (~6 s en
+    desarrollo); al tocar "Ver la ficha técnica" antes, se perdía. Corregido con el
+    script en línea: ahora queda guardado al ~1 s, antes de hidratar. Falta repetir la
+    prueba real.
+  - El usuario confirmó que los dos PDF se descargan y abren bien.
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.

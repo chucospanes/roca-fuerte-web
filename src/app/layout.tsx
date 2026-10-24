@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Source_Sans_3 } from "next/font/google";
-import { CapturaOrigen } from "@/components/CapturaOrigen";
 import { site } from "@/config/site";
+import { SCRIPT_CAPTURA_ORIGEN } from "@/lib/origen";
 import "./globals.css";
 
 const titulos = Archivo({
@@ -30,8 +30,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${titulos.variable} ${texto.variable} antialiased`}>
       <body className="min-h-dvh font-sans text-base leading-relaxed">
+        {/* Guarda UTM y referrer de la primera visita antes de que cargue React (ver lib/origen.ts) */}
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_CAPTURA_ORIGEN }} />
         {children}
-        <CapturaOrigen />
       </body>
     </html>
   );

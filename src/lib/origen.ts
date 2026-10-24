@@ -13,38 +13,22 @@ const PARAMETROS = ["utm_source", "utm_medium", "utm_campaign", "utm_content"] a
 
 export type Origen = Partial<Record<(typeof PARAMETROS)[number] | "referrer", string>>;
 
-/** Referrer solo si viene de otro sitio (no de una página de este mismo sitio). */
-function referrerExterno(): string | undefined {
-  const ref = document.referrer;
-  if (!ref) return undefined;
-  try {
-    return new URL(ref).origin === window.location.origin ? undefined : ref.slice(0, 500);
-  } catch {
-    return undefined;
-  }
-}
-
-/** Lee la visita actual y la guarda si todavía no hay un origen guardado. */
-export function capturarOrigen(): void {
-  try {
-    if (window.localStorage.getItem(CLAVE)) return;
-
-    const params = new URLSearchParams(window.location.search);
-    const origen: Origen = {};
-    for (const p of PARAMETROS) {
-      const valor = params.get(p)?.trim();
-      if (valor) origen[p] = valor.slice(0, 200);
-    }
-    const referrer = referrerExterno();
-    if (referrer) origen.referrer = referrer;
-
-    // Una visita directa sin datos no ocupa el lugar del primer contacto
-    if (Object.keys(origen).length === 0) return;
-    window.localStorage.setItem(CLAVE, JSON.stringify(origen));
-  } catch {
-    // almacenamiento no disponible: sin origen
-  }
-}
+/**
+ * Script que guarda el origen apenas el navegador lee el HTML, SIN esperar a que cargue
+ * React: si la persona toca un enlace antes (datos móviles lentos, navegador de TikTok),
+ * los parámetros de la URL se perderían. Va en línea en el layout (`app/layout.tsx`).
+ * Mismo criterio que antes: solo si no hay origen guardado, solo si la visita trae datos,
+ * referrer solo si es de otro sitio, todo dentro de try/catch.
+ */
+export const SCRIPT_CAPTURA_ORIGEN = `(function(){try{
+var k=${JSON.stringify(CLAVE)};
+if(localStorage.getItem(k))return;
+var q=new URLSearchParams(location.search),o={},n=0;
+${JSON.stringify(PARAMETROS)}.forEach(function(p){var v=(q.get(p)||"").trim();if(v){o[p]=v.slice(0,200);n++;}});
+var r=document.referrer;
+if(r){try{if(new URL(r).origin!==location.origin){o.referrer=r.slice(0,500);n++;}}catch(e){}}
+if(n)localStorage.setItem(k,JSON.stringify(o));
+}catch(e){}})();`;
 
 /** Origen guardado, para enviarlo con el registro. El servidor lo vuelve a validar. */
 export function leerOrigen(): Origen | undefined {

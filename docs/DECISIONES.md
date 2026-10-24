@@ -235,3 +235,10 @@ La primera prueba falló porque Supabase enviaba códigos de 8 dígitos (Email O
 y el formulario esperaba 6. Se configuró Supabase en 6 y la validación acepta de 6 a 8,
 para que un cambio de configuración no vuelva a romper el acceso. La configuración externa
 (SMTP, plantillas, longitud y duración del código) queda en `docs/CONFIGURACION_EXTERNA.md`.
+
+## 2026-10-24 — El UTM se captura con un script en línea, sin esperar a React
+La captura dependía de un componente de React y solo corría al terminar de cargar la
+página. En la prueba real se perdió el UTM porque se tocó el enlace a la ficha antes. Con
+tráfico desde el navegador interno de TikTok y datos móviles lentos, ese caso es común y
+pierde justo el dato de qué video trajo a la persona. Ahora un script mínimo en línea en
+el layout guarda el origen al leer el HTML.
