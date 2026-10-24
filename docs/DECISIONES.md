@@ -220,3 +220,12 @@ La columna "Marca" se queda en la tabla pública de materiales de la landing: mo
 marca se usa es parte de la transparencia. Lo premium es: cantidades de materiales, ficha
 técnica completa, desglose de qué incluye el precio y los PDF imprimibles. Reemplaza la
 mención de "materiales con marcas y cantidades" como premium en las entradas anteriores.
+
+## 2026-10-24 — SMTP propio (Resend) es requisito para probar el código, no solo para producción
+Los proyectos gratuitos de Supabase creados después de junio de 2026 no permiten editar
+las plantillas de correo sin SMTP propio (lo comprobó el usuario en el panel). Sin la
+plantilla con `{{ .Token }}`, el correo no lleva el código de 6 dígitos y el flujo no se
+puede probar. Por eso el SMTP de Resend con `constructorarocafuerte.com` (DNS en
+Namecheap) pasa de pendiente de producción a requisito para la prueba de punta a punta.
+La clave de Resend vive solo en la configuración SMTP de Supabase, no en el repo ni en
+`.env.local`. Corrige lo anotado antes: las plantillas no quedaron cambiadas.

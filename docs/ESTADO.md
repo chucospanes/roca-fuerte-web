@@ -65,10 +65,15 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Prueba de punta a punta: la hace el usuario en el navegador con su correo (dueño del
+1. **Bloqueo actual: SMTP propio.** Sin él no se pueden editar las plantillas de correo (plan
+   gratuito, proyecto creado después de junio de 2026) y el correo no lleva el código.
+   El usuario configura Resend: dominio `constructorarocafuerte.com` verificado (DNS en
+   Namecheap) → SMTP en Supabase → plantillas "Magic link" y "Confirm signup" con
+   `{{ .Token }}` (texto en el historial de la sesión del 2026-10-23).
+2. Prueba de punta a punta: la hace el usuario en el navegador con su correo (dueño del
    proyecto en Supabase). Después, Claude verifica **solo con lecturas** el usuario en
    Supabase Auth y el registro en `leads`. No se borra nada: lo borra el usuario.
-2. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado en producción.
+3. Cerrar la Fase 4 (`v0.4.0`) con el acceso premium apagado en producción.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
@@ -92,8 +97,6 @@ El formulario es un espacio reservado: se hace en la Fase 4.
 - **Bloqueos para activar `site.accesoPremium` en producción** (los dos son obligatorios):
   - La ficha técnica completa y las cantidades de materiales tienen datos reales.
   - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
-- SMTP de Resend configurado en Supabase, con los registros DNS en Namecheap (sin esto,
-  ningún prospecto recibe su código).
 - Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
   responsable: razón social, correo de contacto y plazo de conservación.
 - Precios "desde" → `site.precios`.
