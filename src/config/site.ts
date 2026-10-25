@@ -66,6 +66,16 @@ export const site = {
    */
   accesoPremium:
     process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_ACCESO_PREMIUM === "1",
+
+  /**
+   * Interruptor de lanzamiento. Apagado: el sitio puede estar publicado en el dominio pero
+   * todas las páginas y archivos llevan `noindex, nofollow` (metadata en `app/layout.tsx` y
+   * encabezado `X-Robots-Tag` en `next.config.ts`) y el sitemap va vacío. `robots.txt` NO
+   * bloquea con Disallow: así Google lee el noindex y la vista previa de WhatsApp/Facebook
+   * funciona (ver DECISIONES.md). Sin variable de entorno a propósito: encenderlo exige un
+   * commit revisado, con la lista de verificación del README cumplida.
+   */
+  lanzado: false,
 };
 
 /** WhatsApp aún sin configurar (placeholder). */

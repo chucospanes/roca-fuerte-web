@@ -1,7 +1,12 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 
-/** Solo la landing se indexa. El área premium, las descargas y la API quedan fuera. */
+/**
+ * Solo la landing se indexa. El área premium, las descargas y la API quedan fuera.
+ * Antes del lanzamiento (`site.lanzado` apagado) NO se bloquea todo con Disallow: el noindex
+ * va en cada página y en el encabezado X-Robots-Tag, y Google tiene que poder leerlo (ver
+ * DECISIONES.md). Solo se omite el sitemap.
+ */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
@@ -9,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/bonaire/ficha", "/descargas/", "/api/"],
     },
-    sitemap: `${site.url}/sitemap.xml`,
+    ...(site.lanzado ? { sitemap: `${site.url}/sitemap.xml` } : {}),
   };
 }

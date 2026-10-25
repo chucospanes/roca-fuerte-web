@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { site } from "./src/config/site";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -14,6 +15,17 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingExcludes: {
     "/descargas/\\[archivo\\]": ["./assets/*.png", "./assets/*.py", "./assets/fonts/**"],
+  },
+  // Interruptor de lanzamiento (site.lanzado): apagado, todas las rutas (páginas, PDF,
+  // imagen Open Graph, API) responden con noindex. Se lee de site.ts, no de una variable.
+  async headers() {
+    if (site.lanzado) return [];
+    return [
+      {
+        source: "/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
   },
   turbopack: {
     rules: {
