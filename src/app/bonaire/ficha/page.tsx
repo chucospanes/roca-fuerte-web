@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: `Planos en PDF, ficha técnica y materiales de la ${site.modelo}.`,
   // Contenido detrás de registro: no se indexa
   robots: { index: false, follow: false },
+  alternates: { canonical: "/bonaire/ficha" },
 };
 
 /**

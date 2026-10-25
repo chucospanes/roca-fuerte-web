@@ -22,8 +22,8 @@ export function Hero() {
           </h1>
           <p className="mt-5 max-w-xl text-lg text-piedra-700">{hero.bajada}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <BotonWhatsApp opcion="comprar">Quiero esta casa</BotonWhatsApp>
-            <BotonWhatsApp opcion="construir" variante="secundario">
+            <BotonWhatsApp opcion="comprar" ubicacion="hero">Quiero esta casa</BotonWhatsApp>
+            <BotonWhatsApp opcion="construir" ubicacion="hero" variante="secundario">
               Construir Bonaire en mi terreno
             </BotonWhatsApp>
           </div>

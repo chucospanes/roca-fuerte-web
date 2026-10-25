@@ -18,6 +18,24 @@
   2026-10-23).
 - Verificar después: RLS activo en `leads` y los dos triggers creados
   (`leads_updated_at`, `leads_origen_fijo`).
+- Ejecutar `supabase/migrations/002_clics_venta.sql` (aplicada el 2026-10-24). Verificar:
+  RLS activo en `clics_venta` y la vista `clics_venta_resumen` con `security_invoker`.
+
+### Verificación segura de permisos (para cada tabla nueva)
+Comprueba que la clave publishable no puede escribir, **sin dejar datos**: la transacción
+se deshace siempre con `rollback`. Ejecutar en el SQL Editor, cambiando tabla y columnas:
+
+```sql
+begin;
+set local role anon;
+insert into public.clics_venta (opcion, ubicacion) values ('general', 'pie');
+rollback;
+```
+
+Resultado esperado: `ERROR 42501 permission denied for table clics_venta`. Si el insert
+funcionara, el `rollback` lo deshace igual, pero hay que revisar RLS y el `revoke` antes
+de usar la tabla. Repetir con `set local role authenticated`. Las lecturas (`select`)
+también deben dar `42501`.
 
 ## 3. Supabase — Auth (correo con código)
 En *Authentication*:

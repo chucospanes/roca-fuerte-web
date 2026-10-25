@@ -30,6 +30,41 @@ if(r){try{if(new URL(r).origin!==location.origin){o.referrer=r.slice(0,500);n++;
 if(n)localStorage.setItem(k,JSON.stringify(o));
 }catch(e){}})();`;
 
+/**
+ * Script de los botones de venta (también en línea, para que funcione aunque React no haya
+ * cargado). Al tocar un enlace `a[data-venta]` que abre WhatsApp (`https://wa.me/`):
+ * 1. Si hay UTM de primer contacto, agrega al final del mensaje una referencia corta,
+ *    por ejemplo "(Ref: tiktok · video12)". Sin UTM, no agrega nada.
+ * 2. Envía el clic con `sendBeacon` a `/api/clic`: botón, ubicación, UTM y solo el dominio
+ *    del referrer. Sin datos personales.
+ * Con el número de prueba los botones no apuntan a wa.me: no hace nada.
+ */
+export const SCRIPT_CLICS_VENTA = `(function(){
+function leer(){try{return JSON.parse(localStorage.getItem(${JSON.stringify(CLAVE)})||"null")||{};}catch(e){return {};}}
+function limpio(v){return String(v||"").replace(/[^\\p{L}\\p{N} ._-]/gu,"").trim().slice(0,40);}
+document.addEventListener("click",function(ev){
+  var a=ev.target&&ev.target.closest?ev.target.closest("a[data-venta]"):null;
+  if(!a)return;
+  var href=a.getAttribute("href")||"";
+  if(href.indexOf("https://wa.me/")!==0)return;
+  var o=leer();
+  var partes=[limpio(o.utm_source),limpio(o.utm_campaign)].filter(Boolean);
+  if(partes.length&&!a.getAttribute("data-ref")){
+    var ref="(Ref: "+partes.join(" · ")+")";
+    var sep=href.indexOf("?text=")<0?"?text=":(/%20$/.test(href)?"":"%20");
+    href+=sep+encodeURIComponent(ref);
+    a.setAttribute("href",href);
+    a.setAttribute("data-ref","1");
+  }
+  try{
+    var c={opcion:a.getAttribute("data-venta"),ubicacion:a.getAttribute("data-ubicacion")};
+    ["utm_source","utm_medium","utm_campaign","utm_content"].forEach(function(k){if(o[k])c[k]=o[k];});
+    if(o.referrer){try{c.referrer_dominio=new URL(o.referrer).hostname.toLowerCase();}catch(e){}}
+    navigator.sendBeacon("/api/clic",new Blob([JSON.stringify(c)],{type:"text/plain"}));
+  }catch(e){}
+},true);
+})();`;
+
 /** Origen guardado, para enviarlo con el registro. El servidor lo vuelve a validar. */
 export function leerOrigen(): Origen | undefined {
   try {

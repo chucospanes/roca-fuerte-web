@@ -3,7 +3,7 @@ import { bonaire, type Desglose } from "@/content/bonaire";
 
 /** Dentro del área premium, un dato no confirmado se muestra como "Próximamente". */
 function Proximamente() {
-  return <span className="text-piedra-500 italic">Próximamente</span>;
+  return <span className="text-piedra-600 italic">Próximamente</span>;
 }
 
 function Valor({ valor }: { valor: string | undefined }) {
@@ -133,15 +133,15 @@ export function ContenidoPremium() {
             <li key={mat.material} className="p-4">
               <p className="font-display font-bold">{mat.material}</p>
               <dl className="mt-2 grid grid-cols-[7rem_1fr] gap-x-3 gap-y-1 text-sm">
-                <dt className="text-piedra-500">Especificación</dt>
+                <dt className="text-piedra-600">Especificación</dt>
                 <dd>
                   <Valor valor={mat.especificacion} />
                 </dd>
-                <dt className="text-piedra-500">Marca</dt>
+                <dt className="text-piedra-600">Marca</dt>
                 <dd>
                   <Valor valor={mat.marca} />
                 </dd>
-                <dt className="text-piedra-500">Cantidad</dt>
+                <dt className="text-piedra-600">Cantidad</dt>
                 <dd>
                   <Valor valor={"cantidad" in mat ? (mat.cantidad as string) : undefined} />
                 </dd>

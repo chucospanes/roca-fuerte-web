@@ -143,6 +143,13 @@ premium lee la sesión dentro de `<Suspense>` por `cacheComponents`.
 Metadata en español, Open Graph con imagen del plano, `sitemap.xml`, `robots.txt` y datos
 estructurados schema.org `HomeAndConstructionBusiness`.
 
+## Conteo de clics en los botones de venta (agregado en la Fase 5)
+Contar los clics en los botones de WhatsApp ("Quiero esta casa", "Construir Bonaire en mi
+terreno" y el botón flotante) junto con el UTM de primer contacto, **sin datos
+personales**. Sirve para saber qué red y qué video generan conversaciones de venta, que
+hoy no quedan registradas (los botones no piden datos). El diseño se aprueba antes de
+implementarlo.
+
 ## Variables de entorno
 `.env.example` con `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`,
 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` y `SUPABASE_SECRET_KEY` (solo servidor; claves nuevas
@@ -154,7 +161,8 @@ de Supabase, las `anon`/`service_role` se retiran a fines de 2026).
 3. Secciones de la landing con datos de ejemplo → `v0.3.0`
 4. Formulario de leads + acceso con correo a contenido premium (Supabase Auth, Storage
    privado para los PDF) + Server Actions + migraciones Supabase → `v0.4.0`
-5. SEO, rendimiento y revisión en móvil → `v0.5.0`
+5. SEO, rendimiento, revisión en móvil y conteo anónimo de clics en los botones de venta
+   → `v0.5.0`
 6. README de despliegue (local, migración Supabase, Vercel, DNS desde Namecheap) → `v1.0.0`
 
 ## Fuera de alcance en v1

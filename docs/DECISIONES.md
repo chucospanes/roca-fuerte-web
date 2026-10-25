@@ -242,3 +242,48 @@ página. En la prueba real se perdió el UTM porque se tocó el enlace a la fich
 tráfico desde el navegador interno de TikTok y datos móviles lentos, ese caso es común y
 pierde justo el dato de qué video trajo a la persona. Ahora un script mínimo en línea en
 el layout guarda el origen al leer el HTML.
+
+## 2026-10-24 — Cambio de alcance: contar clics de venta con su UTM (Fase 5)
+Se agrega a la Fase 5 contar los clics en los botones de venta de WhatsApp con el UTM de
+primer contacto, sin datos personales. Motivo: los botones abren WhatsApp sin pedir datos
+(decisión del 2026-10-23), así que hoy no se sabe qué red ni qué video generan las
+conversaciones de venta. El diseño queda pendiente de aprobación del usuario.
+
+## 2026-10-24 — Diseño del conteo de clics, referencia en WhatsApp y Open Graph (Fase 5)
+- **Conteo aprobado** con hora exacta: tabla `clics_venta` (migración 002) con botón,
+  ubicación, UTM de primer contacto y solo el dominio del referrer. Sin IP, navegador,
+  identificador ni datos de contacto: se cuentan clics, no personas. Lo captura el script
+  en línea (cuenta aunque React no haya cargado) y lo envía con `sendBeacon` a
+  `POST /api/clic`, que valida con zod y el encabezado `Origin`. No se cuenta mientras el
+  WhatsApp sea el número de prueba. Límite conocido: sin IP no hay tope por persona, los
+  conteos se pueden inflar; son indicativos.
+- **Referencia en el mensaje de WhatsApp:** si hay UTM de primer contacto, se agrega al
+  final del mensaje prellenado, por ejemplo "(Ref: tiktok · video12)"; sin UTM, nada.
+  Motivo: el dueño ve en la conversación de qué campaña viene la persona. La referencia
+  viaja a WhatsApp (Meta): se menciona en el aviso de privacidad.
+- **Open Graph:** imagen generada con la fachada, el texto "Casa Modelo Bonaire" y la
+  marca (desde `site.ts`).
+- **Rendimiento:** se mide con `npx lighthouse` sobre el build de producción
+  (`npm run build` + `npm start` en otro puerto), no sobre el servidor de desarrollo.
+
+## 2026-10-24 — Ajustes de accesibilidad de la Fase 5
+- El gris `piedra-500` sobre blanco (4.2:1) no cumple el contraste mínimo para texto
+  pequeño (4.5:1): en fondos claros se usa `piedra-600` (6.0:1) y en el pie oscuro
+  `piedra-300`. El verde del botón flotante pasa de `#1f8a4c` (4.4:1) a `#1c8147` (4.9:1).
+- Enlaces y botones con al menos 44 px de alto en móvil (encabezado y enlaces "Ver la
+  bitácora" / "Ver los materiales").
+- La imagen Open Graph usa la fuente por defecto de ImageResponse (sin negrita); usar
+  Archivo requeriría agregar su archivo TTF al repo.
+
+## 2026-10-24 — Fuente de títulos con `display: "optional"` y Archivo en la imagen Open Graph
+- **Archivo (títulos) con `display: "optional"`:** en 1 de cada ~4 cargas se medía un salto
+  de diseño (CLS 0.30) porque Archivo llegaba tarde, el titular del hero cambiaba de alto y
+  empujaba el recuadro del video, justo debajo de los botones de venta. Con `optional`, si
+  la fuente no llega en los primeros ~100 ms esa visita usa la fuente de respaldo y no hay
+  salto (la fuente queda en caché para la siguiente página o visita). Contrapartida
+  aceptada: en la primera visita con conexión lenta, los títulos se ven con la fuente del
+  sistema. Source Sans 3 (texto) sigue igual.
+- **Archivo en la imagen Open Graph:** se agregan al repo los TTF estáticos de Archivo
+  (`assets/fonts/`) con su licencia SIL Open Font License 1.1 (`assets/fonts/OFL.txt`),
+  que permite incluirlos y redistribuirlos con el proyecto. Reemplaza lo anotado en
+  "Ajustes de accesibilidad de la Fase 5" sobre la fuente por defecto.

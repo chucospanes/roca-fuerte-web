@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     "/descargas/\\[archivo\\]": ["./assets/*.pdf"],
   },
   outputFileTracingExcludes: {
-    "/descargas/\\[archivo\\]": ["./assets/*.png", "./assets/*.py"],
+    "/descargas/\\[archivo\\]": ["./assets/*.png", "./assets/*.py", "./assets/fonts/**"],
   },
   turbopack: {
     rules: {

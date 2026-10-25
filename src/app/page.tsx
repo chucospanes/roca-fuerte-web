@@ -2,6 +2,7 @@ import { Bitacora } from "@/components/Bitacora";
 import { Calidad } from "@/components/Calidad";
 import { ComoTrabajamos } from "@/components/ComoTrabajamos";
 import { Contacto } from "@/components/Contacto";
+import { DatosEstructurados } from "@/components/DatosEstructurados";
 import { Encabezado } from "@/components/Encabezado";
 import { Hero } from "@/components/Hero";
 import { LaCasa } from "@/components/LaCasa";
@@ -15,6 +16,7 @@ import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
 export default function Home() {
   return (
     <>
+      <DatosEstructurados />
       <Encabezado />
       <main>
         <Hero />

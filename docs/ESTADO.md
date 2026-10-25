@@ -4,16 +4,54 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-10-24
-**Versión:** v0.4.0 — leads y acceso premium
+**Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 4 cerrada** (aprobada por el usuario, merge a `main`, tag `v0.4.0`, push a
-`origin`). Botones de venta a WhatsApp directo; acceso premium con código por correo
-(`/bonaire/ficha`, descargas de PDF, calificación, captura de UTM) **apagado en
-producción** (`site.accesoPremium`) hasta cumplir los bloqueos de abajo.
-Siguiente fase: 5 — SEO, rendimiento y revisión en móvil.
+**Fase 5 cerrada** en `v0.5.0` (2026-10-24): SEO, rendimiento, revisión en móvil y conteo
+anónimo de clics en los botones de venta. Revisión en celular real aprobada por el usuario.
+Siguiente: **Fase 6** — README de despliegue (local, migración Supabase, Vercel, DNS desde
+Namecheap) → `v1.0.0`. Acceso premium apagado en producción.
 
 ## Hecho
+- **Fase 5 (cerrada, `v0.5.0`):** migración `002_clics_venta.sql` aplicada por el usuario desde el
+  SQL Editor (2026-10-24); él verificó RLS activo y la vista con `security_invoker`.
+  Verificado con lecturas: con la clave secreta, `clics_venta` (9 columnas) y
+  `clics_venta_resumen` existen y están vacías; con la publishable, la tabla y la vista
+  responden 401 (`permission denied` en la vista). Bloqueo de escritura comprobado por el
+  usuario en el SQL Editor con rol `anon` dentro de una transacción con `rollback`:
+  `ERROR 42501 permission denied for table clics_venta`.
+- Fase 5, implementado y verificado:
+  - **SEO:** metadata con descripción, canonical, Open Graph y Twitter; imagen
+    `opengraph-image.tsx` (fachada + modelo + marca, 1200×630); `robots.txt` (excluye
+    `/bonaire/ficha`, `/descargas/`, `/api/`); `sitemap.xml` (solo la landing); schema.org
+    `HomeAndConstructionBusiness` solo con datos confirmados (teléfono y redes se agregan
+    solos cuando sean reales). Verificado en el build de producción.
+  - **Conteo de clics de venta:** `data-venta`/`data-ubicacion` en los 8 botones de
+    WhatsApp; el script en línea cuenta el clic (aunque React no haya cargado) y agrega
+    "(Ref: fuente · campaña)" al mensaje si hay UTM; `POST /api/clic` valida Origin,
+    Sec-Fetch-Site, tamaño y zod. Probado con número ficticio temporal (sin commit) y todo
+    el tráfico interceptado: 9 comprobaciones en navegador + 7 rechazos de peticiones
+    inválidas; `clics_venta` siguió en 0 filas. **Falta la prueba real** con el número de
+    WhatsApp definitivo.
+  - **Lighthouse 13.5.0** (móvil, build de producción en el puerto 3100): Performance
+    79–85 (mediana 82), Accesibilidad 100, Buenas prácticas 100, SEO 100. LCP 2.9–3.2 s
+    (párrafo del hero), CLS 0, peso 288 KB. La primera corrida tras arrancar el servidor
+    sale siempre baja (arranque en frío) y la máquina mete ruido: se toman varias.
+  - Contraste corregido (gris `piedra-500` → `piedra-600` en fondos claros, `piedra-300`
+    en el pie, verde del botón flotante `#1c8147`) y objetivos táctiles de al menos 44 px.
+    Sin desborde horizontal a 360, 390 y 412 px.
+  - **Salto de diseño por fuentes corregido:** Archivo (títulos) con `display: "optional"`.
+    Medido con red lenta (400 ms, ~400 kbps) y caché vacía, 6 cargas por variante: con
+    `swap` las 6 dieron CLS 0.292 (el titular del hero cambia de alto al llegar Archivo);
+    con `optional`, CLS 0 en las 6. Contrapartida: en la primera visita lenta los títulos
+    salen con la fuente del sistema.
+  - **Imagen Open Graph con Archivo** (Bold y ExtraBold, TTF estáticos del repositorio
+    oficial Omnibus-Type/Archivo en `assets/fonts/`, con `OFL.txt`: SIL OFL 1.1). Excluidos
+    de la traza de `/descargas`.
+  - **Lighthouse tras los cambios** (3 corridas): Performance 83/83/93, el resto 100.
+    LCP 2.9 s en las tres (sin cambio: el LCP es el párrafo del hero, en Source Sans 3, no
+    en Archivo), CLS 0, peso 288 KB. El Speed Index varió de 2.4 a 18.8 s por la carga de
+    la máquina (las corridas 1 y 2 tardaron 9–13 s en cargar en localhost).
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
 - Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
 - Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
@@ -97,11 +135,15 @@ Siguiente fase: 5 — SEO, rendimiento y revisión en móvil.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. **Fase 5** (rama `feat/fase-5-seo`): SEO (metadata, Open Graph, `sitemap.xml`,
-   `robots.txt`, schema.org), rendimiento y revisión en móvil, según PLAN_V1.md.
-2. Datos de prueba en Supabase para que el usuario los borre: 4 usuarios en Auth y 3
-   filas en `leads` (su correo, los alias `+prueba1` y `+prueba2`, y `c***`, sin fila).
-3. Completar en `docs/CONFIGURACION_EXTERNA.md`: DMARC y límite de correos por hora.
+1. Fase 6: README de despliegue → `v1.0.0` (confirmar con el usuario antes de empezar).
+2. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
+   verificación con lecturas en `clics_venta`).
+3. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
+   schema.org toman la URL de ahí (en local salen con `localhost:3000`).
+4. **LCP: se revisa después del lanzamiento con datos reales** (decisión del usuario,
+   2026-10-24). En Lighthouse queda en 2.9 s (el párrafo del hero, en Source Sans 3); si
+   los datos de campo (Vercel Speed Insights o Search Console) lo confirman, las vías son
+   la fuente del texto y el JavaScript inicial.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
