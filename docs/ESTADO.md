@@ -39,6 +39,18 @@ aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
   - Contraste corregido (gris `piedra-500` → `piedra-600` en fondos claros, `piedra-300`
     en el pie, verde del botón flotante `#1c8147`) y objetivos táctiles de al menos 44 px.
     Sin desborde horizontal a 360, 390 y 412 px.
+  - **Salto de diseño por fuentes corregido:** Archivo (títulos) con `display: "optional"`.
+    Medido con red lenta (400 ms, ~400 kbps) y caché vacía, 6 cargas por variante: con
+    `swap` las 6 dieron CLS 0.292 (el titular del hero cambia de alto al llegar Archivo);
+    con `optional`, CLS 0 en las 6. Contrapartida: en la primera visita lenta los títulos
+    salen con la fuente del sistema.
+  - **Imagen Open Graph con Archivo** (Bold y ExtraBold, TTF estáticos del repositorio
+    oficial Omnibus-Type/Archivo en `assets/fonts/`, con `OFL.txt`: SIL OFL 1.1). Excluidos
+    de la traza de `/descargas`.
+  - **Lighthouse tras los cambios** (3 corridas): Performance 83/83/93, el resto 100.
+    LCP 2.9 s en las tres (sin cambio: el LCP es el párrafo del hero, en Source Sans 3, no
+    en Archivo), CLS 0, peso 288 KB. El Speed Index varió de 2.4 a 18.8 s por la carga de
+    la máquina (las corridas 1 y 2 tardaron 9–13 s en cargar en localhost).
 - Repositorio en GitHub (`origin` = `chucospanes/roca-fuerte-web`); push al cerrar cada fase.
 - Proyecto de Supabase `roca-fuerte-web` (East US) creado; claves en `.env.local`.
 - Migración `001_leads.sql` aplicada por el usuario desde el SQL Editor de Supabase
@@ -122,12 +134,10 @@ aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Decisión del usuario sobre el salto de diseño por fuentes (CLS 0.30 en 1 de cada ~4
-   cargas, cuando las fuentes llegan tarde): ver propuesta en la sesión del 2026-10-24.
-2. Revisión del usuario en un celular real y aprobación para cerrar la Fase 5 (`v0.5.0`).
-3. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
+1. Revisión del usuario en un celular real y aprobación para cerrar la Fase 5 (`v0.5.0`).
+2. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
    verificación con lecturas en `clics_venta`).
-4. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
+3. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
    schema.org toman la URL de ahí (en local salen con `localhost:3000`).
 
 ## Notas técnicas abiertas

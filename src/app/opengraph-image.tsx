@@ -6,21 +6,34 @@ import { site } from "@/config/site";
 /**
  * Imagen para compartir el enlace (WhatsApp, Facebook, X…): fachada + modelo + marca.
  * Se genera en el build. La fachada es un recorte reducido (`assets/og-fachada.png`,
- * ~75 KB) para no pasar el límite de 500 KB de ImageResponse. Usa la fuente por defecto
- * de ImageResponse: los textos no llevan tildes ni caracteres especiales.
+ * ~75 KB) para no pasar el límite de 500 KB de ImageResponse. Usa Archivo (la fuente de
+ * títulos del sitio) en TTF estático desde `assets/fonts/` (licencia SIL OFL, `OFL.txt`):
+ * ImageResponse no admite WOFF2 ni fuentes variables.
  */
 export const alt = `${site.modelo} — fachada principal. ${site.marca}.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const fachada = `data:image/png;base64,${(
-  await readFile(join(process.cwd(), "assets", "og-fachada.png"))
-).toString("base64")}`;
+const leerAsset = (...ruta: string[]) => readFile(join(process.cwd(), "assets", ...ruta));
+
+const fachada = `data:image/png;base64,${(await leerAsset("og-fachada.png")).toString("base64")}`;
+const [archivoBold, archivoExtraBold] = await Promise.all([
+  leerAsset("fonts", "Archivo-Bold.ttf"),
+  leerAsset("fonts", "Archivo-ExtraBold.ttf"),
+]);
 
 export default function Image() {
   return new ImageResponse(
     (
-      <div style={{ display: "flex", width: "100%", height: "100%", background: "#ffffff" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          background: "#ffffff",
+          fontFamily: "Archivo",
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -55,6 +68,12 @@ export default function Image() {
         </div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      fonts: [
+        { name: "Archivo", data: archivoBold, weight: 700, style: "normal" },
+        { name: "Archivo", data: archivoExtraBold, weight: 800, style: "normal" },
+      ],
+    },
   );
 }
