@@ -4,15 +4,16 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-10-24
-**Versión:** v0.4.0 — leads y acceso premium
+**Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 5 en curso** (rama `feat/fase-5-seo`): SEO, rendimiento, revisión en móvil y
-conteo anónimo de clics en los botones de venta (alcance agregado; diseño pendiente de
-aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
+**Fase 5 cerrada** en `v0.5.0` (2026-10-24): SEO, rendimiento, revisión en móvil y conteo
+anónimo de clics en los botones de venta. Revisión en celular real aprobada por el usuario.
+Siguiente: **Fase 6** — README de despliegue (local, migración Supabase, Vercel, DNS desde
+Namecheap) → `v1.0.0`. Acceso premium apagado en producción.
 
 ## Hecho
-- **Fase 5 (en curso):** migración `002_clics_venta.sql` aplicada por el usuario desde el
+- **Fase 5 (cerrada, `v0.5.0`):** migración `002_clics_venta.sql` aplicada por el usuario desde el
   SQL Editor (2026-10-24); él verificó RLS activo y la vista con `security_invoker`.
   Verificado con lecturas: con la clave secreta, `clics_venta` (9 columnas) y
   `clics_venta_resumen` existen y están vacías; con la publishable, la tabla y la vista
@@ -134,11 +135,15 @@ aprobación). Fase 4 cerrada en `v0.4.0`; acceso premium apagado en producción.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Revisión del usuario en un celular real y aprobación para cerrar la Fase 5 (`v0.5.0`).
+1. Fase 6: README de despliegue → `v1.0.0` (confirmar con el usuario antes de empezar).
 2. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
    verificación con lecturas en `clics_venta`).
 3. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
    schema.org toman la URL de ahí (en local salen con `localhost:3000`).
+4. **LCP: se revisa después del lanzamiento con datos reales** (decisión del usuario,
+   2026-10-24). En Lighthouse queda en 2.9 s (el párrafo del hero, en Source Sans 3); si
+   los datos de campo (Vercel Speed Insights o Search Console) lo confirman, las vías son
+   la fuente del texto y el JavaScript inicial.
 
 ## Notas técnicas abiertas
 - Revisar en Fase 4 `cacheComponents`/`partialPrefetching` frente al Server Action y la
