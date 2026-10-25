@@ -274,3 +274,16 @@ conversaciones de venta. El diseño queda pendiente de aprobación del usuario.
   bitácora" / "Ver los materiales").
 - La imagen Open Graph usa la fuente por defecto de ImageResponse (sin negrita); usar
   Archivo requeriría agregar su archivo TTF al repo.
+
+## 2026-10-24 — Fuente de títulos con `display: "optional"` y Archivo en la imagen Open Graph
+- **Archivo (títulos) con `display: "optional"`:** en 1 de cada ~4 cargas se medía un salto
+  de diseño (CLS 0.30) porque Archivo llegaba tarde, el titular del hero cambiaba de alto y
+  empujaba el recuadro del video, justo debajo de los botones de venta. Con `optional`, si
+  la fuente no llega en los primeros ~100 ms esa visita usa la fuente de respaldo y no hay
+  salto (la fuente queda en caché para la siguiente página o visita). Contrapartida
+  aceptada: en la primera visita con conexión lenta, los títulos se ven con la fuente del
+  sistema. Source Sans 3 (texto) sigue igual.
+- **Archivo en la imagen Open Graph:** se agregan al repo los TTF estáticos de Archivo
+  (`assets/fonts/`) con su licencia SIL Open Font License 1.1 (`assets/fonts/OFL.txt`),
+  que permite incluirlos y redistribuirlos con el proyecto. Reemplaza lo anotado en
+  "Ajustes de accesibilidad de la Fase 5" sobre la fuente por defecto.

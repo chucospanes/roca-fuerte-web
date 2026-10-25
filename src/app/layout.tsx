@@ -5,10 +5,14 @@ import { bonaire } from "@/content/bonaire";
 import { SCRIPT_CAPTURA_ORIGEN, SCRIPT_CLICS_VENTA } from "@/lib/origen";
 import "./globals.css";
 
+// "optional": si Archivo no llega en los primeros ~100 ms, esa visita se queda con la fuente
+// de respaldo y el titular del hero no cambia de alto (evita el salto de diseño, ver
+// DECISIONES.md). Queda en caché para la siguiente página.
 const titulos = Archivo({
   variable: "--font-titulos",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
+  display: "optional",
 });
 
 const texto = Source_Sans_3({
