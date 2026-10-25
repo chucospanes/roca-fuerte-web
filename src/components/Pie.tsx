@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { esPendiente, site, whatsappEsPlaceholder, type RedSocial } from "@/config/site";
 import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
 import { Pendiente } from "./ui";
@@ -73,14 +74,11 @@ export function Pie() {
         </div>
       </div>
 
-      <div id="privacidad" className="mx-auto mt-10 max-w-5xl border-t border-piedra-700 px-4 pt-6 text-sm">
-        <h2 className="font-semibold text-blanco">Aviso de privacidad</h2>
-        <p className="mt-2">
-          <Pendiente texto="Texto del aviso pendiente" />
-        </p>
-        <p className="mt-6 text-piedra-300">
-          © {site.marca}
-        </p>
+      <div className="mx-auto mt-10 flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-piedra-700 px-4 pt-6 text-sm">
+        <Link href="/privacidad" className="flex min-h-11 items-center text-blanco underline">
+          Aviso de privacidad
+        </Link>
+        <p className="text-piedra-300">© {site.marca}</p>
       </div>
     </footer>
   );

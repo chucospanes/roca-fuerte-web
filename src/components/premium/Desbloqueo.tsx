@@ -363,7 +363,7 @@ export function Desbloqueo({ correoVerificado }: { correoVerificado?: string }) 
           />
           <span>
             {campos.aceptoPrivacidad}.{" "}
-            <a href="/#privacidad" className={e.botonTexto} target="_blank">
+            <a href="/privacidad" className={e.botonTexto} target="_blank">
               Leer el aviso
             </a>
           </span>
