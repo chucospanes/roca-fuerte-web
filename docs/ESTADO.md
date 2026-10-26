@@ -3,16 +3,31 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-24
+**Última actualización:** 2026-10-25
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 5 cerrada** en `v0.5.0` (2026-10-24): SEO, rendimiento, revisión en móvil y conteo
-anónimo de clics en los botones de venta. Revisión en celular real aprobada por el usuario.
-Siguiente: **Fase 6** — README de despliegue (local, migración Supabase, Vercel, DNS desde
-Namecheap) → `v1.0.0`. Acceso premium apagado en producción.
+**Fase 6 en curso** (rama `feat/fase-6-despliegue`): despliegue en Vercel Pro, interruptor
+de lanzamiento, página `/privacidad` y README de despliegue. `v1.0.0` se pone cuando el
+sitio esté desplegado y verificado en el dominio con el interruptor apagado; el lanzamiento
+va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en producción.
 
 ## Hecho
+- **Fase 6 (en curso):**
+  - Interruptor de lanzamiento `site.lanzado` (apagado; solo se enciende con un commit).
+    Verificado en el build de producción en los dos estados (el encendido con un build
+    temporal, sin commit): apagado, las 9 rutas probadas (páginas, `robots.txt`,
+    `sitemap.xml`, imagen Open Graph, descargas, 404 y `POST /api/clic`) responden con
+    `X-Robots-Tag: noindex, nofollow`, la landing y `/privacidad` llevan
+    `<meta name="robots" content="noindex, nofollow">`, `robots.txt` permite el acceso
+    sin sitemap y el sitemap va vacío; encendido, nada de eso y `robots.txt` con el
+    sitemap (landing y `/privacidad`).
+  - Página `/privacidad`: lee `docs/AVISO_PRIVACIDAD.md` al compilar, con aviso visible de
+    borrador pendiente de revisión legal y los `[PENDIENTE: …]` con sello. Enlazada desde
+    el pie y desde el paso 1 del desbloqueo. Revisada con capturas a 360 y 390 px, sin
+    desborde horizontal.
+  - README con desarrollo local, Supabase (migraciones y Auth → URL Configuration), Vercel
+    Pro, DNS en Namecheap, interruptor y lista de verificación previa al lanzamiento.
 - **Fase 5 (cerrada, `v0.5.0`):** migración `002_clics_venta.sql` aplicada por el usuario desde el
   SQL Editor (2026-10-24); él verificó RLS activo y la vista con `security_invoker`.
   Verificado con lecturas: con la clave secreta, `clics_venta` (9 columnas) y
@@ -135,7 +150,9 @@ Namecheap) → `v1.0.0`. Acceso premium apagado en producción.
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Fase 6: README de despliegue → `v1.0.0` (confirmar con el usuario antes de empezar).
+1. Fase 6: el usuario crea el proyecto en Vercel Pro, carga las variables, configura Auth →
+   URL Configuration y el DNS en Namecheap (README, secciones 2–4). Claude verifica con
+   lecturas (`nslookup`, `curl`) y, si todo está bien, merge, tag `v1.0.0` y push.
 2. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
    verificación con lecturas en `clics_venta`).
 3. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
@@ -164,6 +181,10 @@ Namecheap) → `v1.0.0`. Acceso premium apagado en producción.
   "Network" que imprime el servidor.
 
 ## Bloqueos y pendientes del usuario
+- **Supabase Pro: se evalúa al activar el acceso premium.** Por ahora plan gratuito; los
+  proyectos gratuitos se pausan tras ~1 semana sin actividad (fuentes de terceros).
+- Lanzamiento (`site.lanzado = true`): solo con la lista de verificación del README
+  cumplida.
 - **Bloqueos para activar `site.accesoPremium` en producción** (los dos son obligatorios):
   - La ficha técnica completa y las cantidades de materiales tienen datos reales.
   - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
@@ -182,5 +203,5 @@ Namecheap) → `v1.0.0`. Acceso premium apagado en producción.
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el
   corredor hasta el lindero cumplen la normativa.
 - Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).
-- Conectar el repo de GitHub a Vercel.
+- Conectar el repo de GitHub a Vercel Pro (README, sección 3).
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.

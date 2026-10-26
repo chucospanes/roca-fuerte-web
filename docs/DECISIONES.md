@@ -287,3 +287,47 @@ conversaciones de venta. El diseño queda pendiente de aprobación del usuario.
   (`assets/fonts/`) con su licencia SIL Open Font License 1.1 (`assets/fonts/OFL.txt`),
   que permite incluirlos y redistribuirlos con el proyecto. Reemplaza lo anotado en
   "Ajustes de accesibilidad de la Fase 5" sobre la fuente por defecto.
+
+## 2026-10-25 — Hosting: Vercel Pro
+Las Fair Use Guidelines de Vercel limitan el plan Hobby a uso personal no comercial y ponen
+como ejemplo de uso comercial "Advertising the sale of a product or service": este sitio
+anuncia una casa y un servicio. Se usa Vercel Pro (un solo miembro). Se descartan otras
+plataformas porque el proyecto usa funciones de Next 16 (`cacheComponents`,
+`partialPrefetching`, `proxy.ts`) que Vercel soporta sin adaptadores. Las variables de
+entorno van solo en Production: la única base es la de producción y una preview no debe
+escribir leads ni clics reales.
+
+## 2026-10-25 — Interruptor de lanzamiento (`site.lanzado`), sin Disallow
+Cambio de alcance de la Fase 6. El sitio puede estar publicado en el dominio sin aparecer
+en buscadores hasta que el usuario lo active. `site.lanzado` es una constante en
+`src/config/site.ts`, sin variable de entorno: encenderlo exige un commit, igual que
+`accesoPremium`.
+- **Apagado:** `noindex, nofollow` en la metadata de todas las páginas y en el encabezado
+  `X-Robots-Tag` de todas las rutas (cubre PDF, imagen Open Graph y API); `robots.txt`
+  permite el acceso (solo mantiene fuera ficha, descargas y API, como antes) y sin
+  sitemap; `sitemap.xml` vacío.
+- **Encendido:** sin `noindex`; `robots.txt` con el sitemap; sitemap con la landing.
+- **Se descartó `Disallow: /` mientras esté apagado.** Con Disallow, Google no entra a la
+  página y nunca lee el `noindex`; si alguien enlaza la URL, puede listarla sin contenido.
+  Además, el robot que arma la vista previa de WhatsApp y Facebook podría respetarlo y no
+  mostrar la imagen Open Graph. Con solo `noindex`, Google lo lee y no indexa, y la vista
+  previa funciona desde ya.
+
+## 2026-10-25 — Página `/privacidad` con el borrador del aviso (Fase 6)
+Cambio de alcance de la Fase 6. La landing pública ya guarda el origen en `localStorage`,
+cuenta clics y agrega la referencia de campaña al mensaje de WhatsApp, así que el aviso se
+publica aunque el acceso premium siga apagado. La página lee `docs/AVISO_PRIVACIDAD.md` al
+compilar (una sola fuente: el abogado revisa el mismo texto que se publica), reemplaza
+`{marca}` por el nombre de `site.ts`, muestra cada `[PENDIENTE: …]` con el sello de
+pendiente, no publica las notas para el abogado y lleva un aviso visible de borrador
+pendiente de revisión legal. Enlazada desde el pie y desde el paso 1 del desbloqueo.
+
+## 2026-10-25 — `v1.0.0` al quedar desplegado; el lanzamiento va aparte
+El tag `v1.0.0` se pone cuando el sitio está desplegado y verificado en el dominio con el
+interruptor apagado. Encender `site.lanzado` es un commit aparte, porque depende del
+contenido del negocio (WhatsApp real, precios, aviso revisado), no del código.
+
+## 2026-10-25 — Supabase Pro: no por ahora
+Se sigue en el plan gratuito. Riesgo conocido: los proyectos gratuitos se pausan tras
+~1 semana sin actividad (según fuentes de terceros, no la página oficial). Se evalúa al
+activar el acceso premium.

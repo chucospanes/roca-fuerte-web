@@ -37,6 +37,10 @@ export const metadata: Metadata = {
     description: descripcion,
   },
   twitter: { card: "summary_large_image" },
+  // Interruptor de lanzamiento (site.lanzado): apagado, ninguna página se indexa. Una página
+  // que defina su propio `robots` reemplaza este valor (la ficha premium ya lleva noindex);
+  // el encabezado X-Robots-Tag de next.config.ts cubre todas las rutas de todos modos.
+  ...(site.lanzado ? {} : { robots: { index: false, follow: false } }),
 };
 
 export const viewport: Viewport = {

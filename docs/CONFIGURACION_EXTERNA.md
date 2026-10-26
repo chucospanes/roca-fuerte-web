@@ -51,8 +51,11 @@ En *Authentication*:
 | Rate limits (*Authentication → Rate Limits*) | **[confirmar]** | Con SMTP propio el límite de correos por hora es configurable. Resend gratis permite 100 correos al día. |
 
 Notas:
-- En Auth no hace falta configurar Site URL ni Redirect URLs para el código: no hay
-  enlaces en el correo. Revisarlo si algún día se agrega un enlace.
+- **URL Configuration** (para producción): Site URL `https://constructorarocafuerte.com`;
+  Redirect URLs `https://constructorarocafuerte.com/**` y `http://localhost:3000/**`. El
+  código no usa enlaces en el correo, pero Supabase arma con la Site URL los enlaces que
+  pudiera generar. Sin `*.vercel.app`: las previews no inician sesión. **[confirmar]**
+  cuando se configure.
 - Cloudflare Turnstile (captcha) se configura también aquí (*Authentication → Attack
   Protection*) cuando se implemente; es requisito antes de activar el acceso premium en
   producción.
@@ -90,10 +93,13 @@ va sin el dominio.
 Cambiar *Mail Settings* a *Custom MX* reemplaza el reenvío de correo de Namecheap del
 dominio, si lo hubiera.
 
-## 6. Vercel (Fase 6, pendiente)
-- Variables de entorno: las cuatro de `.env.example`. `NEXT_PUBLIC_ACCESO_PREMIUM` no
-  tiene efecto en producción (activar el acceso premium exige cambiar el código).
-- Dominio y DNS desde Namecheap: se documenta al desplegar.
+## 6. Vercel y DNS del sitio
+Paso a paso en el `README.md` (secciones 3 y 4): plan Pro, variables de entorno solo en
+Production (las cuatro de `.env.example`; **no** `NEXT_PUBLIC_ACCESO_PREMIUM`), región
+`iad1`, dominio principal sin www con `www` redirigido (308), y registros `A @` y
+`CNAME www` en Namecheap con los valores de la tarjeta del dominio en Vercel.
+**[confirmar]** los valores reales al configurarlos. Los registros de Resend de la
+sección 5 no se tocan.
 
 ## Comprobación rápida después de recrear
 1. `npm run dev` con `NEXT_PUBLIC_ACCESO_PREMIUM=1` en `.env.local`.

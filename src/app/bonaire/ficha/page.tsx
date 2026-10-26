@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { EncabezadoSimple } from "@/components/EncabezadoSimple";
 import { AreaPremium } from "@/components/premium/AreaPremium";
 import { site } from "@/config/site";
 
@@ -23,17 +23,7 @@ export default function FichaPage() {
 
   return (
     <>
-      <header className="border-b border-piedra-200 bg-blanco">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
-          <Link href="/" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight">
-            <span aria-hidden className="size-3 bg-terracota" />
-            {site.marca}
-          </Link>
-          <Link href="/" className="text-sm font-semibold text-terracota underline-offset-4 hover:underline">
-            ← Volver a la casa
-          </Link>
-        </div>
-      </header>
+      <EncabezadoSimple />
 
       <main className="bg-piedra-50">
         <div className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
