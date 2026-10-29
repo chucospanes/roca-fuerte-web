@@ -15,18 +15,20 @@ export function LaCasa() {
       intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}
       fondo="blanco"
     >
+      {/* Móvil: casa, lote, fachada. Escritorio: casa y fachada arriba, lote a todo el ancho abajo. */}
       <div className="grid gap-6 md:grid-cols-2 md:items-end">
         {[
-          { ...esparta.plano, texto: "Planta en el lote — distribución y medidas" },
-          esparta.fachada,
+          { ...esparta.planoCasa, anchoCompleto: false },
+          { ...esparta.plano, anchoCompleto: true },
+          { ...esparta.fachada, anchoCompleto: false },
         ].map((img) => (
-          <figure key={img.src}>
+          <figure key={img.src} className={img.anchoCompleto ? "md:order-last md:col-span-2" : undefined}>
             <ImagenAmpliable
               src={img.src}
               alt={img.alt}
               ancho={img.ancho}
               alto={img.alto}
-              sizes="(max-width: 768px) 100vw, 480px"
+              sizes={img.anchoCompleto ? "(max-width: 1024px) 100vw, 992px" : "(max-width: 768px) 100vw, 480px"}
             />
             <figcaption className="mt-2 font-semibold text-piedra-800">{img.texto}</figcaption>
           </figure>

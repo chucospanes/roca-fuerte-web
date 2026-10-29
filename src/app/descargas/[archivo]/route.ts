@@ -12,7 +12,11 @@ import { sesionVerificada } from "@/lib/supabase/servidor";
  * `assets/` se incluye en el despliegue con `outputFileTracingIncludes` (next.config.ts).
  */
 const ARCHIVOS = {
-  "plano-esparta.pdf": { origen: "plano-esparta.pdf", nombre: "Casa-Modelo-Esparta-plano.pdf" },
+  "plano-casa-esparta.pdf": {
+    origen: "plano-casa-esparta.pdf",
+    nombre: "Casa-Modelo-Esparta-plano-casa.pdf",
+  },
+  "plano-esparta.pdf": { origen: "plano-esparta.pdf", nombre: "Casa-Modelo-Esparta-plano-lote.pdf" },
   "fachada-esparta.pdf": { origen: "fachada-esparta.pdf", nombre: "Casa-Modelo-Esparta-fachada.pdf" },
 } as const;
 

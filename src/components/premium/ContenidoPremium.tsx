@@ -42,7 +42,8 @@ function ListaDesglose({ titulo, desglose }: { titulo: string; desglose: Desglos
 }
 
 const DESCARGAS = [
-  { href: "/descargas/plano-esparta.pdf", titulo: "Plano de la casa", detalle: "Planta en el lote, con medidas y áreas" },
+  { href: "/descargas/plano-casa-esparta.pdf", titulo: "Plano de la casa", detalle: "Planta con medidas y áreas" },
+  { href: "/descargas/plano-esparta.pdf", titulo: "Plano del lote", detalle: "Estacionamiento, jardín, casa y patio" },
   { href: "/descargas/fachada-esparta.pdf", titulo: "Fachada principal", detalle: "Vista desde la calle, con alturas" },
 ];
 

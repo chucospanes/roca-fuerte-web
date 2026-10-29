@@ -25,6 +25,10 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
   la landing, las imágenes nuevas y la imagen Open Graph responden 200 y las rutas viejas
   404; capturas a 390 px de "La casa" revisadas. El usuario confirmó que el lote de
   5 × 20 m es el real (segregado de un terreno de 10 × 20 m en dos lotes).
+  "La casa" muestra el plano de la casa sola (`plano-casa-esparta`), el del lote y la
+  fachada, los tres ampliables; en escritorio, casa y fachada arriba y el lote a todo el
+  ancho abajo. El PDF de la casa está en la lista cerrada de `/descargas` y en la ficha
+  premium.
 - **Fase 6 (en curso):**
   - Interruptor de lanzamiento `site.lanzado` (apagado; solo se enciende con un commit).
     Verificado en el build de producción en los dos estados (el encendido con un build
@@ -195,8 +199,6 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 ## Bloqueos y pendientes del usuario
 - Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
-- Plano de la casa sola (`Casa_Modelo_Esparta_plano.png/.pdf`) para mostrarlo antes del
-  plano del lote en "La casa" y en `/descargas`: no estaba en Descargas (2026-10-29).
 - Canal detrás del pretil: detalle de impermeabilización, pendiente y rebosadero.
 - **Supabase Pro: se evalúa al activar el acceso premium.** Por ahora plan gratuito; los
   proyectos gratuitos se pausan tras ~1 semana sin actividad (fuentes de terceros).

@@ -53,7 +53,8 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
   queda fuera del área construida.
 - **Área construida: 43.60 m². Área útil: 38.07 m².** (Sin cambio con el lote ni el pretil.)
 - Modelo económico: sin tina, jacuzzi, lavadora ni secadora.
-- Plano fuente: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
+- Plano de la casa: `assets/plano-casa-esparta.pdf` (PNG en `public/plano-casa-esparta.png`).
+  Plano del lote: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
   `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta.png`). Ambos son
   referenciales; requieren firma de arquitecto o ingeniero antes de construir. Si cambian,
   usar un nombre de archivo nuevo (la caché de `next/image` va por URL).
