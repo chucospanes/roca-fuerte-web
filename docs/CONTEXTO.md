@@ -23,7 +23,8 @@ Honesto, directo, sin exageraciones de marketing. Español salvadoreño neutro.
 El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTube).
 
 ## Casa Modelo Esparta (datos del plano en lote y la fachada con pretil)
-- **Lote del plano: 5.00 × 20.00 m.** De la calle al fondo: estacionamiento 5.00 m (carro
+- **Lote real de la casa: 5.00 × 20.00 m.** El terreno de 10 × 20 m se segrega en dos
+  lotes de 5 × 20 m, una casa en cada uno. De la calle al fondo: estacionamiento 5.00 m (carro
   de 4.50 × 1.80 m), jardín 3.50 m (con jardinera y paso peatonal al corredor de entrada),
   casa 9.50 m y patio trasero 2.00 m (tendedero). Retiros por confirmar con OPAMSS o la
   alcaldía.

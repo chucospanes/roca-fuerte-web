@@ -56,7 +56,10 @@ export const esparta = {
     interioresM: 0.1,
   },
 
-  /** Lote del plano, del frente (calle) al fondo. Las franjas suman 20.00 m. */
+  /**
+   * Lote real de la casa, del frente (calle) al fondo. Las franjas suman 20.00 m.
+   * Sale de segregar un terreno de 10 × 20 m en dos lotes de 5 × 20 m (ver docs/CONTEXTO.md).
+   */
   lote: {
     frenteM: 5,
     fondoM: 20,

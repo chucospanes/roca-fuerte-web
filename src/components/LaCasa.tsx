@@ -12,7 +12,7 @@ export function LaCasa() {
       numero="02"
       etiqueta="La casa"
       titulo="Modelo Esparta"
-      intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. El plano la muestra en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}
+      intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}
       fondo="blanco"
     >
       <div className="grid gap-6 md:grid-cols-2 md:items-end">
