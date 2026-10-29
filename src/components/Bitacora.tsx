@@ -38,7 +38,7 @@ export function Bitacora() {
       numero="05"
       etiqueta="Obra en vivo"
       titulo="Bitácora de obra"
-      intro="Cada etapa de la Casa Bonaire con su fecha, su avance y los videos donde se ve el trabajo. Los videos cargan solo cuando los tocas."
+      intro="Cada etapa de la Casa Esparta con su fecha, su avance y los videos donde se ve el trabajo. Los videos cargan solo cuando los tocas."
     >
       <ol className="relative space-y-8 border-l-2 border-piedra-200 pl-6 sm:pl-8">
         {bitacora.map((etapa) => {

@@ -1,5 +1,5 @@
 import { site } from "@/config/site";
-import { bonaire } from "@/content/bonaire";
+import { esparta } from "@/content/esparta";
 import { hero } from "@/content/landing";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 import { Pendiente } from "./ui";
@@ -13,9 +13,9 @@ export function Hero() {
           <p className="flex flex-wrap gap-x-2 font-display text-sm font-semibold tracking-[0.15em] text-terracota uppercase">
             <span className="whitespace-nowrap">{site.modelo}</span>
             <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{bonaire.dormitorios} dormitorios</span>
+            <span className="whitespace-nowrap">{esparta.dormitorios} dormitorios</span>
             <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{bonaire.areas.construidaM2.toFixed(2)} m²</span>
+            <span className="whitespace-nowrap">{esparta.areas.construidaM2.toFixed(2)} m²</span>
           </p>
           <h1 className="mt-4 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl">
             {hero.titulo}
@@ -24,7 +24,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <BotonWhatsApp opcion="comprar" ubicacion="hero">Quiero esta casa</BotonWhatsApp>
             <BotonWhatsApp opcion="construir" ubicacion="hero" variante="secundario">
-              Construir Bonaire en mi terreno
+              Construir Esparta en mi terreno
             </BotonWhatsApp>
           </div>
         </div>
@@ -34,7 +34,7 @@ export function Hero() {
           <div className="px-6 text-center">
             <Pendiente texto="Video de la obra pendiente" />
             <p className="mt-3 text-sm text-piedra-600">
-              Aquí irá el video o la foto principal de la Casa Bonaire en construcción.
+              Aquí irá el video o la foto principal de la Casa Esparta en construcción.
             </p>
           </div>
         </div>

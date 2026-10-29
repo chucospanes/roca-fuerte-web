@@ -1,5 +1,5 @@
 /**
- * Bitácora de obra de la Casa Modelo Bonaire.
+ * Bitácora de obra de la Casa Modelo Esparta.
  *
  * Para registrar avance: cambia `estado`, `fecha`, `avance`, agrega `materiales`
  * y pega las URLs de los videos publicados. Fechas en formato AAAA-MM-DD.

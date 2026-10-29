@@ -24,7 +24,7 @@
 
 ## Qué datos pedimos
 **Si solo nos escribes por WhatsApp** desde los botones "Quiero esta casa" o "Construir
-Bonaire en mi terreno", este sitio no guarda ningún dato tuyo: la conversación ocurre en
+Esparta en mi terreno", este sitio no guarda ningún dato tuyo: la conversación ocurre en
 WhatsApp.
 
 **Si pides acceso a la ficha técnica y los planos en PDF**, te pedimos:
@@ -45,7 +45,7 @@ registran datos técnicos de acceso (como la IP) en sus registros de seguridad.
 
 ## Para qué los usamos
 - Darte acceso a la ficha técnica, la lista de materiales y los planos en PDF.
-- Contactarte por WhatsApp o correo sobre la Casa Modelo Bonaire o sobre construir el
+- Contactarte por WhatsApp o correo sobre la Casa Modelo Esparta o sobre construir el
   modelo en tu terreno, si lo pediste.
 - Saber qué redes y videos traen a las personas interesadas, para decidir dónde publicar.
 

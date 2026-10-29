@@ -103,7 +103,7 @@ sección 5 no se tocan.
 
 ## Comprobación rápida después de recrear
 1. `npm run dev` con `NEXT_PUBLIC_ACCESO_PREMIUM=1` en `.env.local`.
-2. En `/bonaire/ficha`, pedir el código con un correo propio: debe llegar por Resend, con
+2. En `/esparta/ficha`, pedir el código con un correo propio: debe llegar por Resend, con
    el código en el asunto y 6 dígitos.
 3. Al escribirlo, se muestra la ficha y aparece la fila en `leads` (verificar con una
    lectura).

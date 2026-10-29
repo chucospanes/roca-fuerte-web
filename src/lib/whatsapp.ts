@@ -25,7 +25,7 @@ export type UbicacionVenta = (typeof UBICACIONES_VENTA)[number];
 export const mensajesVenta: Record<OpcionVenta, string> = {
   comprar: `Hola, me interesa comprar la ${site.modelo} que están construyendo. ¿Me pueden dar más información?`,
   construir:
-    "Hola, quiero construir el modelo Bonaire en mi terreno. Mi terreno está en (municipio y departamento): ",
+    "Hola, quiero construir el modelo Esparta en mi terreno. Mi terreno está en (municipio y departamento): ",
   general: `Hola, me interesa la ${site.modelo}.`,
 };
 
@@ -36,7 +36,7 @@ export function mensajeCalificacion(nombre: string, datos: DatosCalificacion): s
     partes.push(`Me interesa comprar la ${site.modelo}.`);
   } else {
     const lugar = [datos.municipio, datos.departamento].filter(Boolean).join(", ");
-    partes.push(`Quiero construir el modelo Bonaire en mi terreno${lugar ? `, en ${lugar}` : ""}.`);
+    partes.push(`Quiero construir el modelo Esparta en mi terreno${lugar ? `, en ${lugar}` : ""}.`);
   }
   partes.push(`Forma de pago: ${formasPago[datos.forma_pago]}.`);
   partes.push(`Cuándo quiero iniciar: ${inicios[datos.inicio]}.`);

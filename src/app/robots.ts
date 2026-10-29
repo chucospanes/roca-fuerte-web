@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/bonaire/ficha", "/descargas/", "/api/"],
+      disallow: ["/esparta/ficha", "/descargas/", "/api/"],
     },
     ...(site.lanzado ? { sitemap: `${site.url}/sitemap.xml` } : {}),
   };

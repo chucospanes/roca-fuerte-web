@@ -1,5 +1,5 @@
 import { esPendiente } from "@/config/site";
-import { bonaire, type Desglose } from "@/content/bonaire";
+import { esparta, type Desglose } from "@/content/esparta";
 
 /** Dentro del área premium, un dato no confirmado se muestra como "Próximamente". */
 function Proximamente() {
@@ -42,8 +42,9 @@ function ListaDesglose({ titulo, desglose }: { titulo: string; desglose: Desglos
 }
 
 const DESCARGAS = [
-  { href: "/descargas/plano-bonaire.pdf", titulo: "Plano de la casa", detalle: "Planta con medidas y áreas" },
-  { href: "/descargas/fachada-bonaire.pdf", titulo: "Fachada principal", detalle: "Vista desde la calle, con alturas" },
+  { href: "/descargas/plano-casa-esparta.pdf", titulo: "Plano de la casa", detalle: "Planta con medidas y áreas" },
+  { href: "/descargas/plano-esparta.pdf", titulo: "Plano del lote", detalle: "Estacionamiento, jardín, casa y patio" },
+  { href: "/descargas/fachada-esparta.pdf", titulo: "Fachada principal", detalle: "Vista desde la calle, con alturas" },
 ];
 
 export function ContenidoPremium() {
@@ -66,7 +67,7 @@ export function ContenidoPremium() {
             </li>
           ))}
         </ul>
-        <p className="mt-3 text-sm text-piedra-600">{bonaire.avisoPlanos}</p>
+        <p className="mt-3 text-sm text-piedra-600">{esparta.avisoPlanos}</p>
       </Bloque>
 
       <Bloque titulo="Ficha técnica">
@@ -74,39 +75,53 @@ export function ContenidoPremium() {
           <div className={fila}>
             <dt className="text-piedra-600">Área construida / útil</dt>
             <dd>
-              {m2(bonaire.areas.construidaM2)} / {m2(bonaire.areas.utilM2)}
+              {m2(esparta.areas.construidaM2)} / {m2(esparta.areas.utilM2)}
             </dd>
           </div>
           <div className={fila}>
             <dt className="text-piedra-600">Volumetría</dt>
             <dd>
-              Cuerpo principal {bonaire.volumetria.cuerpoPrincipal}; extensión de sala{" "}
-              {bonaire.volumetria.extensionSala}
+              Cuerpo principal {esparta.volumetria.cuerpoPrincipal}; extensión de sala{" "}
+              {esparta.volumetria.extensionSala}
             </dd>
           </div>
           <div className={fila}>
             <dt className="text-piedra-600">Muros</dt>
             <dd>
-              {bonaire.muros.sistema}: exteriores {m(bonaire.muros.exterioresM)}, interiores{" "}
-              {m(bonaire.muros.interioresM)}
+              {esparta.muros.sistema}: exteriores {m(esparta.muros.exterioresM)}, interiores{" "}
+              {m(esparta.muros.interioresM)}
+            </dd>
+          </div>
+          <div className={fila}>
+            <dt className="text-piedra-600">Lote</dt>
+            <dd>
+              {m(esparta.lote.frenteM)} × {m(esparta.lote.fondoM)}:{" "}
+              {esparta.lote.franjas.map((f) => `${f.nombre.toLowerCase()} ${m(f.fondoM)}`).join(", ")}
             </dd>
           </div>
           <div className={fila}>
             <dt className="text-piedra-600">Implantación</dt>
-            <dd>{bonaire.implantacion}</dd>
+            <dd>{esparta.implantacion}</dd>
           </div>
           <div className={fila}>
             <dt className="text-piedra-600">Techo</dt>
             <dd>
-              {bonaire.techo.cubierta}, cumbrera {bonaire.techo.cumbrera.toLowerCase()}, pendiente{" "}
-              {bonaire.techo.pendientePct} %. Alero a {m(bonaire.techo.aleroM)}, cumbrera a{" "}
-              {m(bonaire.techo.cumbreraM)}. {bonaire.techo.desague}
+              {esparta.techo.cubierta}, cumbrera {esparta.techo.cumbrera.toLowerCase()}, pendiente{" "}
+              {esparta.techo.pendientePct} %. Alero a {m(esparta.techo.aleroM)}, cumbrera a{" "}
+              {m(esparta.techo.cumbreraM)}. {esparta.techo.desague}
+            </dd>
+          </div>
+          <div className={fila}>
+            <dt className="text-piedra-600">Fachada</dt>
+            <dd>
+              Pretil de {m(esparta.pretil.altoM)} (hasta {m(esparta.pretil.hastaM)}) que oculta el
+              techo desde la calle. Acabados: {esparta.acabadosFachada.join(", ")}.
             </dd>
           </div>
           <div className={fila}>
             <dt className="text-piedra-600">Corredor</dt>
             <dd>
-              {bonaire.corredor.descripcion} Fondo de {m(bonaire.corredor.fondoM)}.
+              {esparta.corredor.descripcion} Fondo de {m(esparta.corredor.fondoM)}.
             </dd>
           </div>
           <div className={fila}>
@@ -118,7 +133,7 @@ export function ContenidoPremium() {
         </dl>
         <h3 className="mt-6 font-display text-lg font-bold">Ambientes</h3>
         <ul className="mt-2 space-y-2">
-          {bonaire.ambientes.map((a) => (
+          {esparta.ambientes.map((a) => (
             <li key={a.nombre}>
               <span className="font-semibold">{a.nombre}</span> — {a.medidas}, {m2(a.areaM2)}.{" "}
               <span className="text-piedra-600">{a.notas.join(" ")}</span>
@@ -129,7 +144,7 @@ export function ContenidoPremium() {
 
       <Bloque titulo="Materiales y cantidades">
         <ul className="divide-y divide-piedra-200 rounded-lg border border-piedra-200 bg-blanco">
-          {bonaire.materiales.map((mat) => (
+          {esparta.materiales.map((mat) => (
             <li key={mat.material} className="p-4">
               <p className="font-display font-bold">{mat.material}</p>
               <dl className="mt-2 grid grid-cols-[7rem_1fr] gap-x-3 gap-y-1 text-sm">
@@ -153,10 +168,10 @@ export function ContenidoPremium() {
 
       <Bloque titulo="Qué incluye el precio">
         <div className="grid gap-4 sm:grid-cols-2">
-          <ListaDesglose titulo="Comprar esta casa" desglose={bonaire.desglosePrecio.comprarCasa} />
+          <ListaDesglose titulo="Comprar esta casa" desglose={esparta.desglosePrecio.comprarCasa} />
           <ListaDesglose
             titulo="Construir en tu terreno"
-            desglose={bonaire.desglosePrecio.construirEnTerreno}
+            desglose={esparta.desglosePrecio.construirEnTerreno}
           />
         </div>
       </Bloque>

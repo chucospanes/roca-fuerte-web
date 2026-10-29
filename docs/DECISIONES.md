@@ -331,3 +331,17 @@ contenido del negocio (WhatsApp real, precios, aviso revisado), no del código.
 Se sigue en el plan gratuito. Riesgo conocido: los proyectos gratuitos se pausan tras
 ~1 semana sin actividad (según fuentes de terceros, no la página oficial). Se evalúa al
 activar el acceso premium.
+
+## 2026-10-29 — El modelo se llama "Esparta" (antes "Bonaire"); plano en lote y fachada con pretil
+Decisión del usuario: la Casa Modelo Bonaire pasa a llamarse **Casa Modelo Esparta** en todo
+el sitio y la documentación. Las entradas anteriores de este registro conservan el nombre
+viejo. La ruta premium pasa de `/bonaire/ficha` a `/esparta/ficha` sin redirección (el
+sitio no está lanzado) y el contenido del modelo vive en `src/content/esparta.ts`.
+Imágenes y PDF con nombres nuevos (`plano-esparta`, `fachada-esparta`) en vez de
+reemplazar los viejos, porque `next/image` guarda en caché por URL. El plano nuevo muestra
+el lote completo de 5 × 20 m (estacionamiento 5.00 m, jardín 3.50 m, casa 9.50 m, patio
+2.00 m) y la fachada lleva pretil de 0.60 m (muro del frente a 3.20 m), bloque de la sala en
+terracota y bloque visto sellado en el corredor. Con el pretil, el agua del frente cae a un
+canal detrás del pretil y desagua al jardín, en vez del canal y bajante a la vista. Las
+áreas no cambian (43.60 m² construidos, 38.07 m² útiles). Se borra `assets/plano_bonaire.py`
+(generaba una versión ya descartada; queda en el historial de git).

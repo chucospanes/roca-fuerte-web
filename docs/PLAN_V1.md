@@ -1,7 +1,7 @@
-# Plan v1 — Landing Casa Modelo Bonaire
+# Plan v1 — Landing Casa Modelo Esparta
 
 ## Objetivo
-Landing de una sola página, mobile-first, que vende la Casa Bonaire en construcción y el
+Landing de una sola página, mobile-first, que vende la Casa Esparta en construcción y el
 servicio de construir el modelo en el terreno del cliente. Los botones de venta llevan
 directo a WhatsApp, sin pedir datos; los prospectos que piden el contenido premium quedan
 registrados en Supabase. La landing es 100 % pública; solo el contenido premium
@@ -18,7 +18,7 @@ precio) se desbloquea con correo validado por código.
 El repo ya contiene `CLAUDE.md`, `docs/`, `assets/` y `.gitignore`. Si `create-next-app`
 rechaza el directorio por no estar vacío, genera el proyecto en una carpeta temporal y
 mueve los archivos al repo sin sobrescribir `CLAUDE.md`, `docs/`, `assets/` ni `.gitignore`
-(fusiona las reglas de `.gitignore`). Copia `assets/plano-bonaire.png` a `public/plano-bonaire.png`.
+(fusiona las reglas de `.gitignore`). Copia `assets/plano-esparta.png` a `public/plano-esparta.png`.
 
 ## Configuración editable — `src/config/site.ts`
 - Nombre de marca (por ahora "Roca Fuerte"; único lugar donde aparece).
@@ -29,7 +29,7 @@ mueve los archivos al repo sin sobrescribir `CLAUDE.md`, `docs/`, `assets/` ni `
   con acceso vehicular y servicios cercanos; extras cotizados aparte.
 - URLs de redes sociales (placeholders).
 
-## Contenido del modelo — `src/content/bonaire.ts`
+## Contenido del modelo — `src/content/esparta.ts`
 - Datos de `docs/CONTEXTO.md` (ambientes, medidas, áreas 43.60 m² / 38.07 m², muros).
 - Especificaciones de materiales como array editable: material, especificación, marca,
   por qué. Valores `PENDIENTE`.
@@ -42,27 +42,27 @@ Instalaciones eléctricas e hidráulicas, Acabados, Entrega (pendientes).
 
 ## Secciones de la landing
 1. **Hero:** titular sobre construcción honesta y transparente; subtítulo "Casa Modelo
-   Bonaire · 2 dormitorios · 43.60 m²"; botones "Quiero esta casa" y "Construir Bonaire en
+   Esparta · 2 dormitorios · 43.60 m²"; botones "Quiero esta casa" y "Construir Esparta en
    mi terreno"; espacio para video o foto principal (placeholder).
 2. **Por qué construimos así:** 3–4 puntos de transparencia (cada material mostrado en
    video, cada etapa documentada, sin sorpresas en el precio).
-3. **La Casa Bonaire:** plano ampliable al tocarlo, cuadro de áreas y lista de ambientes.
-4. **Materiales y especificaciones:** tabla desde `bonaire.ts`.
+3. **La Casa Esparta:** plano ampliable al tocarlo, cuadro de áreas y lista de ambientes.
+4. **Materiales y especificaciones:** tabla desde `esparta.ts`.
 5. **Bitácora de obra:** línea de tiempo con estado, avance y videos embebidos que cargan
    solo al hacer clic.
-6. **Dos formas de tener tu Bonaire:** tarjetas "Comprar esta casa" vs "Construir en tu
+6. **Dos formas de tener tu Esparta:** tarjetas "Comprar esta casa" vs "Construir en tu
    terreno" con precio "desde", qué incluye y condiciones.
 7. **Cómo trabajamos:** contacto → evaluación del terreno → cotización cerrada → contrato →
    construcción documentada → entrega.
 8. **Preguntas frecuentes:** financiamiento (contado, FSV, banco), clientes en el exterior,
    tiempos, garantía, permisos. Respuestas `PENDIENTE` para que el usuario las complete.
-9. **Contacto:** botones "Quiero esta casa" y "Construir Bonaire en mi terreno" que abren
+9. **Contacto:** botones "Quiero esta casa" y "Construir Esparta en mi terreno" que abren
    WhatsApp directo con un mensaje distinto para cada opción, y acceso a la ficha técnica
    (contenido premium) cuando `site.accesoPremium` esté activo.
 10. **Footer:** contacto, redes y aviso de privacidad.
 
 ## Botones de venta: WhatsApp directo
-"Quiero esta casa" y "Construir Bonaire en mi terreno" (hero, tarjetas de precios y
+"Quiero esta casa" y "Construir Esparta en mi terreno" (hero, tarjetas de precios y
 contacto) **no piden correo ni código**: abren `wa.me` con un mensaje prellenado distinto
 según la opción. El correo con código es solo para el contenido premium (ver
 DECISIONES.md). Mientras `site.whatsapp` sea el número de prueba, los botones no envían a
@@ -70,18 +70,18 @@ nadie a un número inexistente.
 
 ## Acceso con correo a contenido premium
 La landing sigue 100 % pública, incluidos el plano y la fachada ampliables (PNG en
-`public/`). Con correo validado se desbloquea, en la página `/bonaire/ficha`:
+`public/`). Con correo validado se desbloquea, en la página `/esparta/ficha`:
 - PDF imprimibles de plano y fachada, servidos por `/descargas/[archivo]` desde una
   carpeta privada del repo (no `public/`); la ruta verifica la sesión antes de entregarlos.
 - Ficha técnica.
 - Cantidades de materiales; la marca sigue pública en la landing (requiere `cantidad` en `Material` en
-  `bonaire.ts`).
+  `esparta.ts`).
 - Desglose de qué incluye el precio. Las tarjetas públicas de "Dos formas de tener tu casa"
   conservan el resumen.
 
 Mientras un dato siga en `PENDIENTE`, dentro del área desbloqueada se muestra como
 "Próximamente". El interruptor `site.accesoPremium` (apagado por defecto) controla si la
-landing enlaza la página; apagado, `/bonaire/ficha` responde 404. **No se activa en
+landing enlaza la página; apagado, `/esparta/ficha` responde 404. **No se activa en
 producción** hasta que la ficha técnica y la lista de materiales tengan datos reales y
 esté puesto el captcha (ver ESTADO.md).
 
@@ -144,7 +144,7 @@ Metadata en español, Open Graph con imagen del plano, `sitemap.xml`, `robots.tx
 estructurados schema.org `HomeAndConstructionBusiness`.
 
 ## Conteo de clics en los botones de venta (agregado en la Fase 5)
-Contar los clics en los botones de WhatsApp ("Quiero esta casa", "Construir Bonaire en mi
+Contar los clics en los botones de WhatsApp ("Quiero esta casa", "Construir Esparta en mi
 terreno" y el botón flotante) junto con el UTM de primer contacto, **sin datos
 personales**. Sirve para saber qué red y qué video generan conversaciones de venta, que
 hoy no quedan registradas (los botones no piden datos). El diseño se aprueba antes de

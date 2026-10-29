@@ -1,6 +1,6 @@
-# Roca Fuerte — Portal Casa Modelo Bonaire
+# Roca Fuerte — Portal Casa Modelo Esparta
 
-Portal de ventas de la Casa Modelo Bonaire: venta de la casa en construcción y del servicio
+Portal de ventas de la Casa Modelo Esparta: venta de la casa en construcción y del servicio
 de construir el modelo en el terreno del cliente.
 
 ## Documentación
@@ -33,7 +33,7 @@ npm run dev                  # http://localhost:3000
 | `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto de Supabase |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` |
 | `SUPABASE_SECRET_KEY` | `sb_secret_…` — solo servidor, salta RLS |
-| `NEXT_PUBLIC_ACCESO_PREMIUM` | Opcional, `1` para probar `/bonaire/ficha` en desarrollo. No tiene efecto en un build de producción. |
+| `NEXT_PUBLIC_ACCESO_PREMIUM` | Opcional, `1` para probar `/esparta/ficha` en desarrollo. No tiene efecto en un build de producción. |
 
 Comandos:
 
@@ -148,7 +148,7 @@ los registros del correo (Resend).
    curl -sI https://constructorarocafuerte.com/          # 200 y x-robots-tag: noindex, nofollow
    curl -sI https://www.constructorarocafuerte.com/      # 308 hacia el dominio sin www
    curl -s  https://constructorarocafuerte.com/robots.txt
-   curl -sI https://constructorarocafuerte.com/descargas/plano-bonaire.pdf   # 404 (acceso premium apagado)
+   curl -sI https://constructorarocafuerte.com/descargas/plano-esparta.pdf   # 404 (acceso premium apagado)
    ```
 
 ---
@@ -220,7 +220,7 @@ Encender `site.lanzado` solo con todo esto cumplido.
 - `docs/` — contexto, estado vivo, decisiones, plan y configuración externa.
 - `assets/` — material fuente (planos y fachada en PNG/PDF, fuentes de la imagen Open
   Graph). No se sirve en la web; los PDF los entrega `/descargas/[archivo]` con sesión.
-- `src/app/` — App Router: landing, `/privacidad`, `/bonaire/ficha`, `/descargas`,
+- `src/app/` — App Router: landing, `/privacidad`, `/esparta/ficha`, `/descargas`,
   `/api/clic`, SEO (`robots.ts`, `sitemap.ts`, `opengraph-image.tsx`).
 - `src/config/site.ts` — marca, WhatsApp, precios, redes e interruptores (`lanzado`,
   `accesoPremium`).

@@ -3,16 +3,32 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-25
+**Última actualización:** 2026-10-29
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 6 en curso** (rama `feat/fase-6-despliegue`): despliegue en Vercel Pro, interruptor
+**Fase 6 en curso** (`feat/fase-6-despliegue` ya está en `main` y en `origin`, sin tag): despliegue en Vercel Pro, interruptor
 de lanzamiento, página `/privacidad` y README de despliegue. `v1.0.0` se pone cuando el
 sitio esté desplegado y verificado en el dominio con el interruptor apagado; el lanzamiento
 va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en producción.
 
 ## Hecho
+- **Cambio de nombre a Casa Modelo Esparta (rama `feat/modelo-esparta`, sin merge: el
+  usuario la revisa en el navegador).** Nombre nuevo en textos, metadata, imagen
+  Open Graph, schema.org, mensajes de WhatsApp y docs (DECISIONES.md conserva las entradas
+  viejas y el nombre anterior). Ruta `/esparta/ficha` sin redirección; `proxy.ts`, `robots.txt` y la lista
+  cerrada de `/descargas` actualizados. `src/content/esparta.ts`. Plano en lote de
+  5 × 20 m y fachada con pretil con nombres de archivo nuevos; archivos del nombre anterior y
+  su script generador viejo borrados. `assets/og-fachada.png` recortado de la
+  fachada nueva. "La casa" y la ficha premium muestran el lote, el pretil, el desagüe
+  tras el pretil y los acabados. Lint, typecheck y build pasan; en el build de producción
+  la landing, las imágenes nuevas y la imagen Open Graph responden 200 y las rutas viejas
+  404; capturas a 390 px de "La casa" revisadas. El usuario confirmó que el lote de
+  5 × 20 m es el real (segregado de un terreno de 10 × 20 m en dos lotes).
+  "La casa" muestra el plano de la casa sola (`plano-casa-esparta`), el del lote y la
+  fachada, los tres ampliables; en escritorio, casa y fachada arriba y el lote a todo el
+  ancho abajo. El PDF de la casa está en la lista cerrada de `/descargas` y en la ficha
+  premium.
 - **Fase 6 (en curso):**
   - Interruptor de lanzamiento `site.lanzado` (apagado; solo se enciende con un commit).
     Verificado en el build de producción en los dos estados (el encendido con un build
@@ -38,7 +54,7 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 - Fase 5, implementado y verificado:
   - **SEO:** metadata con descripción, canonical, Open Graph y Twitter; imagen
     `opengraph-image.tsx` (fachada + modelo + marca, 1200×630); `robots.txt` (excluye
-    `/bonaire/ficha`, `/descargas/`, `/api/`); `sitemap.xml` (solo la landing); schema.org
+    `/esparta/ficha`, `/descargas/`, `/api/`); `sitemap.xml` (solo la landing); schema.org
     `HomeAndConstructionBusiness` solo con datos confirmados (teléfono y redes se agregan
     solos cuando sean reales). Verificado en el build de producción.
   - **Conteo de clics de venta:** `data-venta`/`data-ubicacion` en los 8 botones de
@@ -76,13 +92,13 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
   - `src/lib/supabase/`: `navegador.ts` (publishable, pide y verifica el código),
     `servidor.ts` (sesión en cookies + `sesionVerificada()` con `getClaims()`), `admin.ts`
     (clave secreta, `server-only`), `tipos.ts` (tipos de `leads`), `entorno.ts`.
-  - `src/proxy.ts`: renueva la sesión solo en `/bonaire/ficha` y `/descargas`; la landing
+  - `src/proxy.ts`: renueva la sesión solo en `/esparta/ficha` y `/descargas`; la landing
     sigue estática.
   - `src/lib/validacion.ts`: esquemas zod de desbloqueo, código, registro (sin correo: sale
     de la sesión) y calificación. Probados con 23 casos.
   - Verificado contra Supabase: la clave secreta lee `leads`; la publishable no puede leer
     (401) ni insertar (42501).
-  - Botones de venta ("Quiero esta casa", "Construir Bonaire en mi terreno") en hero,
+  - Botones de venta ("Quiero esta casa", "Construir Esparta en mi terreno") en hero,
     precios y contacto: WhatsApp directo con mensaje por opción (`BotonWhatsApp`,
     `mensajesVenta`). La sección Contacto ya no tiene formulario.
   - Server Actions `registrarLead` y `calificarLead` (`src/app/acciones.ts`) sobre la capa
@@ -91,7 +107,7 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
     del terreno, checks rechazan valores fuera de lista.
   - `site.accesoPremium`: apagado; en desarrollo se prueba con `NEXT_PUBLIC_ACCESO_PREMIUM=1`,
     en producción solo se activa cambiando el código.
-  - Página `/bonaire/ficha` (`src/components/premium/`): sin sesión, paso 1 con código;
+  - Página `/esparta/ficha` (`src/components/premium/`): sin sesión, paso 1 con código;
     con sesión y registro, contenido premium (PDF, ficha técnica, materiales con marca y
     cantidad, qué incluye el precio; lo pendiente como "Próximamente") + paso 2 precargado
     + cerrar sesión. Lee la sesión dentro de `<Suspense>`; `noindex`.
@@ -116,7 +132,7 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
     bloquea. Si la red falla en una Server Action, se avisa y se ofrece WhatsApp. Probado
     en el navegador con todo el tráfico a Supabase interceptado (paso 1 y código; el
     paso 2 usa el mismo mecanismo pero requiere sesión real).
-  - Corregido: con sesión, `/bonaire/ficha` daba en desarrollo el error "Next.js
+  - Corregido: con sesión, `/esparta/ficha` daba en desarrollo el error "Next.js
     encountered the unstable value `Date.now()` while prerendering" (supabase-js compara
     el vencimiento de la sesión con la hora). `AreaPremium` llama a `connection()` antes
     de leer la sesión. Reproducido con una cookie de sesión ficticia: sin la corrección
@@ -134,7 +150,7 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 - Next.js 16.4.3 + TypeScript + Tailwind 4 (Fase 1, `v0.1.0`).
 - `src/config/site.ts`: marca (único lugar), URL, WhatsApp placeholder, precios PENDIENTE,
   condiciones de construcción en terreno del cliente, redes PENDIENTE, `textoPrecio()`.
-- `src/content/bonaire.ts`: áreas, ambientes, muros, plano y tabla de materiales
+- `src/content/esparta.ts`: áreas, ambientes, muros, plano y tabla de materiales
   (PENDIENTE salvo el bloque, cuyo espesor viene del plano). Las áreas cuadran: suma de
   ambientes = 38.07 m² útiles; 8×5 + 1.5×2.4 = 43.60 m² construidos.
 - `src/content/bitacora.ts`: 7 etapas; Terreno y trazo en proceso, el resto pendientes.
@@ -181,6 +197,14 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
   "Network" que imprime el servidor.
 
 ## Bloqueos y pendientes del usuario
+- Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
+- Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
+- **Reemplazar el plano de la casa** por la versión cuya nota del techo menciona el pretil
+  (`Casa_Modelo_Esparta_plano_v2`; no llegó a Descargas el 2026-10-29). Guardarla con
+  nombre nuevo (`plano-casa-esparta-v2.png/.pdf`), actualizar referencias y la lista cerrada
+  de `/descargas`, y borrar los `plano-casa-esparta` actuales. La nota actual dice "agua al
+  frente y al fondo" sin mencionar el pretil.
+- Canal detrás del pretil: detalle de impermeabilización, pendiente y rebosadero.
 - **Supabase Pro: se evalúa al activar el acceso premium.** Por ahora plan gratuito; los
   proyectos gratuitos se pausan tras ~1 semana sin actividad (fuentes de terceros).
 - Lanzamiento (`site.lanzado = true`): solo con la lista de verificación del README
@@ -193,7 +217,7 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 - Precios "desde" → `site.precios`.
 - Número de WhatsApp Business → `site.whatsapp`.
 - URLs de redes sociales → `site.redes`.
-- Especificaciones y marcas de materiales → `bonaire.materiales`.
+- Especificaciones y marcas de materiales → `esparta.materiales`.
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
 - Ubicación del terreno y detalle de lo incluido en "Comprar esta casa".
