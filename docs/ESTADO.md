@@ -199,6 +199,11 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 ## Bloqueos y pendientes del usuario
 - Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
+- **Reemplazar el plano de la casa** por la versión cuya nota del techo menciona el pretil
+  (`Casa_Modelo_Esparta_plano_v2`; no llegó a Descargas el 2026-10-29). Guardarla con
+  nombre nuevo (`plano-casa-esparta-v2.png/.pdf`), actualizar referencias y la lista cerrada
+  de `/descargas`, y borrar los `plano-casa-esparta` actuales. La nota actual dice "agua al
+  frente y al fondo" sin mencionar el pretil.
 - Canal detrás del pretil: detalle de impermeabilización, pendiente y rebosadero.
 - **Supabase Pro: se evalúa al activar el acceso premium.** Por ahora plan gratuito; los
   proyectos gratuitos se pausan tras ~1 semana sin actividad (fuentes de terceros).
