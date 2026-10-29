@@ -1,7 +1,7 @@
-# Roca Fuerte — Portal web Casa Modelo Bonaire
+# Roca Fuerte — Portal web Casa Modelo Esparta
 
 Portal de ventas de una constructora salvadoreña que lanza su primer modelo de casa
-(Casa Modelo Bonaire) documentando la obra con transparencia total en redes sociales.
+(Casa Modelo Esparta) documentando la obra con transparencia total en redes sociales.
 Responde siempre en español.
 
 ## Contexto que se carga en cada sesión
@@ -66,12 +66,12 @@ Next.js 16.4.3 (Turbopack), React 19.3, TypeScript 5, Tailwind 4, ESLint 9.
 
 ## Estructura
 - `docs/` — contexto, estado vivo, decisiones y plan. Fuente de verdad del proyecto.
-- `assets/` — material fuente (plano PNG/PDF y su script generador). No se sirve en web;
-  copia a `public/` lo que la web necesite.
+- `assets/` — material fuente (PDF de plano y fachada, recorte de la imagen Open Graph y
+  fuentes). No se sirve en web; copia a `public/` lo que la web necesite.
 - `src/app/` — App Router (layout, página y estilos globales).
 - `src/config/` — configuración editable (`site.ts`: marca, WhatsApp, precios, redes).
 - `src/content/` — contenido del modelo y bitácora de obra.
 - `src/components/` — secciones y componentes de la landing.
 - `src/lib/` — utilidades de servidor (Supabase, validación).
 - `supabase/migrations/` — SQL de la base de datos.
-- `public/` — archivos servidos tal cual (incluye `plano-bonaire.png`).
+- `public/` — archivos servidos tal cual (incluye `plano-esparta.png` y `fachada-esparta.png`).

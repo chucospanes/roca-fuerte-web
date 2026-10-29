@@ -29,7 +29,7 @@ export function Opciones() {
           </p>
           <h3 className="mt-1 font-display text-2xl font-extrabold">Comprar esta casa</h3>
           <p className="mt-2 text-piedra-600">
-            La Casa Bonaire que estamos construyendo, con su terreno.
+            La Casa Esparta que estamos construyendo, con su terreno.
           </p>
           <div className="mt-5">
             <Precio precio={site.precios.comprarCasa} />
@@ -58,7 +58,7 @@ export function Opciones() {
           </p>
           <h3 className="mt-1 font-display text-2xl font-extrabold">Construir en tu terreno</h3>
           <p className="mt-2 text-piedra-600">
-            Construimos el modelo Bonaire en tu terreno, en {site.pais}, documentado etapa por etapa.
+            Construimos el modelo Esparta en tu terreno, en {site.pais}, documentado etapa por etapa.
           </p>
           <div className="mt-5">
             <Precio precio={site.precios.construirEnTerreno} />
@@ -71,7 +71,7 @@ export function Opciones() {
           </ul>
           <div className="mt-auto pt-6">
             <BotonWhatsApp opcion="construir" ubicacion="precios" variante="secundario" className="w-full">
-              Construir Bonaire en mi terreno
+              Construir Esparta en mi terreno
             </BotonWhatsApp>
           </div>
         </article>

@@ -1,4 +1,4 @@
-import { bonaire } from "@/content/bonaire";
+import { esparta } from "@/content/esparta";
 import { ImagenAmpliable } from "./ImagenAmpliable";
 import { Seccion } from "./ui";
 
@@ -11,14 +11,14 @@ export function LaCasa() {
       id="la-casa"
       numero="02"
       etiqueta="La casa"
-      titulo="Modelo Bonaire"
-      intro={`${bonaire.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta.`}
+      titulo="Modelo Esparta"
+      intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. El plano la muestra en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}
       fondo="blanco"
     >
       <div className="grid gap-6 md:grid-cols-2 md:items-end">
         {[
-          { ...bonaire.plano, texto: "Planta — distribución y medidas" },
-          bonaire.fachada,
+          { ...esparta.plano, texto: "Planta en el lote — distribución y medidas" },
+          esparta.fachada,
         ].map((img) => (
           <figure key={img.src}>
             <ImagenAmpliable
@@ -32,7 +32,22 @@ export function LaCasa() {
           </figure>
         ))}
       </div>
-      <p className="mt-3 text-sm text-piedra-600">{bonaire.avisoPlanos}</p>
+      <p className="mt-3 text-sm text-piedra-600">{esparta.avisoPlanos}</p>
+
+      {/* Lote, del frente al fondo */}
+      <div className="mt-8">
+        <h3 className="font-display text-xl font-bold">
+          Lote de {m(esparta.lote.frenteM)} × {m(esparta.lote.fondoM)}, de la calle al fondo
+        </h3>
+        <ol className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-piedra-200 bg-piedra-200 sm:grid-cols-4">
+          {esparta.lote.franjas.map((f) => (
+            <li key={f.nombre} className="bg-blanco p-4">
+              <p className="text-sm text-piedra-600">{f.nombre}</p>
+              <p className="font-display text-2xl font-bold">{m(f.fondoM)}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
 
       <div className="mt-10 grid gap-8 md:grid-cols-[1fr_1.4fr]">
         {/* Cuadro de áreas */}
@@ -43,37 +58,45 @@ export function LaCasa() {
           <dl className="mt-4 space-y-4">
             <div>
               <dt className="text-piedra-300">Área construida</dt>
-              <dd className="font-display text-4xl font-extrabold">{m2(bonaire.areas.construidaM2)}</dd>
+              <dd className="font-display text-4xl font-extrabold">{m2(esparta.areas.construidaM2)}</dd>
             </div>
             <div>
               <dt className="text-piedra-300">Área útil</dt>
-              <dd className="font-display text-4xl font-extrabold">{m2(bonaire.areas.utilM2)}</dd>
+              <dd className="font-display text-4xl font-extrabold">{m2(esparta.areas.utilM2)}</dd>
             </div>
           </dl>
           <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-piedra-700 pt-4 text-sm">
             <dt className="text-piedra-300">Cuerpo principal</dt>
-            <dd>{bonaire.volumetria.cuerpoPrincipal}</dd>
+            <dd>{esparta.volumetria.cuerpoPrincipal}</dd>
             <dt className="text-piedra-300">Extensión de sala</dt>
-            <dd>{bonaire.volumetria.extensionSala}</dd>
+            <dd>{esparta.volumetria.extensionSala}</dd>
             <dt className="text-piedra-300">Muros</dt>
-            <dd>{bonaire.muros.sistema}</dd>
+            <dd>{esparta.muros.sistema}</dd>
             <dt className="text-piedra-300">Exteriores</dt>
-            <dd>{m(bonaire.muros.exterioresM)}</dd>
+            <dd>{m(esparta.muros.exterioresM)}</dd>
             <dt className="text-piedra-300">Interiores</dt>
-            <dd>{m(bonaire.muros.interioresM)}</dd>
+            <dd>{m(esparta.muros.interioresM)}</dd>
             <dt className="text-piedra-300">Techo</dt>
             <dd>
-              {bonaire.techo.cubierta}, {`${bonaire.techo.pendientePct} %`}
+              {esparta.techo.cubierta}, {`${esparta.techo.pendientePct} %`}
             </dd>
             <dt className="text-piedra-300">Alero / cumbrera</dt>
             <dd>
-              {m(bonaire.techo.aleroM)} / {m(bonaire.techo.cumbreraM)}
+              {m(esparta.techo.aleroM)} / {m(esparta.techo.cumbreraM)}
+            </dd>
+            <dt className="text-piedra-300">Pretil de fachada</dt>
+            <dd>
+              {m(esparta.pretil.altoM)} (hasta {m(esparta.pretil.hastaM)})
             </dd>
             <dt className="text-piedra-300">Corredor techado</dt>
-            <dd>{m(bonaire.corredor.fondoM)}</dd>
+            <dd>{m(esparta.corredor.fondoM)}</dd>
           </dl>
           <p className="mt-4 border-t border-piedra-700 pt-4 text-sm text-piedra-300">
-            {bonaire.implantacion} {bonaire.techo.desague}
+            {esparta.implantacion} {esparta.techo.desague}
+          </p>
+          <p className="mt-4 border-t border-piedra-700 pt-4 text-sm text-piedra-300">
+            <span className="font-semibold text-piedra-50">Fachada:</span> el pretil oculta el techo
+            desde la calle. Acabados: {esparta.acabadosFachada.join(", ")}.
           </p>
         </div>
 
@@ -81,7 +104,7 @@ export function LaCasa() {
         <div>
           <h3 className="font-display text-xl font-bold">Ambientes</h3>
           <ul className="mt-4 divide-y divide-piedra-200 border-y border-piedra-200">
-            {bonaire.ambientes.map((a) => (
+            {esparta.ambientes.map((a) => (
               <li key={a.nombre} className="flex items-start justify-between gap-4 py-4">
                 <div>
                   <p className="font-semibold">{a.nombre}</p>
@@ -96,7 +119,7 @@ export function LaCasa() {
           </ul>
           <p className="mt-4 text-sm text-piedra-600">
             <span className="font-semibold text-piedra-800">Modelo económico, no incluye:</span>{" "}
-            {bonaire.noIncluye.join(", ").toLowerCase()}.
+            {esparta.noIncluye.join(", ").toLowerCase()}.
           </p>
         </div>
       </div>

@@ -1,8 +1,8 @@
 /**
- * Contenido de la Casa Modelo Bonaire.
+ * Contenido de la Casa Modelo Esparta.
  *
- * Fuente: plano y fachada v3, corregidos para casa entre colindancias
- * (`assets/plano-bonaire.pdf`, `assets/fachada-bonaire.pdf`) y `docs/CONTEXTO.md`.
+ * Fuente: planta en lote de 5 × 20 m y fachada con pretil
+ * (`assets/plano-esparta.pdf`, `assets/fachada-esparta.pdf`) y `docs/CONTEXTO.md`.
  * Las especificaciones de materiales son PENDIENTE hasta que el constructor las confirme.
  */
 
@@ -33,9 +33,9 @@ export type Material = {
 /** Desglose de qué incluye un precio: líneas de texto, o PENDIENTE. Solo en el área premium. */
 export type Desglose = string[] | Pendiente;
 
-export const bonaire = {
-  nombre: "Casa Modelo Bonaire",
-  version: "Plano v3, corregido para casa entre colindancias",
+export const esparta = {
+  nombre: "Casa Modelo Esparta",
+  version: "Planta en lote de 5 × 20 m y fachada con pretil",
   resumen: "Casa de una planta en forma de L, 2 dormitorios y 1 baño.",
   dormitorios: 2,
   banos: 1,
@@ -56,6 +56,18 @@ export const bonaire = {
     interioresM: 0.1,
   },
 
+  /** Lote del plano, del frente (calle) al fondo. Las franjas suman 20.00 m. */
+  lote: {
+    frenteM: 5,
+    fondoM: 20,
+    franjas: [
+      { nombre: "Estacionamiento", fondoM: 5 },
+      { nombre: "Jardín", fondoM: 3.5 },
+      { nombre: "Casa", fondoM: 9.5 },
+      { nombre: "Patio", fondoM: 2 },
+    ],
+  },
+
   /** Sin retiro lateral: los terrenos vecinos son de terceros (ver DECISIONES.md). */
   implantacion: "Entre colindancias: los muros laterales no tienen ventanas ni aleros.",
 
@@ -64,11 +76,28 @@ export const bonaire = {
     cumbrera: "Paralela a la fachada",
     /** Verificar el mínimo con la ficha técnica de la lámina que se elija. */
     pendientePct: 15,
-    desague: "El agua cae al frente (canal y bajante) y al fondo, no hacia los vecinos.",
+    desague:
+      "El agua cae al frente, a un canal detrás del pretil que desagua hacia el jardín, y al patio del fondo; nunca hacia los vecinos.",
     /** Alturas sobre el nivel de piso terminado. */
     aleroM: 2.6,
     cumbreraM: 3.31,
   },
+
+  /** Pretil de la fachada: sube el muro del frente y oculta el techo desde la calle. */
+  pretil: {
+    altoM: 0.6,
+    /** Altura total del muro de fachada con el pretil, sobre el nivel de piso terminado. */
+    hastaM: 3.2,
+  },
+
+  /** Acabados de la fachada, según la elevación, en minúscula para ir dentro de una frase. */
+  acabadosFachada: [
+    "bloque de la sala pintado en terracota",
+    "bloque visto sellado en el corredor",
+    "marcos claros en las ventanas",
+    "columna oscura con lámpara",
+    "jardinera baja de bloque",
+  ],
 
   /** Fuera del área construida. La columna aún no tiene diseño estructural. */
   corredor: {
@@ -110,17 +139,17 @@ export const bonaire = {
   noIncluye: ["Tina", "Jacuzzi", "Lavadora", "Secadora"],
 
   plano: {
-    src: "/plano-bonaire.png",
-    alt: "Plano de la Casa Modelo Bonaire: planta en L entre colindancias, con 2 dormitorios, baño, sala-comedor-cocina-lavado abierta y corredor techado en la fachada.",
-    ancho: 3550,
-    alto: 2775,
+    src: "/plano-esparta.png",
+    alt: "Plano de la Casa Modelo Esparta en un lote de 5 × 20 m: estacionamiento de 5.00 m, jardín de 3.50 m, casa de 9.50 m entre colindancias y patio de 2.00 m. La casa tiene 2 dormitorios, baño, sala-comedor-cocina-lavado abierta y corredor techado de entrada.",
+    ancho: 4640,
+    alto: 2032,
   },
 
   fachada: {
-    src: "/fachada-bonaire.png",
-    alt: "Fachada principal de la Casa Modelo Bonaire: techo de lámina a dos aguas, ventana de la sala y corredor techado frente al Dormitorio 1, entre muros de colindancia.",
-    ancho: 3150,
-    alto: 2250,
+    src: "/fachada-esparta.png",
+    alt: "Fachada principal de la Casa Modelo Esparta: pretil de 0.60 m que oculta el techo, bloque de la sala en terracota con ventana y jardinera, y corredor de bloque visto con la ventana del Dormitorio 1, entre muros de colindancia.",
+    ancho: 3560,
+    alto: 2240,
     texto: "Fachada principal — vista desde la calle",
   },
 
@@ -136,7 +165,7 @@ export const bonaire = {
   materiales: [
     {
       material: "Bloque de concreto",
-      especificacion: "Muros exteriores de 0.15 m e interiores de 0.10 m (según plano v3).",
+      especificacion: "Muros exteriores de 0.15 m e interiores de 0.10 m (según el plano).",
       marca: PENDIENTE,
       porQue: PENDIENTE,
     },

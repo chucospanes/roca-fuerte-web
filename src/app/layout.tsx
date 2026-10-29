@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Source_Sans_3 } from "next/font/google";
 import { site } from "@/config/site";
-import { bonaire } from "@/content/bonaire";
+import { esparta } from "@/content/esparta";
 import { SCRIPT_CAPTURA_ORIGEN, SCRIPT_CLICS_VENTA } from "@/lib/origen";
 import "./globals.css";
 
@@ -20,7 +20,7 @@ const texto = Source_Sans_3({
   subsets: ["latin"],
 });
 
-const descripcion = `${site.modelo}: ${bonaire.dormitorios} dormitorios, ${bonaire.areas.construidaM2.toFixed(2)} m² de construcción. Cada material y cada etapa de la obra, documentados en video, en ${site.pais}.`;
+const descripcion = `${site.modelo}: ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Cada material y cada etapa de la obra, documentados en video, en ${site.pais}.`;
 
 // La imagen para compartir la genera `opengraph-image.tsx` (fachada + modelo + marca).
 export const metadata: Metadata = {

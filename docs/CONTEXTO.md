@@ -4,13 +4,13 @@
 
 ## Quién y qué
 - Constructor en El Salvador lanzando su constructora (marca de trabajo: **Roca Fuerte**).
-- Está construyendo su primera casa: la **Casa Modelo Bonaire**.
+- Está construyendo su primera casa: la **Casa Modelo Esparta**.
 - Documentará cada etapa de la obra en redes sociales mostrando con total transparencia
   los materiales y la calidad.
 
 ## Qué vende el portal
-1. **Esta casa** (la Bonaire en construcción, con terreno).
-2. **El servicio de construir el modelo Bonaire** en el terreno del cliente, en El Salvador.
+1. **Esta casa** (la Esparta en construcción, con terreno).
+2. **El servicio de construir el modelo Esparta** en el terreno del cliente, en El Salvador.
 
 ## Público objetivo
 - Familias que buscan vivienda económica pero bien construida (primera vivienda).
@@ -22,14 +22,25 @@
 Honesto, directo, sin exageraciones de marketing. Español salvadoreño neutro.
 El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTube).
 
-## Casa Modelo Bonaire (datos verificados del plano v3, corregido para colindancias)
+## Casa Modelo Esparta (datos del plano en lote y la fachada con pretil)
+- **Lote del plano: 5.00 × 20.00 m.** De la calle al fondo: estacionamiento 5.00 m (carro
+  de 4.50 × 1.80 m), jardín 3.50 m (con jardinera y paso peatonal al corredor de entrada),
+  casa 9.50 m y patio trasero 2.00 m (tendedero). Retiros por confirmar con OPAMSS o la
+  alcaldía.
 - Una planta en forma de L. Bloque de concreto: muros exteriores 0.15 m, interiores 0.10 m.
 - Cuerpo principal 8.00 × 5.00 m + extensión de sala de 1.50 × 2.40 m.
 - **Casa entre colindancias, sin retiro lateral:** los muros laterales no tienen ventanas
   ni aleros.
 - **Techo:** lámina a dos aguas, cumbrera paralela a la fachada, pendiente 15 % (verificar
-  el mínimo con la ficha del fabricante). El agua cae al frente (canal y bajante) y al
-  fondo. Alero a 2.60 m, cumbrera a 3.31 m (sobre el nivel de piso terminado).
+  el mínimo con la ficha del fabricante). El agua cae al frente, a un canal detrás del
+  pretil que desagua al jardín con gárgolas o bajantes, y al patio del fondo. Alero a
+  2.60 m, cumbrera a 3.31 m (sobre el nivel de piso terminado).
+- **Fachada con pretil de 0.60 m** (el muro del frente llega a 3.20 m): con la casa a
+  8.50 m de la calle, oculta el techo desde la acera. El canal tras el pretil es el punto
+  delicado (impermeabilizar, darle pendiente y dejar rebosadero). Acabados: bloque de la
+  sala pintado en terracota, bloque visto sellado en el corredor, marcos claros en las
+  ventanas, columna oscura con lámpara, número de casa grande y jardinera baja de bloque.
+  Ventanas al frente: sala 0.80 × 1.10 m y Dormitorio 1 1.20 × 1.10 m, antepecho 1.00 m.
 - 2 dormitorios de 3.00 × 2.50 m (7.50 m² c/u), con espacio para ropero.
 - 1 baño de 1.50 × 2.50 m (3.75 m²) con ducha, sin tina; extractor y lámina traslúcida
   en el techo.
@@ -39,12 +50,12 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
 - Corredor techado de 1.50 m frente al Dormitorio 1, con columna en la esquina. La puerta
   principal da a este corredor, en el costado de la sala (no se ve de frente). El corredor
   queda fuera del área construida.
-- **Área construida: 43.60 m². Área útil: 38.07 m².** (Sin cambio con la corrección.)
+- **Área construida: 43.60 m². Área útil: 38.07 m².** (Sin cambio con el lote ni el pretil.)
 - Modelo económico: sin tina, jacuzzi, lavadora ni secadora.
-- Plano fuente: `assets/plano-bonaire.png` / `.pdf`. Fachada: `assets/fachada-bonaire.png`
-  / `.pdf`. Los PNG se generan desde los PDF a 240 dpi. Ambos son referenciales; requieren
-  firma de arquitecto o ingeniero antes de construir. `assets/plano_bonaire.py` genera la
-  versión anterior (sin colindancias): no usarlo para regenerar el plano.
+- Plano fuente: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
+  `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta.png`). Ambos son
+  referenciales; requieren firma de arquitecto o ingeniero antes de construir. Si cambian,
+  usar un nombre de archivo nuevo (la caché de `next/image` va por URL).
 
 ## Pendientes del negocio (no inventar)
 - Búsqueda de marca "Roca Fuerte" en el CNR (clases 36, 37 y 19). Existe la sociedad

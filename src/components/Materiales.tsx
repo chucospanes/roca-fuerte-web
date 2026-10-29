@@ -1,5 +1,5 @@
 import { esPendiente } from "@/config/site";
-import { bonaire } from "@/content/bonaire";
+import { esparta } from "@/content/esparta";
 import { Pendiente, Seccion } from "./ui";
 
 function Valor({ valor }: { valor: string }) {
@@ -10,7 +10,7 @@ const todoPendiente = (mat: { especificacion: string; marca: string; porQue: str
   esPendiente(mat.especificacion) && esPendiente(mat.marca) && esPendiente(mat.porQue);
 
 export function Materiales() {
-  const materiales = bonaire.materiales;
+  const materiales = esparta.materiales;
   return (
     <Seccion
       id="materiales"

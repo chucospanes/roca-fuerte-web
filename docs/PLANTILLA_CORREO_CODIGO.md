@@ -25,7 +25,7 @@ Tu código de acceso: {{ .Token }}
 ```html
 <div style="font-family: Arial, Helvetica, sans-serif; max-width: 480px; margin: 0 auto; color: #2b2724;">
   <p style="font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #b0502c; margin: 0 0 8px;">
-    Roca Fuerte · Casa Modelo Bonaire
+    Roca Fuerte · Casa Modelo Esparta
   </p>
   <h1 style="font-size: 22px; margin: 0 0 16px;">Tu código de acceso</h1>
   <p style="font-size: 16px; line-height: 1.5; margin: 0 0 16px;">

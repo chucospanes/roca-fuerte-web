@@ -1,5 +1,5 @@
 import { esPendiente, site, whatsappEsPlaceholder } from "@/config/site";
-import { bonaire } from "@/content/bonaire";
+import { esparta } from "@/content/esparta";
 
 /**
  * Datos estructurados schema.org (`HomeAndConstructionBusiness`) para buscadores.
@@ -13,8 +13,8 @@ export function DatosEstructurados() {
     "@type": "HomeAndConstructionBusiness",
     name: site.marca,
     url: `${site.url}/`,
-    description: `${site.modelo}: casa de una planta, ${bonaire.dormitorios} dormitorios, ${bonaire.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa.`,
-    image: `${site.url}/fachada-bonaire.png`,
+    description: `${site.modelo}: casa de una planta, ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa.`,
+    image: `${site.url}/fachada-esparta.png`,
     areaServed: { "@type": "Country", name: site.pais },
     ...(whatsappEsPlaceholder() ? {} : { telephone: `+${site.whatsapp}` }),
     ...(redes.length > 0 ? { sameAs: redes } : {}),

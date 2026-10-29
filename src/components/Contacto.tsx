@@ -14,7 +14,7 @@ export function Contacto() {
       <div className="grid gap-4 sm:grid-cols-2">
         <BotonWhatsApp opcion="comprar" ubicacion="contacto">Quiero esta casa</BotonWhatsApp>
         <BotonWhatsApp opcion="construir" ubicacion="contacto" variante="secundario">
-          Construir Bonaire en mi terreno
+          Construir Esparta en mi terreno
         </BotonWhatsApp>
       </div>
 
@@ -33,7 +33,7 @@ export function Contacto() {
             desglose de qué incluye el precio. Te pedimos tu correo y te enviamos un código para
             darte acceso.
           </p>
-          <Boton href="/bonaire/ficha" variante="secundario" className="mt-4">
+          <Boton href="/esparta/ficha" variante="secundario" className="mt-4">
             Ver la ficha técnica
           </Boton>
         </div>

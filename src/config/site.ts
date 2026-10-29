@@ -21,7 +21,7 @@ export type RedSocial = "tiktok" | "instagram" | "facebook" | "youtube";
 
 export const site = {
   marca: "Roca Fuerte",
-  modelo: "Casa Modelo Bonaire",
+  modelo: "Casa Modelo Esparta",
   pais: "El Salvador",
 
   /** URL pública. En local y en preview se toma de NEXT_PUBLIC_SITE_URL. */
@@ -34,9 +34,9 @@ export const site = {
   whatsapp: "50300000000",
 
   precios: {
-    /** "Quiero esta casa": la Bonaire en construcción, con terreno. */
+    /** "Quiero esta casa": la Esparta en construcción, con terreno. */
     comprarCasa: PENDIENTE as Precio,
-    /** "Construir Bonaire en mi terreno": precio desde, sujeto a condiciones. */
+    /** "Construir Esparta en mi terreno": precio desde, sujeto a condiciones. */
     construirEnTerreno: PENDIENTE as Precio,
   },
 
@@ -58,7 +58,7 @@ export const site = {
   } as Record<RedSocial, string>,
 
   /**
-   * Acceso con correo al contenido premium (`/bonaire/ficha`). Apagado: la landing no lo
+   * Acceso con correo al contenido premium (`/esparta/ficha`). Apagado: la landing no lo
    * enlaza y la página responde 404. NO activar en producción hasta que la ficha técnica y
    * los materiales tengan datos reales y esté puesto Cloudflare Turnstile (ver ESTADO.md).
    * Para probarlo en `npm run dev`: NEXT_PUBLIC_ACCESO_PREMIUM=1 en .env.local. En un build
