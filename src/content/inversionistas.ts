@@ -8,7 +8,7 @@
  */
 
 import { site } from "@/config/site";
-import type { Punto } from "./landing";
+import { textoPermisos, type Punto } from "./landing";
 
 export const inversionistas = {
   titulo: "Construimos tu proyecto de vivienda",
@@ -22,8 +22,7 @@ export const inversionistas = {
     },
     {
       titulo: "Trámites",
-      texto:
-        "Tramitamos los permisos y la segregación del terreno ante OPAMSS y el CNR. Los servicios que requieren licencia los subcontratamos con quien la tiene.",
+      texto: textoPermisos,
     },
   ],
 

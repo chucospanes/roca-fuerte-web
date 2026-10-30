@@ -30,9 +30,13 @@ lecturas.
     `/portal/obras/[id]` y `/portal/documentos/[id]` responden 404 y "Acceso clientes" no
     aparece; `X-Robots-Tag: noindex` en `/portal` también con el sitio lanzado (build
     temporal, sin commit) y sin Disallow en robots.
-  - **Sin verificar:** la pantalla del portal en `npm run dev` (había otro servidor de
-    desarrollo abierto del usuario en el puerto 3000), el menú móvil abierto y todo lo que
-    lee Supabase (requiere la 004).
+  - Verificado en `npm run dev` con `NEXT_PUBLIC_PORTAL_CLIENTES=1` en `.env.local`, a 390 px
+    (2026-10-30): el menú móvil abre con un toque, muestra los 8 enlaces (con "Acceso
+    clientes") y se cierra al tocar uno; `/portal` sin sesión muestra el acceso con código y
+    lleva `noindex`; `/portal/obras/[id]` sin sesión vuelve a `/portal`; sin desborde
+    horizontal. **Sin verificar:** todo lo que lee Supabase (requiere la 004).
+  - Pregunta frecuente de permisos respondida; el mismo texto (`textoPermisos`) va en la
+    sección de inversionistas.
 - **Siguiente en la Fase 7:**
   1. Usuario: consulta de los CHECK de `clics_venta` → aplicar 003 → Claude verifica con
      lecturas.
@@ -237,9 +241,6 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 ## Bloqueos y pendientes del usuario
 - Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
-- Pregunta frecuente "¿Quién se encarga de los permisos de construcción?" sigue pendiente,
-  y la sección de inversionistas ya dice que Roca Fuerte tramita permisos y segregación:
-  responderla con el mismo criterio.
 - Supabase Pro: decidir antes de dar acceso al portal al primer cliente (un proyecto
   gratuito pausado deja a los clientes sin portal).
 - **Reemplazar el plano de la casa** por la versión cuya nota del techo menciona el pretil

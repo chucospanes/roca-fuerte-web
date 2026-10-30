@@ -3,7 +3,13 @@
  * Respuestas de preguntas frecuentes: PENDIENTE hasta que el constructor las confirme.
  */
 
-import { PENDIENTE, type Pendiente } from "@/config/site";
+import { PENDIENTE, site, type Pendiente } from "@/config/site";
+
+/**
+ * Quién tramita los permisos. El mismo texto va en la pregunta frecuente y en la sección
+ * "Para inversionistas", para que no se contradigan.
+ */
+export const textoPermisos = `${site.marca} tramita los permisos de construcción y la segregación ante OPAMSS y CNR, y subcontrata los servicios que requieren licencia profesional.`;
 
 /** Punto numerado de las secciones Por qué y Calidad. */
 export type Punto = {
@@ -87,5 +93,5 @@ export const preguntas: Pregunta[] = [
   { pregunta: "Vivo fuera de El Salvador, ¿cómo funciona el proceso?", respuesta: PENDIENTE },
   { pregunta: "¿Cuánto tiempo tarda la construcción?", respuesta: PENDIENTE },
   { pregunta: "¿La casa tiene garantía?", respuesta: PENDIENTE },
-  { pregunta: "¿Quién se encarga de los permisos de construcción?", respuesta: PENDIENTE },
+  { pregunta: "¿Quién se encarga de los permisos de construcción?", respuesta: textoPermisos },
 ];

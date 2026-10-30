@@ -88,10 +88,12 @@ Las fotos no van en una tabla: el portal muestra todas las fotos de la carpeta d
 
 1. **Storage → bucket `obras`.**
 2. Entra (o crea) la carpeta con el **`obra_id`**, dentro la carpeta **`avances`**, y dentro
-   una carpeta con el **`id` del avance**. La ruta queda así (sin "obras/" al inicio):
+   una carpeta con el **`id` del avance**. Ruta en el bucket "obras" (sin prefijo obras/):
    ```
-   {obra_id}/avances/{avance_id}/foto-1.jpg
+   {obra_id}/avances/{avance_id}/archivo
    ```
+   donde `{obra_id}` es el id de la obra, `{avance_id}` el id del avance y `archivo` el
+   nombre de la foto (por ejemplo `01.jpg`).
 3. Sube las fotos ahí (**Upload file**).
 
 Reglas:
@@ -111,18 +113,19 @@ ejemplo "1,200 unidades").
 
 ## 8. Documentos (contrato, planos, permisos)
 1. **Storage → bucket `obras`** → carpeta `{obra_id}` → carpeta **`documentos`** → sube el PDF
-   (hasta 10 MB). Ruta:
+   (hasta 10 MB). Ruta en el bucket "obras" (sin prefijo obras/):
    ```
-   {obra_id}/documentos/contrato.pdf
+   {obra_id}/documentos/archivo
    ```
+   donde `archivo` es el nombre del PDF (por ejemplo `contrato.pdf`).
 2. **Table Editor → `documentos` → Insert row:**
    - `obra_id`: el de la obra.
    - `tipo`: `contrato`, `plano`, `permiso` u `otro`.
    - `titulo`: por ejemplo "Contrato de construcción firmado".
-   - `ruta`: **la ruta exacta del archivo**, por ejemplo
-     `3f2b9c1e-...-.../documentos/contrato.pdf` (sin "obras/" al inicio; mayúsculas y
-     minúsculas cuentan). La base rechaza una ruta que no esté en la carpeta de documentos
-     de esa misma obra.
+   - `ruta`: **la ruta exacta del archivo**, con el formato `{obra_id}/documentos/archivo`
+     (sin prefijo obras/; mayúsculas y minúsculas cuentan). Copia el `obra_id` real y el
+     nombre del PDF tal cual lo subiste. La base rechaza una ruta que no esté en la carpeta
+     de documentos de esa misma obra.
 
 El cliente abre el documento desde el portal; el enlace dura 60 segundos y se genera cada
 vez que lo toca.
@@ -145,7 +148,7 @@ entrar a `/portal` con tu correo y revisar. Al terminar, borra esa fila de
 | Mensaje al guardar | Causa |
 |---|---|
 | `violates check constraint ... video_url` | El enlace no es de YouTube o Vimeo, o no empieza con `https://`. |
-| `violates check constraint ... ruta` | La ruta del documento no está en `{obra_id}/documentos/` de esa obra. |
+| `violates check constraint ... ruta` | La ruta del documento no sigue `{obra_id}/documentos/archivo` con el id de esa obra. |
 | `violates foreign key constraint ... etapas` | El `etapa_id` es de otra obra o no existe. |
 | `duplicate key ... obra_id, orden` | Ya hay una etapa con ese orden en la obra. |
 | `violates check constraint ... estado` / `modalidad` / `tipo` | El valor no está en la lista; cópialo tal cual de esta guía. |

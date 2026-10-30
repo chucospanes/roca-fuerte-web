@@ -90,7 +90,7 @@ create table public.avances (
 create index avances_obra_fecha on public.avances (obra_id, fecha desc);
 
 comment on table public.avances is
-  'Diario de obra. Las fotos van en Storage: obras/{obra_id}/avances/{avance_id}/archivo.';
+  'Diario de obra. Fotos en el bucket "obras", ruta {obra_id}/avances/{avance_id}/archivo (sin prefijo obras/).';
 
 create table public.obra_materiales (
   id              uuid primary key default gen_random_uuid(),
