@@ -6,7 +6,7 @@ export function Contacto() {
   return (
     <Seccion
       id="contacto"
-      numero="09"
+      numero="10"
       etiqueta="Contacto"
       titulo="Cuéntanos qué buscas"
       intro="Elige una opción y se abre WhatsApp con el mensaje listo. No tienes que registrarte."

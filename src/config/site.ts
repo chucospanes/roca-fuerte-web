@@ -68,6 +68,16 @@ export const site = {
     process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_ACCESO_PREMIUM === "1",
 
   /**
+   * Portal privado de clientes (`/portal`). Apagado: `/portal` responde 404 y los enlaces
+   * "Acceso clientes" del menú y del pie no se muestran. NO activar en producción hasta que
+   * pase la prueba de punta a punta del aislamiento entre clientes (ver ESTADO.md).
+   * Para probarlo en `npm run dev`: NEXT_PUBLIC_PORTAL_CLIENTES=1 en .env.local. En un build
+   * de producción esa variable no tiene efecto: activarlo exige cambiar este código.
+   */
+  portalClientes:
+    process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_PORTAL_CLIENTES === "1",
+
+  /**
    * Interruptor de lanzamiento. Apagado: el sitio puede estar publicado en el dominio pero
    * todas las páginas y archivos llevan `noindex, nofollow` (metadata en `app/layout.tsx` y
    * encabezado `X-Robots-Tag` en `next.config.ts`) y el sitemap va vacío. `robots.txt` NO

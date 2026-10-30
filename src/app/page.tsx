@@ -5,6 +5,7 @@ import { Contacto } from "@/components/Contacto";
 import { DatosEstructurados } from "@/components/DatosEstructurados";
 import { Encabezado } from "@/components/Encabezado";
 import { Hero } from "@/components/Hero";
+import { Inversionistas } from "@/components/Inversionistas";
 import { LaCasa } from "@/components/LaCasa";
 import { Materiales } from "@/components/Materiales";
 import { Opciones } from "@/components/Opciones";
@@ -26,6 +27,7 @@ export default function Home() {
         <Materiales />
         <Bitacora />
         <Opciones />
+        <Inversionistas />
         <ComoTrabajamos />
         <Preguntas />
         <Contacto />

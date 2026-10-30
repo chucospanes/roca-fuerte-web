@@ -4,7 +4,7 @@ import { Pendiente, Seccion } from "./ui";
 
 export function Preguntas() {
   return (
-    <Seccion id="preguntas" numero="08" etiqueta="Dudas" titulo="Preguntas frecuentes" fondo="blanco">
+    <Seccion id="preguntas" numero="09" etiqueta="Dudas" titulo="Preguntas frecuentes" fondo="blanco">
       <div className="divide-y divide-piedra-200 border-y border-piedra-200">
         {preguntas.map((p) => (
           <details key={p.pregunta} className="group py-1">
