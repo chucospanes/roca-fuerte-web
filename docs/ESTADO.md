@@ -49,8 +49,11 @@ lecturas.
      valores anteriores, rechaza 5 casos inválidos.
   2. Usuario: revisar y aplicar 004 → Claude verifica con lecturas (publishable sin
      sesión: 401 o vacío en las 6 tablas; bucket privado).
-  3. Usuario: correr la prueba de aislamiento en el SQL Editor (debe terminar con
-     "PRUEBA SUPERADA"; no guarda nada).
+  3. **Prueba de aislamiento superada (2026-10-30, la corrió el usuario):** "ERROR: P0001:
+     PRUEBA SUPERADA: A y B ven solo su obra en las 6 tablas, no pueden escribir y anon no
+     lee nada. Todo revertido." Después, `obras` = 0 y 0 usuarios `prueba-portal-%` en
+     `auth.users`. El usuario también confirmó en la base que los CHECK de `clics_venta`
+     incluyen `inversionista` e `inversionistas` (003).
   4. Con aprobación: prueba de punta a punta con dos cuentas de prueba (alias +a y +b),
      una obra y una foto en cada una; se borra todo al terminar.
   5. Agregar al aviso de privacidad los datos del portal (contratos y documentos).
