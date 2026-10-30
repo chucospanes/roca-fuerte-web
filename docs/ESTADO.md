@@ -7,6 +7,11 @@
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
+**Fase 7 (`v1.1.0`) en curso** (rama `feat/inversionistas-portal`): sección "Para
+inversionistas" y portal privado de clientes. Plan aprobado el 2026-10-30 con ajustes
+(ver DECISIONES.md). Las migraciones 003 y 004 las aplica el usuario; Claude verifica con
+lecturas.
+
 **Fase 6 en curso** (`feat/fase-6-despliegue` ya está en `main` y en `origin`, sin tag): despliegue en Vercel Pro, interruptor
 de lanzamiento, página `/privacidad` y README de despliegue. `v1.0.0` se pone cuando el
 sitio esté desplegado y verificado en el dominio con el interruptor apagado; el lanzamiento

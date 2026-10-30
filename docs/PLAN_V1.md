@@ -164,6 +164,34 @@ de Supabase, las `anon`/`service_role` se retiran a fines de 2026).
 5. SEO, rendimiento, revisión en móvil y conteo anónimo de clics en los botones de venta
    → `v0.5.0`
 6. README de despliegue (local, migración Supabase, Vercel, DNS desde Namecheap) → `v1.0.0`
+7. Inversionistas y portal privado de clientes → `v1.1.0` (ver la sección siguiente)
+
+## Fase 7 — Inversionistas y portal privado de clientes (`v1.1.0`)
+Rama `feat/inversionistas-portal`. Decisiones en DECISIONES.md (2026-10-30).
+
+### Sección "Para inversionistas" (landing)
+- Entre "Precios" y "Cómo trabajamos"; secciones renumeradas 01–10, `id="inversionistas"`.
+- Posicionamiento: constructora que el inversionista contrata para SU proyecto (venta o
+  renta); él aporta terreno y capital. Esparta, varias unidades o adaptaciones; permisos y
+  segregación ante OPAMSS y CNR; servicios con licencia subcontratados.
+- Propuesta: presupuesto cerrado por etapas, materiales con especificación visible, avance
+  en video y fotos, portal privado, entrega lista para vender o rentar.
+- Prohibido: rendimientos, porcentajes, plusvalía, "oportunidad de inversión", invitar a
+  invertir en la empresa. Aclaración visible: servicio de construcción por contrato.
+- Botón de WhatsApp `opcion="inversionista"`, `ubicacion="inversionistas"`, con referencia
+  UTM. Migración `003_clics_inversionistas.sql`.
+- Enlaces en el menú (con menú móvil `<details>`) y en el pie.
+
+### Portal `/portal` (interruptor `site.portalClientes`)
+- Código por correo con `shouldCreateUser: false`; mensaje neutro.
+- `/portal`: inicio de sesión o lista de obras. `/portal/obras/[id]`: etapas, avances
+  con fotos (URL firmada 10 min) y videos (YouTube/Vimeo incrustados con el formato oficial),
+  materiales y documentos. `/portal/documentos/[id]`: URL firmada de 60 s y redirección.
+- Todo se lee con la sesión del usuario; RLS de solo lectura por membresía.
+- `noindex` + `X-Robots-Tag`, sin Disallow. `proxy.ts` renueva la sesión en `/portal`.
+- Migración `004_portal_obras.sql`: 6 tablas, RLS, bucket privado `obras` y su política.
+- Guía de carga: `docs/GUIA_CARGA_OBRAS.md`.
 
 ## Fuera de alcance en v1
-Panel de administración de leads, portal de clientes, pagos en línea, blog.
+Panel de administración de leads (y de obras: se cargan en el panel de Supabase), pagos en
+línea, blog. El portal de clientes entra en la Fase 7 (`v1.1.0`).

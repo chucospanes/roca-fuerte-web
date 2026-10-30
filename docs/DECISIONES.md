@@ -345,3 +345,67 @@ terracota y bloque visto sellado en el corredor. Con el pretil, el agua del fren
 canal detrás del pretil y desagua al jardín, en vez del canal y bajante a la vista. Las
 áreas no cambian (43.60 m² construidos, 38.07 m² útiles). Se borra `assets/plano_bonaire.py`
 (generaba una versión ya descartada; queda en el historial de git).
+
+## 2026-10-30 — Cambio de alcance: inversionistas y portal privado de clientes (v1.1.0)
+Nueva fase en la rama `feat/inversionistas-portal`, que sale como `v1.1.0`. El despliegue
+de `main` como `v1.0.0` sigue por su lado y no espera esta rama. Incluye una sección pública
+"Para inversionistas" y un portal privado `/portal` donde compradores, clientes de
+"construir en tu terreno" e inversionistas siguen sus obras.
+
+## 2026-10-30 — Inversionistas: servicio de construcción, no oferta de inversión
+Roca Fuerte es la constructora que el inversionista contrata para ejecutar SU proyecto de
+vivienda (para venta o renta): el inversionista aporta terreno y capital; Roca Fuerte
+construye en ese terreno el modelo Esparta, varias unidades Esparta o adaptaciones del
+modelo, tramita los permisos y la segregación ante OPAMSS y CNR, y subcontrata los
+servicios que requieren licencia. **Prohibido en el texto:** prometer rendimientos,
+porcentajes de ganancia o plusvalía, hablar de "retorno" u "oportunidad de inversión", e
+invitar a invertir dinero en Roca Fuerte. Motivo: es un servicio de construcción por
+contrato; presentarlo como oferta de inversión podría caer en la regulación de ofertas
+públicas de valores y contradice la marca ("mostrar, no prometer"). El caso propio del
+terreno de 10 × 20 m no se usa como ejemplo. Botón de WhatsApp con mensaje propio y conteo
+de clics con opción `inversionista` y ubicación `inversionistas` (migración 003).
+
+## 2026-10-30 — Portal de clientes con el código por correo, sin autoregistro (reemplaza "login con Google")
+Reemplaza la reserva del login con Google para el portal de clientes (entradas del
+2026-10-23). El portal usa el mismo código por correo de Supabase, pero con
+`shouldCreateUser: false`: las cuentas las crea el usuario en el panel de Supabase y nadie
+se registra solo. La pantalla responde igual exista o no el correo, para no revelar quién es
+cliente. Sin panel de administración: obras, avances, fotos y documentos se cargan desde el
+panel de Supabase (`docs/GUIA_CARGA_OBRAS.md`). Interruptor `site.portalClientes`, apagado
+en producción (solo se enciende con un commit, como `accesoPremium`); apagado, `/portal`
+responde 404 y los enlaces "Acceso clientes" no se muestran.
+
+## 2026-10-30 — Datos del portal: 6 tablas, RLS de solo lectura por membresía, Storage por carpeta
+- Tablas: `obras`, `obra_miembros`, `etapas`, `avances`, `obra_materiales` y
+  `documentos` (migración 004). Etapas separadas de avances para no mezclar el estado de
+  la etapa con las entradas del diario de obra.
+- RLS: primera vez que usuarios autenticados leen datos. Solo `select` para
+  `authenticated`, solo filas de obras donde el usuario es miembro; sin permisos ni
+  políticas de escritura. El portal lee con la sesión del usuario (clave publishable),
+  nunca con la clave secreta: la barrera es la base de datos, no el código.
+- Storage: bucket privado `obras`; las rutas empiezan con `{obra_id}/` (sin prefijo):
+  fotos en `{obra_id}/avances/{avance_id}/archivo` y documentos en
+  `{obra_id}/documentos/archivo`. La política de lectura compara
+  `(storage.foldername(name))[1]` con las obras del usuario. Las fotos no tienen tabla: el
+  portal lista la carpeta del avance.
+- Fotos con URL firmada de 10 min, mostradas con `<img>` (no `next/image`: el
+  optimizador guardaría copias de fotos privadas en caché). Documentos por la ruta
+  `/portal/documentos/[id]`, que verifica la sesión, firma una URL de 60 s con el cliente
+  del usuario y redirige; la URL no se genera al cargar la página.
+- Videos: solo enlaces de YouTube (`youtube.com`, `youtu.be`) y Vimeo (`vimeo.com`),
+  con CHECK en la base y validación zod. Se incrustan con el formato oficial
+  (`youtube-nocookie.com/embed/`, `player.vimeo.com/video/`) armado a partir del
+  identificador; nunca se incrusta la URL tal como se escribió.
+- Prueba de aislamiento: SQL en una transacción con `rollback` (cliente A no ve la obra
+  de B y nadie escribe) y prueba de punta a punta con dos cuentas de prueba, con
+  aprobación previa del usuario.
+
+## 2026-10-30 — `/portal` con noindex y X-Robots-Tag, sin Disallow
+Igual que la decisión del interruptor de lanzamiento: con Disallow, Google no lee el
+`noindex`. `/portal` lleva `noindex` en la metadata y `X-Robots-Tag: noindex, nofollow`
+siempre, aunque el sitio esté lanzado.
+
+## 2026-10-30 — Menú en el celular con `<details>`
+El menú de secciones estaba oculto en móvil (`hidden md:block`), donde llega casi todo el
+tráfico: los enlaces nuevos ("Para inversionistas", "Acceso clientes") no se verían. Se
+agrega un menú desplegable con `<details>`/`<summary>`, que funciona sin JavaScript.
