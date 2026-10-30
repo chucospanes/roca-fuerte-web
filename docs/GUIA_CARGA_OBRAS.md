@@ -16,6 +16,122 @@
   otras personas ni comentarios internos en las descripciones.
 - Las fechas se escriben `AAAA-MM-DD` (por ejemplo `2026-11-15`).
 
+## Forma recomendada: una consulta SQL por obra
+Es la forma más corta: después de crear la cuenta del cliente (paso 1), una sola consulta
+en el **SQL Editor** crea la obra, la membresía, la primera etapa, el primer avance, un
+material y la fila del documento, y devuelve los `id` y las carpetas donde van los
+archivos. Los pasos 2 a 8 explican lo mismo con el Table Editor, columna por columna.
+
+### Estructura de carpetas del bucket `obras`, nivel por nivel
+Las rutas **no** llevan "obras/" al inicio: "obras" es el nombre del bucket, no una
+carpeta.
+
+```
+bucket "obras"
+└── {obra_id}/                 nivel 1: una carpeta por obra (el id de la fila en "obras").
+    │                          El acceso se decide aquí: cada cliente solo ve las carpetas
+    │                          de sus obras.
+    ├── avances/               nivel 2: carpeta fija, siempre se llama "avances".
+    │   └── {avance_id}/       nivel 3: una carpeta por avance (el id de la fila en "avances").
+    │       ├── 01.jpg         nivel 4: las fotos de ese avance (JPG, PNG o WebP, hasta 10 MB).
+    │       └── 02.jpg
+    └── documentos/            nivel 2: carpeta fija, siempre se llama "documentos".
+        └── contrato.pdf       nivel 3: el PDF. Su ruta completa va en documentos.ruta.
+```
+
+- Fotos: `{obra_id}/avances/{avance_id}/archivo`
+- Documentos: `{obra_id}/documentos/archivo`
+
+### Plantilla: obra nueva completa
+Cambia todo lo que está entre `<...>` (deja las comillas simples). Para un dato opcional
+que no tengas, escribe `null` sin comillas. Es una sola instrucción: **si algo falla, no se
+crea nada**. Si el correo del cliente no existe en Authentication, tampoco se crea nada y
+la columna `cliente_encontrado` sale en `false`.
+
+```sql
+with
+cliente as (
+  select id from auth.users where email = lower('<correo-del-cliente>')
+),
+obra as (
+  insert into public.obras (nombre, modalidad, modelo, ubicacion, estado,
+                            fecha_inicio, fecha_entrega_estimada)
+  select '<Nombre de la obra>',
+         '<compra | construccion_terreno | inversionista>',
+         '<Casa Modelo Esparta>',
+         '<Municipio, Departamento>',
+         '<por_iniciar | en_obra | pausada | entregada>',
+         '<AAAA-MM-DD>'::date,
+         '<AAAA-MM-DD>'::date
+  where exists (select 1 from cliente)
+  returning id
+),
+miembro as (
+  insert into public.obra_miembros (obra_id, user_id)
+  select obra.id, cliente.id from obra, cliente
+  returning obra_id
+),
+etapa as (
+  insert into public.etapas (obra_id, orden, nombre, estado, fecha_inicio, descripcion)
+  select id, 1, '<Terreno y trazo>', '<por_iniciar | en_proceso | terminada>',
+         '<AAAA-MM-DD>'::date, '<Descripción de la etapa>'
+  from obra
+  returning id, obra_id
+),
+avance as (
+  insert into public.avances (obra_id, etapa_id, fecha, titulo, descripcion, video_url)
+  select obra_id, id, '<AAAA-MM-DD>'::date, '<Título del avance>',
+         '<Descripción del avance>', '<https://www.youtube.com/watch?v=... o null>'
+  from etapa
+  returning id, obra_id
+),
+mat as (
+  insert into public.obra_materiales (obra_id, orden, material, especificacion, marca, cantidad)
+  select id, 1, '<Bloque de concreto>', '<Especificación>', '<Marca>', '<Cantidad con unidad>'
+  from obra
+  returning id
+),
+documento as (
+  insert into public.documentos (obra_id, tipo, titulo, ruta)
+  select id, '<contrato | plano | permiso | otro>', '<Título del documento>',
+         id::text || '/documentos/<contrato.pdf>'
+  from obra
+  returning id, ruta
+)
+select
+  exists (select 1 from cliente)                              as cliente_encontrado,
+  (select id from obra)                                       as obra_id,
+  (select count(*) from miembro)                              as membresias_creadas,
+  (select id from etapa)                                      as etapa_id,
+  (select id from avance)                                     as avance_id,
+  (select id from mat)                                        as material_id,
+  (select id from documento)                                  as documento_id,
+  (select obra_id::text || '/avances/' || id::text || '/' from avance) as carpeta_fotos,
+  (select ruta from documento)                                as ruta_documento;
+```
+
+Después de correrla:
+1. Revisa que `cliente_encontrado` sea `true` y `membresias_creadas` sea 1.
+2. En **Storage → `obras`**, crea las carpetas de `carpeta_fotos` y sube ahí las fotos.
+3. Sube el PDF de modo que su ruta sea exactamente `ruta_documento`.
+4. Si no vas a cargar video, material o documento todavía, borra ese bloque de la plantilla
+   (y su línea en el `select` final) antes de correrla, en vez de dejar los `<...>`.
+
+### Plantilla: avance nuevo en una obra existente
+```sql
+insert into public.avances (obra_id, etapa_id, fecha, titulo, descripcion, video_url)
+values ('<obra_id>', '<etapa_id o null>', '<AAAA-MM-DD>', '<Título del avance>',
+        '<Descripción>', '<URL de YouTube o Vimeo, o null>')
+returning id as avance_id,
+          obra_id::text || '/avances/' || id::text || '/' as carpeta_fotos;
+```
+Sube las fotos del avance a `carpeta_fotos`. Para cambiar el estado de una etapa:
+```sql
+update public.etapas set estado = '<en_proceso | terminada>', fecha_fin = '<AAAA-MM-DD>'
+where id = '<etapa_id>'
+returning orden, nombre, estado;
+```
+
 ## 1. Crear la cuenta del cliente (una vez por cliente)
 1. **Authentication → Users → Add user → Create new user.**
 2. Correo: el que el cliente usará para entrar (en minúsculas).

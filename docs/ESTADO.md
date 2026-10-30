@@ -54,8 +54,13 @@ lecturas.
      lee nada. Todo revertido." Después, `obras` = 0 y 0 usuarios `prueba-portal-%` en
      `auth.users`. El usuario también confirmó en la base que los CHECK de `clics_venta`
      incluyen `inversionista` e `inversionistas` (003).
-  4. Con aprobación: prueba de punta a punta con dos cuentas de prueba (alias +a y +b),
-     una obra y una foto en cada una; se borra todo al terminar.
+  4. **Prueba de punta a punta en curso (aprobada 2026-10-30).** El usuario cargó por SQL
+     las cuentas `<tu-correo>+portal-a@…`, `+portal-b` y `+portal-c` (sin obra), dos obras
+     con membresía, etapa, avance, material y documento, y 4 archivos en Storage. Verificado
+     con lecturas: todo enlazado y en sus carpetas, `+portal-x` no existe. Faltan las
+     pruebas 1–9 en el navegador, la consulta de Storage y el borrado con su confirmación.
+     La guía tiene ahora la plantilla SQL que usará el usuario para obras reales (sin
+     ejecutar en esta forma exacta).
   5. Agregar al aviso de privacidad los datos del portal (contratos y documentos).
   6. Merge, tag `v1.1.0` y push.
 
