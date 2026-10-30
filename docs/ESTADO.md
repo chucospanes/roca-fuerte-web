@@ -38,8 +38,10 @@ lecturas.
   - Pregunta frecuente de permisos respondida; el mismo texto (`textoPermisos`) va en la
     sección de inversionistas.
 - **Siguiente en la Fase 7:**
-  1. Usuario: consulta de los CHECK de `clics_venta` → aplicar 003 → Claude verifica con
-     lecturas.
+  1. Consulta de solo lectura del usuario (2026-10-30): PostgreSQL 17.11, CHECK
+     `clics_venta_opcion_check` y `clics_venta_ubicacion_check` (coinciden con la 003 y con
+     `OPCIONES_VENTA`/`UBICACIONES_VENTA`), sin triggers en `auth.users`. Falta aplicar 003
+     y 004 → Claude verifica con lecturas.
   2. Usuario: revisar y aplicar 004 → Claude verifica con lecturas (publishable sin
      sesión: 401 o vacío en las 6 tablas; bucket privado).
   3. Usuario: correr la prueba de aislamiento en el SQL Editor (debe terminar con

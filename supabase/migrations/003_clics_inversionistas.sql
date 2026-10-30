@@ -11,6 +11,7 @@
 --   where conrelid = 'public.clics_venta'::regclass and contype = 'c';
 -- Deben aparecer `clics_venta_opcion_check` y `clics_venta_ubicacion_check`. Sin
 -- "if exists" a propósito: si el nombre no coincide, la transacción falla y no cambia nada.
+-- Nombres confirmados por el usuario con esa consulta el 2026-10-30 (PostgreSQL 17.11).
 
 begin;
 
