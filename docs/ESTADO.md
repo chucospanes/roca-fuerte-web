@@ -40,8 +40,13 @@ lecturas.
 - **Siguiente en la Fase 7:**
   1. Consulta de solo lectura del usuario (2026-10-30): PostgreSQL 17.11, CHECK
      `clics_venta_opcion_check` y `clics_venta_ubicacion_check` (coinciden con la 003 y con
-     `OPCIONES_VENTA`/`UBICACIONES_VENTA`), sin triggers en `auth.users`. Falta aplicar 003
-     y 004 → Claude verifica con lecturas.
+     `OPCIONES_VENTA`/`UBICACIONES_VENTA`), sin triggers en `auth.users`. **003 y 004
+     aplicadas por el usuario sin errores (2026-10-30).** Verificado solo con lecturas: con la
+     publishable, las 6 tablas y `clics_venta` responden 401/42501 y el bucket `obras` no
+     lista nada ni sirve URL pública; con la secreta, las 6 tablas existen con sus columnas y
+     0 filas, y el bucket es privado (10 MB; JPEG, PNG, WebP, PDF). `esquemaClic` probado en
+     local sin red (código real transpilado): acepta `inversionista`/`inversionistas` y los
+     valores anteriores, rechaza 5 casos inválidos.
   2. Usuario: revisar y aplicar 004 → Claude verifica con lecturas (publishable sin
      sesión: 401 o vacío en las 6 tablas; bucket privado).
   3. Usuario: correr la prueba de aislamiento en el SQL Editor (debe terminar con
