@@ -3,7 +3,7 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-29
+**Última actualización:** 2026-10-30
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
@@ -11,6 +11,39 @@
 inversionistas" y portal privado de clientes. Plan aprobado el 2026-10-30 con ajustes
 (ver DECISIONES.md). Las migraciones 003 y 004 las aplica el usuario; Claude verifica con
 lecturas.
+
+- **Hecho (sin aplicar en Supabase):**
+  - Sección "Para inversionistas" (07), menú en el celular con `<details>`, enlaces en el
+    pie, botón de WhatsApp `inversionista`/`inversionistas`. Revisada a 390 px.
+  - `003_clics_inversionistas.sql`: falta que el usuario confirme el nombre de los CHECK
+    (consulta en el encabezado del archivo) antes de aplicarla. Hasta entonces, un clic de
+    inversionista que llegue a `/api/clic` falla al insertar (se registra en el log, el
+    visitante no lo nota); hoy no pasa porque el WhatsApp es el número de prueba.
+  - Portal `/portal` (`site.portalClientes`, apagado): acceso con código sin crear
+    cuentas, lista de obras, `/portal/obras/[id]` (etapas, avances con fotos firmadas de
+    10 min y videos de YouTube/Vimeo armados desde el id, materiales, documentos) y
+    `/portal/documentos/[id]` (URL firmada de 60 s y redirección 303).
+  - `004_portal_obras.sql` (6 tablas, RLS, bucket `obras`), prueba
+    `supabase/pruebas/004_aislamiento_portal.sql` y `docs/GUIA_CARGA_OBRAS.md`.
+  - Verificado: lint, typecheck y build; 21 casos del analizador de videos (8 válidos, 13
+    rechazados, incluidos dominios falsos e inyección); con el portal apagado, `/portal`,
+    `/portal/obras/[id]` y `/portal/documentos/[id]` responden 404 y "Acceso clientes" no
+    aparece; `X-Robots-Tag: noindex` en `/portal` también con el sitio lanzado (build
+    temporal, sin commit) y sin Disallow en robots.
+  - **Sin verificar:** la pantalla del portal en `npm run dev` (había otro servidor de
+    desarrollo abierto del usuario en el puerto 3000), el menú móvil abierto y todo lo que
+    lee Supabase (requiere la 004).
+- **Siguiente en la Fase 7:**
+  1. Usuario: consulta de los CHECK de `clics_venta` → aplicar 003 → Claude verifica con
+     lecturas.
+  2. Usuario: revisar y aplicar 004 → Claude verifica con lecturas (publishable sin
+     sesión: 401 o vacío en las 6 tablas; bucket privado).
+  3. Usuario: correr la prueba de aislamiento en el SQL Editor (debe terminar con
+     "PRUEBA SUPERADA"; no guarda nada).
+  4. Con aprobación: prueba de punta a punta con dos cuentas de prueba (alias +a y +b),
+     una obra y una foto en cada una; se borra todo al terminar.
+  5. Agregar al aviso de privacidad los datos del portal (contratos y documentos).
+  6. Merge, tag `v1.1.0` y push.
 
 **Fase 6 en curso** (`feat/fase-6-despliegue` ya está en `main` y en `origin`, sin tag): despliegue en Vercel Pro, interruptor
 de lanzamiento, página `/privacidad` y README de despliegue. `v1.0.0` se pone cuando el
@@ -204,6 +237,11 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 ## Bloqueos y pendientes del usuario
 - Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
+- Pregunta frecuente "¿Quién se encarga de los permisos de construcción?" sigue pendiente,
+  y la sección de inversionistas ya dice que Roca Fuerte tramita permisos y segregación:
+  responderla con el mismo criterio.
+- Supabase Pro: decidir antes de dar acceso al portal al primer cliente (un proyecto
+  gratuito pausado deja a los clientes sin portal).
 - **Reemplazar el plano de la casa** por la versión cuya nota del techo menciona el pretil
   (`Casa_Modelo_Esparta_plano_v2`; no llegó a Descargas el 2026-10-29). Guardarla con
   nombre nuevo (`plano-casa-esparta-v2.png/.pdf`), actualizar referencias y la lista cerrada
