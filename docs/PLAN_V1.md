@@ -22,7 +22,8 @@ mueve los archivos al repo sin sobrescribir `CLAUDE.md`, `docs/`, `assets/` ni `
 
 ## Configuración editable — `src/config/site.ts`
 - Nombre de marca (por ahora "Roca Fuerte"; único lugar donde aparece).
-- Número de WhatsApp en formato internacional (placeholder `50300000000`).
+- Número de WhatsApp en formato internacional, solo dígitos (`50378216321`); en pantalla
+  se muestra como `+503 7821-6321`.
 - Precio "desde" de "Quiero esta casa" y "Construir en tu terreno" (placeholder `PENDIENTE`;
   si es PENDIENTE se muestra "Precio próximamente").
 - Condiciones del precio de construcción en terreno del cliente: terreno plano, escriturado,
@@ -65,8 +66,7 @@ Instalaciones eléctricas e hidráulicas, Acabados, Entrega (pendientes).
 "Quiero esta casa" y "Construir Esparta en mi terreno" (hero, tarjetas de precios y
 contacto) **no piden correo ni código**: abren `wa.me` con un mensaje prellenado distinto
 según la opción. El correo con código es solo para el contenido premium (ver
-DECISIONES.md). Mientras `site.whatsapp` sea el número de prueba, los botones no envían a
-nadie a un número inexistente.
+DECISIONES.md).
 
 ## Acceso con correo a contenido premium
 La landing sigue 100 % pública, incluidos el plano y la fachada ampliables (PNG en

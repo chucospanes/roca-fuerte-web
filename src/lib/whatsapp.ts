@@ -1,21 +1,11 @@
-import { site, whatsappEsPlaceholder } from "@/config/site";
+import { site } from "@/config/site";
 import { formasPago, inicios } from "@/content/formularios";
 import type { DatosCalificacion, OPCIONES_VENTA, UBICACIONES_VENTA } from "@/lib/validacion";
 
-/**
- * Enlace a WhatsApp con mensaje prellenado.
- * Mientras el número sea placeholder devuelve el ancla de la sección de contacto (que avisa
- * que el número está pendiente), para no mandar a nadie a un número que no existe.
- */
+/** Enlace a WhatsApp con mensaje prellenado. */
 export function whatsappHref(mensaje?: string): string {
-  if (whatsappEsPlaceholder()) return "/#contacto";
   const texto = mensaje ? `?text=${encodeURIComponent(mensaje)}` : "";
   return `https://wa.me/${site.whatsapp}${texto}`;
-}
-
-/** `true` si el enlace sale del sitio (abrir en otra pestaña). */
-export function whatsappEsExterno(): boolean {
-  return !whatsappEsPlaceholder();
 }
 
 /** Opciones de venta: cada botón abre WhatsApp con su propio mensaje, sin pedir datos. */

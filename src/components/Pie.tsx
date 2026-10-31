@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { esPendiente, site, whatsappEsPlaceholder, type RedSocial } from "@/config/site";
+import { esPendiente, site, whatsappVisible, type RedSocial } from "@/config/site";
 import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
 import { Pendiente } from "./ui";
 
@@ -30,20 +30,16 @@ export function Pie() {
           </h2>
           <p className="mt-3 text-sm">
             WhatsApp:{" "}
-            {whatsappEsPlaceholder() ? (
-              <Pendiente />
-            ) : (
-              <a
-                href={whatsappHref(mensajesVenta.general)}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-venta="general"
-                data-ubicacion="pie"
-                className="text-blanco underline"
-              >
-                +{site.whatsapp}
-              </a>
-            )}
+            <a
+              href={whatsappHref(mensajesVenta.general)}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-venta="general"
+              data-ubicacion="pie"
+              className="text-blanco underline"
+            >
+              {whatsappVisible()}
+            </a>
           </p>
         </div>
 

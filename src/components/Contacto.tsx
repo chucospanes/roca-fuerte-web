@@ -1,6 +1,6 @@
-import { site, whatsappEsPlaceholder } from "@/config/site";
+import { site } from "@/config/site";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Boton, Pendiente, Seccion } from "./ui";
+import { Boton, Seccion } from "./ui";
 
 export function Contacto() {
   return (
@@ -17,13 +17,6 @@ export function Contacto() {
           Construir Esparta en mi terreno
         </BotonWhatsApp>
       </div>
-
-      {whatsappEsPlaceholder() && (
-        <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-piedra-600">
-          <Pendiente texto="Número de WhatsApp pendiente" />
-          Mientras tanto, los botones no abren WhatsApp.
-        </p>
-      )}
 
       {site.accesoPremium && (
         <div className="mt-10 rounded-lg border border-piedra-200 bg-blanco p-6">

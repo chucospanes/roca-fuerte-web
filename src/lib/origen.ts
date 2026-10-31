@@ -37,7 +37,6 @@ if(n)localStorage.setItem(k,JSON.stringify(o));
  *    por ejemplo "(Ref: tiktok · video12)". Sin UTM, no agrega nada.
  * 2. Envía el clic con `sendBeacon` a `/api/clic`: botón, ubicación, UTM y solo el dominio
  *    del referrer. Sin datos personales.
- * Con el número de prueba los botones no apuntan a wa.me: no hace nada.
  */
 export const SCRIPT_CLICS_VENTA = `(function(){
 function leer(){try{return JSON.parse(localStorage.getItem(${JSON.stringify(CLAVE)})||"null")||{};}catch(e){return {};}}

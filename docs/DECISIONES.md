@@ -452,3 +452,10 @@ Hobby excluyen el uso comercial.
 Cierra el pendiente de "Los commits de este repo van con la cuenta de GitHub chucospanes".
 Vercel desplegó `8aa05e0` (autor chucospanes, con la línea `Co-Authored-By` de Claude) sin
 bloqueo (Ready). La línea se sigue usando; lo que Vercel revisa es el autor del commit.
+
+## 2026-10-31 — WhatsApp real: +503 7821-6321 (reemplaza "WhatsApp mientras el número sea placeholder")
+`site.whatsapp` = `50378216321` (solo dígitos, como lo pide wa.me) es el único lugar del
+número; en pantalla se muestra `+503 7821-6321` con `whatsappVisible()`, derivado del mismo
+valor. Se quita el modo "número de prueba" (`whatsappEsPlaceholder`): los botones ya no
+caen en `#contacto`, el aviso "Número de WhatsApp pendiente" de Contacto desaparece,
+schema.org lleva el teléfono y `/api/clic` empieza a guardar clics en producción.

@@ -1,6 +1,5 @@
 import {
   mensajesVenta,
-  whatsappEsExterno,
   whatsappHref,
   type OpcionVenta,
   type UbicacionVenta,
@@ -29,7 +28,7 @@ export function BotonWhatsApp({
   return (
     <Boton
       href={whatsappHref(mensajesVenta[opcion])}
-      externo={whatsappEsExterno()}
+      externo
       variante={variante}
       className={className}
       datos={{ "data-venta": opcion, "data-ubicacion": ubicacion }}

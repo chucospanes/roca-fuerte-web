@@ -28,10 +28,10 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://constructorarocafuerte.com",
 
   /**
-   * WhatsApp Business en formato internacional, solo dígitos, sin "+".
-   * El Salvador: 503 + 8 dígitos. Placeholder hasta tener el número real.
+   * WhatsApp Business en formato internacional, solo dígitos, sin "+" (así lo pide wa.me).
+   * Único lugar del número: en pantalla se muestra con `whatsappVisible()`.
    */
-  whatsapp: "50300000000",
+  whatsapp: "50378216321",
 
   precios: {
     /** "Quiero esta casa": la Esparta en construcción, con terreno. */
@@ -86,9 +86,10 @@ export const site = {
   lanzado: false,
 };
 
-/** WhatsApp aún sin configurar (placeholder). */
-export function whatsappEsPlaceholder(): boolean {
-  return site.whatsapp === "50300000000";
+/** El WhatsApp para mostrar en pantalla: "+503 7821-6321" (El Salvador: 503 + 8 dígitos). */
+export function whatsappVisible(): string {
+  const n = site.whatsapp;
+  return `+${n.slice(0, 3)} ${n.slice(3, 7)}-${n.slice(7)}`;
 }
 
 const formatoUSD = new Intl.NumberFormat("es-SV", {

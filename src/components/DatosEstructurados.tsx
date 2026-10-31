@@ -1,4 +1,4 @@
-import { esPendiente, site, whatsappEsPlaceholder } from "@/config/site";
+import { esPendiente, site } from "@/config/site";
 import { esparta } from "@/content/esparta";
 
 /**
@@ -16,7 +16,7 @@ export function DatosEstructurados() {
     description: `${site.modelo}: casa de una planta, ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa.`,
     image: `${site.url}/fachada-esparta.png`,
     areaServed: { "@type": "Country", name: site.pais },
-    ...(whatsappEsPlaceholder() ? {} : { telephone: `+${site.whatsapp}` }),
+    telephone: `+${site.whatsapp}`,
     ...(redes.length > 0 ? { sameAs: redes } : {}),
   };
   return (

@@ -231,8 +231,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 ## Siguiente
 **Pendientes antes del lanzamiento** (`site.lanzado = true`; lista completa en el README,
 sección 6):
-1. Número real de WhatsApp Business en `site.whatsapp` y, con él desplegado, la prueba real
-   del conteo de clics (un clic del usuario, verificación con lecturas en `clics_venta`).
+1. Prueba real del conteo de clics: el número real (`+503 7821-6321`) ya está en
+   `site.whatsapp` (2026-10-31); falta el clic del usuario desde su celular y la
+   verificación con lecturas en `clics_venta`.
 2. Precios "desde" en `site.precios`.
 3. Aviso de privacidad revisado por un abogado (razón social, domicilio, correo y plazo de
    conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
@@ -295,7 +296,6 @@ sin portal).
 - Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
   responsable: razón social, correo de contacto y plazo de conservación.
 - Precios "desde" → `site.precios`.
-- Número de WhatsApp Business → `site.whatsapp`.
 - URLs de redes sociales → `site.redes`.
 - Especificaciones y marcas de materiales → `esparta.materiales`.
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.

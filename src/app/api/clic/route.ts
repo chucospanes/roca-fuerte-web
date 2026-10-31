@@ -1,4 +1,3 @@
-import { whatsappEsPlaceholder } from "@/config/site";
 import { crearClienteAdmin } from "@/lib/supabase/admin";
 import { esquemaClic } from "@/lib/validacion";
 
@@ -7,15 +6,12 @@ import { esquemaClic } from "@/lib/validacion";
  * con `sendBeacon`). Sin datos personales: no se lee ni se guarda la IP ni el navegador.
  *
  * Defensas básicas (los conteos son indicativos, ver DECISIONES.md): solo peticiones del
- * propio sitio (`Origin` y `Sec-Fetch-Site`), cuerpo pequeño y validado con zod. Mientras
- * el WhatsApp sea el número de prueba no se guarda nada.
+ * propio sitio (`Origin` y `Sec-Fetch-Site`), cuerpo pequeño y validado con zod.
  */
 const MAX_BYTES = 2_000;
 const sinContenido = () => new Response(null, { status: 204 });
 
 export async function POST(request: Request) {
-  if (whatsappEsPlaceholder()) return sinContenido();
-
   const origen = request.headers.get("origin");
   if (!origen || origen !== new URL(request.url).origin) {
     return new Response(null, { status: 403 });

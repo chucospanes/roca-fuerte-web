@@ -1,13 +1,12 @@
-import { mensajesVenta, whatsappEsExterno, whatsappHref } from "@/lib/whatsapp";
+import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
 
 /** Botón de WhatsApp fijo, siempre visible en móvil. */
 export function WhatsAppFlotante() {
-  const href = whatsappHref(mensajesVenta.general);
-  const externo = whatsappEsExterno();
   return (
     <a
-      href={href}
-      {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      href={whatsappHref(mensajesVenta.general)}
+      target="_blank"
+      rel="noopener noreferrer"
       aria-label="Escribir por WhatsApp"
       data-venta="general"
       data-ubicacion="flotante"
