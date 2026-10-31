@@ -164,10 +164,10 @@ de Supabase, las `anon`/`service_role` se retiran a fines de 2026).
 5. SEO, rendimiento, revisión en móvil y conteo anónimo de clics en los botones de venta
    → `v0.5.0`
 6. README de despliegue (local, migración Supabase, Vercel, DNS desde Namecheap) → `v1.0.0`
-7. Inversionistas y portal privado de clientes → entra en `v1.0.0` con el portal apagado
+7. Inversionistas y portal privado de clientes → entra en `v1.0.0`; portal encendido el 2026-10-31
    (decisión del 2026-10-31; ver la sección siguiente)
 
-## Fase 7 — Inversionistas y portal privado de clientes (en `v1.0.0`, portal apagado)
+## Fase 7 — Inversionistas y portal privado de clientes (en `v1.0.0`; portal encendido el 2026-10-31)
 Rama `feat/inversionistas-portal`. Decisiones en DECISIONES.md (2026-10-30).
 
 ### Sección "Para inversionistas" (landing)
@@ -195,4 +195,4 @@ Rama `feat/inversionistas-portal`. Decisiones en DECISIONES.md (2026-10-30).
 
 ## Fuera de alcance en v1
 Panel de administración de leads (y de obras: se cargan en el panel de Supabase), pagos en
-línea, blog. El portal de clientes entra en la Fase 7 (en `v1.0.0`, apagado).
+línea, blog. El portal de clientes entra en la Fase 7 (en `v1.0.0`; encendido el 2026-10-31).

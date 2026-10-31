@@ -418,3 +418,14 @@ sección "Para inversionistas" pública y el portal con `site.portalClientes` ap
 producción `/portal` responde 404 y "Acceso clientes" no aparece). En Vercel no se
 configura `NEXT_PUBLIC_PORTAL_CLIENTES`. Motivo: la fase está probada de punta a punta y
 el portal apagado no expone nada; desplegar una sola versión evita mantener dos líneas.
+
+## 2026-10-31 — Portal de clientes encendido en producción (reemplaza "portal apagado" de la entrada anterior)
+Decisión del usuario, tras la prueba de punta a punta. `site.portalClientes` pasa a ser la
+constante `true`, sin variable de entorno: `NEXT_PUBLIC_PORTAL_CLIENTES` deja de leerse
+(antes solo funcionaba fuera de producción). Apagarlo es poner `false` en un commit.
+`site.lanzado` y `site.accesoPremium` no cambian. Con el portal encendido, "Acceso clientes"
+aparece en el menú y el pie, y `/portal` acepta el código por correo solo para cuentas que
+ya existen en Supabase Auth. Lo que queda pendiente (aviso de privacidad con los datos del
+portal, Supabase Pro, primera carga con la plantilla SQL) pasa a ser requisito antes de
+cargar la obra del primer cliente, no antes de encender el código: sin obras cargadas, el
+portal no muestra datos de nadie.

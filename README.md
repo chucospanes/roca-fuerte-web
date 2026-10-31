@@ -34,7 +34,6 @@ npm run dev                  # http://localhost:3000
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` |
 | `SUPABASE_SECRET_KEY` | `sb_secret_…` — solo servidor, salta RLS |
 | `NEXT_PUBLIC_ACCESO_PREMIUM` | Opcional, `1` para probar `/esparta/ficha` en desarrollo. No tiene efecto en un build de producción. |
-| `NEXT_PUBLIC_PORTAL_CLIENTES` | Opcional, `1` para probar `/portal` en desarrollo. No tiene efecto en un build de producción. |
 
 Comandos:
 

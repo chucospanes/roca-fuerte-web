@@ -7,14 +7,13 @@
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 6 (despliegue) pendiente; la Fase 7 ya está en `main`, con el portal apagado.**
-`main` tiene las fases 6 y 7, sin tag. `v1.0.0` se pone cuando el sitio esté desplegado y
-verificado en el dominio con `site.lanzado` y `site.portalClientes` apagados (decisión del
-2026-10-31); encender cualquiera de los dos va en un commit aparte. En Vercel **no** se
-configura `NEXT_PUBLIC_PORTAL_CLIENTES` (en producción no tendría efecto). Acceso premium
-apagado en producción. Fase 5 cerrada en `v0.5.0`.
+**Fase 6 (despliegue) pendiente; la Fase 7 está en `main` y el portal de clientes quedó
+encendido (2026-10-31).** `main` tiene las fases 6 y 7, sin tag. `site.portalClientes` es
+la constante `true` (ya no hay variable `NEXT_PUBLIC_PORTAL_CLIENTES`; se puede quitar de
+`.env.local`). `site.lanzado` sigue apagado y el acceso premium también. `v1.0.0` se pone
+cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `v0.5.0`.
 
-### Fase 7 — inversionistas y portal privado de clientes (en `main`, portal apagado)
+### Fase 7 — inversionistas y portal privado de clientes (en `main`, portal encendido)
 - **Landing:** sección "Para inversionistas" (07) con botón de WhatsApp
   `inversionista`/`inversionistas`, menú en el celular con `<details>` y enlaces en el pie.
   Pregunta frecuente de permisos respondida con el mismo texto que la sección.
@@ -39,9 +38,13 @@ apagado en producción. Fase 5 cerrada en `v0.5.0`.
   prepara `/portal/obras/[id]` ("Jest worker encountered 2 child process exceptions"):
   fallaban igual la obra de A, la de B y un id inexistente, antes de leer datos. Se
   resolvió reiniciando `npm run dev`.
-- **Antes de encender el portal en producción:** aviso de privacidad con los datos del
+- **Portal encendido en el código (2026-10-31).** Falta verificarlo en el dominio cuando
+  Vercel despliegue (`/portal` 200 con `X-Robots-Tag: noindex`, "Acceso clientes" visible).
+- **Antes de cargar la obra del primer cliente:** aviso de privacidad con los datos del
   portal (contratos y documentos), decidir Supabase Pro, y probar la plantilla SQL de
-  `GUIA_CARGA_OBRAS.md` con la primera obra real (no se ha ejecutado en esta forma exacta).
+  `GUIA_CARGA_OBRAS.md` con esa primera obra (no se ha ejecutado en esta forma exacta).
+- Las cuentas de quienes pidieron la ficha premium también están en Supabase Auth: pueden
+  pedir el código en `/portal` y ven "Este correo no tiene obras asignadas" (no ven datos).
 
 ## Hecho
 - **Cambio de nombre a Casa Modelo Esparta (rama `feat/modelo-esparta`, sin merge: el

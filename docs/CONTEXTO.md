@@ -17,7 +17,7 @@
    OPAMSS y CNR y subcontrata los servicios que requieren licencia. Es un servicio de
    construcción, **no una oferta de inversión**: nunca prometer rendimientos ni plusvalía.
 
-## Portal privado de clientes (en v1.0.0, apagado hasta activarlo)
+## Portal privado de clientes (encendido desde el 2026-10-31)
 Compradores, clientes de "construir en tu terreno" e inversionistas entran a `/portal` con
 un código por correo (cuentas creadas por el constructor, sin autoregistro) y ven solo sus
 obras: etapas, avances con fotos y videos, materiales y documentos.
