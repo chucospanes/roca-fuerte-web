@@ -3,71 +3,45 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-30
+**Última actualización:** 2026-10-31
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 7 (`v1.1.0`) en curso** (rama `feat/inversionistas-portal`): sección "Para
-inversionistas" y portal privado de clientes. Plan aprobado el 2026-10-30 con ajustes
-(ver DECISIONES.md). Las migraciones 003 y 004 las aplica el usuario; Claude verifica con
-lecturas.
+**Fase 6 (despliegue) pendiente; la Fase 7 ya está en `main`, con el portal apagado.**
+`main` tiene las fases 6 y 7, sin tag. `v1.0.0` se pone cuando el sitio esté desplegado y
+verificado en el dominio con `site.lanzado` y `site.portalClientes` apagados (decisión del
+2026-10-31); encender cualquiera de los dos va en un commit aparte. En Vercel **no** se
+configura `NEXT_PUBLIC_PORTAL_CLIENTES` (en producción no tendría efecto). Acceso premium
+apagado en producción. Fase 5 cerrada en `v0.5.0`.
 
-- **Hecho (sin aplicar en Supabase):**
-  - Sección "Para inversionistas" (07), menú en el celular con `<details>`, enlaces en el
-    pie, botón de WhatsApp `inversionista`/`inversionistas`. Revisada a 390 px.
-  - `003_clics_inversionistas.sql`: falta que el usuario confirme el nombre de los CHECK
-    (consulta en el encabezado del archivo) antes de aplicarla. Hasta entonces, un clic de
-    inversionista que llegue a `/api/clic` falla al insertar (se registra en el log, el
-    visitante no lo nota); hoy no pasa porque el WhatsApp es el número de prueba.
-  - Portal `/portal` (`site.portalClientes`, apagado): acceso con código sin crear
-    cuentas, lista de obras, `/portal/obras/[id]` (etapas, avances con fotos firmadas de
-    10 min y videos de YouTube/Vimeo armados desde el id, materiales, documentos) y
-    `/portal/documentos/[id]` (URL firmada de 60 s y redirección 303).
-  - `004_portal_obras.sql` (6 tablas, RLS, bucket `obras`), prueba
-    `supabase/pruebas/004_aislamiento_portal.sql` y `docs/GUIA_CARGA_OBRAS.md`.
-  - Verificado: lint, typecheck y build; 21 casos del analizador de videos (8 válidos, 13
-    rechazados, incluidos dominios falsos e inyección); con el portal apagado, `/portal`,
-    `/portal/obras/[id]` y `/portal/documentos/[id]` responden 404 y "Acceso clientes" no
-    aparece; `X-Robots-Tag: noindex` en `/portal` también con el sitio lanzado (build
-    temporal, sin commit) y sin Disallow en robots.
-  - Verificado en `npm run dev` con `NEXT_PUBLIC_PORTAL_CLIENTES=1` en `.env.local`, a 390 px
-    (2026-10-30): el menú móvil abre con un toque, muestra los 8 enlaces (con "Acceso
-    clientes") y se cierra al tocar uno; `/portal` sin sesión muestra el acceso con código y
-    lleva `noindex`; `/portal/obras/[id]` sin sesión vuelve a `/portal`; sin desborde
-    horizontal. **Sin verificar:** todo lo que lee Supabase (requiere la 004).
-  - Pregunta frecuente de permisos respondida; el mismo texto (`textoPermisos`) va en la
-    sección de inversionistas.
-- **Siguiente en la Fase 7:**
-  1. Consulta de solo lectura del usuario (2026-10-30): PostgreSQL 17.11, CHECK
-     `clics_venta_opcion_check` y `clics_venta_ubicacion_check` (coinciden con la 003 y con
-     `OPCIONES_VENTA`/`UBICACIONES_VENTA`), sin triggers en `auth.users`. **003 y 004
-     aplicadas por el usuario sin errores (2026-10-30).** Verificado solo con lecturas: con la
-     publishable, las 6 tablas y `clics_venta` responden 401/42501 y el bucket `obras` no
-     lista nada ni sirve URL pública; con la secreta, las 6 tablas existen con sus columnas y
-     0 filas, y el bucket es privado (10 MB; JPEG, PNG, WebP, PDF). `esquemaClic` probado en
-     local sin red (código real transpilado): acepta `inversionista`/`inversionistas` y los
-     valores anteriores, rechaza 5 casos inválidos.
-  2. Usuario: revisar y aplicar 004 → Claude verifica con lecturas (publishable sin
-     sesión: 401 o vacío en las 6 tablas; bucket privado).
-  3. **Prueba de aislamiento superada (2026-10-30, la corrió el usuario):** "ERROR: P0001:
-     PRUEBA SUPERADA: A y B ven solo su obra en las 6 tablas, no pueden escribir y anon no
-     lee nada. Todo revertido." Después, `obras` = 0 y 0 usuarios `prueba-portal-%` en
-     `auth.users`. El usuario también confirmó en la base que los CHECK de `clics_venta`
-     incluyen `inversionista` e `inversionistas` (003).
-  4. **Prueba de punta a punta en curso (aprobada 2026-10-30).** El usuario cargó por SQL
-     las cuentas `<tu-correo>+portal-a@…`, `+portal-b` y `+portal-c` (sin obra), dos obras
-     con membresía, etapa, avance, material y documento, y 4 archivos en Storage. Verificado
-     con lecturas: todo enlazado y en sus carpetas, `+portal-x` no existe. Faltan las
-     pruebas 1–9 en el navegador, la consulta de Storage y el borrado con su confirmación.
-     La guía tiene ahora la plantilla SQL que usará el usuario para obras reales (sin
-     ejecutar en esta forma exacta).
-  5. Agregar al aviso de privacidad los datos del portal (contratos y documentos).
-  6. Merge, tag `v1.1.0` y push.
-
-**Fase 6 en curso** (`feat/fase-6-despliegue` ya está en `main` y en `origin`, sin tag): despliegue en Vercel Pro, interruptor
-de lanzamiento, página `/privacidad` y README de despliegue. `v1.0.0` se pone cuando el
-sitio esté desplegado y verificado en el dominio con el interruptor apagado; el lanzamiento
-va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en producción.
+### Fase 7 — inversionistas y portal privado de clientes (en `main`, portal apagado)
+- **Landing:** sección "Para inversionistas" (07) con botón de WhatsApp
+  `inversionista`/`inversionistas`, menú en el celular con `<details>` y enlaces en el pie.
+  Pregunta frecuente de permisos respondida con el mismo texto que la sección.
+- **Portal `/portal`** (`site.portalClientes`): código por correo sin crear cuentas, lista
+  de obras, `/portal/obras/[id]` y `/portal/documentos/[id]` (URL firmada de 60 s). Todo se
+  lee con la sesión del usuario; `noindex` + `X-Robots-Tag`, sin Disallow.
+- **Supabase:** 003 y 004 aplicadas por el usuario el 2026-10-30 (PostgreSQL 17.11) y
+  verificadas con lecturas (sin sesión, 401 en las 6 tablas; bucket `obras` privado).
+- **Prueba de aislamiento (SQL, revertida):** superada.
+- **Prueba de punta a punta (2026-10-30, cuentas `<tu-correo>+portal-a@…`, `+portal-b`,
+  `+portal-c` y `+portal-x`):** en el navegador, A 1–7 y B 1–7 correctas (cada uno ve
+  solo su obra, foto, video, material y documento; la URL del documento vence a los 60 s;
+  la obra y el documento del otro dan "no encontrado"/404; sin sesión vuelve a `/portal`);
+  correo inexistente (8): mensaje genérico, sin correo y sin usuario creado; cuenta sin
+  obras (9): "Este correo no tiene obras asignadas". Storage por SQL de solo lectura: "A ve
+  2 propios y 0 de B. B ve 2 propios y 0 de A."
+- **Limpieza:** el usuario borró carpetas, obras y usuarios de prueba; su consulta dio las 8
+  filas en 0. Confirmado con lecturas el 2026-10-31: 6 tablas del portal, objetos del
+  bucket y usuarios `+portal-*` en 0; `leads` (3) y `clics_venta` (0) sin cambios.
+- **Incidente en desarrollo (no es del código):** con la PC sin memoria (644 MB libres de
+  8 GB) y el servidor encendido desde la mañana, se cayó el proceso auxiliar de Next que
+  prepara `/portal/obras/[id]` ("Jest worker encountered 2 child process exceptions"):
+  fallaban igual la obra de A, la de B y un id inexistente, antes de leer datos. Se
+  resolvió reiniciando `npm run dev`.
+- **Antes de encender el portal en producción:** aviso de privacidad con los datos del
+  portal (contratos y documentos), decidir Supabase Pro, y probar la plantilla SQL de
+  `GUIA_CARGA_OBRAS.md` con la primera obra real (no se ha ejecutado en esta forma exacta).
 
 ## Hecho
 - **Cambio de nombre a Casa Modelo Esparta (rama `feat/modelo-esparta`, sin merge: el

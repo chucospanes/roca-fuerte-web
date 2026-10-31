@@ -409,3 +409,12 @@ siempre, aunque el sitio esté lanzado.
 El menú de secciones estaba oculto en móvil (`hidden md:block`), donde llega casi todo el
 tráfico: los enlaces nuevos ("Para inversionistas", "Acceso clientes") no se verían. Se
 agrega un menú desplegable con `<details>`/`<summary>`, que funciona sin JavaScript.
+
+## 2026-10-31 — La Fase 7 entra en `v1.0.0`, apagada (reemplaza "sale como v1.1.0")
+Reemplaza la versión de la entrada "Cambio de alcance: inversionistas y portal privado de
+clientes (v1.1.0)" del 2026-10-30. La rama `feat/inversionistas-portal` se integra a `main`
+antes del despliegue, sin tag, y `v1.0.0` se pone al desplegar e incluye esta fase: la
+sección "Para inversionistas" pública y el portal con `site.portalClientes` apagado (en
+producción `/portal` responde 404 y "Acceso clientes" no aparece). En Vercel no se
+configura `NEXT_PUBLIC_PORTAL_CLIENTES`. Motivo: la fase está probada de punta a punta y
+el portal apagado no expone nada; desplegar una sola versión evita mantener dos líneas.
