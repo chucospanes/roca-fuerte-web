@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-const nombres = { youtube: "YouTube", tiktok: "TikTok", instagram: "Instagram" } as const;
+const nombres = {
+  youtube: "YouTube",
+  tiktok: "TikTok",
+  instagram: "Instagram",
+  vimeo: "Vimeo",
+} as const;
 
 /**
  * Video embebido que solo carga el reproductor al tocarlo.

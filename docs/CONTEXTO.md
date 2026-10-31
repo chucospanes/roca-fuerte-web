@@ -11,11 +11,23 @@
 ## Qué vende el portal
 1. **Esta casa** (la Esparta en construcción, con terreno).
 2. **El servicio de construir el modelo Esparta** en el terreno del cliente, en El Salvador.
+3. **Construcción para inversionistas** (desde v1.0.0): el inversionista aporta terreno y
+   capital para SU proyecto de vivienda (venta o renta); Roca Fuerte construye el modelo
+   Esparta, varias unidades o adaptaciones del modelo, tramita permisos y segregación ante
+   OPAMSS y CNR y subcontrata los servicios que requieren licencia. Es un servicio de
+   construcción, **no una oferta de inversión**: nunca prometer rendimientos ni plusvalía.
+
+## Portal privado de clientes (en v1.0.0, apagado hasta activarlo)
+Compradores, clientes de "construir en tu terreno" e inversionistas entran a `/portal` con
+un código por correo (cuentas creadas por el constructor, sin autoregistro) y ven solo sus
+obras: etapas, avances con fotos y videos, materiales y documentos.
 
 ## Público objetivo
 - Familias que buscan vivienda económica pero bien construida (primera vivienda).
 - Salvadoreños en el exterior que quieren construir en El Salvador y temen que el
   contratista los engañe. La transparencia resuelve justo ese miedo.
+- Inversionistas que construyen vivienda para vender o rentar y necesitan una constructora
+  que muestre cada etapa.
 - Se buscan **pocos clientes, pero calificados**.
 
 ## Tono

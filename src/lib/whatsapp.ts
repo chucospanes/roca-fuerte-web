@@ -27,6 +27,7 @@ export const mensajesVenta: Record<OpcionVenta, string> = {
   construir:
     "Hola, quiero construir el modelo Esparta en mi terreno. Mi terreno está en (municipio y departamento): ",
   general: `Hola, me interesa la ${site.modelo}.`,
+  inversionista: `Soy inversionista y quiero construir un proyecto con ${site.marca}.`,
 };
 
 /** Mensaje al terminar la calificación (paso 2), con lo que la persona ya contó. */

@@ -3,14 +3,45 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-29
+**Última actualización:** 2026-10-31
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 6 en curso** (`feat/fase-6-despliegue` ya está en `main` y en `origin`, sin tag): despliegue en Vercel Pro, interruptor
-de lanzamiento, página `/privacidad` y README de despliegue. `v1.0.0` se pone cuando el
-sitio esté desplegado y verificado en el dominio con el interruptor apagado; el lanzamiento
-va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en producción.
+**Fase 6 (despliegue) pendiente; la Fase 7 ya está en `main`, con el portal apagado.**
+`main` tiene las fases 6 y 7, sin tag. `v1.0.0` se pone cuando el sitio esté desplegado y
+verificado en el dominio con `site.lanzado` y `site.portalClientes` apagados (decisión del
+2026-10-31); encender cualquiera de los dos va en un commit aparte. En Vercel **no** se
+configura `NEXT_PUBLIC_PORTAL_CLIENTES` (en producción no tendría efecto). Acceso premium
+apagado en producción. Fase 5 cerrada en `v0.5.0`.
+
+### Fase 7 — inversionistas y portal privado de clientes (en `main`, portal apagado)
+- **Landing:** sección "Para inversionistas" (07) con botón de WhatsApp
+  `inversionista`/`inversionistas`, menú en el celular con `<details>` y enlaces en el pie.
+  Pregunta frecuente de permisos respondida con el mismo texto que la sección.
+- **Portal `/portal`** (`site.portalClientes`): código por correo sin crear cuentas, lista
+  de obras, `/portal/obras/[id]` y `/portal/documentos/[id]` (URL firmada de 60 s). Todo se
+  lee con la sesión del usuario; `noindex` + `X-Robots-Tag`, sin Disallow.
+- **Supabase:** 003 y 004 aplicadas por el usuario el 2026-10-30 (PostgreSQL 17.11) y
+  verificadas con lecturas (sin sesión, 401 en las 6 tablas; bucket `obras` privado).
+- **Prueba de aislamiento (SQL, revertida):** superada.
+- **Prueba de punta a punta (2026-10-30, cuentas `<tu-correo>+portal-a@…`, `+portal-b`,
+  `+portal-c` y `+portal-x`):** en el navegador, A 1–7 y B 1–7 correctas (cada uno ve
+  solo su obra, foto, video, material y documento; la URL del documento vence a los 60 s;
+  la obra y el documento del otro dan "no encontrado"/404; sin sesión vuelve a `/portal`);
+  correo inexistente (8): mensaje genérico, sin correo y sin usuario creado; cuenta sin
+  obras (9): "Este correo no tiene obras asignadas". Storage por SQL de solo lectura: "A ve
+  2 propios y 0 de B. B ve 2 propios y 0 de A."
+- **Limpieza:** el usuario borró carpetas, obras y usuarios de prueba; su consulta dio las 8
+  filas en 0. Confirmado con lecturas el 2026-10-31: 6 tablas del portal, objetos del
+  bucket y usuarios `+portal-*` en 0; `leads` (3) y `clics_venta` (0) sin cambios.
+- **Incidente en desarrollo (no es del código):** con la PC sin memoria (644 MB libres de
+  8 GB) y el servidor encendido desde la mañana, se cayó el proceso auxiliar de Next que
+  prepara `/portal/obras/[id]` ("Jest worker encountered 2 child process exceptions"):
+  fallaban igual la obra de A, la de B y un id inexistente, antes de leer datos. Se
+  resolvió reiniciando `npm run dev`.
+- **Antes de encender el portal en producción:** aviso de privacidad con los datos del
+  portal (contratos y documentos), decidir Supabase Pro, y probar la plantilla SQL de
+  `GUIA_CARGA_OBRAS.md` con la primera obra real (no se ha ejecutado en esta forma exacta).
 
 ## Hecho
 - **Cambio de nombre a Casa Modelo Esparta (rama `feat/modelo-esparta`, sin merge: el
@@ -199,6 +230,8 @@ va en un commit aparte. Fase 5 cerrada en `v0.5.0`; acceso premium apagado en pr
 ## Bloqueos y pendientes del usuario
 - Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
+- Supabase Pro: decidir antes de dar acceso al portal al primer cliente (un proyecto
+  gratuito pausado deja a los clientes sin portal).
 - **Reemplazar el plano de la casa** por la versión cuya nota del techo menciona el pretil
   (`Casa_Modelo_Esparta_plano_v2`; no llegó a Descargas el 2026-10-29). Guardarla con
   nombre nuevo (`plano-casa-esparta-v2.png/.pdf`), actualizar referencias y la lista cerrada

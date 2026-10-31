@@ -6,6 +6,7 @@
  */
 
 import { z } from "zod";
+import { videoObra } from "./video";
 
 // ---------------------------------------------------------------------------
 // Valores permitidos (iguales a los de la base de datos)
@@ -16,8 +17,22 @@ export const TERRENO_ESCRITURADO = ["si", "no", "en_tramite"] as const;
 export const FORMAS_PAGO = ["contado", "fsv", "banco", "otro"] as const;
 export const INICIOS = ["inmediato", "3_meses", "6_meses", "mas_6_meses"] as const;
 export const ESTADOS_LEAD = ["nuevo", "contactado", "calificado", "descartado", "cliente"] as const;
-export const OPCIONES_VENTA = ["comprar", "construir", "general"] as const;
-export const UBICACIONES_VENTA = ["hero", "precios", "contacto", "flotante", "pie"] as const;
+// Deben coincidir con los CHECK de clics_venta (003_clics_inversionistas.sql)
+export const OPCIONES_VENTA = ["comprar", "construir", "general", "inversionista"] as const;
+export const UBICACIONES_VENTA = [
+  "hero",
+  "precios",
+  "contacto",
+  "flotante",
+  "pie",
+  "inversionistas",
+] as const;
+
+// Portal de clientes: deben coincidir con los CHECK de 004_portal_obras.sql
+export const MODALIDADES_OBRA = ["compra", "construccion_terreno", "inversionista"] as const;
+export const ESTADOS_OBRA = ["por_iniciar", "en_obra", "pausada", "entregada"] as const;
+export const ESTADOS_ETAPA = ["por_iniciar", "en_proceso", "terminada"] as const;
+export const TIPOS_DOCUMENTO = ["contrato", "plano", "permiso", "otro"] as const;
 
 /** Los 14 departamentos de El Salvador. */
 export const DEPARTAMENTOS = [
@@ -198,6 +213,19 @@ export const esquemaClic = z.strictObject({
     .optional()
     .catch(undefined),
 });
+
+/** Id de una fila del portal (uuid). Se valida antes de consultar. */
+export const esquemaIdPortal = z.uuid();
+
+/**
+ * URL de video de un avance: solo YouTube y Vimeo, con un id reconocible. Se valida al leer
+ * (los avances se cargan a mano en el panel de Supabase); el CHECK de la base es el filtro
+ * grueso y esta es la validación fina.
+ */
+export const esquemaVideoObra = z
+  .string()
+  .max(300)
+  .refine((url) => videoObra(url) !== null, { error: "Solo videos de YouTube o Vimeo." });
 
 export type DatosClic = z.infer<typeof esquemaClic>;
 export type DatosDesbloqueo = z.infer<typeof esquemaDesbloqueo>;

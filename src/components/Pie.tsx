@@ -75,9 +75,25 @@ export function Pie() {
       </div>
 
       <div className="mx-auto mt-10 flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-piedra-700 px-4 pt-6 text-sm">
-        <Link href="/privacidad" className="flex min-h-11 items-center text-blanco underline">
-          Aviso de privacidad
-        </Link>
+        <ul className="flex flex-wrap gap-x-6">
+          <li>
+            <Link href="/#inversionistas" className="flex min-h-11 items-center text-blanco underline">
+              Para inversionistas
+            </Link>
+          </li>
+          {site.portalClientes && (
+            <li>
+              <Link href="/portal" className="flex min-h-11 items-center text-blanco underline">
+                Acceso clientes
+              </Link>
+            </li>
+          )}
+          <li>
+            <Link href="/privacidad" className="flex min-h-11 items-center text-blanco underline">
+              Aviso de privacidad
+            </Link>
+          </li>
+        </ul>
         <p className="text-piedra-300">© {site.marca}</p>
       </div>
     </footer>

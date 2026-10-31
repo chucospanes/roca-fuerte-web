@@ -5,7 +5,7 @@ export function ComoTrabajamos() {
   return (
     <Seccion
       id="proceso"
-      numero="07"
+      numero="08"
       etiqueta="Proceso"
       titulo="Cómo trabajamos"
       fondo="oscuro"
