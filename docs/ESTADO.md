@@ -4,14 +4,30 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-10-31
-**Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
+**Versión:** v1.0.0 — desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
-**Fase 6: Vercel ya despliega desde `main` en https://roca-fuerte-web.vercel.app (falta el
-dominio). La Fase 7 está en `main` y el portal de clientes quedó encendido (2026-10-31).** `main` tiene las fases 6 y 7, sin tag. `site.portalClientes` es
-la constante `true` (ya no hay variable `NEXT_PUBLIC_PORTAL_CLIENTES`; se puede quitar de
-`.env.local`). `site.lanzado` sigue apagado y el acceso premium también. `v1.0.0` se pone
-cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `v0.5.0`.
+**Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
+https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo con
+`noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
+la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
+quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Despliegue (verificado con lecturas el 2026-10-31)
+- **Vercel** (cuenta chucospanes-9163, plan Hobby hasta el lanzamiento) despliega cada push a
+  `main`; autor de los commits: la cuenta chucospanes (ver DECISIONES.md).
+- **Dominio:** `constructorarocafuerte.com` con registro A a Vercel y `www` por CNAME (DNS en
+  Namecheap; los registros de Resend no se tocaron). HTTPS activo en los dos. `https://www`
+  → 308 al dominio sin www conservando ruta y parámetros; `http://` → 308 a `https://`.
+  Al principio Vercel tenía `www` como principal; el usuario lo corrigió.
+- **Supabase Auth → URL Configuration:** Site URL `https://constructorarocafuerte.com`;
+  Redirect URLs del dominio, `www`, `roca-fuerte-web.vercel.app` y `localhost`.
+- **En el dominio:** `/`, `/portal`, `/privacidad`, `/robots.txt`, `/sitemap.xml` y
+  `/opengraph-image` responden 200; `/esparta/ficha` y `/descargas/…` 404; todas con
+  `X-Robots-Tag: noindex, nofollow`, y `/` y `/portal` también con la meta `noindex`.
+  Canonical, `og:url` y `og:image` con `https://constructorarocafuerte.com`. `robots.txt`
+  con `Allow: /`, sin sitemap (solo excluye ficha, descargas y API); sitemap vacío. "Acceso
+  clientes" y "Para inversionistas" visibles; `/portal` muestra el formulario del código.
 
 ### Fase 7 — inversionistas y portal privado de clientes (en `main`, portal encendido)
 - **Landing:** sección "Para inversionistas" (07) con botón de WhatsApp
@@ -61,8 +77,7 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
   pedir el código en `/portal` y ven "Este correo no tiene obras asignadas" (no ven datos).
 
 ## Hecho
-- **Cambio de nombre a Casa Modelo Esparta (rama `feat/modelo-esparta`, sin merge: el
-  usuario la revisa en el navegador).** Nombre nuevo en textos, metadata, imagen
+- **Cambio de nombre a Casa Modelo Esparta** (en `main`). Nombre nuevo en textos, metadata, imagen
   Open Graph, schema.org, mensajes de WhatsApp y docs (DECISIONES.md conserva las entradas
   viejas y el nombre anterior). Ruta `/esparta/ficha` sin redirección; `proxy.ts`, `robots.txt` y la lista
   cerrada de `/descargas` actualizados. `src/content/esparta.ts`. Plano en lote de
@@ -77,7 +92,7 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
   fachada, los tres ampliables; en escritorio, casa y fachada arriba y el lote a todo el
   ancho abajo. El PDF de la casa está en la lista cerrada de `/descargas` y en la ficha
   premium.
-- **Fase 6 (en curso):**
+- **Fase 6 (cerrada en `v1.0.0`):**
   - Interruptor de lanzamiento `site.lanzado` (apagado; solo se enciende con un commit).
     Verificado en el build de producción en los dos estados (el encendido con un build
     temporal, sin commit): apagado, las 9 rutas probadas (páginas, `robots.txt`,
@@ -214,14 +229,30 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
 - `npm run typecheck` (= `next typegen && tsc --noEmit`).
 
 ## Siguiente
-1. Fase 6: el usuario crea el proyecto en Vercel Pro, carga las variables, configura Auth →
-   URL Configuration y el DNS en Namecheap (README, secciones 2–4). Claude verifica con
-   lecturas (`nslookup`, `curl`) y, si todo está bien, merge, tag `v1.0.0` y push.
-2. Cuando haya número de WhatsApp real: prueba real del conteo (un clic del usuario,
-   verificación con lecturas en `clics_venta`).
-3. En Vercel, `NEXT_PUBLIC_SITE_URL` debe ser el dominio: canonical, Open Graph, sitemap y
-   schema.org toman la URL de ahí (en local salen con `localhost:3000`).
-4. **LCP: se revisa después del lanzamiento con datos reales** (decisión del usuario,
+**Pendientes antes del lanzamiento** (`site.lanzado = true`; lista completa en el README,
+sección 6):
+1. Número real de WhatsApp Business en `site.whatsapp` y, con él desplegado, la prueba real
+   del conteo de clics (un clic del usuario, verificación con lecturas en `clics_venta`).
+2. Precios "desde" en `site.precios`.
+3. Aviso de privacidad revisado por un abogado (razón social, domicilio, correo y plazo de
+   conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
+   quitar el aviso de "borrador" de `/privacidad`.
+4. Decidir qué PENDIENTE se aceptan visibles el día del lanzamiento (redes, preguntas
+   frecuentes, video del hero, materiales, profesional que firma).
+5. Borrar los datos de prueba (`leads` y luego sus usuarios de Auth; lo hace el usuario) y
+   verificar con lecturas.
+6. Vercel en plan Pro.
+7. DMARC y límites de envío anotados en `CONFIGURACION_EXTERNA.md`; vista previa del enlace
+   en WhatsApp y en el Sharing Debugger de Facebook; Lighthouse sobre el dominio.
+8. Commit con `site.lanzado = true`, comprobar que no queda `noindex` y que `robots.txt`
+   trae el sitemap, y dar de alta el dominio en Google Search Console.
+
+**Antes de cargar la obra del primer cliente en el portal:** aviso de privacidad con los
+datos del portal y decidir Supabase Pro (un proyecto gratuito pausado deja a los clientes
+sin portal).
+
+**Después del lanzamiento:**
+- **LCP: se revisa después del lanzamiento con datos reales** (decisión del usuario,
    2026-10-24). En Lighthouse queda en 2.9 s (el párrafo del hero, en Source Sans 3); si
    los datos de campo (Vercel Speed Insights o Search Console) lo confirman, las vías son
    la fuente del texto y el JavaScript inicial.
@@ -245,7 +276,6 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
   "Network" que imprime el servidor.
 
 ## Bloqueos y pendientes del usuario
-- Revisar `feat/modelo-esparta` en el navegador y aprobar el merge.
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
 - Supabase Pro: decidir antes de dar acceso al portal al primer cliente (un proyecto
   gratuito pausado deja a los clientes sin portal).
@@ -277,5 +307,5 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el
   corredor hasta el lindero cumplen la normativa.
 - Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).
-- Conectar el repo de GitHub a Vercel Pro (README, sección 3).
+- Pasar Vercel a plan Pro antes del lanzamiento (README, sección 3).
 - Búsqueda de marca en el CNR antes de invertir en identidad visual definitiva.
