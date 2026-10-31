@@ -429,3 +429,13 @@ ya existen en Supabase Auth. Lo que queda pendiente (aviso de privacidad con los
 portal, Supabase Pro, primera carga con la plantilla SQL) pasa a ser requisito antes de
 cargar la obra del primer cliente, no antes de encender el código: sin obras cargadas, el
 portal no muestra datos de nadie.
+
+## 2026-10-31 — Los commits de este repo van con la cuenta de GitHub chucospanes
+Vercel (cuenta chucospanes-9163) bloqueó el despliegue del commit `2148a9b` porque su autor
+era un correo de otra cuenta de GitHub. El usuario configuró en este repo, solo en local
+(`git config` sin `--global`), `user.name` = "chucospanes" y el correo de esa cuenta, e
+hizo un commit vacío (`28f4d44`) con el que el despliegue pasó. **Regla:** el autor de
+los commits debe ser la cuenta chucospanes; Claude nunca cambia `user.email` ni
+`user.name` ni usa `--author`. Pendiente: confirmar si Vercel también bloquea commits con
+la línea `Co-Authored-By` de Claude; si los bloquea, esa línea se deja de poner en este
+repo.

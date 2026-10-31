@@ -7,8 +7,8 @@
 **Versión:** v0.5.0 — SEO, rendimiento y conteo de clics de venta
 
 ## Fase actual
-**Fase 6 (despliegue) pendiente; la Fase 7 está en `main` y el portal de clientes quedó
-encendido (2026-10-31).** `main` tiene las fases 6 y 7, sin tag. `site.portalClientes` es
+**Fase 6: Vercel ya despliega desde `main` en https://roca-fuerte-web.vercel.app (falta el
+dominio). La Fase 7 está en `main` y el portal de clientes quedó encendido (2026-10-31).** `main` tiene las fases 6 y 7, sin tag. `site.portalClientes` es
 la constante `true` (ya no hay variable `NEXT_PUBLIC_PORTAL_CLIENTES`; se puede quitar de
 `.env.local`). `site.lanzado` sigue apagado y el acceso premium también. `v1.0.0` se pone
 cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `v0.5.0`.
@@ -38,8 +38,15 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
   prepara `/portal/obras/[id]` ("Jest worker encountered 2 child process exceptions"):
   fallaban igual la obra de A, la de B y un id inexistente, antes de leer datos. Se
   resolvió reiniciando `npm run dev`.
-- **Portal encendido en el código (2026-10-31).** Falta verificarlo en el dominio cuando
-  Vercel despliegue (`/portal` 200 con `X-Robots-Tag: noindex`, "Acceso clientes" visible).
+- **Portal encendido (2026-10-31), verificado con lecturas en `roca-fuerte-web.vercel.app`:**
+  `/` 200 con `noindex, nofollow` (metadata y `X-Robots-Tag`), "Acceso clientes" y "Para
+  inversionistas" visibles; `/portal` 200 con `noindex, nofollow` y el formulario del
+  código; `/esparta/ficha` 404. Canonical: `https://constructorarocafuerte.com`.
+- **Autor de los commits: la cuenta chucospanes** (`git config` local del repo, ver
+  DECISIONES.md). Vercel bloqueó `2148a9b` por el autor; se destrabó con el commit vacío
+  `28f4d44`. Pendiente: confirmar si Vercel bloquea commits con `Co-Authored-By`.
+- **Vercel está en plan Hobby,** pero la decisión del 2026-10-25 es Vercel Pro (las reglas
+  de Hobby excluyen el uso comercial). Resolver antes de lanzar.
 - **Antes de cargar la obra del primer cliente:** aviso de privacidad con los datos del
   portal (contratos y documentos), decidir Supabase Pro, y probar la plantilla SQL de
   `GUIA_CARGA_OBRAS.md` con esa primera obra (no se ha ejecutado en esta forma exacta).
