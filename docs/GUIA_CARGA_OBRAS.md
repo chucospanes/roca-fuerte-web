@@ -43,63 +43,140 @@ bucket "obras"
 - Documentos: `{obra_id}/documentos/archivo`
 
 ### Plantilla: obra nueva completa
-Cambia todo lo que está entre `<...>` (deja las comillas simples). Para un dato opcional
-que no tengas, escribe `null` sin comillas. Es una sola instrucción: **si algo falla, no se
-crea nada**. Si el correo del cliente no existe en Authentication, tampoco se crea nada y
-la columna `cliente_encontrado` sale en `false`.
+Llena **solo el bloque `datos` del inicio**: cambia cada `'<...>'` por el valor entre comillas
+simples, o por `null` **sin comillas** si no lo tienes (siempre igual, sea texto o fecha).
+Debajo de "no se edita nada" no se toca nada. Es una sola instrucción: **si algo falla, no se
+crea nada**.
+
+- Fechas en formato `'AAAA-MM-DD'`. Una fecha olvidada como `'<AAAA-MM-DD>'` falla antes del
+  candado, con el error de Postgres `invalid input syntax for type date: "<AAAA-MM-DD>"`;
+  tampoco crea nada.
+- Estado de la obra o de la etapa en `null`: queda "por iniciar".
+- Video, descripciones, modelo, ubicación y fechas de la obra y de la etapa: `null` si no hay.
+- Material: con `material` y sus tres campos en `null`, no se crea material.
+- Documento: con tipo, título y archivo en `null`, no se crea documento.
+- `'null'` con comillas se guarda como el texto "null" y el cliente lo vería.
+
+Candados: la consulta entera falla con un mensaje `ALTO: ...` (Postgres lo muestra dentro de
+`invalid input syntax for type integer: "ALTO: ..."`) y no crea nada si:
+- algún valor de `datos` todavía tiene `<` (el mensaje dice en qué columnas);
+- el correo no existe en Authentication → Users;
+- ese cliente ya tiene una obra con el mismo nombre (sin importar mayúsculas ni espacios al
+  inicio o al final);
+- `material` está en `null` pero hay especificación, marca o cantidad;
+- el documento está a medias (va completo o con los tres en `null`).
 
 ```sql
 with
+datos as materialized (
+  select
+    -- Cliente: el correo de su cuenta en Authentication → Users (obligatorio)
+    '<correo-del-cliente>'::text                              as correo,
+    -- Obra. Obligatorios: nombre y modalidad. Estado en null = por_iniciar
+    '<Nombre de la obra>'::text                               as obra_nombre,
+    '<compra | construccion_terreno | inversionista>'::text   as obra_modalidad,
+    '<Casa Modelo Esparta>'::text                             as obra_modelo,
+    '<Municipio, Departamento>'::text                         as obra_ubicacion,
+    '<por_iniciar | en_obra | pausada | entregada>'::text     as obra_estado,
+    '<AAAA-MM-DD>'::date                                      as obra_fecha_inicio,
+    '<AAAA-MM-DD>'::date                                      as obra_fecha_entrega,
+    -- Primera etapa (orden 1). Obligatorio: nombre. Estado en null = por_iniciar
+    '<Terreno y trazo>'::text                                 as etapa_nombre,
+    '<por_iniciar | en_proceso | terminada>'::text            as etapa_estado,
+    '<AAAA-MM-DD>'::date                                      as etapa_fecha_inicio,
+    '<Descripción de la etapa>'::text                         as etapa_descripcion,
+    -- Primer avance. Obligatorios: fecha y título. Video: solo YouTube o Vimeo, o null
+    '<AAAA-MM-DD>'::date                                      as avance_fecha,
+    '<Título del avance>'::text                               as avance_titulo,
+    '<Descripción del avance>'::text                          as avance_descripcion,
+    '<https://www.youtube.com/watch?v=...>'::text             as avance_video_url,
+    -- Material (opcional): con los cuatro en null no se crea
+    '<Bloque de concreto>'::text                              as material,
+    '<Especificación>'::text                                  as material_especificacion,
+    '<Marca>'::text                                           as material_marca,
+    '<Cantidad con unidad>'::text                             as material_cantidad,
+    -- Documento (opcional): con los tres en null no se crea
+    '<contrato | plano | permiso | otro>'::text               as documento_tipo,
+    '<Título del documento>'::text                            as documento_titulo,
+    '<contrato.pdf>'::text                                    as documento_archivo
+),
+-- ===== Debajo de esta línea no se edita nada =====
 cliente as (
-  select id from auth.users where email = lower('<correo-del-cliente>')
+  select u.id
+  from auth.users u, datos d
+  where u.email = lower(trim(d.correo))
+),
+-- Revisa todo antes de crear nada. Si algo no cuadra, la consulta entera falla con un
+-- mensaje "ALTO: ..." (Postgres lo muestra dentro de "invalid input syntax for type integer").
+candado as materialized (
+  select case
+    when exists (select 1 from jsonb_each_text(to_jsonb(d)) where value like '%<%') then
+      format('ALTO: quedan valores sin reemplazar (con "<") en: %s. No se creó nada.',
+             (select string_agg(key, ', ' order by key)
+              from jsonb_each_text(to_jsonb(d)) where value like '%<%'))
+    when not exists (select 1 from cliente) then
+      format('ALTO: el correo "%s" no existe en Authentication → Users. Crea la cuenta primero. No se creó nada.',
+             d.correo)
+    when exists (
+      select 1
+      from public.obras o
+      join public.obra_miembros m on m.obra_id = o.id
+      join cliente c on c.id = m.user_id
+      where lower(trim(o.nombre)) = lower(trim(d.obra_nombre))
+    ) then
+      format('ALTO: este cliente ya tiene una obra llamada "%s". No se creó nada.', d.obra_nombre)
+    when d.material is null
+         and coalesce(d.material_especificacion, d.material_marca, d.material_cantidad) is not null then
+      'ALTO: "material" está en null pero hay especificación, marca o cantidad. Pon los cuatro en null o llena "material". No se creó nada.'
+    when num_nulls(d.documento_tipo, d.documento_titulo, d.documento_archivo) not in (0, 3) then
+      'ALTO: el documento va completo (tipo, título y archivo) o con los tres en null. No se creó nada.'
+  end as error
+  from datos d
 ),
 obra as (
   insert into public.obras (nombre, modalidad, modelo, ubicacion, estado,
                             fecha_inicio, fecha_entrega_estimada)
-  select '<Nombre de la obra>',
-         '<compra | construccion_terreno | inversionista>',
-         '<Casa Modelo Esparta>',
-         '<Municipio, Departamento>',
-         '<por_iniciar | en_obra | pausada | entregada>',
-         '<AAAA-MM-DD>'::date,
-         '<AAAA-MM-DD>'::date
-  where exists (select 1 from cliente)
+  select trim(d.obra_nombre), d.obra_modalidad, d.obra_modelo, d.obra_ubicacion,
+         coalesce(d.obra_estado, 'por_iniciar'), d.obra_fecha_inicio, d.obra_fecha_entrega
+  from datos d, candado k
+  -- Si hay un ALTO, convertirlo a número falla y detiene todo con ese mensaje
+  where coalesce(k.error::int, 0) = 0
   returning id
 ),
 miembro as (
   insert into public.obra_miembros (obra_id, user_id)
-  select obra.id, cliente.id from obra, cliente
+  select o.id, c.id from obra o, cliente c
   returning obra_id
 ),
 etapa as (
   insert into public.etapas (obra_id, orden, nombre, estado, fecha_inicio, descripcion)
-  select id, 1, '<Terreno y trazo>', '<por_iniciar | en_proceso | terminada>',
-         '<AAAA-MM-DD>'::date, '<Descripción de la etapa>'
-  from obra
+  select o.id, 1, d.etapa_nombre, coalesce(d.etapa_estado, 'por_iniciar'),
+         d.etapa_fecha_inicio, d.etapa_descripcion
+  from obra o, datos d
   returning id, obra_id
 ),
 avance as (
   insert into public.avances (obra_id, etapa_id, fecha, titulo, descripcion, video_url)
-  select obra_id, id, '<AAAA-MM-DD>'::date, '<Título del avance>',
-         '<Descripción del avance>', '<https://www.youtube.com/watch?v=... o null>'
-  from etapa
+  select e.obra_id, e.id, d.avance_fecha, d.avance_titulo, d.avance_descripcion, d.avance_video_url
+  from etapa e, datos d
   returning id, obra_id
 ),
 mat as (
   insert into public.obra_materiales (obra_id, orden, material, especificacion, marca, cantidad)
-  select id, 1, '<Bloque de concreto>', '<Especificación>', '<Marca>', '<Cantidad con unidad>'
-  from obra
+  select o.id, 1, d.material, d.material_especificacion, d.material_marca, d.material_cantidad
+  from obra o, datos d
+  where d.material is not null
   returning id
 ),
 documento as (
   insert into public.documentos (obra_id, tipo, titulo, ruta)
-  select id, '<contrato | plano | permiso | otro>', '<Título del documento>',
-         id::text || '/documentos/<contrato.pdf>'
-  from obra
+  select o.id, d.documento_tipo, d.documento_titulo,
+         o.id::text || '/documentos/' || d.documento_archivo
+  from obra o, datos d
+  where d.documento_titulo is not null
   returning id, ruta
 )
 select
-  exists (select 1 from cliente)                              as cliente_encontrado,
   (select id from obra)                                       as obra_id,
   (select count(*) from miembro)                              as membresias_creadas,
   (select id from etapa)                                      as etapa_id,
@@ -111,11 +188,15 @@ select
 ```
 
 Después de correrla:
-1. Revisa que `cliente_encontrado` sea `true` y `membresias_creadas` sea 1.
+1. Revisa que `membresias_creadas` sea 1 y anota `obra_id`, `etapa_id` y `avance_id`.
 2. En **Storage → `obras`**, crea las carpetas de `carpeta_fotos` y sube ahí las fotos.
-3. Sube el PDF de modo que su ruta sea exactamente `ruta_documento`.
-4. Si no vas a cargar video, material o documento todavía, borra ese bloque de la plantilla
-   (y su línea en el `select` final) antes de correrla, en vez de dejar los `<...>`.
+3. Si cargaste documento, sube el PDF de modo que su ruta sea exactamente `ruta_documento`.
+4. Lo que no tengas todavía (video, material o documento) se deja en `null` en `datos`; no se
+   borra ningún bloque. Se agrega después con los pasos 5, 7 u 8.
+
+La prueba de esta plantilla (datos completos, un `<` olvidado, correo inexistente, obra
+repetida y opcionales en `null`, todo revertido) está en
+`supabase/pruebas/004_plantilla_obra_nueva.sql`.
 
 ### Plantilla: avance nuevo en una obra existente
 ```sql

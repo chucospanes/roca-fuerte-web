@@ -44,12 +44,19 @@ cuando el sitio esté desplegado y verificado en el dominio. Fase 5 cerrada en `
   código; `/esparta/ficha` 404. Canonical: `https://constructorarocafuerte.com`.
 - **Autor de los commits: la cuenta chucospanes** (`git config` local del repo, ver
   DECISIONES.md). Vercel bloqueó `2148a9b` por el autor; se destrabó con el commit vacío
-  `28f4d44`. Pendiente: confirmar si Vercel bloquea commits con `Co-Authored-By`.
-- **Vercel está en plan Hobby,** pero la decisión del 2026-10-25 es Vercel Pro (las reglas
-  de Hobby excluyen el uso comercial). Resolver antes de lanzar.
+  `28f4d44`. `Co-Authored-By` no bloquea: `8aa05e0` se desplegó (Ready).
+- **Vercel en plan Hobby mientras `site.lanzado` sea `false`;** se pasa a Pro antes de
+  encender el lanzamiento (decisión del 2026-10-31, en la lista de verificación del README).
+- **Plantilla SQL de obra nueva reescrita** (bloque `datos` único, candados de `<`, correo
+  y obra repetida, material y documento opcionales). **Probada** (2026-10-31): el usuario corrió
+  `supabase/pruebas/004_plantilla_obra_nueva.sql` en el SQL Editor y dio "PRUEBA SUPERADA"
+  en los 5 casos (datos completos, `<` olvidado, correo inexistente, obra repetida y
+  opcionales en `null`), todo revertido. Confirmado con lecturas: las 6 tablas del portal en
+  0, ningún usuario `prueba-plantilla` ni `@ejemplo.invalid` en Auth; `leads` (3) y
+  `clics_venta` (0) sin cambios. Falta usarla con la primera obra real (y la plantilla de
+  avance nuevo sigue con el formato anterior).
 - **Antes de cargar la obra del primer cliente:** aviso de privacidad con los datos del
-  portal (contratos y documentos), decidir Supabase Pro, y probar la plantilla SQL de
-  `GUIA_CARGA_OBRAS.md` con esa primera obra (no se ha ejecutado en esta forma exacta).
+  portal (contratos y documentos) y decidir Supabase Pro.
 - Las cuentas de quienes pidieron la ficha premium también están en Supabase Auth: pueden
   pedir el código en `/portal` y ven "Este correo no tiene obras asignadas" (no ven datos).
 
