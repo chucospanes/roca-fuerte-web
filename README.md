@@ -76,10 +76,11 @@ El detalle está en `docs/CONFIGURACION_EXTERNA.md`. En resumen y en orden:
 
 ---
 
-## 3. Vercel (plan Pro)
+## 3. Vercel (plan Pro antes del lanzamiento)
 
-El plan Hobby no permite uso comercial (anunciar la venta de un producto o servicio), por
-eso se usa **Pro** (ver `DECISIONES.md`).
+El plan Hobby no permite uso comercial (anunciar la venta de un producto o servicio). Mientras
+`site.lanzado` sea `false` el proyecto sigue en Hobby; se pasa a **Pro** antes de lanzar
+(ver `DECISIONES.md`).
 
 1. Crear el equipo en plan Pro, con un solo miembro (se cobra por miembro).
 2. **Add New → Project** e importar `chucospanes/roca-fuerte-web`. Framework: Next.js
@@ -197,6 +198,7 @@ Encender `site.lanzado` solo con todo esto cumplido.
 - [ ] Verificar la fila en `clics_venta` con una lectura y luego borrarla.
 
 **Técnico**
+- [ ] Proyecto de Vercel en plan Pro (mientras no esté lanzado, sigue en Hobby).
 - [ ] DMARC y límites de envío (Resend y Supabase Auth) anotados en
       `CONFIGURACION_EXTERNA.md`.
 - [ ] Dominio con certificado, `www` redirige al dominio sin www (comprobaciones de la

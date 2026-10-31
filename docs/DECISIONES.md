@@ -439,3 +439,16 @@ los commits debe ser la cuenta chucospanes; Claude nunca cambia `user.email` ni
 `user.name` ni usa `--author`. Pendiente: confirmar si Vercel también bloquea commits con
 la línea `Co-Authored-By` de Claude; si los bloquea, esa línea se deja de poner en este
 repo.
+
+## 2026-10-31 — Vercel Hobby mientras el sitio no esté lanzado; Pro antes de lanzar
+Matiza "Hosting: Vercel Pro" (2026-10-25). Decisión del usuario: el proyecto sigue en el
+plan Hobby (cuenta chucospanes-9163) mientras `site.lanzado` sea `false`, y pasa a Pro
+antes del commit que lo encienda. Pasar a Pro queda en la lista de verificación previa al
+lanzamiento del README. Riesgo aceptado: mientras tanto el sitio es público en
+`roca-fuerte-web.vercel.app` (con `noindex`) y el portal está encendido; las reglas de
+Hobby excluyen el uso comercial.
+
+## 2026-10-31 — Confirmado: `Co-Authored-By` no bloquea el despliegue en Vercel
+Cierra el pendiente de "Los commits de este repo van con la cuenta de GitHub chucospanes".
+Vercel desplegó `8aa05e0` (autor chucospanes, con la línea `Co-Authored-By` de Claude) sin
+bloqueo (Ready). La línea se sigue usando; lo que Vercel revisa es el autor del commit.
