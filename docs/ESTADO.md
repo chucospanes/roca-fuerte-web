@@ -13,6 +13,12 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Plano de la casa: resolución media y protección ligera (2026-11-01)
+- La web sirve `public/plano-casa-esparta-v4-1800.png` (1800 × 1737, reducido del original
+  sin recortar ni cambiar colores); el PNG de 3550 px salió de `public/` (sigue en el
+  historial de git). Sin menú contextual, arrastre, menú de mantener presionado ni selección
+  en esa imagen; `alt` sin cambios. Ver DECISIONES.md.
+
 ### Plano de la casa v4 (2026-11-01, pendiente 27 del inventario: hecho)
 - Lámina A-01 v4 (nota del techo con el pretil, cuadro de "Notas generales" y marcas de
   autoría): `public/plano-casa-esparta-v4.png` (3550 × 3425) y

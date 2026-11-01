@@ -142,12 +142,17 @@ export const esparta = {
   /** Lo que el modelo económico no incluye. */
   noIncluye: ["Tina", "Jacuzzi", "Lavadora", "Secadora"],
 
-  /** Planta de la casa sola (lámina A-01, v4): se lee en el celular. */
+  /**
+   * Planta de la casa sola (lámina A-01, v4): se lee en el celular. En la web va a resolución
+   * media (1800 px de ancho, reducido del original de 3550 px sin recortar ni cambiar
+   * colores) y protegida; la versión en alta resolución es solo el PDF de la ficha premium.
+   */
   planoCasa: {
-    src: "/plano-casa-esparta-v4.png",
+    src: "/plano-casa-esparta-v4-1800.png",
     alt: "Plano de la Casa Modelo Esparta, lámina A-01: planta en L de 9.50 × 5.00 m entre colindancias, con 2 dormitorios de 3.00 × 2.50 m, baño de 1.50 × 2.50 m, sala-comedor-cocina-lavado abierta de 9.20 × 2.10 m y corredor techado de acceso en la fachada principal. Debajo, cuadro de áreas (38.07 m² útiles, 43.60 m² construidos), leyenda y notas generales de construcción.",
-    ancho: 3550,
-    alto: 3425,
+    ancho: 1800,
+    alto: 1737,
+    protegida: true,
     texto: "Planta de la casa — distribución y medidas",
   },
 

@@ -459,3 +459,16 @@ número; en pantalla se muestra `+503 7821-6321` con `whatsappVisible()`, deriva
 valor. Se quita el modo "número de prueba" (`whatsappEsPlaceholder`): los botones ya no
 caen en `#contacto`, el aviso "Número de WhatsApp pendiente" de Contacto desaparece,
 schema.org lleva el teléfono y `/api/clic` empieza a guardar clics en producción.
+
+## 2026-11-01 — Plano de la casa en la web: resolución media y protección ligera
+Decisión del usuario. Solo para la imagen del plano de la casa (no fotos de obra ni el
+resto del sitio):
+- **Resolución media:** la web sirve una copia de 1800 × 1737 px, reducida del PNG v4 de
+  3550 × 3425 (lanczos3, PNG sin paleta: sin recortar ni cambiar colores). Las notas generales
+  se leen al ampliar en el celular. Como el optimizador de imágenes no agranda, nadie puede
+  pedir más de 1800 px. La alta resolución queda solo en el PDF de la ficha premium. El PNG
+  original no está en `public/`.
+- **Protección ligera:** sin menú del clic derecho, `draggable=false`,
+  `-webkit-touch-callout: none` y `user-select: none`, sin JavaScript adicional ni
+  dependencias. Disuade la copia casual; no la impide (captura de pantalla, herramientas del
+  navegador). El `alt` descriptivo se conserva.

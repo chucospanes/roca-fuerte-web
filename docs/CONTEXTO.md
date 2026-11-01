@@ -66,7 +66,8 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
 - **Área construida: 43.60 m². Área útil: 38.07 m².** (Sin cambio con el lote ni el pretil.)
 - Modelo económico: sin tina, jacuzzi, lavadora ni secadora.
 - Plano de la casa (lámina A-01, v4, con notas generales): `assets/plano-casa-esparta-v4.pdf`
-  (PNG en `public/plano-casa-esparta-v4.png`).
+  (PNG a resolución media, 1800 px, en `public/plano-casa-esparta-v4-1800.png`; la alta
+  resolución es solo el PDF de la ficha premium).
   Plano del lote: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
   `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta.png`). Ambos son
   referenciales; requieren firma de arquitecto o ingeniero antes de construir. Si cambian,

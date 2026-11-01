@@ -28,6 +28,7 @@ export function LaCasa() {
               alt={img.alt}
               ancho={img.ancho}
               alto={img.alto}
+              protegida={"protegida" in img && img.protegida}
               sizes={img.anchoCompleto ? "(max-width: 1024px) 100vw, 992px" : "(max-width: 768px) 100vw, 480px"}
             />
             <figcaption className="mt-2 font-semibold text-piedra-800">{img.texto}</figcaption>

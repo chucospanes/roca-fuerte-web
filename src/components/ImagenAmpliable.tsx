@@ -3,6 +3,16 @@
 import Image from "next/image";
 import { useRef } from "react";
 
+/**
+ * Protección ligera (plano de la casa): sin menú del clic derecho, sin arrastrar, sin el menú
+ * de mantener presionado en el celular y sin selección. Disuade la copia casual; no la impide.
+ */
+const proteccion = {
+  draggable: false,
+  onContextMenu: (e: React.MouseEvent) => e.preventDefault(),
+  style: { WebkitTouchCallout: "none" },
+} as const;
+
 /** Imagen (plano, fachada) que se abre a pantalla completa al tocarla; dentro se puede desplazar. */
 export function ImagenAmpliable({
   src,
@@ -10,14 +20,18 @@ export function ImagenAmpliable({
   ancho,
   alto,
   sizes = "(max-width: 1024px) 100vw, 960px",
+  protegida = false,
 }: {
   src: string;
   alt: string;
   ancho: number;
   alto: number;
   sizes?: string;
+  protegida?: boolean;
 }) {
   const dialogo = useRef<HTMLDialogElement>(null);
+  const extra = protegida ? proteccion : {};
+  const sinSeleccion = protegida ? " select-none" : "";
 
   return (
     <>
@@ -26,7 +40,15 @@ export function ImagenAmpliable({
         onClick={() => dialogo.current?.showModal()}
         className="group relative block w-full cursor-zoom-in overflow-hidden rounded-lg border border-piedra-200 bg-blanco focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracota"
       >
-        <Image src={src} alt={alt} width={ancho} height={alto} sizes={sizes} className="h-auto w-full" />
+        <Image
+          src={src}
+          alt={alt}
+          width={ancho}
+          height={alto}
+          sizes={sizes}
+          className={`h-auto w-full${sinSeleccion}`}
+          {...extra}
+        />
         <span className="absolute right-3 bottom-3 rounded-md bg-piedra-900/90 px-3 py-1.5 text-sm font-semibold text-blanco group-hover:bg-terracota">
           Toca para ampliar
         </span>
@@ -60,7 +82,8 @@ export function ImagenAmpliable({
               width={ancho}
               height={alto}
               sizes="1400px"
-              className="h-auto w-[1400px] max-w-none lg:w-full"
+              className={`h-auto w-[1400px] max-w-none lg:w-full${sinSeleccion}`}
+              {...extra}
             />
           </div>
         </div>
