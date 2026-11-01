@@ -2,7 +2,7 @@
  * Contenido de la Casa Modelo Esparta.
  *
  * Fuente: planta de la casa, planta en lote de 5 × 20 m y fachada con pretil
- * (`assets/plano-casa-esparta.pdf`, `assets/plano-esparta.pdf`, `assets/fachada-esparta.pdf`)
+ * (`assets/plano-casa-esparta-v4.pdf`, `assets/plano-esparta.pdf`, `assets/fachada-esparta.pdf`)
  * y `docs/CONTEXTO.md`.
  * Las especificaciones de materiales son PENDIENTE hasta que el constructor las confirme.
  */
@@ -142,12 +142,12 @@ export const esparta = {
   /** Lo que el modelo económico no incluye. */
   noIncluye: ["Tina", "Jacuzzi", "Lavadora", "Secadora"],
 
-  /** Planta de la casa sola: se lee en el celular. */
+  /** Planta de la casa sola (lámina A-01, v4): se lee en el celular. */
   planoCasa: {
-    src: "/plano-casa-esparta.png",
-    alt: "Plano de la Casa Modelo Esparta: planta en L de 9.50 × 5.00 m entre colindancias, con 2 dormitorios de 3.00 × 2.50 m, baño de 1.50 × 2.50 m, sala-comedor-cocina-lavado abierta de 9.20 × 2.10 m y corredor techado de acceso en la fachada principal.",
+    src: "/plano-casa-esparta-v4.png",
+    alt: "Plano de la Casa Modelo Esparta, lámina A-01: planta en L de 9.50 × 5.00 m entre colindancias, con 2 dormitorios de 3.00 × 2.50 m, baño de 1.50 × 2.50 m, sala-comedor-cocina-lavado abierta de 9.20 × 2.10 m y corredor techado de acceso en la fachada principal. Debajo, cuadro de áreas (38.07 m² útiles, 43.60 m² construidos), leyenda y notas generales de construcción.",
     ancho: 3550,
-    alto: 2775,
+    alto: 3425,
     texto: "Planta de la casa — distribución y medidas",
   },
 

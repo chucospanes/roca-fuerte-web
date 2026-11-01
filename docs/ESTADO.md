@@ -3,7 +3,7 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-10-31
+**Última actualización:** 2026-11-01
 **Versión:** v1.0.0 — desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
@@ -12,6 +12,16 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Plano de la casa v4 (2026-11-01, pendiente 27 del inventario: hecho)
+- Lámina A-01 v4 (nota del techo con el pretil, cuadro de "Notas generales" y marcas de
+  autoría): `public/plano-casa-esparta-v4.png` (3550 × 3425) y
+  `assets/plano-casa-esparta-v4.pdf`, copiados de Descargas byte a byte (mismo SHA-256, sin
+  recortar ni reprocesar; `next/image` sirve las versiones reducidas, igual que antes). La
+  descarga premium pasa a `/descargas/plano-casa-esparta-v4.pdf`. Borrados los
+  `plano-casa-esparta` anteriores. Capturas revisadas a 390 px (sin desborde) y 1280 px, y
+  ampliado en el celular (sirve la imagen a resolución completa): las notas y el pie de
+  autoría se leen; la microlínea de autoría se conserva, diminuta como en el original.
 
 ### Despliegue (verificado con lecturas el 2026-10-31)
 - **Vercel** (cuenta chucospanes-9163, plan Hobby hasta el lanzamiento) despliega cada push a
@@ -88,7 +98,7 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   la landing, las imágenes nuevas y la imagen Open Graph responden 200 y las rutas viejas
   404; capturas a 390 px de "La casa" revisadas. El usuario confirmó que el lote de
   5 × 20 m es el real (segregado de un terreno de 10 × 20 m en dos lotes).
-  "La casa" muestra el plano de la casa sola (`plano-casa-esparta`), el del lote y la
+  "La casa" muestra el plano de la casa sola (`plano-casa-esparta-v4`), el del lote y la
   fachada, los tres ampliables; en escritorio, casa y fachada arriba y el lote a todo el
   ancho abajo. El PDF de la casa está en la lista cerrada de `/descargas` y en la ficha
   premium.
@@ -280,11 +290,6 @@ sin portal).
 - Retiros por confirmar con OPAMSS o la alcaldía (nota del plano).
 - Supabase Pro: decidir antes de dar acceso al portal al primer cliente (un proyecto
   gratuito pausado deja a los clientes sin portal).
-- **Reemplazar el plano de la casa** por la versión cuya nota del techo menciona el pretil
-  (`Casa_Modelo_Esparta_plano_v2`; no llegó a Descargas el 2026-10-29). Guardarla con
-  nombre nuevo (`plano-casa-esparta-v2.png/.pdf`), actualizar referencias y la lista cerrada
-  de `/descargas`, y borrar los `plano-casa-esparta` actuales. La nota actual dice "agua al
-  frente y al fondo" sin mencionar el pretil.
 - Canal detrás del pretil: detalle de impermeabilización, pendiente y rebosadero.
 - **Supabase Pro: se evalúa al activar el acceso premium.** Por ahora plan gratuito; los
   proyectos gratuitos se pausan tras ~1 semana sin actividad (fuentes de terceros).
