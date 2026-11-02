@@ -76,7 +76,7 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
 ## Pendientes del negocio (no inventar)
 - Búsqueda de marca "Roca Fuerte" en el CNR (clases 36, 37 y 19). Existe la sociedad
   ROCA FUERTE 5 DESIGN & CONSTRUCTION, S.A. de C.V. (mismo giro).
-- Precios "desde" de ambas opciones.
+- Precio "desde" de construir en tu terreno, y precio de cada casa a la venta (catálogo).
 - Especificaciones y marcas de materiales.
 - Número de WhatsApp Business.
 - Fotos y videos de la obra.

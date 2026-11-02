@@ -2,7 +2,7 @@ import { site } from "@/config/site";
 import { esparta } from "@/content/esparta";
 import { hero } from "@/content/landing";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Pendiente } from "./ui";
+import { Boton, Pendiente } from "./ui";
 
 export function Hero() {
   return (
@@ -22,7 +22,7 @@ export function Hero() {
           </h1>
           <p className="mt-5 max-w-xl text-lg text-piedra-700">{hero.bajada}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <BotonWhatsApp opcion="comprar" ubicacion="hero">Quiero esta casa</BotonWhatsApp>
+            <Boton href="/casas">Ver casas en venta</Boton>
             <BotonWhatsApp opcion="construir" ubicacion="hero" variante="secundario">
               Construir Esparta en mi terreno
             </BotonWhatsApp>

@@ -167,8 +167,8 @@ export function ContenidoPremium() {
       </Bloque>
 
       <Bloque titulo="Qué incluye el precio">
+        {/* Lo que incluye cada casa a la venta vive en el catálogo (/casas), no aquí */}
         <div className="grid gap-4 sm:grid-cols-2">
-          <ListaDesglose titulo="Comprar esta casa" desglose={esparta.desglosePrecio.comprarCasa} />
           <ListaDesglose
             titulo="Construir en tu terreno"
             desglose={esparta.desglosePrecio.construirEnTerreno}

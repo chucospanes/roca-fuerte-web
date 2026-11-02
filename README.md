@@ -183,7 +183,8 @@ Encender `site.lanzado` solo con todo esto cumplido.
 
 **Contenido y negocio**
 - [ ] Número real de WhatsApp Business en `site.whatsapp`.
-- [ ] Precios "desde" en `site.precios`.
+- [ ] Precio "desde" de construir en tu terreno en `site.precios` (el de cada casa a la venta
+      va en `casas_venta`).
 - [ ] Aviso de privacidad revisado por un abogado, con razón social, domicilio, correo de
       privacidad y plazo de conservación (`docs/AVISO_PRIVACIDAD.md`). Al aprobarlo, quitar
       el aviso de "borrador" de `src/app/privacidad/page.tsx`.

@@ -173,9 +173,11 @@ export const esparta = {
     texto: "Fachada principal — vista desde la calle",
   },
 
-  /** Qué incluye cada precio, partida por partida. Solo en el área premium. */
+  /**
+   * Qué incluye el precio de construir en tu terreno, partida por partida. Solo en el área
+   * premium. Lo que incluye cada casa a la venta vive en `casas_venta` (catálogo).
+   */
   desglosePrecio: {
-    comprarCasa: PENDIENTE as Desglose,
     construirEnTerreno: PENDIENTE as Desglose,
   },
 

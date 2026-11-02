@@ -30,6 +30,13 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   producción: contra Supabase real (catálogo vacío) y contra una simulación local de la API
   con 4 casas (sin tocar Supabase), capturas de 360 a 1280 px sin desborde. Slug inexistente:
   "no encontrada" con estado 200 (el 404 va dentro de `<Suspense>`), con `noindex`.
+- Portada: bloque "Casas disponibles" (3 primeras no vendidas; sin casas o si Supabase falla,
+  no se muestra) debajo del hero. Precios: "Comprar una casa" sin datos propios, lleva a
+  `/casas` (o a la casa, si hay una sola disponible). Hero: "Ver casas en venta". Contacto:
+  "Quiero más información" con el mensaje general. Sale `site.precios.comprarCasa` y el
+  desglose de compra de la ficha premium. Probado con 4 casas simuladas, una sola, Supabase
+  caído y Supabase real (vacío). Ojo: `next build` reusa en `.next` lo guardado con
+  `use cache` de un build anterior; en producción se corrige al revalidar (1 min).
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
   con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).
@@ -278,7 +285,8 @@ sección 6):
 1. Prueba real del conteo de clics: el número real (`+503 7821-6321`) ya está en
    `site.whatsapp` (2026-10-31); falta el clic del usuario desde su celular y la
    verificación con lecturas en `clics_venta`.
-2. Precios "desde" en `site.precios`.
+2. Precio "desde" de construir en tu terreno en `site.precios`; el precio de cada casa a la
+   venta va en su fila de `casas_venta`.
 3. Aviso de privacidad revisado por un abogado (razón social, domicilio, correo y plazo de
    conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
    quitar el aviso de "borrador" de `/privacidad`.
@@ -335,12 +343,13 @@ sin portal).
   - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
 - Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
   responsable: razón social, correo de contacto y plazo de conservación.
-- Precios "desde" → `site.precios`.
+- Precio "desde" de construir en tu terreno → `site.precios`.
 - URLs de redes sociales → `site.redes`.
 - Especificaciones y marcas de materiales → `esparta.materiales`.
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
-- Ubicación del terreno y detalle de lo incluido en "Comprar esta casa".
+- Casas a la venta (ubicación, lote, precio y qué incluye de cada una) → `casas_venta`, con
+  `docs/GUIA_CARGA_CASAS.md`. Pasaron aquí los pendientes 1, 3, 4 y 5 del inventario.
 - Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
   del profesional que firma el plano → `calidad` en `src/content/landing.ts`.

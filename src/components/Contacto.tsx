@@ -12,7 +12,7 @@ export function Contacto() {
       intro="Elige una opción y se abre WhatsApp con el mensaje listo. No tienes que registrarte."
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <BotonWhatsApp opcion="comprar" ubicacion="contacto">Quiero esta casa</BotonWhatsApp>
+        <BotonWhatsApp opcion="general" ubicacion="contacto">Quiero más información</BotonWhatsApp>
         <BotonWhatsApp opcion="construir" ubicacion="contacto" variante="secundario">
           Construir Esparta en mi terreno
         </BotonWhatsApp>

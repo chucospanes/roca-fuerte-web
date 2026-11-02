@@ -1,6 +1,7 @@
 import { esPendiente, site, textoPrecio, type Precio } from "@/config/site";
+import { listarCasas } from "@/lib/casas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Pendiente, Seccion } from "./ui";
+import { Boton, Seccion } from "./ui";
 
 function Precio({ precio }: { precio: Precio }) {
   return (
@@ -12,7 +13,18 @@ function Precio({ precio }: { precio: Precio }) {
   );
 }
 
-export function Opciones() {
+/**
+ * "Comprar una casa" no tiene datos propios: lleva al catálogo, o directo a la casa si hay una
+ * sola disponible (las vendidas no cuentan). Precio, ubicación y qué incluye viven en cada casa.
+ */
+export async function Opciones() {
+  const resultado = await listarCasas();
+  const disponibles = resultado.ok ? resultado.datos.filter((c) => c.estado !== "vendida") : [];
+  const destino =
+    disponibles.length === 1
+      ? { href: `/casas/${disponibles[0].slug}`, texto: "Ver la casa" }
+      : { href: "/casas", texto: "Ver casas en venta" };
+
   return (
     <Seccion
       id="opciones"
@@ -27,28 +39,15 @@ export function Opciones() {
           <p className="font-display text-xs font-semibold tracking-[0.15em] text-terracota uppercase">
             Opción 1
           </p>
-          <h3 className="mt-1 font-display text-2xl font-extrabold">Comprar esta casa</h3>
+          <h3 className="mt-1 font-display text-2xl font-extrabold">Comprar una casa</h3>
           <p className="mt-2 text-piedra-600">
-            La Casa Esparta que estamos construyendo, con su terreno.
+            Casas que construimos para vender, con su terreno. Cada una con su ubicación, su lote,
+            su precio y lo que incluye.
           </p>
-          <div className="mt-5">
-            <Precio precio={site.precios.comprarCasa} />
-          </div>
-          <h4 className="mt-6 font-semibold">Qué incluye</h4>
-          <ul className="mt-2 space-y-1 text-piedra-700">
-            <li>— La casa terminada.</li>
-            <li>— El terreno donde está construida.</li>
-            <li>
-              — Ubicación del terreno: <Pendiente />
-            </li>
-            <li>
-              — Detalle de lo incluido: <Pendiente />
-            </li>
-          </ul>
           <div className="mt-auto pt-6">
-            <BotonWhatsApp opcion="comprar" ubicacion="precios" className="w-full">
-              Quiero esta casa
-            </BotonWhatsApp>
+            <Boton href={destino.href} className="w-full">
+              {destino.texto}
+            </Boton>
           </div>
         </article>
 
