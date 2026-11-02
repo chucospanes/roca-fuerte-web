@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { TarjetaCasa } from "@/components/casas/TarjetaCasa";
 import { Encabezado } from "@/components/Encabezado";
 import { Pie } from "@/components/Pie";
-import { Boton, Seccion } from "@/components/ui";
+import { BotonWhatsApp } from "@/components/BotonWhatsApp";
+import { Seccion } from "@/components/ui";
 import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
 import { site } from "@/config/site";
 import { catalogo } from "@/content/casas";
 import { listarCasas } from "@/lib/casas";
-import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: `${catalogo.titulo} · ${site.marca}`,
@@ -35,9 +35,9 @@ export default async function CasasPage() {
           ) : (
             <div className="rounded-lg border border-piedra-200 bg-blanco p-6">
               <p className="max-w-xl text-lg">{resultado.ok ? catalogo.vacio : catalogo.error}</p>
-              <Boton href={whatsappHref(mensajesVenta.general)} externo className="mt-5">
+              <BotonWhatsApp opcion="general" ubicacion="catalogo" className="mt-5">
                 Escribir por WhatsApp
-              </Boton>
+              </BotonWhatsApp>
             </div>
           )}
         </Seccion>

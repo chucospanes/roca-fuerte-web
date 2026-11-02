@@ -17,8 +17,8 @@ export const TERRENO_ESCRITURADO = ["si", "no", "en_tramite"] as const;
 export const FORMAS_PAGO = ["contado", "fsv", "banco", "otro"] as const;
 export const INICIOS = ["inmediato", "3_meses", "6_meses", "mas_6_meses"] as const;
 export const ESTADOS_LEAD = ["nuevo", "contactado", "calificado", "descartado", "cliente"] as const;
-// Deben coincidir con los CHECK de clics_venta (003_clics_inversionistas.sql)
-export const OPCIONES_VENTA = ["comprar", "construir", "general", "inversionista"] as const;
+// Deben coincidir con los CHECK de clics_venta (006_clics_casas.sql)
+export const OPCIONES_VENTA = ["comprar", "construir", "general", "inversionista", "casa"] as const;
 export const UBICACIONES_VENTA = [
   "hero",
   "precios",
@@ -26,6 +26,8 @@ export const UBICACIONES_VENTA = [
   "flotante",
   "pie",
   "inversionistas",
+  "casa",
+  "catalogo",
 ] as const;
 
 // Catálogo de casas en venta: deben coincidir con los CHECK de 005_casas_venta.sql
@@ -201,23 +203,30 @@ export const esquemaCalificacion = z
 /**
  * Clic en un botón de venta (POST /api/clic). Sin datos personales. Botón y ubicación son
  * obligatorios; el origen es tolerante: un valor inválido se descarta, no bloquea el conteo.
+ * `casa_id` (uuid) va solo y siempre con la opción `casa` (CHECK de 006); que sea de una casa
+ * publicada lo revisa la ruta contra la base antes de insertar.
  */
-export const esquemaClic = z.strictObject({
-  opcion: z.enum(OPCIONES_VENTA),
-  ubicacion: z.enum(UBICACIONES_VENTA),
-  utm_source: textoOpcional(200).catch(undefined),
-  utm_medium: textoOpcional(200).catch(undefined),
-  utm_campaign: textoOpcional(200).catch(undefined),
-  utm_content: textoOpcional(200).catch(undefined),
-  referrer_dominio: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .max(253)
-    .regex(/^[a-z0-9.-]+$/)
-    .optional()
-    .catch(undefined),
-});
+export const esquemaClic = z
+  .strictObject({
+    opcion: z.enum(OPCIONES_VENTA),
+    ubicacion: z.enum(UBICACIONES_VENTA),
+    casa_id: z.uuid().optional(),
+    utm_source: textoOpcional(200).catch(undefined),
+    utm_medium: textoOpcional(200).catch(undefined),
+    utm_campaign: textoOpcional(200).catch(undefined),
+    utm_content: textoOpcional(200).catch(undefined),
+    referrer_dominio: z
+      .string()
+      .trim()
+      .toLowerCase()
+      .max(253)
+      .regex(/^[a-z0-9.-]+$/)
+      .optional()
+      .catch(undefined),
+  })
+  .refine((c) => (c.opcion === "casa") === (c.casa_id !== undefined), {
+    error: "casa_id va solo y siempre con la opción casa.",
+  });
 
 /** Id de una fila del portal (uuid). Se valida antes de consultar. */
 export const esquemaIdPortal = z.uuid();

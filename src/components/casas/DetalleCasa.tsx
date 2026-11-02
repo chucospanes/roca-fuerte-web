@@ -7,6 +7,7 @@ import { precioUSD } from "@/config/site";
 import { catalogo, muestraPrecio, nombresAguasNegras, ubicacionCasa } from "@/content/casas";
 import { esparta } from "@/content/esparta";
 import type { DetalleCasa as Casa } from "@/lib/casas";
+import { BotonWhatsAppCasa } from "./BotonWhatsAppCasa";
 import { EtiquetaEstado } from "./TarjetaCasa";
 
 const m = (n: number) => `${n.toFixed(2)} m`;
@@ -80,6 +81,8 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
             {casa.precio_usd === null ? "Precio: consultar" : precioUSD(casa.precio_usd)}
           </p>
         )}
+        {/* Vendida: sin botón. Reservada: con botón (puede liberarse o haber otra parecida) */}
+        {casa.estado !== "vendida" && <BotonWhatsAppCasa casa={casa} className="mt-5 w-full sm:w-auto" />}
       </header>
 
       {portada && (

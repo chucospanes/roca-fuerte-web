@@ -35,8 +35,9 @@ if(n)localStorage.setItem(k,JSON.stringify(o));
  * cargado). Al tocar un enlace `a[data-venta]` que abre WhatsApp (`https://wa.me/`):
  * 1. Si hay UTM de primer contacto, agrega al final del mensaje una referencia corta,
  *    por ejemplo "(Ref: tiktok · video12)". Sin UTM, no agrega nada.
- * 2. Envía el clic con `sendBeacon` a `/api/clic`: botón, ubicación, UTM y solo el dominio
- *    del referrer. Sin datos personales.
+ * 2. Envía el clic con `sendBeacon` a `/api/clic`: botón, ubicación, casa (`data-casa`, solo
+ *    en el botón de una casa del catálogo), UTM y solo el dominio del referrer. Sin datos
+ *    personales.
  */
 export const SCRIPT_CLICS_VENTA = `(function(){
 function leer(){try{return JSON.parse(localStorage.getItem(${JSON.stringify(CLAVE)})||"null")||{};}catch(e){return {};}}
@@ -57,6 +58,7 @@ document.addEventListener("click",function(ev){
   }
   try{
     var c={opcion:a.getAttribute("data-venta"),ubicacion:a.getAttribute("data-ubicacion")};
+    if(a.getAttribute("data-casa"))c.casa_id=a.getAttribute("data-casa");
     ["utm_source","utm_medium","utm_campaign","utm_content"].forEach(function(k){if(o[k])c[k]=o[k];});
     if(o.referrer){try{c.referrer_dominio=new URL(o.referrer).hostname.toLowerCase();}catch(e){}}
     navigator.sendBeacon("/api/clic",new Blob([JSON.stringify(c)],{type:"text/plain"}));

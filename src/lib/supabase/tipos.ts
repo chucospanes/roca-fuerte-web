@@ -60,12 +60,14 @@ export type LeadInsert = Omit<Lead, ConDefault | Nullables> &
   Partial<Pick<Lead, ConDefault | Nullables>>;
 export type LeadUpdate = Partial<Lead>;
 
-/** Clic de venta (002_clics_venta.sql). Sin datos personales. */
+/** Clic de venta (002, 003 y 006). Sin datos personales. */
 export type ClicVenta = {
   id: number;
   created_at: string;
   opcion: Uno<typeof OPCIONES_VENTA>;
   ubicacion: Uno<typeof UBICACIONES_VENTA>;
+  /** Casa del catálogo (006): solo con la opción `casa`. */
+  casa_id: string | null;
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;

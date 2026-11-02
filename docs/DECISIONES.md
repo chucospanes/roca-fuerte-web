@@ -546,3 +546,13 @@ estática `/casa-no-disponible` (mismo diseño del sitio), `X-Robots-Tag: noinde
 casa" (con meta noindex). Respaldo: una casa ocultada hace menos de un minuto puede pasar el
 proxy y salir con el `notFound()` de la página (200 con meta noindex). Costo: una consulta a
 Supabase por slug y por minuto en cada instancia.
+
+## 2026-11-02 — Clics por casa del catálogo y ubicación `catalogo`
+Aprobado por el usuario con la migración 006. El botón "Quiero esta casa" de cada casa (no
+en las vendidas; sí en las reservadas) abre WhatsApp con un mensaje que nombra la casa y
+cuenta el clic con opción y ubicación `casa` y su `casa_id`. `/api/clic` valida `casa_id`
+con zod (uuid, solo y siempre con la opción `casa`) y revisa en la base que la casa exista y
+esté publicada antes de insertar; si no, descarta el clic con 400 como los demás inválidos.
+Si la base falla al revisar, descarta con 204 y lo registra en el log: nunca un 500. La
+ubicación `catalogo` cuenta el WhatsApp de `/casas` vacío o con error, y el de una casa que
+no se pudo cargar (opción `general`).
