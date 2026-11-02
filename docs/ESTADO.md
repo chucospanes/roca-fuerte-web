@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-02
-**Versión:** v1.1.0 — catálogo de casas en venta; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.1.1 — catálogo de casas con la primera casa publicada; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -20,8 +20,18 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   vacío; `www` → 308 al dominio. Sin casas cargadas: el hero muestra el WhatsApp de comprar,
   el bloque "Casas disponibles" no aparece y `/casas` muestra el aviso con WhatsApp
   (`catalogo`). Lema, pilares, "Comprar una casa" y "Quiero más información" visibles.
-- **Pendiente:** cargar la primera casa real con `docs/GUIA_CARGA_CASAS.md` y revisar en el
-  dominio fotos, plano protegido y botón con conteo (no se pudo probar sin datos reales).
+- **Primera casa real publicada (2026-11-02, `v1.1.1`):** `esparta-san-jose-villanueva`
+  (cargada por el usuario con las plantillas: lote 10 × 20, en construcción, "Terracería y
+  trazo", precio "Consultar", agua por confirmar; 2 fotos, sin plano propio). Verificado con
+  lecturas en el dominio: página 200 con noindex (sitio sin lanzar), título y datos correctos,
+  m² del modelo y "Plano del modelo Esparta" con la protección (`draggable=false`,
+  `select-none`, `-webkit-touch-callout: none`); fotos del bucket 200 `image/jpeg`, mismos
+  bytes que las de WhatsApp, sin EXIF, XMP, IPTC ni GPS, y servidas por `/_next/image`;
+  `og:image` = portada; el bucket no se lista con la publishable. Botón con
+  `data-casa` = su id y mensaje con el nombre de la casa. Hero y Precios: "Ver la casa"; bloque
+  "Casas disponibles" en la portada y la casa en `/casas`. Falta: el primer clic real en su
+  botón (no se hacen clics de prueba en producción).
+- Tarjeta "Comprar una casa" de Precios con la regla del hero (en `main`, `v1.1.1`).
 - Migración 005 aplicada por el usuario (2026-11-02) y su prueba con rollback superada
   ("PRUEBA SUPERADA: 9 candados…"). Verificado con lecturas: `casas_venta` y
   `casas_venta_imagenes` en 0 filas; con la clave publishable, lectura 200 vacía, inserción
