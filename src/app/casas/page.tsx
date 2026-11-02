@@ -34,6 +34,8 @@ export default async function CasasPage() {
             </ul>
           ) : (
             <div className="rounded-lg border border-piedra-200 bg-blanco p-6">
+              {/* Si no cargó, que esta versión de la página no se indexe (React sube el <meta>) */}
+              {!resultado.ok && <meta name="robots" content="noindex, nofollow" />}
               <p className="max-w-xl text-lg">{resultado.ok ? catalogo.vacio : catalogo.error}</p>
               <BotonWhatsApp opcion="general" ubicacion="catalogo" className="mt-5">
                 Escribir por WhatsApp

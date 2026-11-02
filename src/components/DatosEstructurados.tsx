@@ -1,5 +1,6 @@
 import { esPendiente, site } from "@/config/site";
 import { esparta } from "@/content/esparta";
+import { jsonLd } from "@/lib/json-ld";
 
 /**
  * Datos estructurados schema.org (`HomeAndConstructionBusiness`) para buscadores.
@@ -23,7 +24,7 @@ export function DatosEstructurados() {
     <script
       type="application/ld+json"
       // `<` escapado para que ningún texto pueda cerrar la etiqueta <script>
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(datos).replace(/</g, "\u003c") }}
+      dangerouslySetInnerHTML={{ __html: jsonLd(datos) }}
     />
   );
 }

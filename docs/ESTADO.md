@@ -38,6 +38,11 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   local: esquema (22 casos), ruta (casa publicada 204 e insertada; oculta, inexistente,
   inválida, sin id o id en otra opción 400 sin insertar; base caída 204 sin insertar) y clic
   real en el navegador (mensaje con la casa y "(Ref: …)", clic con `casa_id` y UTM).
+- SEO: metadata y JSON-LD (`RealEstateListing`) por casa, sitemap con `/casas` y cada casa
+  (solo lanzado). Probado con un build temporal con `site.lanzado = true` contra la
+  simulación (no se commiteó): casas indexables con su título, canonical y foto; 404, casa
+  sin cargar y catálogo sin cargar con noindex; sitemap con las 4 casas publicadas (sin la
+  oculta).
 - Portada: bloque "Casas disponibles" (3 primeras no vendidas; sin casas o si Supabase falla,
   no se muestra) debajo del hero. Precios: "Comprar una casa" sin datos propios, lleva a
   `/casas` (o a la casa, si hay una sola disponible). Hero: "Ver casas en venta". Contacto:
@@ -50,7 +55,7 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   que anon y authenticated no tienen permisos sobre la tabla ni la vista. **Esperando la
   revisión del usuario antes de aplicarla.** Aplicada por el usuario (2026-11-02); verificado con
   lecturas: `clics_venta` y `clics_venta_resumen` en 401 con la publishable; `casa_id` y la
-  columna `casa` de la vista existen. Prueba de plantillas de casas superada (17 casos). Sigue: SEO (commit 9).
+  columna `casa` de la vista existen. Prueba de plantillas de casas superada (17 casos). **Rama completa; falta el merge a `main` (con aviso al usuario).**
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
   con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).
