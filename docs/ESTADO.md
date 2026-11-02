@@ -32,6 +32,10 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   "Casas disponibles" en la portada y la casa en `/casas`. Falta: el primer clic real en su
   botón (no se hacen clics de prueba en producción).
 - Tarjeta "Comprar una casa" de Precios con la regla del hero (en `main`, `v1.1.1`).
+- Primer clic real en el botón de la casa (2026-11-02, desde el celular del usuario): guardado
+  con `opcion = casa`, `ubicacion = casa` y su `casa_id` (filas 6 y 7). Mensaje de la casa
+  sin "casa" repetido: `Hola, me interesa la "{nombre}" en {municipio}. ¿Me pueden dar más
+  información?`
 - Migración 005 aplicada por el usuario (2026-11-02) y su prueba con rollback superada
   ("PRUEBA SUPERADA: 9 candados…"). Verificado con lecturas: `casas_venta` y
   `casas_venta_imagenes` en 0 filas; con la clave publishable, lectura 200 vacía, inserción
