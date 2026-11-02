@@ -568,5 +568,5 @@ no se pudo cargar (opción `general`).
 - noindex siempre (también lanzado) en: casa inexistente (404 del proxy),
   `/casa-no-disponible`, la casa que no se pudo cargar y `/casas` cuando no se pudo cargar.
 - Corregido de paso: el escape de `<` en el JSON-LD (`DatosEstructurados`) no hacía nada
-  (`"<"` en JS ya es `<`). Ahora `lib/json-ld.ts` escapa de verdad; importa porque el
+  (el escape escrito en el código como string de JS ya es `<`). Ahora `lib/json-ld.ts` escapa de verdad; importa porque el
   JSON-LD de las casas lleva texto cargado en Supabase.
