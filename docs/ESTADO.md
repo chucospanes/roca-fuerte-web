@@ -29,11 +29,11 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   bytes que las de WhatsApp, sin EXIF, XMP, IPTC ni GPS, y servidas por `/_next/image`;
   `og:image` = portada; el bucket no se lista con la publishable. Botón con
   `data-casa` = su id y mensaje con el nombre de la casa. Hero y Precios: "Ver la casa"; bloque
-  "Casas disponibles" en la portada y la casa en `/casas`. Falta: el primer clic real en su
-  botón (no se hacen clics de prueba en producción).
+  "Casas disponibles" en la portada y la casa en `/casas`.
 - Tarjeta "Comprar una casa" de Precios con la regla del hero (en `main`, `v1.1.1`).
-- Primer clic real en el botón de la casa (2026-11-02, desde el celular del usuario): guardado
-  con `opcion = casa`, `ubicacion = casa` y su `casa_id` (filas 6 y 7). Mensaje de la casa
+- **Prueba real del conteo con `casa_id`: hecha (2026-11-02).** Los dos clics del usuario
+  desde su celular en el botón de la casa (11:31 y 11:34, hora de El Salvador) quedaron en
+  `clics_venta` con `opcion = casa`, `ubicacion = casa` y su `casa_id` (filas 6 y 7). Mensaje de la casa
   sin "casa" repetido: `Hola, me interesa la "{nombre}" en {municipio}. ¿Me pueden dar más
   información?`
 - Migración 005 aplicada por el usuario (2026-11-02) y su prueba con rollback superada
@@ -327,9 +327,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 ## Siguiente
 **Pendientes antes del lanzamiento** (`site.lanzado = true`; lista completa en el README,
 sección 6):
-1. Prueba real del conteo de clics: el número real (`+503 7821-6321`) ya está en
-   `site.whatsapp` (2026-10-31); falta el clic del usuario desde su celular y la
-   verificación con lecturas en `clics_venta`.
+1. ~~Prueba real del conteo de clics~~ **hecha (2026-11-02):** clics del usuario desde su
+   celular con el número real (`+503 7821-6321`), verificados con lecturas en `clics_venta`
+   (botón de la casa, con su `casa_id`).
 2. Precio "desde" de construir en tu terreno en `site.precios`; el precio de cada casa a la
    venta va en su fila de `casas_venta`.
 3. Aviso de privacidad revisado por un abogado (razón social, domicilio, correo y plazo de
