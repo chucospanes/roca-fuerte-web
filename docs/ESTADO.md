@@ -37,6 +37,11 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   desglose de compra de la ficha premium. Probado con 4 casas simuladas, una sola, Supabase
   caído y Supabase real (vacío). Ojo: `next build` reusa en `.next` lo guardado con
   `use cache` de un build anterior; en producción se corrige al revalidar (1 min).
+- Migración `006_clics_casas.sql` escrita (solo archivo): opción y ubicación `casa`,
+  ubicación `catalogo`, columna `casa_id` y vista de resumen con la casa; comprueba al final
+  que anon y authenticated no tienen permisos sobre la tabla ni la vista. **Esperando la
+  revisión del usuario antes de aplicarla.** Siguen: botón por casa con conteo (commit 8,
+  con la 006 aplicada) y SEO (commit 9).
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
   con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).
