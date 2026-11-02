@@ -24,7 +24,7 @@ export const mensajesVenta: Record<OpcionMensajeFijo, string> = {
 
 /** Mensaje del botón de una casa del catálogo: la nombra para saber de cuál se habla. */
 export function mensajeCasa(nombre: string, municipio: string): string {
-  return `Hola, me interesa la casa "${nombre}" en ${municipio}. ¿Me pueden dar más información?`;
+  return `Hola, me interesa la "${nombre}" en ${municipio}. ¿Me pueden dar más información?`;
 }
 
 /** Mensaje al terminar la calificación (paso 2), con lo que la persona ya contó. */
