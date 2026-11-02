@@ -184,6 +184,8 @@ Encender `site.lanzado` solo con todo esto cumplido.
       el aviso de "borrador" de `src/app/privacidad/page.tsx`.
 - [ ] Decidir qué PENDIENTE se aceptan visibles el día del lanzamiento (redes, preguntas
       frecuentes, video del hero, materiales, profesional que firma).
+- [ ] Publicar los primeros videos de materiales y refuerzo (el hero promete "cada
+      material, cada etapa y cada refuerzo, documentados en video").
 
 **Datos de prueba en Supabase** (los borra el dueño del proyecto)
 - [ ] Primero las filas de prueba de `leads` (antes, un `select` para confirmar cuáles son).

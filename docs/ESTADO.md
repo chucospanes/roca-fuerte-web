@@ -3,7 +3,7 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-01
+**Última actualización:** 2026-11-02
 **Versión:** v1.0.0 — desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
@@ -12,6 +12,11 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Hero nuevo (2026-11-02)
+- "Casas que duran. Y te lo demostramos." + "Cada material, cada etapa y cada refuerzo,
+  documentados en video. Tú lo compruebas antes de comprar." Metadata sin cambios (no usaba
+  el título anterior). Ver DECISIONES.md.
 
 ### Plano de la casa: resolución media y protección ligera (2026-11-01)
 - La web sirve `public/plano-casa-esparta-v4-1800.png` (1800 × 1737, reducido del original
@@ -256,12 +261,13 @@ sección 6):
    quitar el aviso de "borrador" de `/privacidad`.
 4. Decidir qué PENDIENTE se aceptan visibles el día del lanzamiento (redes, preguntas
    frecuentes, video del hero, materiales, profesional que firma).
-5. Borrar los datos de prueba (`leads` y luego sus usuarios de Auth; lo hace el usuario) y
+5. Publicar los primeros videos de materiales y refuerzo (lo promete el hero).
+6. Borrar los datos de prueba (`leads` y luego sus usuarios de Auth; lo hace el usuario) y
    verificar con lecturas.
-6. Vercel en plan Pro.
-7. DMARC y límites de envío anotados en `CONFIGURACION_EXTERNA.md`; vista previa del enlace
+7. Vercel en plan Pro.
+8. DMARC y límites de envío anotados en `CONFIGURACION_EXTERNA.md`; vista previa del enlace
    en WhatsApp y en el Sharing Debugger de Facebook; Lighthouse sobre el dominio.
-8. Commit con `site.lanzado = true`, comprobar que no queda `noindex` y que `robots.txt`
+9. Commit con `site.lanzado = true`, comprobar que no queda `noindex` y que `robots.txt`
    trae el sitemap, y dar de alta el dominio en Google Search Console.
 
 **Antes de cargar la obra del primer cliente en el portal:** aviso de privacidad con los

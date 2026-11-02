@@ -21,9 +21,9 @@ export type Punto = {
 };
 
 export const hero = {
-  titulo: "Construcción honesta, a la vista de todos.",
+  titulo: "Casas que duran. Y te lo demostramos.",
   bajada:
-    "Cada material y cada etapa de la obra, mostrados en video. Así sabes exactamente qué estás comprando.",
+    "Cada material, cada etapa y cada refuerzo, documentados en video. Tú lo compruebas antes de comprar.",
 };
 
 export const porQue: Punto[] = [

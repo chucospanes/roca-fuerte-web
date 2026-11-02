@@ -472,3 +472,14 @@ resto del sitio):
   `-webkit-touch-callout: none` y `user-select: none`, sin JavaScript adicional ni
   dependencias. Disuade la copia casual; no la impide (captura de pantalla, herramientas del
   navegador). El `alt` descriptivo se conserva.
+
+## 2026-11-02 — Hero: "Casas que duran. Y te lo demostramos." (matiza "Sin superlativos ni promesas de resistencia")
+Decisión del usuario. La promesa central del sitio pasa a ser calidad durable y comprobable:
+título "Casas que duran. Y te lo demostramos." y subtítulo "Cada material, cada etapa y cada
+refuerzo, documentados en video. Tú lo compruebas antes de comprar." Matiza la regla del
+2026-10-23: "duran" es una promesa de durabilidad, aceptada porque va atada a la prueba
+("te lo demostramos") y no a un superlativo. La regla sigue para todo lo demás: nada de
+"antisísmica", "resiste terremotos" ni garantías; la norma RTS solo se menciona en Calidad.
+Consecuencia: publicar los primeros videos de materiales y refuerzo pasa a la lista previa
+al lanzamiento (sin ellos, la promesa sale vacía). La metadata no cambia: no usaba el
+título anterior.
