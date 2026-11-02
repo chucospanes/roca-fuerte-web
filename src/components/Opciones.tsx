@@ -16,9 +16,11 @@ function Precio({ precio }: { precio: Precio }) {
 /**
  * "Comprar una casa" no tiene datos propios: lleva al catálogo, o directo a la casa si hay una
  * sola disponible (las vendidas no cuentan). Precio, ubicación y qué incluye viven en cada casa.
+ * Sin casas o si Supabase no responde, el WhatsApp de comprar (misma regla que el hero).
  */
 export async function Opciones() {
-  const destino = destinoCompra((await casasDisponibles()) ?? []);
+  const disponibles = await casasDisponibles();
+  const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
 
   return (
     <Seccion
@@ -40,9 +42,15 @@ export async function Opciones() {
             su precio y lo que incluye.
           </p>
           <div className="mt-auto pt-6">
-            <Boton href={destino.href} className="w-full">
-              {destino.texto}
-            </Boton>
+            {destino ? (
+              <Boton href={destino.href} className="w-full">
+                {destino.texto}
+              </Boton>
+            ) : (
+              <BotonWhatsApp opcion="comprar" ubicacion="precios" className="w-full">
+                Quiero esta casa
+              </BotonWhatsApp>
+            )}
           </div>
         </article>
 

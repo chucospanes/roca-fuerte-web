@@ -56,7 +56,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   `/casas` (o a la casa, si hay una sola disponible). Hero: "Ver casas en venta". Contacto:
   "Quiero más información" con el mensaje general. Sale `site.precios.comprarCasa` y el
   desglose de compra de la ficha premium. Probado con 4 casas simuladas, una sola, Supabase
-  caído y Supabase real (vacío). Ojo: `next build` reusa en `.next` lo guardado con
+  caído y Supabase real (vacío). Precios con la regla del hero (rama `feat/precios-sin-casas`,
+  sin unir a `main`): sin casas o con Supabase caído, "Quiero esta casa" al WhatsApp de
+  comprar (`precios`); probado con la simulación en los 4 casos. Ojo: `next build` reusa en `.next` lo guardado con
   `use cache` de un build anterior; en producción se corrige al revalidar (1 min).
 - Migración `006_clics_casas.sql` escrita (solo archivo): opción y ubicación `casa`,
   ubicación `catalogo`, columna `casa_id` y vista de resumen con la casa; comprueba al final
