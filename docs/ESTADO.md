@@ -13,6 +13,55 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Catálogo de casas en venta (rama `feat/catalogo-casas`, en curso)
+- Migración 005 aplicada por el usuario (2026-11-02) y su prueba con rollback superada
+  ("PRUEBA SUPERADA: 9 candados…"). Verificado con lecturas: `casas_venta` y
+  `casas_venta_imagenes` en 0 filas; con la clave publishable, lectura 200 vacía, inserción
+  401/42501 en las dos y las 6 tablas del portal en 401; bucket `casas` público (5 MB,
+  JPEG/PNG/WebP) y vacío para la publishable; `obras` sigue privado.
+- Guía `docs/GUIA_CARGA_CASAS.md` con 3 plantillas (casa nueva sin publicar, fotos y plano,
+  publicar u ocultar) y su prueba `supabase/pruebas/005_plantillas_casas.sql` (17 casos,
+  armada desde la guía). **Falta que el usuario corra esa prueba.**
+- `/casas` (tarjetas: vendidas al final, sin precio en reservadas y vendidas, "Consultar" sin
+  precio; vacío o con error: aviso y WhatsApp) y `/casas/[slug]` (fotos, datos del lote y la
+  planta, servicios, qué incluye, video y plano protegido; planta Esparta toma m² y plano de la
+  portada). Datos con la clave publishable, caché `minutes`. "Casas" en el menú (escritorio
+  desde 1024 px: con 9 enlaces desbordaba a 768) y en el pie. Probado con el build de
+  producción: contra Supabase real (catálogo vacío) y contra una simulación local de la API
+  con 4 casas (sin tocar Supabase), capturas de 360 a 1280 px sin desborde.
+- Casa inexistente: 404 real desde `proxy.ts`, con `X-Robots-Tag: noindex` y meta noindex,
+  también con el sitio lanzado (ver DECISIONES.md). Probado: slug inexistente o inválido →
+  404; casa publicada → 200 con su contenido; Supabase caído → 200 "No pudimos cargar esta
+  casa" con noindex en encabezado y meta.
+- Botón "Quiero esta casa" por casa (no en vendidas) con conteo `casa` + `casa_id`, y
+  `catalogo` en los WhatsApp de `/casas` vacío o con error. Probado contra la simulación
+  local: esquema (22 casos), ruta (casa publicada 204 e insertada; oculta, inexistente,
+  inválida, sin id o id en otra opción 400 sin insertar; base caída 204 sin insertar) y clic
+  real en el navegador (mensaje con la casa y "(Ref: …)", clic con `casa_id` y UTM).
+- SEO: metadata y JSON-LD (`RealEstateListing`) por casa, sitemap con `/casas` y cada casa
+  (solo lanzado). Probado con un build temporal con `site.lanzado = true` contra la
+  simulación (no se commiteó): casas indexables con su título, canonical y foto; 404, casa
+  sin cargar y catálogo sin cargar con noindex; sitemap con las 4 casas publicadas (sin la
+  oculta).
+- Portada: bloque "Casas disponibles" (3 primeras no vendidas; sin casas o si Supabase falla,
+  no se muestra) debajo del hero. Precios: "Comprar una casa" sin datos propios, lleva a
+  `/casas` (o a la casa, si hay una sola disponible). Hero: "Ver casas en venta". Contacto:
+  "Quiero más información" con el mensaje general. Sale `site.precios.comprarCasa` y el
+  desglose de compra de la ficha premium. Probado con 4 casas simuladas, una sola, Supabase
+  caído y Supabase real (vacío). Ojo: `next build` reusa en `.next` lo guardado con
+  `use cache` de un build anterior; en producción se corrige al revalidar (1 min).
+- Migración `006_clics_casas.sql` escrita (solo archivo): opción y ubicación `casa`,
+  ubicación `catalogo`, columna `casa_id` y vista de resumen con la casa; comprueba al final
+  que anon y authenticated no tienen permisos sobre la tabla ni la vista. **Esperando la
+  revisión del usuario antes de aplicarla.** Aplicada por el usuario (2026-11-02); verificado con
+  lecturas: `clics_venta` y `clics_venta_resumen` en 401 con la publishable; `casa_id` y la
+  columna `casa` de la vista existen. Prueba de plantillas de casas superada (17 casos). - Hero: con casas disponibles, "Ver casas en venta" o "Ver la casa"; sin casas o con
+  Supabase caído, el WhatsApp de comprar. Probado con la simulación (varias, una, ninguna,
+  caída: una sola lectura del catálogo por build) y con Supabase real (vacío: WhatsApp).
+- Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
+  Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
+  con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).
+
 ### Hero, lema y pilares (2026-11-02)
 - "Casas que duran. Y te lo demostramos." + "Cada material, cada etapa y cada refuerzo,
   documentados en video. Tú lo compruebas antes de comprar." Metadata sin cambios (no usaba
@@ -257,7 +306,8 @@ sección 6):
 1. Prueba real del conteo de clics: el número real (`+503 7821-6321`) ya está en
    `site.whatsapp` (2026-10-31); falta el clic del usuario desde su celular y la
    verificación con lecturas en `clics_venta`.
-2. Precios "desde" en `site.precios`.
+2. Precio "desde" de construir en tu terreno en `site.precios`; el precio de cada casa a la
+   venta va en su fila de `casas_venta`.
 3. Aviso de privacidad revisado por un abogado (razón social, domicilio, correo y plazo de
    conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
    quitar el aviso de "borrador" de `/privacidad`.
@@ -314,12 +364,13 @@ sin portal).
   - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
 - Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
   responsable: razón social, correo de contacto y plazo de conservación.
-- Precios "desde" → `site.precios`.
+- Precio "desde" de construir en tu terreno → `site.precios`.
 - URLs de redes sociales → `site.redes`.
 - Especificaciones y marcas de materiales → `esparta.materiales`.
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
-- Ubicación del terreno y detalle de lo incluido en "Comprar esta casa".
+- Casas a la venta (ubicación, lote, precio y qué incluye de cada una) → `casas_venta`, con
+  `docs/GUIA_CARGA_CASAS.md`. Pasaron aquí los pendientes 1, 3, 4 y 5 del inventario.
 - Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
   del profesional que firma el plano → `calidad` en `src/content/landing.ts`.

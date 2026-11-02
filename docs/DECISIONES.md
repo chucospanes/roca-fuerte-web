@@ -493,3 +493,89 @@ materiales con especificación, bitácora en video y portal privado del cliente)
 **Comunidad**, solo con "Contratamos mano de obra de la zona." (sin mencionar ferreterías
 ni compras locales, y sin agregar datos no confirmados). Salen "Sin sorpresas en el precio"
 (lo cubre el paso 3 de Cómo trabajamos) y "Desde donde estés" (queda en el punto del portal).
+
+## 2026-11-02 — Cambio de alcance: catálogo de casas en venta (`/casas`)
+Decisión del usuario, en la rama `feat/catalogo-casas`. Casas concretas a la venta, distintas
+del modelo Esparta: `/casas` (tarjetas) y `/casas/[slug]` (detalle), bloque "Casas
+disponibles" en la portada (3 primeras no vendidas; sin casas publicadas, no se muestra) y
+enlace "Casas" siempre visible en el menú, el menú móvil y el pie (catálogo vacío: aviso y
+botón de WhatsApp).
+- **Una sola fuente por dato:** lo del modelo (planta, m², materiales, calidad) sigue en la
+  portada; lo de cada casa (ubicación, lote, precio, qué incluye, estado, etapa, fotos,
+  video) vive SOLO en `casas_venta` (migración 005). Con `planta_esparta = true`, m²,
+  dormitorios y baños van en null y se toman de `esparta.ts`. Lotes rectangulares por ahora
+  (`lote_m2` se calcula): el lote se cambia editando la fila, sin desplegar.
+- **Ubicación pública:** distrito, municipio y departamento, sin dirección exacta.
+- **Seguridad:** lectura pública solo de `publicada = true`, sin escritura para anon ni
+  authenticated. Fotos en el bucket PÚBLICO `casas` (5 MB, JPEG/PNG/WebP), separado del
+  privado `obras`, sin políticas en `storage.objects` (no se lista ni se sube). Riesgo
+  aceptado: un archivo del bucket se descarga por su URL aunque la casa no esté publicada
+  (la ruta lleva un uuid); la guía dice subir solo fotos que ya se pueden ver. Nada del
+  portal cambia.
+- **Plano de cada casa:** a resolución media (lado mayor ≤ 1800 px, CHECK) y con la misma
+  protección ligera que el de la portada.
+- **Estados:** "Vendida" se muestra al final, sin precio ni botón y fuera del bloque de la
+  portada (social proof; para ocultarla, `publicada = false`). "Reservada": etiqueta, sin
+  precio, con botón de WhatsApp.
+- **Precios y hero:** la tarjeta "Comprar esta casa" deja de tener datos propios y lleva al
+  catálogo (o a la casa, si hay una sola); sale `site.precios.comprarCasa`. El botón
+  principal del hero pasa a "Ver casas en venta" (`/casas`) y el de Contacto a mensaje
+  general. Pendientes del inventario que pasan al catálogo: #1 (precio), #3 (ubicación),
+  #4 (qué incluye) y #5 (desglose de la compra en la ficha premium).
+- **Clics:** opción y ubicación `casa` y columna `casa_id` en `clics_venta` (migración 006).
+  `/api/clic` valida `casa_id` como uuid y que sea de una casa publicada; si no, descarta el
+  clic como los demás inválidos (nunca un 500). La vista `clics_venta_resumen` sigue sin
+  permisos para anon y authenticated después del `create or replace`.
+- **Dependencia nueva:** la parte pública pasa a leer Supabase. Si falla, el bloque de la
+  portada no se muestra y `/casas` muestra un aviso con WhatsApp; la landing no se cae. Un
+  motivo más para decidir Supabase Pro.
+- **SEO:** metadata y schema.org por casa; en el sitemap solo con `site.lanzado`.
+
+## 2026-11-02 — Casa inexistente: 404 real desde el proxy, siempre con noindex
+Pedido del usuario: `/casas/[slug]` de una casa que no existe respondía 200 con el aviso de
+"no encontrada" (un 404 blando). Causa: con Partial Prefetching, Next empieza a enviar la
+respuesta (y fija el estado en 200) antes de que la página llame a `notFound()`; leer la casa
+fuera de `<Suspense>` no lo cambia, y un `rewrite` con `status: 404` tampoco (Next lo ignora).
+Solución, la que recomienda la documentación de Next: `proxy.ts` revisa el slug ANTES de
+renderizar. Formato inválido: 404 sin consultar nada. Formato válido: una consulta mínima a
+`casas_venta` (solo el id, clave publishable; caché en memoria de 60 s, acotada a 500
+entradas). Si no existe o no está publicada, el proxy responde 404 con el HTML de la página
+estática `/casa-no-disponible` (mismo diseño del sitio), `X-Robots-Tag: noindex, nofollow` y
+`Cache-Control: private, no-store`, sin importar `site.lanzado`. Si Supabase no responde en
+1.5 s, la visita sigue pero marcada noindex, y la página muestra "No pudimos cargar esta
+casa" (con meta noindex). Respaldo: una casa ocultada hace menos de un minuto puede pasar el
+proxy y salir con el `notFound()` de la página (200 con meta noindex). Costo: una consulta a
+Supabase por slug y por minuto en cada instancia.
+
+## 2026-11-02 — Clics por casa del catálogo y ubicación `catalogo`
+Aprobado por el usuario con la migración 006. El botón "Quiero esta casa" de cada casa (no
+en las vendidas; sí en las reservadas) abre WhatsApp con un mensaje que nombra la casa y
+cuenta el clic con opción y ubicación `casa` y su `casa_id`. `/api/clic` valida `casa_id`
+con zod (uuid, solo y siempre con la opción `casa`) y revisa en la base que la casa exista y
+esté publicada antes de insertar; si no, descarta el clic con 400 como los demás inválidos.
+Si la base falla al revisar, descarta con 204 y lo registra en el log: nunca un 500. La
+ubicación `catalogo` cuenta el WhatsApp de `/casas` vacío o con error, y el de una casa que
+no se pudo cargar (opción `general`).
+
+## 2026-11-02 — SEO de las casas del catálogo
+- Cada casa: título "{nombre} · {municipio} · {marca}", descripción (la de la fila o una
+  armada con ubicación, lote y precio visible), canonical `/casas/{slug}` y la foto de
+  portada como imagen al compartir (sin portada, la imagen general del sitio).
+- schema.org `RealEstateListing` (tipo reciente, fuera del vocabulario estable; verificado
+  en schema.org) con la casa como `SingleFamilyResidence` en `about` (municipio,
+  departamento y país, sin calle) y `offers` solo cuando el precio se muestra.
+- Sitemap: `/casas` y cada casa publicada, solo con `site.lanzado`.
+- noindex siempre (también lanzado) en: casa inexistente (404 del proxy),
+  `/casa-no-disponible`, la casa que no se pudo cargar y `/casas` cuando no se pudo cargar.
+- Corregido de paso: el escape de `<` en el JSON-LD (`DatosEstructurados`) no hacía nada
+  (el escape escrito en el código como string de JS ya es `<`). Ahora `lib/json-ld.ts` escapa de verdad; importa porque el
+  JSON-LD de las casas lleva texto cargado en Supabase.
+
+## 2026-11-02 — Botón principal del hero según haya casas publicadas
+Matiza "el botón principal del hero pasa a Ver casas en venta" (cambio de alcance del
+catálogo). Decisión del usuario: con 1 o más casas disponibles (no vendidas), "Ver casas en
+venta" o "Ver la casa" si hay una sola; con 0 o si Supabase no responde, vuelve el
+WhatsApp de comprar (opción `comprar`, ubicación `hero`), para que la acción principal nunca
+lleve a un catálogo vacío. Sale de la misma lectura en caché que el bloque "Casas
+disponibles" y Precios (`casasDisponibles()` sobre `listarCasas()`), sin consulta nueva. La
+tarjeta de Precios no cambia: sin casas lleva a `/casas`, que muestra el aviso y WhatsApp.

@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   // Solo desarrollo: permite revisar `npm run dev` desde el celular en la red local
   // (rangos de IP privadas). No afecta producción.
   allowedDevOrigins: ["10.*.*.*", "192.168.*.*", "172.*.*.*"],
+  // Fotos y planos del catálogo de casas: solo el bucket PÚBLICO `casas` de Supabase (nunca
+  // el privado `obras`: el portal no usa next/image para no guardar copias en caché).
+  images: {
+    remotePatterns: process.env.NEXT_PUBLIC_SUPABASE_URL
+      ? [new URL(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/casas/**`)]
+      : [],
+  },
   // Los PDF premium no están en public/: la ruta de descargas los lee de assets/ y aquí
   // se incluyen en el despliegue (solo los PDF, no el resto de assets/).
   outputFileTracingIncludes: {

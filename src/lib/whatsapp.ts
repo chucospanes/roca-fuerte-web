@@ -10,15 +10,22 @@ export function whatsappHref(mensaje?: string): string {
 
 /** Opciones de venta: cada botón abre WhatsApp con su propio mensaje, sin pedir datos. */
 export type OpcionVenta = (typeof OPCIONES_VENTA)[number];
+/** Las opciones con mensaje fijo; la de una casa del catálogo lo arma `mensajeCasa`. */
+export type OpcionMensajeFijo = Exclude<OpcionVenta, "casa">;
 export type UbicacionVenta = (typeof UBICACIONES_VENTA)[number];
 
-export const mensajesVenta: Record<OpcionVenta, string> = {
+export const mensajesVenta: Record<OpcionMensajeFijo, string> = {
   comprar: `Hola, me interesa comprar la ${site.modelo} que están construyendo. ¿Me pueden dar más información?`,
   construir:
     "Hola, quiero construir el modelo Esparta en mi terreno. Mi terreno está en (municipio y departamento): ",
   general: `Hola, me interesa la ${site.modelo}.`,
   inversionista: `Soy inversionista y quiero construir un proyecto con ${site.marca}.`,
 };
+
+/** Mensaje del botón de una casa del catálogo: la nombra para saber de cuál se habla. */
+export function mensajeCasa(nombre: string, municipio: string): string {
+  return `Hola, me interesa la casa "${nombre}" en ${municipio}. ¿Me pueden dar más información?`;
+}
 
 /** Mensaje al terminar la calificación (paso 2), con lo que la persona ya contó. */
 export function mensajeCalificacion(nombre: string, datos: DatosCalificacion): string {

@@ -12,6 +12,8 @@ de construir el modelo en el terreno del cliente.
 - `docs/CONFIGURACION_EXTERNA.md` — todo lo que vive fuera del repo (Supabase, Resend, DNS
   del correo), con los valores exactos.
 - `docs/AVISO_PRIVACIDAD.md` — borrador del aviso; es la fuente de la página `/privacidad`.
+- `docs/GUIA_CARGA_OBRAS.md` — cargar obras, avances y documentos del portal de clientes.
+- `docs/GUIA_CARGA_CASAS.md` — cargar casas en venta en el catálogo `/casas`.
 
 ---
 
@@ -58,6 +60,10 @@ El detalle está en `docs/CONFIGURACION_EXTERNA.md`. En resumen y en orden:
 2. En el **SQL Editor**, ejecutar en orden:
    1. `supabase/migrations/001_leads.sql`
    2. `supabase/migrations/002_clics_venta.sql`
+   3. `supabase/migrations/003_clics_inversionistas.sql`
+   4. `supabase/migrations/004_portal_obras.sql`
+   5. `supabase/migrations/005_casas_venta.sql`
+   6. `supabase/migrations/006_clics_casas.sql`
 3. Verificar cada migración: RLS activo, triggers y vista con `security_invoker`, y que el
    rol `anon` no puede escribir con la prueba con `rollback` (sección "Verificación segura
    de permisos" de `CONFIGURACION_EXTERNA.md`). Esa prueba no deja datos.
@@ -178,7 +184,8 @@ Encender `site.lanzado` solo con todo esto cumplido.
 
 **Contenido y negocio**
 - [ ] Número real de WhatsApp Business en `site.whatsapp`.
-- [ ] Precios "desde" en `site.precios`.
+- [ ] Precio "desde" de construir en tu terreno en `site.precios` (el de cada casa a la venta
+      va en `casas_venta`).
 - [ ] Aviso de privacidad revisado por un abogado, con razón social, domicilio, correo de
       privacidad y plazo de conservación (`docs/AVISO_PRIVACIDAD.md`). Al aprobarlo, quitar
       el aviso de "borrador" de `src/app/privacidad/page.tsx`.

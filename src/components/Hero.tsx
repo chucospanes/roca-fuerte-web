@@ -1,10 +1,19 @@
 import { site } from "@/config/site";
 import { esparta } from "@/content/esparta";
 import { hero } from "@/content/landing";
+import { casasDisponibles, destinoCompra } from "@/lib/casas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Pendiente } from "./ui";
+import { Boton, Pendiente } from "./ui";
 
-export function Hero() {
+/**
+ * Botón principal: con casas disponibles, al catálogo (o a la casa, si hay una sola). Sin casas
+ * o si Supabase no responde, el WhatsApp de comprar: la acción principal nunca lleva a un
+ * catálogo vacío.
+ */
+export async function Hero() {
+  const disponibles = await casasDisponibles();
+  const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
+
   return (
     <section id="inicio" className="fondo-plano border-b border-piedra-200">
       <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:py-16 md:grid-cols-[1.1fr_1fr] md:items-center">
@@ -22,7 +31,13 @@ export function Hero() {
           </h1>
           <p className="mt-5 max-w-xl text-lg text-piedra-700">{hero.bajada}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <BotonWhatsApp opcion="comprar" ubicacion="hero">Quiero esta casa</BotonWhatsApp>
+            {destino ? (
+              <Boton href={destino.href}>{destino.texto}</Boton>
+            ) : (
+              <BotonWhatsApp opcion="comprar" ubicacion="hero">
+                Quiero esta casa
+              </BotonWhatsApp>
+            )}
             <BotonWhatsApp opcion="construir" ubicacion="hero" variante="secundario">
               Construir Esparta en mi terreno
             </BotonWhatsApp>

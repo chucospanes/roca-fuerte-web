@@ -6,7 +6,9 @@ import { esquemaClic } from "@/lib/validacion";
  * con `sendBeacon`). Sin datos personales: no se lee ni se guarda la IP ni el navegador.
  *
  * Defensas básicas (los conteos son indicativos, ver DECISIONES.md): solo peticiones del
- * propio sitio (`Origin` y `Sec-Fetch-Site`), cuerpo pequeño y validado con zod.
+ * propio sitio (`Origin` y `Sec-Fetch-Site`), cuerpo pequeño y validado con zod. Un clic de
+ * una casa (`casa_id`) solo se guarda si la casa existe y está publicada; si no, se descarta
+ * como cualquier clic inválido (400), nunca con un 500.
  */
 const MAX_BYTES = 2_000;
 const sinContenido = () => new Response(null, { status: 204 });
@@ -34,11 +36,27 @@ export async function POST(request: Request) {
   const datos = esquemaClic.safeParse(cuerpo);
   if (!datos.success) return new Response(null, { status: 400 });
 
-  const { error } = await crearClienteAdmin()
+  const supabase = crearClienteAdmin();
+  if (datos.data.casa_id) {
+    const { data: casa, error: errorCasa } = await supabase
+      .from("casas_venta")
+      .select("id")
+      .eq("id", datos.data.casa_id)
+      .eq("publicada", true)
+      .maybeSingle();
+    if (errorCasa) {
+      console.error("[clics] revisar casa falló", { codigo: errorCasa.code, mensaje: errorCasa.message });
+      return sinContenido();
+    }
+    if (!casa) return new Response(null, { status: 400 });
+  }
+
+  const { error } = await supabase
     .from("clics_venta")
     .insert({
       opcion: datos.data.opcion,
       ubicacion: datos.data.ubicacion,
+      casa_id: datos.data.casa_id ?? null,
       utm_source: datos.data.utm_source ?? null,
       utm_medium: datos.data.utm_medium ?? null,
       utm_campaign: datos.data.utm_campaign ?? null,

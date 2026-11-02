@@ -15,7 +15,7 @@ export function MenuMovil({ enlaces }: { enlaces: EnlaceMenu[] }) {
   const cerrar = () => menu.current?.removeAttribute("open");
 
   return (
-    <details ref={menu} className="group md:hidden">
+    <details ref={menu} className="group lg:hidden">
       <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-md border border-piedra-300 px-3 text-sm font-semibold text-piedra-800 [&::-webkit-details-marker]:hidden">
         <span className="group-open:hidden">Menú</span>
         <span className="hidden group-open:inline">Cerrar</span>

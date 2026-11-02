@@ -1,7 +1,7 @@
 import {
   mensajesVenta,
   whatsappHref,
-  type OpcionVenta,
+  type OpcionMensajeFijo,
   type UbicacionVenta,
 } from "@/lib/whatsapp";
 import type { ReactNode } from "react";
@@ -19,7 +19,7 @@ export function BotonWhatsApp({
   className,
   children,
 }: {
-  opcion: OpcionVenta;
+  opcion: OpcionMensajeFijo;
   ubicacion: UbicacionVenta;
   variante?: "primario" | "secundario";
   className?: string;
