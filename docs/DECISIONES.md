@@ -530,3 +530,19 @@ botón de WhatsApp).
   portada no se muestra y `/casas` muestra un aviso con WhatsApp; la landing no se cae. Un
   motivo más para decidir Supabase Pro.
 - **SEO:** metadata y schema.org por casa; en el sitemap solo con `site.lanzado`.
+
+## 2026-11-02 — Casa inexistente: 404 real desde el proxy, siempre con noindex
+Pedido del usuario: `/casas/[slug]` de una casa que no existe respondía 200 con el aviso de
+"no encontrada" (un 404 blando). Causa: con Partial Prefetching, Next empieza a enviar la
+respuesta (y fija el estado en 200) antes de que la página llame a `notFound()`; leer la casa
+fuera de `<Suspense>` no lo cambia, y un `rewrite` con `status: 404` tampoco (Next lo ignora).
+Solución, la que recomienda la documentación de Next: `proxy.ts` revisa el slug ANTES de
+renderizar. Formato inválido: 404 sin consultar nada. Formato válido: una consulta mínima a
+`casas_venta` (solo el id, clave publishable; caché en memoria de 60 s, acotada a 500
+entradas). Si no existe o no está publicada, el proxy responde 404 con el HTML de la página
+estática `/casa-no-disponible` (mismo diseño del sitio), `X-Robots-Tag: noindex, nofollow` y
+`Cache-Control: private, no-store`, sin importar `site.lanzado`. Si Supabase no responde en
+1.5 s, la visita sigue pero marcada noindex, y la página muestra "No pudimos cargar esta
+casa" (con meta noindex). Respaldo: una casa ocultada hace menos de un minuto puede pasar el
+proxy y salir con el `notFound()` de la página (200 con meta noindex). Costo: una consulta a
+Supabase por slug y por minuto en cada instancia.

@@ -28,8 +28,11 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   portada). Datos con la clave publishable, caché `minutes`. "Casas" en el menú (escritorio
   desde 1024 px: con 9 enlaces desbordaba a 768) y en el pie. Probado con el build de
   producción: contra Supabase real (catálogo vacío) y contra una simulación local de la API
-  con 4 casas (sin tocar Supabase), capturas de 360 a 1280 px sin desborde. Slug inexistente:
-  "no encontrada" con estado 200 (el 404 va dentro de `<Suspense>`), con `noindex`.
+  con 4 casas (sin tocar Supabase), capturas de 360 a 1280 px sin desborde.
+- Casa inexistente: 404 real desde `proxy.ts`, con `X-Robots-Tag: noindex` y meta noindex,
+  también con el sitio lanzado (ver DECISIONES.md). Probado: slug inexistente o inválido →
+  404; casa publicada → 200 con su contenido; Supabase caído → 200 "No pudimos cargar esta
+  casa" con noindex en encabezado y meta.
 - Portada: bloque "Casas disponibles" (3 primeras no vendidas; sin casas o si Supabase falla,
   no se muestra) debajo del hero. Precios: "Comprar una casa" sin datos propios, lleva a
   `/casas` (o a la casa, si hay una sola disponible). Hero: "Ver casas en venta". Contacto:
@@ -40,7 +43,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 - Migración `006_clics_casas.sql` escrita (solo archivo): opción y ubicación `casa`,
   ubicación `catalogo`, columna `casa_id` y vista de resumen con la casa; comprueba al final
   que anon y authenticated no tienen permisos sobre la tabla ni la vista. **Esperando la
-  revisión del usuario antes de aplicarla.** Siguen: botón por casa con conteo (commit 8,
+  revisión del usuario antes de aplicarla.** Aplicada por el usuario (2026-11-02); verificado con
+  lecturas: `clics_venta` y `clics_venta_resumen` en 401 con la publishable; `casa_id` y la
+  columna `casa` de la vista existen. Prueba de plantillas de casas superada (17 casos). Siguen: botón por casa con conteo (commit 8,
   con la 006 aplicada) y SEO (commit 9).
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo

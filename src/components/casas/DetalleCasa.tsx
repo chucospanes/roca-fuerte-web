@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { ImagenAmpliable } from "@/components/ImagenAmpliable";
 import { Pendiente } from "@/components/ui";
@@ -7,7 +6,7 @@ import { VideoLazy } from "@/components/VideoLazy";
 import { precioUSD } from "@/config/site";
 import { catalogo, muestraPrecio, nombresAguasNegras, ubicacionCasa } from "@/content/casas";
 import { esparta } from "@/content/esparta";
-import { leerCasa } from "@/lib/casas";
+import type { DetalleCasa as Casa } from "@/lib/casas";
 import { EtiquetaEstado } from "./TarjetaCasa";
 
 const m = (n: number) => `${n.toFixed(2)} m`;
@@ -44,18 +43,10 @@ function Datos({ datos }: { datos: (Dato | false)[] }) {
 }
 
 /**
- * Detalle de una casa del catálogo. `params` se lee aquí, dentro de <Suspense> (cacheComponents);
- * los datos vienen de `leerCasa` (caché de minutos). Una casa con la planta del modelo toma
- * m², dormitorios, baños y, si no tiene plano propio, el plano de `esparta.ts`.
+ * Detalle de una casa del catálogo (la página la lee con `leerCasa`). Una casa con la planta
+ * del modelo toma m², dormitorios, baños y, si no tiene plano propio, el plano de `esparta.ts`.
  */
-export async function DetalleCasa({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const resultado = await leerCasa(slug);
-  if (!resultado.ok) {
-    return <p className="max-w-xl text-lg">{catalogo.error}</p>;
-  }
-  const casa = resultado.datos;
-  if (!casa) notFound();
+export function DetalleCasa({ casa }: { casa: Casa }) {
 
   const construccion = casa.planta_esparta ? esparta.areas.construidaM2 : casa.construccion_m2;
   const dormitorios = casa.planta_esparta ? esparta.dormitorios : casa.dormitorios;
