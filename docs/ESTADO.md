@@ -14,9 +14,14 @@ la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
 ### Catálogo de casas en venta (rama `feat/catalogo-casas`, en curso)
-- Commit 3: migración `005_casas_venta.sql` y su prueba con rollback
-  (`supabase/pruebas/005_casas_venta.sql`), solo archivos. **Esperando que el usuario aplique
-  la 005 y corra la prueba;** después, verificación con lecturas (clave publishable).
+- Migración 005 aplicada por el usuario (2026-11-02) y su prueba con rollback superada
+  ("PRUEBA SUPERADA: 9 candados…"). Verificado con lecturas: `casas_venta` y
+  `casas_venta_imagenes` en 0 filas; con la clave publishable, lectura 200 vacía, inserción
+  401/42501 en las dos y las 6 tablas del portal en 401; bucket `casas` público (5 MB,
+  JPEG/PNG/WebP) y vacío para la publishable; `obras` sigue privado.
+- Guía `docs/GUIA_CARGA_CASAS.md` con 3 plantillas (casa nueva sin publicar, fotos y plano,
+  publicar u ocultar) y su prueba `supabase/pruebas/005_plantillas_casas.sql` (17 casos,
+  armada desde la guía). **Falta que el usuario corra esa prueba.**
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
   con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).

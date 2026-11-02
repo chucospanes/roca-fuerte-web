@@ -12,6 +12,8 @@ de construir el modelo en el terreno del cliente.
 - `docs/CONFIGURACION_EXTERNA.md` — todo lo que vive fuera del repo (Supabase, Resend, DNS
   del correo), con los valores exactos.
 - `docs/AVISO_PRIVACIDAD.md` — borrador del aviso; es la fuente de la página `/privacidad`.
+- `docs/GUIA_CARGA_OBRAS.md` — cargar obras, avances y documentos del portal de clientes.
+- `docs/GUIA_CARGA_CASAS.md` — cargar casas en venta en el catálogo `/casas`.
 
 ---
 
