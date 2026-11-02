@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-02
-**Versión:** v1.0.0 — desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.1.0 — catálogo de casas en venta; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,15 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Catálogo de casas en venta (rama `feat/catalogo-casas`, en curso)
+### Catálogo de casas en venta (`v1.1.0`, en `main` y desplegado el 2026-11-02)
+- **Verificado con lecturas en https://constructorarocafuerte.com (2026-11-02):** `/` y `/casas`
+  200 con `noindex`; `/casas/no-existe` y `/casas/Casa%20Uno` 404 con `X-Robots-Tag` y meta
+  noindex; `/casa-no-disponible` 200 con noindex; `/portal` 200, `/esparta/ficha` 404; sitemap
+  vacío; `www` → 308 al dominio. Sin casas cargadas: el hero muestra el WhatsApp de comprar,
+  el bloque "Casas disponibles" no aparece y `/casas` muestra el aviso con WhatsApp
+  (`catalogo`). Lema, pilares, "Comprar una casa" y "Quiero más información" visibles.
+- **Pendiente:** cargar la primera casa real con `docs/GUIA_CARGA_CASAS.md` y revisar en el
+  dominio fotos, plano protegido y botón con conteo (no se pudo probar sin datos reales).
 - Migración 005 aplicada por el usuario (2026-11-02) y su prueba con rollback superada
   ("PRUEBA SUPERADA: 9 candados…"). Verificado con lecturas: `casas_venta` y
   `casas_venta_imagenes` en 0 filas; con la clave publishable, lectura 200 vacía, inserción
