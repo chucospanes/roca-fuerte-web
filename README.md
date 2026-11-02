@@ -58,6 +58,9 @@ El detalle está en `docs/CONFIGURACION_EXTERNA.md`. En resumen y en orden:
 2. En el **SQL Editor**, ejecutar en orden:
    1. `supabase/migrations/001_leads.sql`
    2. `supabase/migrations/002_clics_venta.sql`
+   3. `supabase/migrations/003_clics_inversionistas.sql`
+   4. `supabase/migrations/004_portal_obras.sql`
+   5. `supabase/migrations/005_casas_venta.sql`
 3. Verificar cada migración: RLS activo, triggers y vista con `security_invoker`, y que el
    rol `anon` no puede escribir con la prueba con `rollback` (sección "Verificación segura
    de permisos" de `CONFIGURACION_EXTERNA.md`). Esa prueba no deja datos.

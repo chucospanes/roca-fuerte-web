@@ -493,3 +493,40 @@ materiales con especificación, bitácora en video y portal privado del cliente)
 **Comunidad**, solo con "Contratamos mano de obra de la zona." (sin mencionar ferreterías
 ni compras locales, y sin agregar datos no confirmados). Salen "Sin sorpresas en el precio"
 (lo cubre el paso 3 de Cómo trabajamos) y "Desde donde estés" (queda en el punto del portal).
+
+## 2026-11-02 — Cambio de alcance: catálogo de casas en venta (`/casas`)
+Decisión del usuario, en la rama `feat/catalogo-casas`. Casas concretas a la venta, distintas
+del modelo Esparta: `/casas` (tarjetas) y `/casas/[slug]` (detalle), bloque "Casas
+disponibles" en la portada (3 primeras no vendidas; sin casas publicadas, no se muestra) y
+enlace "Casas" siempre visible en el menú, el menú móvil y el pie (catálogo vacío: aviso y
+botón de WhatsApp).
+- **Una sola fuente por dato:** lo del modelo (planta, m², materiales, calidad) sigue en la
+  portada; lo de cada casa (ubicación, lote, precio, qué incluye, estado, etapa, fotos,
+  video) vive SOLO en `casas_venta` (migración 005). Con `planta_esparta = true`, m²,
+  dormitorios y baños van en null y se toman de `esparta.ts`. Lotes rectangulares por ahora
+  (`lote_m2` se calcula): el lote se cambia editando la fila, sin desplegar.
+- **Ubicación pública:** distrito, municipio y departamento, sin dirección exacta.
+- **Seguridad:** lectura pública solo de `publicada = true`, sin escritura para anon ni
+  authenticated. Fotos en el bucket PÚBLICO `casas` (5 MB, JPEG/PNG/WebP), separado del
+  privado `obras`, sin políticas en `storage.objects` (no se lista ni se sube). Riesgo
+  aceptado: un archivo del bucket se descarga por su URL aunque la casa no esté publicada
+  (la ruta lleva un uuid); la guía dice subir solo fotos que ya se pueden ver. Nada del
+  portal cambia.
+- **Plano de cada casa:** a resolución media (lado mayor ≤ 1800 px, CHECK) y con la misma
+  protección ligera que el de la portada.
+- **Estados:** "Vendida" se muestra al final, sin precio ni botón y fuera del bloque de la
+  portada (social proof; para ocultarla, `publicada = false`). "Reservada": etiqueta, sin
+  precio, con botón de WhatsApp.
+- **Precios y hero:** la tarjeta "Comprar esta casa" deja de tener datos propios y lleva al
+  catálogo (o a la casa, si hay una sola); sale `site.precios.comprarCasa`. El botón
+  principal del hero pasa a "Ver casas en venta" (`/casas`) y el de Contacto a mensaje
+  general. Pendientes del inventario que pasan al catálogo: #1 (precio), #3 (ubicación),
+  #4 (qué incluye) y #5 (desglose de la compra en la ficha premium).
+- **Clics:** opción y ubicación `casa` y columna `casa_id` en `clics_venta` (migración 006).
+  `/api/clic` valida `casa_id` como uuid y que sea de una casa publicada; si no, descarta el
+  clic como los demás inválidos (nunca un 500). La vista `clics_venta_resumen` sigue sin
+  permisos para anon y authenticated después del `create or replace`.
+- **Dependencia nueva:** la parte pública pasa a leer Supabase. Si falla, el bloque de la
+  portada no se muestra y `/casas` muestra un aviso con WhatsApp; la landing no se cae. Un
+  motivo más para decidir Supabase Pro.
+- **SEO:** metadata y schema.org por casa; en el sitemap solo con `site.lanzado`.

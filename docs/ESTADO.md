@@ -13,6 +13,14 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Catálogo de casas en venta (rama `feat/catalogo-casas`, en curso)
+- Commit 3: migración `005_casas_venta.sql` y su prueba con rollback
+  (`supabase/pruebas/005_casas_venta.sql`), solo archivos. **Esperando que el usuario aplique
+  la 005 y corra la prueba;** después, verificación con lecturas (clave publishable).
+- Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
+  Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
+  con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).
+
 ### Hero, lema y pilares (2026-11-02)
 - "Casas que duran. Y te lo demostramos." + "Cada material, cada etapa y cada refuerzo,
   documentados en video. Tú lo compruebas antes de comprar." Metadata sin cambios (no usaba
