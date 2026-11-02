@@ -55,7 +55,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   que anon y authenticated no tienen permisos sobre la tabla ni la vista. **Esperando la
   revisión del usuario antes de aplicarla.** Aplicada por el usuario (2026-11-02); verificado con
   lecturas: `clics_venta` y `clics_venta_resumen` en 401 con la publishable; `casa_id` y la
-  columna `casa` de la vista existen. Prueba de plantillas de casas superada (17 casos). **Rama completa; falta el merge a `main` (con aviso al usuario).**
+  columna `casa` de la vista existen. Prueba de plantillas de casas superada (17 casos). - Hero: con casas disponibles, "Ver casas en venta" o "Ver la casa"; sin casas o con
+  Supabase caído, el WhatsApp de comprar. Probado con la simulación (varias, una, ninguna,
+  caída: una sola lectura del catálogo por build) y con Supabase real (vacío: WhatsApp).
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
   con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).

@@ -1,5 +1,5 @@
 import { esPendiente, site, textoPrecio, type Precio } from "@/config/site";
-import { listarCasas } from "@/lib/casas";
+import { casasDisponibles, destinoCompra } from "@/lib/casas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 import { Boton, Seccion } from "./ui";
 
@@ -18,12 +18,7 @@ function Precio({ precio }: { precio: Precio }) {
  * sola disponible (las vendidas no cuentan). Precio, ubicación y qué incluye viven en cada casa.
  */
 export async function Opciones() {
-  const resultado = await listarCasas();
-  const disponibles = resultado.ok ? resultado.datos.filter((c) => c.estado !== "vendida") : [];
-  const destino =
-    disponibles.length === 1
-      ? { href: `/casas/${disponibles[0].slug}`, texto: "Ver la casa" }
-      : { href: "/casas", texto: "Ver casas en venta" };
+  const destino = destinoCompra((await casasDisponibles()) ?? []);
 
   return (
     <Seccion

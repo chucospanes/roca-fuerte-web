@@ -1,6 +1,6 @@
 import { Boton, Seccion } from "@/components/ui";
 import { catalogo } from "@/content/casas";
-import { listarCasas } from "@/lib/casas";
+import { casasDisponibles } from "@/lib/casas";
 import { TarjetaCasa } from "./TarjetaCasa";
 
 /** Las casas que se muestran en la portada; el resto, en `/casas`. */
@@ -11,10 +11,8 @@ const EN_PORTADA = 3;
  * catálogo. Sin casas disponibles (o si Supabase falla), no se muestra nada.
  */
 export async function CasasDisponibles() {
-  const resultado = await listarCasas();
-  if (!resultado.ok) return null;
-  const disponibles = resultado.datos.filter((c) => c.estado !== "vendida");
-  if (disponibles.length === 0) return null;
+  const disponibles = await casasDisponibles();
+  if (!disponibles || disponibles.length === 0) return null;
 
   return (
     <Seccion id="casas-disponibles" etiqueta="Casas en venta" titulo="Casas disponibles" fondo="blanco">

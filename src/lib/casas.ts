@@ -170,3 +170,20 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
     return { ok: false };
   }
 }
+
+/**
+ * Casas disponibles (no vendidas), en el orden del catálogo. Sale de `listarCasas` (la misma
+ * lectura en caché, no una consulta nueva): la usan el hero, el bloque "Casas disponibles" y
+ * Precios. `null` si Supabase no respondió.
+ */
+export async function casasDisponibles(): Promise<CasaListada[] | null> {
+  const resultado = await listarCasas();
+  return resultado.ok ? resultado.datos.filter((c) => c.estado !== "vendida") : null;
+}
+
+/** A dónde llevan los botones de comprar: a la casa si hay una sola, al catálogo si hay varias. */
+export function destinoCompra(disponibles: CasaListada[]): { href: string; texto: string } {
+  return disponibles.length === 1
+    ? { href: `/casas/${disponibles[0].slug}`, texto: "Ver la casa" }
+    : { href: "/casas", texto: "Ver casas en venta" };
+}

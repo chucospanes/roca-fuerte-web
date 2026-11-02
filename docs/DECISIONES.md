@@ -570,3 +570,12 @@ no se pudo cargar (opción `general`).
 - Corregido de paso: el escape de `<` en el JSON-LD (`DatosEstructurados`) no hacía nada
   (el escape escrito en el código como string de JS ya es `<`). Ahora `lib/json-ld.ts` escapa de verdad; importa porque el
   JSON-LD de las casas lleva texto cargado en Supabase.
+
+## 2026-11-02 — Botón principal del hero según haya casas publicadas
+Matiza "el botón principal del hero pasa a Ver casas en venta" (cambio de alcance del
+catálogo). Decisión del usuario: con 1 o más casas disponibles (no vendidas), "Ver casas en
+venta" o "Ver la casa" si hay una sola; con 0 o si Supabase no responde, vuelve el
+WhatsApp de comprar (opción `comprar`, ubicación `hero`), para que la acción principal nunca
+lleve a un catálogo vacío. Sale de la misma lectura en caché que el bloque "Casas
+disponibles" y Precios (`casasDisponibles()` sobre `listarCasas()`), sin consulta nueva. La
+tarjeta de Precios no cambia: sin casas lleva a `/casas`, que muestra el aviso y WhatsApp.
