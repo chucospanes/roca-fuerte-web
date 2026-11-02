@@ -22,6 +22,7 @@ export function Pie() {
           <p className="mt-2 text-sm">
             {site.modelo}. Construcción documentada en {site.pais}.
           </p>
+          <p className="mt-3 text-sm text-blanco italic">{site.lema}</p>
         </div>
 
         <div>

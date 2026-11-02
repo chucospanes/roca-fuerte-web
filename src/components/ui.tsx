@@ -55,16 +55,30 @@ export function Seccion({
   );
 }
 
-/** Cuadrícula de puntos numerados (Por qué construimos así, Calidad y resistencia). */
-export function PuntosNumerados({ puntos }: { puntos: Punto[] }) {
+/**
+ * Cuadrícula de puntos numerados (Por qué construimos así, Calidad y resistencia).
+ * `columnas={3}` para tres puntos (con 2 columnas quedaría una celda vacía); `encabezado`
+ * baja el nivel del título cuando los puntos van dentro de un subtítulo (pilares).
+ */
+export function PuntosNumerados({
+  puntos,
+  columnas = 2,
+  encabezado: Encabezado = "h3",
+}: {
+  puntos: Punto[];
+  columnas?: 2 | 3;
+  encabezado?: "h3" | "h4";
+}) {
   return (
-    <ul className="grid gap-px overflow-hidden rounded-lg border border-piedra-200 bg-piedra-200 sm:grid-cols-2">
+    <ul
+      className={`grid gap-px overflow-hidden rounded-lg border border-piedra-200 bg-piedra-200 ${columnas === 3 ? "md:grid-cols-3" : "sm:grid-cols-2"}`}
+    >
       {puntos.map((p, i) => (
         <li key={p.titulo} className="flex flex-col bg-blanco p-6">
           <span className="font-display text-sm font-semibold text-terracota">
             {String(i + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-1 font-display text-xl font-bold">{p.titulo}</h3>
+          <Encabezado className="mt-1 font-display text-xl font-bold">{p.titulo}</Encabezado>
           <p className="mt-2 text-piedra-600">{p.texto}</p>
           {p.pendientes && p.pendientes.length > 0 && (
             <ul className="mt-3 space-y-1.5">

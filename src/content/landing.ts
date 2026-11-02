@@ -26,25 +26,37 @@ export const hero = {
     "Cada material, cada etapa y cada refuerzo, documentados en video. Tú lo compruebas antes de comprar.",
 };
 
-export const porQue: Punto[] = [
-  {
-    titulo: "Cada material, en video",
-    texto: "Mostramos qué usamos, de qué marca y por qué, antes de que quede tapado por el repello.",
+/**
+ * Por qué construimos así: dos pilares, en este orden. Calidad comprobable es el principal;
+ * Comunidad lleva solo lo confirmado por el constructor (ver DECISIONES.md).
+ */
+export const porQue = {
+  calidad: {
+    titulo: "Calidad comprobable",
+    puntos: [
+      {
+        titulo: "Cada material, con su especificación",
+        texto:
+          "Qué usamos, con qué especificación, de qué marca y por qué, a la vista en la tabla de materiales y en video antes de que lo tape el repello.",
+        enlace: { href: "#materiales", texto: "Ver los materiales" },
+      },
+      {
+        titulo: "Cada etapa, en la bitácora en video",
+        texto: "Fechas, avance y video de cada etapa, incluidos los refuerzos que después ya no se ven.",
+        enlace: { href: "#bitacora", texto: "Ver la bitácora" },
+      },
+      {
+        titulo: "Tu obra, en tu portal privado",
+        texto:
+          "Si construyes con nosotros, sigues tu obra desde el celular: fotos y videos de cada avance, materiales y documentos, estés donde estés.",
+      },
+    ] satisfies Punto[],
   },
-  {
-    titulo: "Cada etapa, documentada",
-    texto: "La bitácora de obra registra fechas, avance y videos de cada etapa de la construcción.",
+  comunidad: {
+    titulo: "Comunidad",
+    texto: "Contratamos mano de obra de la zona.",
   },
-  {
-    titulo: "Sin sorpresas en el precio",
-    texto: "Cotización cerrada antes del contrato. Lo que no está incluido se cotiza aparte.",
-  },
-  {
-    titulo: "Desde donde estés",
-    texto:
-      "Si vives fuera de El Salvador, ves el avance desde tu celular, sin depender de que alguien te cuente.",
-  },
-];
+};
 
 /**
  * Calidad y resistencia: solo puntos verificables. Sin superlativos ni promesas de

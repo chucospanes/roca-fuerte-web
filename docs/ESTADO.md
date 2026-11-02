@@ -13,10 +13,12 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Hero nuevo (2026-11-02)
+### Hero, lema y pilares (2026-11-02)
 - "Casas que duran. Y te lo demostramos." + "Cada material, cada etapa y cada refuerzo,
   documentados en video. Tú lo compruebas antes de comprar." Metadata sin cambios (no usaba
   el título anterior). Ver DECISIONES.md.
+- Lema en el pie (páginas públicas) y sección 01 en dos pilares: Calidad comprobable y
+  Comunidad. Capturas a 390 y 1280 px revisadas, sin desborde. Ver DECISIONES.md.
 
 ### Plano de la casa: resolución media y protección ligera (2026-11-01)
 - La web sirve `public/plano-casa-esparta-v4-1800.png` (1800 × 1737, reducido del original

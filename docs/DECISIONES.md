@@ -483,3 +483,13 @@ refuerzo, documentados en video. Tú lo compruebas antes de comprar." Matiza la 
 Consecuencia: publicar los primeros videos de materiales y refuerzo pasa a la lista previa
 al lanzamiento (sin ellos, la promesa sale vacía). La metadata no cambia: no usaba el
 título anterior.
+
+## 2026-11-02 — Lema en el pie y "Por qué construimos así" en dos pilares
+Decisión del usuario. El lema "El mejor uso de los recursos es ayudar a tu comunidad" vive
+en `site.lema` y va en el pie de las páginas públicas, debajo de la línea actual (no la
+reemplaza); no va en el hero, ni en el portal ni en la ficha premium (no tienen pie). La
+sección 01 se reorganiza en dos pilares, en este orden: **Calidad comprobable** (principal:
+materiales con especificación, bitácora en video y portal privado del cliente) y
+**Comunidad**, solo con "Contratamos mano de obra de la zona." (sin mencionar ferreterías
+ni compras locales, y sin agregar datos no confirmados). Salen "Sin sorpresas en el precio"
+(lo cubre el paso 3 de Cómo trabajamos) y "Desde donde estés" (queda en el punto del portal).

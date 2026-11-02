@@ -22,6 +22,8 @@ export type RedSocial = "tiktok" | "instagram" | "facebook" | "youtube";
 export const site = {
   marca: "Roca Fuerte",
   modelo: "Casa Modelo Esparta",
+  /** Lema de la marca: va en el pie de las páginas públicas (no en el hero). */
+  lema: "El mejor uso de los recursos es ayudar a tu comunidad",
   pais: "El Salvador",
 
   /** URL pública. En local y en preview se toma de NEXT_PUBLIC_SITE_URL. */
