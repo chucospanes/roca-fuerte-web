@@ -22,6 +22,14 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 - Guía `docs/GUIA_CARGA_CASAS.md` con 3 plantillas (casa nueva sin publicar, fotos y plano,
   publicar u ocultar) y su prueba `supabase/pruebas/005_plantillas_casas.sql` (17 casos,
   armada desde la guía). **Falta que el usuario corra esa prueba.**
+- `/casas` (tarjetas: vendidas al final, sin precio en reservadas y vendidas, "Consultar" sin
+  precio; vacío o con error: aviso y WhatsApp) y `/casas/[slug]` (fotos, datos del lote y la
+  planta, servicios, qué incluye, video y plano protegido; planta Esparta toma m² y plano de la
+  portada). Datos con la clave publishable, caché `minutes`. "Casas" en el menú (escritorio
+  desde 1024 px: con 9 enlaces desbordaba a 768) y en el pie. Probado con el build de
+  producción: contra Supabase real (catálogo vacío) y contra una simulación local de la API
+  con 4 casas (sin tocar Supabase), capturas de 360 a 1280 px sin desborde. Slug inexistente:
+  "no encontrada" con estado 200 (el 404 va dentro de `<Suspense>`), con `noindex`.
 - Siguen: guía y plantilla de carga, `/casas` y `/casas/[slug]`, bloque en la portada y
   Precios, migración 006 (clics por casa), botón por casa y SEO. La rama se une a `main` solo
   con la 005 y la 006 aplicadas. Diseño en DECISIONES.md (2026-11-02).

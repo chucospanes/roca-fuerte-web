@@ -100,6 +100,11 @@ const formatoUSD = new Intl.NumberFormat("es-SV", {
   maximumFractionDigits: 0,
 });
 
+/** Precio exacto en USD (casas del catálogo), por ejemplo "US$45,000". */
+export function precioUSD(monto: number): string {
+  return formatoUSD.format(monto);
+}
+
 /** Texto del precio "desde" para mostrar en la web. */
 export function textoPrecio(precio: Precio): string {
   return esPendiente(precio) ? "Precio próximamente" : `Desde ${formatoUSD.format(precio)}`;

@@ -74,6 +74,11 @@ export function Pie() {
       <div className="mx-auto mt-10 flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-piedra-700 px-4 pt-6 text-sm">
         <ul className="flex flex-wrap gap-x-6">
           <li>
+            <Link href="/casas" className="flex min-h-11 items-center text-blanco underline">
+              Casas en venta
+            </Link>
+          </li>
+          <li>
             <Link href="/#inversionistas" className="flex min-h-11 items-center text-blanco underline">
               Para inversionistas
             </Link>

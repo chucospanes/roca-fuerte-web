@@ -28,6 +28,11 @@ export const UBICACIONES_VENTA = [
   "inversionistas",
 ] as const;
 
+// Catálogo de casas en venta: deben coincidir con los CHECK de 005_casas_venta.sql
+export const ESTADOS_CASA = ["en_construccion", "terminada", "reservada", "vendida"] as const;
+export const TIPOS_IMAGEN_CASA = ["foto", "plano"] as const;
+export const AGUAS_NEGRAS = ["alcantarillado", "fosa_septica"] as const;
+
 // Portal de clientes: deben coincidir con los CHECK de 004_portal_obras.sql
 export const MODALIDADES_OBRA = ["compra", "construccion_terreno", "inversionista"] as const;
 export const ESTADOS_OBRA = ["por_iniciar", "en_obra", "pausada", "entregada"] as const;
@@ -216,6 +221,13 @@ export const esquemaClic = z.strictObject({
 
 /** Id de una fila del portal (uuid). Se valida antes de consultar. */
 export const esquemaIdPortal = z.uuid();
+
+/** Slug de una casa del catálogo (mismo formato que el CHECK de 005). Se valida antes de consultar. */
+export const esquemaSlugCasa = z
+  .string()
+  .min(3)
+  .max(80)
+  .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/);
 
 /**
  * URL de video de un avance: solo YouTube y Vimeo, con un id reconocible. Se valida al leer

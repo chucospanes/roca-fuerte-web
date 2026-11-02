@@ -20,7 +20,8 @@ export function Seccion({
   children,
 }: {
   id: string;
-  numero: string;
+  /** Número de sección de la landing; las páginas sueltas (catálogo) van sin número. */
+  numero?: string;
   etiqueta: string;
   titulo: string;
   intro?: ReactNode;
@@ -39,7 +40,8 @@ export function Seccion({
         <p
           className={`font-display text-xs font-semibold tracking-[0.2em] uppercase ${oscuro ? "text-terracota-claro" : "text-terracota"}`}
         >
-          {numero} — {etiqueta}
+          {numero && `${numero} — `}
+          {etiqueta}
         </p>
         <h2 className="mt-2 font-display text-3xl leading-tight font-extrabold tracking-tight text-balance sm:text-4xl">
           {titulo}

@@ -1,9 +1,12 @@
 /**
- * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–004).
+ * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–005).
  * Si cambia la migración, actualizar aquí (o regenerar con `supabase gen types`).
  */
 
 import type {
+  AGUAS_NEGRAS,
+  ESTADOS_CASA,
+  TIPOS_IMAGEN_CASA,
   ESTADOS_ETAPA,
   ESTADOS_LEAD,
   ESTADOS_OBRA,
@@ -138,7 +141,56 @@ export type Documento = {
   updated_at: string;
 };
 
-type SoloLectura<Fila> = { Row: Fila; Insert: never; Update: never; Relationships: [] };
+/*
+ * Catálogo de casas en venta (005_casas_venta.sql). Lectura pública solo de las publicadas;
+ * nadie escribe desde la web.
+ */
+export type CasaVenta = {
+  id: string;
+  slug: string;
+  publicada: boolean;
+  orden: number;
+  nombre: string;
+  modelo: string;
+  descripcion: string | null;
+  distrito: string;
+  municipio: string;
+  departamento: string;
+  estado: Uno<typeof ESTADOS_CASA>;
+  etapa_actual: string | null;
+  precio_usd: number | null;
+  lote_frente_m: number;
+  lote_fondo_m: number;
+  lote_m2: number;
+  /** true: m², dormitorios y baños son los del modelo Esparta (van en null aquí). */
+  planta_esparta: boolean;
+  construccion_m2: number | null;
+  dormitorios: number | null;
+  banos: number | null;
+  parqueos: number | null;
+  agua: boolean | null;
+  electricidad: boolean | null;
+  aguas_negras: Uno<typeof AGUAS_NEGRAS> | null;
+  incluye: string[];
+  video_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CasaVentaImagen = {
+  id: string;
+  casa_id: string;
+  tipo: Uno<typeof TIPOS_IMAGEN_CASA>;
+  orden: number;
+  /** Ruta dentro del bucket público `casas`: {casa_id}/archivo */
+  ruta: string;
+  ancho: number;
+  alto: number;
+  alt: string;
+  created_at: string;
+};
+
+type SoloLectura<Fila> ={ Row: Fila; Insert: never; Update: never; Relationships: [] };
 
 export type BaseDeDatos = {
   public: {
@@ -161,6 +213,8 @@ export type BaseDeDatos = {
       avances: SoloLectura<Avance>;
       obra_materiales: SoloLectura<ObraMaterial>;
       documentos: SoloLectura<Documento>;
+      casas_venta: SoloLectura<CasaVenta>;
+      casas_venta_imagenes: SoloLectura<CasaVentaImagen>;
     };
     Views: Record<never, never>;
     Functions: Record<never, never>;
