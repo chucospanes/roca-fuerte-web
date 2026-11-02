@@ -579,3 +579,9 @@ WhatsApp de comprar (opción `comprar`, ubicación `hero`), para que la acción 
 lleve a un catálogo vacío. Sale de la misma lectura en caché que el bloque "Casas
 disponibles" y Precios (`casasDisponibles()` sobre `listarCasas()`), sin consulta nueva. La
 tarjeta de Precios no cambia: sin casas lleva a `/casas`, que muestra el aviso y WhatsApp.
+
+## 2026-11-02 — Tarjeta "Comprar una casa" de Precios con la misma regla del hero
+Reemplaza "La tarjeta de Precios no cambia" de la entrada anterior. Decisión del usuario: con
+1 o más casas disponibles, la tarjeta lleva al catálogo (o a la casa, si hay una sola); con 0
+o si Supabase no responde, su botón es "Quiero esta casa" con el WhatsApp de comprar (opción
+`comprar`, ubicación `precios`). Misma lectura en caché, sin consulta nueva.
