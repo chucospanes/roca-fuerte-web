@@ -28,7 +28,7 @@ export default function PortalPage() {
             El avance de tu obra
           </h1>
           <p className="mt-3 max-w-2xl text-lg text-piedra-600">
-            Etapas, fotos, videos, materiales y documentos de tu obra. Solo tú ves la tuya.
+            Etapas, fotos, materiales y documentos de tu obra, documentada etapa por etapa. Solo tú ves la tuya.
           </p>
           <div className="mt-10">
             <Suspense fallback={<p className="text-piedra-600">Cargando…</p>}>

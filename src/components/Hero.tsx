@@ -1,36 +1,90 @@
+import Image from "next/image";
+import type { ReactNode } from "react";
 import { site } from "@/config/site";
 import { esparta } from "@/content/esparta";
-import { hero } from "@/content/landing";
+import { heroPantallas } from "@/content/landing";
 import { casasDisponibles, destinoCompra } from "@/lib/casas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Boton, Pendiente } from "./ui";
+import { CarruselHero } from "./CarruselHero";
+import { Boton } from "./ui";
 
 /**
- * Botón principal: con casas disponibles, al catálogo (o a la casa, si hay una sola). Sin casas
- * o si Supabase no responde, el WhatsApp de comprar: la acción principal nunca lleva a un
- * catálogo vacío.
+ * Una pantalla del hero: foto real de la obra de fondo (con un velo para leer el texto) o el
+ * color de la marca. Solo la foto de la primera pantalla carga de inmediato.
+ */
+function Pantalla({
+  foto,
+  primera = false,
+  children,
+}: {
+  foto?: { src: string; alt: string };
+  primera?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={`relative flex min-h-[34rem] items-end sm:min-h-[36rem] md:items-center ${foto ? "bg-piedra-900" : "cuadricula-clara bg-terracota"}`}
+    >
+      {foto && (
+        <>
+          <Image
+            src={foto.src}
+            alt={foto.alt}
+            fill
+            sizes="100vw"
+            {...(primera ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+            className="object-cover"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-t from-piedra-900/95 via-piedra-900/75 to-piedra-900/30 md:bg-gradient-to-r md:from-piedra-900/90 md:via-piedra-900/70 md:to-piedra-900/10"
+          />
+        </>
+      )}
+      <div className="relative mx-auto w-full max-w-5xl px-4 pt-16 pb-28 text-blanco md:py-24">
+        <div className="max-w-xl">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+const estiloTitulo =
+  "font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl";
+const estiloSubtitulo = "mt-3 font-display text-2xl font-bold text-terracota-claro sm:text-3xl";
+
+/**
+ * Hero en 3 pantallas, avance solo manual (ver DECISIONES.md, 2026-11-03). Botón de la
+ * primera: con casas disponibles, al catálogo (o a la casa, si hay una sola). Sin casas o si
+ * Supabase no responde, el WhatsApp de comprar: la acción principal nunca lleva a un catálogo
+ * vacío.
  */
 export async function Hero() {
   const disponibles = await casasDisponibles();
   const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
+  const { reforzada, documentada, hogar } = heroPantallas;
 
   return (
-    <section id="inicio" className="fondo-plano border-b border-piedra-200">
-      <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:py-16 md:grid-cols-[1.1fr_1fr] md:items-center">
-        <div>
+    <section
+      id="inicio"
+      aria-roledescription="carrusel"
+      aria-label="Presentación"
+      className="border-b border-piedra-200"
+    >
+      <CarruselHero
+        etiquetas={[reforzada.titulo, documentada.titulo, hogar.titulo]}
+      >
+        <Pantalla foto={reforzada.foto} primera>
           {/* cada dato no se parte entre líneas */}
-          <p className="flex flex-wrap gap-x-2 font-display text-sm font-semibold tracking-[0.15em] text-terracota uppercase">
+          <p className="flex flex-wrap gap-x-2 font-display text-sm font-semibold tracking-[0.15em] text-terracota-claro uppercase">
             <span className="whitespace-nowrap">{site.modelo}</span>
             <span aria-hidden>·</span>
             <span className="whitespace-nowrap">{esparta.dormitorios} dormitorios</span>
             <span aria-hidden>·</span>
             <span className="whitespace-nowrap">{esparta.areas.construidaM2.toFixed(2)} m²</span>
           </p>
-          <h1 className="mt-4 font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl">
-            {hero.titulo}
-          </h1>
-          <p className="mt-5 max-w-xl text-lg text-piedra-700">{hero.bajada}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <h1 className={`mt-4 ${estiloTitulo}`}>{reforzada.titulo}</h1>
+          <p className={estiloSubtitulo}>{reforzada.subtitulo}</p>
+          <div className="mt-8">
             {destino ? (
               <Boton href={destino.href}>{destino.texto}</Boton>
             ) : (
@@ -38,22 +92,29 @@ export async function Hero() {
                 Quiero esta casa
               </BotonWhatsApp>
             )}
-            <BotonWhatsApp opcion="construir" ubicacion="hero" variante="secundario">
-              Construir Esparta en mi terreno
+          </div>
+        </Pantalla>
+
+        <Pantalla foto={documentada.foto}>
+          <h2 className={estiloTitulo}>{documentada.titulo}</h2>
+          <p className={estiloSubtitulo}>{documentada.subtitulo}</p>
+          <div className="mt-8">
+            <Boton href={documentada.boton.href}>{documentada.boton.texto}</Boton>
+          </div>
+        </Pantalla>
+
+        <Pantalla>
+          <h2 className={estiloTitulo}>{hogar.titulo}</h2>
+          <p className="mt-3 font-display text-2xl font-bold text-blanco/90 sm:text-3xl">
+            {hogar.subtitulo}
+          </p>
+          <div className="mt-8">
+            <BotonWhatsApp opcion="construir" ubicacion="hero" variante="claro">
+              {hogar.boton}
             </BotonWhatsApp>
           </div>
-        </div>
-
-        {/* Espacio para el video o la foto principal de la obra */}
-        <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-piedra-300 bg-blanco/70 md:aspect-[4/5] md:max-h-[28rem]">
-          <div className="px-6 text-center">
-            <Pendiente texto="Video de la obra pendiente" />
-            <p className="mt-3 text-sm text-piedra-600">
-              Aquí irá el video o la foto principal de la Casa Esparta en construcción.
-            </p>
-          </div>
-        </div>
-      </div>
+        </Pantalla>
+      </CarruselHero>
     </section>
   );
 }

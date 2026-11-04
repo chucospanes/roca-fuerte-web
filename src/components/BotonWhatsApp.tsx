@@ -21,7 +21,7 @@ export function BotonWhatsApp({
 }: {
   opcion: OpcionMensajeFijo;
   ubicacion: UbicacionVenta;
-  variante?: "primario" | "secundario";
+  variante?: "primario" | "secundario" | "claro";
   className?: string;
   children: ReactNode;
 }) {

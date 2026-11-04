@@ -11,7 +11,7 @@ import { PENDIENTE, site, type Pendiente } from "@/config/site";
  */
 export const textoPermisos = `${site.marca} tramita los permisos de construcción y la segregación ante OPAMSS y CNR, y subcontrata los servicios que requieren licencia profesional.`;
 
-/** Punto numerado de las secciones Por qué y Calidad. */
+/** Punto numerado de las secciones Calidad y Para inversionistas. */
 export type Punto = {
   titulo: string;
   texto: string;
@@ -20,41 +20,57 @@ export type Punto = {
   enlace?: { href: string; texto: string };
 };
 
-export const hero = {
-  titulo: "Casas que duran. Y te lo demostramos.",
-  bajada:
-    "Cada material, cada etapa y cada refuerzo, documentados en video. Tú lo compruebas antes de comprar.",
+/**
+ * Hero en 3 pantallas, avance solo manual (ver DECISIONES.md, 2026-11-03). La primera lleva
+ * el botón dinámico (casa, catálogo o WhatsApp); su título es el h1 de la página.
+ * Fondos: fotos reales de la obra (las de la casa de San José Villanueva del catálogo).
+ */
+export const heroPantallas = {
+  reforzada: {
+    titulo: "Casas que duran.",
+    subtitulo: "Construcción reforzada.",
+    foto: {
+      src: "/hero/obra-sjv-trazo.jpg",
+      alt: "Trazo de una casa en obra: hilos, cal y niveletas de madera marcan las paredes mientras tres trabajadores abren las zanjas",
+    },
+  },
+  documentada: {
+    titulo: "Construcción documentada.",
+    subtitulo: "Etapa por etapa.",
+    boton: { href: "#bitacora", texto: "Ver la bitácora" },
+    foto: {
+      src: "/hero/obra-sjv-terraceria.jpg",
+      alt: "Terreno de una casa en obra después de la terracería, con la tierra nivelada y el corte del talud al fondo",
+    },
+  },
+  hogar: {
+    titulo: "No es una casa más, es tu hogar.",
+    subtitulo: "Tu lugar seguro.",
+    boton: "Construir a pedido",
+  },
 };
 
 /**
- * Por qué construimos así: dos pilares, en este orden. Calidad comprobable es el principal;
- * Comunidad lleva solo lo confirmado por el constructor (ver DECISIONES.md).
+ * Lo que nos diferencia (reemplaza "Por qué construimos así", ver DECISIONES.md, 2026-11-03).
+ * Sin marcas de materiales en estos textos.
  */
-export const porQue = {
-  calidad: {
-    titulo: "Calidad comprobable",
+export const diferencias = {
+  todas: {
+    titulo: "En todas nuestras casas",
     puntos: [
-      {
-        titulo: "Cada material, con su especificación",
-        texto:
-          "Qué usamos, con qué especificación, de qué marca y por qué, a la vista en la tabla de materiales y en video antes de que lo tape el repello.",
-        enlace: { href: "#materiales", texto: "Ver los materiales" },
-      },
-      {
-        titulo: "Cada etapa, en la bitácora en video",
-        texto: "Fechas, avance y video de cada etapa, incluidos los refuerzos que después ya no se ven.",
-        enlace: { href: "#bitacora", texto: "Ver la bitácora" },
-      },
-      {
-        titulo: "Tu obra, en tu portal privado",
-        texto:
-          "Si construyes con nosotros, sigues tu obra desde el celular: fotos y videos de cada avance, materiales y documentos, estés donde estés.",
-      },
-    ] satisfies Punto[],
+      "Construcción documentada, etapa por etapa.",
+      "Nuestras casas se construyen aplicando estándares de seguridad internacionales. Todo documentado.",
+      "Materiales que cumplen la norma y sus especificaciones.",
+      "Portal privado de seguimiento.",
+      "Mano de obra de la zona.",
+    ],
   },
-  comunidad: {
-    titulo: "Comunidad",
-    texto: "Contratamos mano de obra de la zona.",
+  aPedido: {
+    titulo: "En casas a pedido",
+    puntos: [
+      "Transparencia en los costos de materiales. No vendemos materiales: el costo lo pone el mercado.",
+      "Acabados a elección: grifería, puertas, cerámica, color. Lo que sale del estándar se cotiza aparte; el costo de instalación puede variar ligeramente.",
+    ],
   },
 };
 
@@ -75,9 +91,9 @@ export const calidad: Punto[] = [
     pendientes: ["Nombre del profesional pendiente", "Número de registro pendiente"],
   },
   {
-    titulo: "Control de calidad en obra, en video",
+    titulo: "Control de calidad en obra, documentado",
     texto:
-      "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda grabado en la bitácora de obra.",
+      "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda documentado en la bitácora de obra.",
     enlace: { href: "#bitacora", texto: "Ver la bitácora" },
   },
   {
@@ -89,10 +105,10 @@ export const calidad: Punto[] = [
 
 export const pasos = [
   { titulo: "Contacto", texto: "Nos cuentas qué buscas por el formulario o por WhatsApp." },
-  { titulo: "Evaluación del terreno", texto: "Revisamos tu terreno para saber si cumple las condiciones." },
+  { titulo: "Evaluación del terreno", texto: "Si la casa va en tu terreno, lo revisamos para saber si cumple las condiciones." },
   { titulo: "Cotización cerrada", texto: "Recibes el precio completo de la obra antes de comprometerte." },
   { titulo: "Contrato", texto: "Firmamos el contrato con el alcance y el precio acordados." },
-  { titulo: "Construcción documentada", texto: "Cada etapa se publica en video para que veas el avance." },
+  { titulo: "Construcción documentada", texto: "Documentamos la obra etapa por etapa para que veas el avance." },
   { titulo: "Entrega", texto: "Recibes tu casa terminada." },
 ];
 

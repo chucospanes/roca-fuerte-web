@@ -1,7 +1,8 @@
 # Roca Fuerte — Portal Casa Modelo Esparta
 
-Portal de ventas de la Casa Modelo Esparta: venta de la casa en construcción y del servicio
-de construir el modelo en el terreno del cliente.
+Portal de ventas de la Casa Modelo Esparta: casas del catálogo (casas nuestras con el modelo
+estándar) y casas a pedido (toda casa que se vende antes de construirse, en terreno nuestro o
+del cliente).
 
 ## Documentación
 - `CLAUDE.md` — reglas y protocolo para Claude Code (se carga automáticamente).
@@ -190,9 +191,12 @@ Encender `site.lanzado` solo con todo esto cumplido.
       privacidad y plazo de conservación (`docs/AVISO_PRIVACIDAD.md`). Al aprobarlo, quitar
       el aviso de "borrador" de `src/app/privacidad/page.tsx`.
 - [ ] Decidir qué PENDIENTE se aceptan visibles el día del lanzamiento (redes, preguntas
-      frecuentes, video del hero, materiales, profesional que firma).
-- [ ] Publicar los primeros videos de materiales y refuerzo (el hero promete "cada
-      material, cada etapa y cada refuerzo, documentados en video").
+      frecuentes, materiales, profesional que firma).
+- [ ] Documentar las primeras etapas en la bitácora (fecha, avance y fotos; video cuando lo
+      haya): el hero y "Lo que nos diferencia" prometen construcción documentada etapa por
+      etapa.
+- [ ] Respaldo de "estándares de seguridad internacionales" ("Lo que nos diferencia"):
+      cuáles son y dónde se documentan, confirmado con el ingeniero responsable.
 
 **Datos de prueba en Supabase** (los borra el dueño del proyecto)
 - [ ] Primero las filas de prueba de `leads` (antes, un `select` para confirmar cuáles son).

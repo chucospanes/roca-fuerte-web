@@ -3,7 +3,7 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-02
+**Última actualización:** 2026-11-04
 **Versión:** v1.1.1 — catálogo de casas con la primera casa publicada; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
@@ -12,6 +12,25 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Diferenciadores (rama `feat/diferenciadores`, esperando el visto bueno del usuario)
+- Hero en 3 pantallas con avance solo manual (deslizar con scroll-snap nativo, flechas, puntos
+  y flechas del teclado; pantallas ocultas `inert`; sin avance automático; sin dependencias).
+  Fondos: fotos de la obra de San José Villanueva (`public/hero/`, copias exactas) y
+  terracota. "Lo que nos diferencia" reemplaza "Por qué construimos así". "Construir a pedido"
+  reemplaza "Construir en tu terreno" (WhatsApp: "Hola, quiero una casa Esparta a pedido.";
+  `construir` sin cambio en la base). Sin promesa de video. Ver DECISIONES.md (2026-11-03).
+- Probado con el build de producción contra la simulación local (una casa y sin casas):
+  lint, typecheck y build pasan; flechas, puntos y teclado cambian de pantalla, la visible es
+  la única sin `inert` y su punto lleva `aria-current`; sin desborde a 390 ni 1280 px;
+  mensajes de WhatsApp revisados en el HTML. Capturas revisadas a 390 y 1280 px.
+- Portal: tipo de documento `factura` con su apartado "Facturas" (solo aparece si hay
+  facturas; el código funciona igual sin la 007). **No probado en pantalla:** requiere sesión
+  y una obra con factura.
+- Migración `007_documentos_factura.sql` escrita (solo archivo). **Antes de aplicarla**, el
+  usuario corre esta consulta de solo lectura para confirmar el nombre del CHECK (se espera
+  `documentos_tipo_check`):
+  `select conname, pg_get_constraintdef(oid) from pg_constraint where conrelid = 'public.documentos'::regclass and contype = 'c';`
 
 ### Catálogo de casas en venta (`v1.1.0`, en `main` y desplegado el 2026-11-02)
 - **Verificado con lecturas en https://constructorarocafuerte.com (2026-11-02):** `/` y `/casas`
@@ -336,8 +355,10 @@ sección 6):
    conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
    quitar el aviso de "borrador" de `/privacidad`.
 4. Decidir qué PENDIENTE se aceptan visibles el día del lanzamiento (redes, preguntas
-   frecuentes, video del hero, materiales, profesional que firma).
-5. Publicar los primeros videos de materiales y refuerzo (lo promete el hero).
+   frecuentes, materiales, profesional que firma).
+5. Documentar las primeras etapas en la bitácora (fecha, avance y fotos; video cuando lo
+   haya): el hero promete construcción documentada etapa por etapa. Y respaldo de
+   "estándares de seguridad internacionales" con el ingeniero responsable.
 6. Borrar los datos de prueba (`leads` y luego sus usuarios de Auth; lo hace el usuario) y
    verificar con lecturas.
 7. Vercel en plan Pro.
@@ -395,7 +416,6 @@ sin portal).
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
 - Casas a la venta (ubicación, lote, precio y qué incluye de cada una) → `casas_venta`, con
   `docs/GUIA_CARGA_CASAS.md`. Pasaron aquí los pendientes 1, 3, 4 y 5 del inventario.
-- Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
   del profesional que firma el plano → `calidad` en `src/content/landing.ts`.
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el

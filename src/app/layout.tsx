@@ -20,7 +20,7 @@ const texto = Source_Sans_3({
   subsets: ["latin"],
 });
 
-const descripcion = `${site.modelo}: ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Cada material y cada etapa de la obra, documentados en video, en ${site.pais}.`;
+const descripcion = `${site.modelo}: ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa, en ${site.pais}.`;
 
 // La imagen para compartir la genera `opengraph-image.tsx` (fachada + modelo + marca).
 export const metadata: Metadata = {
