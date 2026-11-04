@@ -12,6 +12,14 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que fal### Diferenciadores (`v1.2.0`, 2026-11-04)
+- **En `main` y desplegado; verificado con lecturas en https://constructorarocafuerte.com
+  (2026-11-04):** `/` 200 con `noindex`; h1 "Casas que duran." y los textos de las 3
+  pantallas, "Lo que nos diferencia" y "Construir a pedido"; sin "Y te lo demostramos", "en
+  video", "Por qué construimos", "Construir Esparta en mi terreno", "Videos:" ni marcas de
+  materiales; WhatsApp de `construir` (hero, Precios, Contacto) con "Hola, quiero una casa
+  Esparta a pedido."; foto del hero con prioridad alta, servida en AVIF (37 KB a 750 px); la
+  foto de la terracería ya no se usa. `/casas`, la casa de San José Villanueva y `/portal`
+  200; `/esparta/ficha` 404.
 - Hero en 3 pantallas con avance solo manual (deslizar con scroll-snap nativo, flechas, puntos
   y flechas del teclado; pantallas ocultas `inert`; sin avance automático; sin dependencias).
   Pantalla 1: foto del trazo de San José Villanueva (`public/hero/`, los trabajadores dieron
