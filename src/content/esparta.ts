@@ -75,10 +75,9 @@ export const esparta = {
   implantacion: "Entre colindancias: los muros laterales no tienen ventanas ni aleros.",
 
   techo: {
-    cubierta: "Lámina a dos aguas",
+    /** Sin porcentaje de pendiente en el sitio (decisión del 2026-11-04). */
+    cubierta: "Techo de lámina a dos aguas",
     cumbrera: "Paralela a la fachada",
-    /** Verificar el mínimo con la ficha técnica de la lámina que se elija. */
-    pendientePct: 15,
     desague:
       "El agua cae al frente, a un canal detrás del pretil que desagua hacia el jardín, y al patio del fondo; nunca hacia los vecinos.",
     /** Alturas sobre el nivel de piso terminado. */
@@ -186,7 +185,8 @@ export const esparta = {
   materiales: [
     {
       material: "Bloque de concreto",
-      especificacion: "Muros exteriores de 0.15 m e interiores de 0.10 m (según el plano).",
+      especificacion:
+        "Bloque estructural bajo norma ASTM C90, de 15 cm en muros exteriores y 10 cm en interiores",
       porQue: PENDIENTE,
     },
     { material: "Cemento", especificacion: PENDIENTE, porQue: PENDIENTE },
@@ -202,7 +202,11 @@ export const esparta = {
       especificacion: PENDIENTE,
       porQue: PENDIENTE,
     },
-    { material: "Acero de refuerzo", especificacion: PENDIENTE, porQue: PENDIENTE },
+    {
+      material: "Acero de refuerzo",
+      especificacion: "Varilla corrugada grado 40, bajo norma ASTM A615",
+      porQue: PENDIENTE,
+    },
     {
       material: "Estructura de techo",
       seEspecifica: "Polines: calibre y separación.",
@@ -211,7 +215,7 @@ export const esparta = {
     },
     {
       material: "Cubierta de techo",
-      seEspecifica: "Lámina: tipo y calibre; pendiente mínima según el fabricante (diseño: 15 %).",
+      seEspecifica: "Lámina: tipo y calibre; pendiente mínima según el fabricante.",
       especificacion: PENDIENTE,
       porQue: PENDIENTE,
     },

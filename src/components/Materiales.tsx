@@ -2,8 +2,9 @@ import { esPendiente } from "@/config/site";
 import { esparta } from "@/content/esparta";
 import { Pendiente, Seccion } from "./ui";
 
+/** Lo no confirmado sale como "Por confirmar": se llena conforme se compran los materiales. */
 function Valor({ valor }: { valor: string }) {
-  return esPendiente(valor) ? <Pendiente /> : <>{valor}</>;
+  return esPendiente(valor) ? <Pendiente texto="Por confirmar" /> : <>{valor}</>;
 }
 
 const todoPendiente = (mat: { especificacion: string; porQue: string }) =>
@@ -18,7 +19,7 @@ export function Materiales() {
       etiqueta="Especificaciones"
       titulo="Materiales y especificaciones"
       fondo="blanco"
-      intro="Qué material se usa, con qué especificación y por qué. Lo que aún no está confirmado aparece como pendiente."
+      intro="Qué material se usa, con qué especificación y por qué. Lo que aún no está confirmado aparece como «Por confirmar» y se llena conforme se compran los materiales."
     >
       {/* Móvil: tarjetas */}
       <ul className="divide-y divide-piedra-200 rounded-lg border border-piedra-200 bg-blanco md:hidden">
@@ -33,7 +34,7 @@ export function Materiales() {
               </div>
               {todoPendiente(mat) && (
                 <span className="shrink-0 pt-1">
-                  <Pendiente />
+                  <Pendiente texto="Por confirmar" />
                 </span>
               )}
             </div>

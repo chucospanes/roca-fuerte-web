@@ -14,8 +14,11 @@ export function esPendiente(valor: unknown): valor is Pendiente {
   return valor === PENDIENTE;
 }
 
-/** Precio en dólares (USD, moneda de curso legal en El Salvador) o PENDIENTE. */
-export type Precio = number | Pendiente;
+/** Precio "a consultar": se publica así, sin monto (no es un dato pendiente). */
+export const A_CONSULTAR = "A_CONSULTAR" as const;
+
+/** Precio en dólares (USD, moneda de curso legal en El Salvador), a consultar o PENDIENTE. */
+export type Precio = number | typeof A_CONSULTAR | Pendiente;
 
 export type RedSocial = "tiktok" | "instagram" | "facebook" | "youtube";
 
@@ -36,13 +39,23 @@ export const site = {
   whatsapp: "50378216321",
 
   /**
+   * Responsable de los datos en el aviso de privacidad (`/privacidad`). `titular`: cambiar a
+   * "Roca Fuerte, S.A.S." cuando quede inscrita en el CNR (pendiente en ESTADO.md).
+   */
+  privacidad: {
+    titular: "Patricio Posada",
+    domicilio: "La Libertad Este, La Libertad, El Salvador",
+    correo: "privacidad@constructorarocafuerte.com",
+  },
+
+  /**
    * Precio "desde" de construir a pedido: toda casa que se vende antes de construirse, en
    * terreno nuestro o del cliente. El precio de cada casa a la venta vive en `casas_venta`
    * (catálogo `/casas`), no aquí.
    */
   precios: {
     /** "Construir a pedido": precio desde, sujeto a condiciones. */
-    construirAPedido: PENDIENTE as Precio,
+    construirAPedido: A_CONSULTAR as Precio,
   },
 
   /** Condiciones del precio "desde" cuando la casa a pedido va en el terreno del cliente. */
@@ -110,5 +123,7 @@ export function precioUSD(monto: number): string {
 
 /** Texto del precio "desde" para mostrar en la web. */
 export function textoPrecio(precio: Precio): string {
-  return esPendiente(precio) ? "Precio próximamente" : `Desde ${formatoUSD.format(precio)}`;
+  if (esPendiente(precio)) return "Precio próximamente";
+  if (precio === A_CONSULTAR) return "A consultar";
+  return `Desde ${formatoUSD.format(precio)}`;
 }

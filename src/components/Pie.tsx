@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { esPendiente, site, whatsappVisible, type RedSocial } from "@/config/site";
 import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
-import { Pendiente } from "./ui";
 
 const nombresRedes: Record<RedSocial, string> = {
   tiktok: "TikTok",
@@ -10,10 +9,15 @@ const nombresRedes: Record<RedSocial, string> = {
   youtube: "YouTube",
 };
 
+/** Solo las redes que ya existen; sin ninguna, la columna no aparece (se agregan una por una). */
+const redesActivas = (Object.keys(nombresRedes) as RedSocial[]).filter((red) => !esPendiente(site.redes[red]));
+
 export function Pie() {
   return (
     <footer className="bg-piedra-900 pt-12 pb-28 text-piedra-200 md:pb-12">
-      <div className="mx-auto grid max-w-5xl gap-10 px-4 sm:grid-cols-3">
+      <div
+        className={`mx-auto grid max-w-5xl gap-10 px-4 ${redesActivas.length > 0 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}
+      >
         <div>
           <p className="flex items-center gap-2 font-display text-lg font-extrabold text-blanco">
             <span aria-hidden className="block size-3 bg-terracota" />
@@ -44,18 +48,14 @@ export function Pie() {
           </p>
         </div>
 
-        <div>
-          <h2 className="font-display text-sm font-semibold tracking-[0.15em] text-blanco uppercase">
-            Redes
-          </h2>
-          <ul className="mt-3 space-y-2 text-sm">
-            {(Object.keys(nombresRedes) as RedSocial[]).map((red) => (
-              <li key={red}>
-                {esPendiente(site.redes[red]) ? (
-                  <>
-                    {nombresRedes[red]} <Pendiente />
-                  </>
-                ) : (
+        {redesActivas.length > 0 && (
+          <div>
+            <h2 className="font-display text-sm font-semibold tracking-[0.15em] text-blanco uppercase">
+              Redes
+            </h2>
+            <ul className="mt-3 space-y-2 text-sm">
+              {redesActivas.map((red) => (
+                <li key={red}>
                   <a
                     href={site.redes[red]}
                     target="_blank"
@@ -64,11 +64,11 @@ export function Pie() {
                   >
                     {nombresRedes[red]}
                   </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="mx-auto mt-10 flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-piedra-700 px-4 pt-6 text-sm">

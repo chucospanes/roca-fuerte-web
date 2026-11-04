@@ -1,7 +1,6 @@
-import { esPendiente } from "@/config/site";
 import { bitacora, type EstadoEtapa } from "@/content/bitacora";
 import { videoEmbed } from "@/lib/video";
-import { Pendiente, Seccion } from "./ui";
+import { Seccion } from "./ui";
 import { VideoLazy } from "./VideoLazy";
 
 // "pendiente" en la bitácora significa "no ha empezado"; se muestra como "Por iniciar"
@@ -38,7 +37,7 @@ export function Bitacora() {
       numero="05"
       etiqueta="Obra en vivo"
       titulo="Bitácora de obra"
-      intro="Cada etapa de la Casa Esparta, documentada con su fecha y su avance. Cuando una etapa tiene video, carga solo cuando lo tocas."
+      intro="Cada etapa de la casa de San José Villanueva, con su estado y la fecha en que arrancó. Cuando una etapa tiene video, carga solo cuando lo tocas."
     >
       <ol className="relative space-y-8 border-l-2 border-piedra-200 pl-6 sm:pl-8">
         {bitacora.map((etapa) => {
@@ -55,38 +54,10 @@ export function Bitacora() {
                   {estilo.texto}
                 </span>
               </div>
-              <p className="mt-1 text-sm text-piedra-600">
-                Inicio:{" "}
-                {esPendiente(etapa.fecha) ? <Pendiente /> : formatoFecha(etapa.fecha)}
-              </p>
-              <p className="mt-2 text-piedra-700">{etapa.descripcion}</p>
-
-              {etapa.estado !== "pendiente" && (
-              <div className="mt-3 max-w-md">
-                {esPendiente(etapa.avance) ? (
-                  <p className="text-sm text-piedra-600">
-                    Avance: <Pendiente />
-                  </p>
-                ) : (
-                  <>
-                    <div className="flex justify-between text-sm text-piedra-600">
-                      <span>Avance</span>
-                      <span className="font-semibold text-piedra-800">{etapa.avance} %</span>
-                    </div>
-                    <div
-                      role="progressbar"
-                      aria-valuenow={etapa.avance}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={`Avance de ${etapa.titulo}`}
-                      className="mt-1 h-2 overflow-hidden rounded-full bg-piedra-100"
-                    >
-                      <div className="h-full bg-terracota" style={{ width: `${etapa.avance}%` }} />
-                    </div>
-                  </>
-                )}
-              </div>
+              {etapa.fecha && (
+                <p className="mt-1 text-sm text-piedra-600">Inicio: {formatoFecha(etapa.fecha)}</p>
               )}
+              <p className="mt-2 text-piedra-700">{etapa.descripcion}</p>
 
               {etapa.materiales.length > 0 && (
                 <p className="mt-3 text-sm">

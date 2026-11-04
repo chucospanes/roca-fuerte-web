@@ -106,8 +106,8 @@ export function ContenidoPremium() {
           <div className={fila}>
             <dt className="text-piedra-600">Techo</dt>
             <dd>
-              {esparta.techo.cubierta}, cumbrera {esparta.techo.cumbrera.toLowerCase()}, pendiente{" "}
-              {esparta.techo.pendientePct} %. Alero a {m(esparta.techo.aleroM)}, cumbrera a{" "}
+              {esparta.techo.cubierta}, cumbrera {esparta.techo.cumbrera.toLowerCase()}. Alero a{" "}
+              {m(esparta.techo.aleroM)}, cumbrera a{" "}
               {m(esparta.techo.cumbreraM)}. {esparta.techo.desague}
             </dd>
           </div>

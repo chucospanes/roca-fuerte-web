@@ -81,7 +81,7 @@ export function LaCasa() {
             <dd>{m(esparta.muros.interioresM)}</dd>
             <dt className="text-piedra-300">Techo</dt>
             <dd>
-              {esparta.techo.cubierta}, {`${esparta.techo.pendientePct} %`}
+              {esparta.techo.cubierta}
             </dd>
             <dt className="text-piedra-300">Alero / cumbrera</dt>
             <dd>

@@ -8,7 +8,7 @@ export function Calidad() {
       numero="03"
       etiqueta="Estándares técnicos"
       titulo="Calidad y resistencia"
-      intro="No te pedimos que confíes en adjetivos. Te mostramos con qué norma se diseña, quién firma el plano y cómo se controla cada etapa, para que lo compruebes tú."
+      intro="No te pedimos que confíes en adjetivos. Te mostramos cómo se controla cada etapa y con qué materiales se construye, para que lo compruebes tú."
     >
       <PuntosNumerados puntos={calidad} />
     </Seccion>

@@ -1,9 +1,9 @@
 /**
  * Textos de las secciones de la landing que no dependen del modelo ni de la obra.
- * Respuestas de preguntas frecuentes: PENDIENTE hasta que el constructor las confirme.
+ * Respuestas de preguntas frecuentes confirmadas por el constructor (2026-11-04).
  */
 
-import { PENDIENTE, site, type Pendiente } from "@/config/site";
+import { site, type Pendiente } from "@/config/site";
 
 /**
  * Quién tramita los permisos. El mismo texto va en la pregunta frecuente y en la sección
@@ -77,17 +77,6 @@ export const diferencias = {
  */
 export const calidad: Punto[] = [
   {
-    titulo: "Diseño sismorresistente según la norma",
-    texto:
-      "Referencia: reglamento técnico salvadoreño para vivienda de una y dos plantas, RTS 91.01.02:21.",
-    pendientes: ["Confirmar con el ingeniero responsable"],
-  },
-  {
-    titulo: "Plano revisado y firmado por un profesional",
-    texto: "El plano de construcción lo revisa y firma un arquitecto o ingeniero antes de construir.",
-    pendientes: ["Nombre del profesional pendiente", "Número de registro pendiente"],
-  },
-  {
     titulo: "Control de calidad en obra, documentado",
     texto:
       "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda documentado en la bitácora de obra.",
@@ -100,8 +89,27 @@ export const calidad: Punto[] = [
   },
 ];
 
+/**
+ * Ocultos hasta que haya ingeniero responsable (decisión del 2026-11-04, pendiente en
+ * ESTADO.md): la norma de diseño y el profesional que firma. Para mostrarlos, pasarlos a
+ * `calidad` con los datos confirmados (sin `pendientes`).
+ */
+export const calidadConIngeniero: Punto[] = [
+  {
+    titulo: "Diseño sismorresistente según la norma",
+    texto:
+      "Referencia: reglamento técnico salvadoreño para vivienda de una y dos plantas, RTS 91.01.02:21.",
+    pendientes: ["Confirmar con el ingeniero responsable"],
+  },
+  {
+    titulo: "Plano revisado y firmado por un profesional",
+    texto: "El plano de construcción lo revisa y firma un arquitecto o ingeniero antes de construir.",
+    pendientes: ["Nombre del profesional pendiente", "Número de registro pendiente"],
+  },
+];
+
 export const pasos = [
-  { titulo: "Contacto", texto: "Nos cuentas qué buscas por el formulario o por WhatsApp." },
+  { titulo: "Contacto", texto: "Nos cuentas qué buscas por WhatsApp." },
   { titulo: "Evaluación del terreno", texto: "Si la casa va en tu terreno, lo revisamos para saber si cumple las condiciones." },
   { titulo: "Cotización cerrada", texto: "Recibes el precio completo de la obra antes de comprometerte." },
   { titulo: "Contrato", texto: "Firmamos el contrato con el alcance y el precio acordados." },
@@ -112,11 +120,30 @@ export const pasos = [
 export type Pregunta = { pregunta: string; respuesta: string | Pendiente };
 
 export const preguntas: Pregunta[] = [
-  { pregunta: "¿Puedo pagar al contado?", respuesta: PENDIENTE },
-  { pregunta: "¿Puedo comprar con crédito del Fondo Social para la Vivienda (FSV)?", respuesta: PENDIENTE },
-  { pregunta: "¿Puedo comprar con crédito bancario?", respuesta: PENDIENTE },
-  { pregunta: "Vivo fuera de El Salvador, ¿cómo funciona el proceso?", respuesta: PENDIENTE },
-  { pregunta: "¿Cuánto tiempo tarda la construcción?", respuesta: PENDIENTE },
-  { pregunta: "¿La casa tiene garantía?", respuesta: PENDIENTE },
+  {
+    pregunta: "¿Puedo pagar al contado?",
+    respuesta:
+      "Sí. Se paga el 30 % al firmar el contrato y el resto por etapas, conforme avanza la obra, con el saldo al entregar la casa. Los montos y plazos quedan fijados en el contrato.",
+  },
+  {
+    pregunta: "¿Puedo comprar con crédito del Fondo Social para la Vivienda (FSV)?",
+    respuesta:
+      "Sí. Consúltanos tu caso por WhatsApp y te acompañamos en el trámite. La aprobación del crédito depende del FSV.",
+  },
+  {
+    pregunta: "¿Puedo comprar con crédito bancario?",
+    respuesta:
+      "Sí. Consúltanos tu caso por WhatsApp y te acompañamos en el trámite. La aprobación del crédito depende del banco.",
+  },
+  {
+    pregunta: "Vivo fuera de El Salvador, ¿cómo funciona el proceso?",
+    respuesta:
+      "Puedes comprar sin viajar. Firmas el contrato mediante un poder a una persona de tu confianza, otorgado ante notario o en un consulado salvadoreño. Los pagos se hacen por transferencia bancaria y sigues el avance de tu casa desde el portal privado, estés donde estés.",
+  },
+  {
+    pregunta: "¿Cuánto tiempo tarda la construcción?",
+    respuesta:
+      "Entre 60 y 90 días de obra, una vez aprobados los permisos. El plazo puede variar por el clima, el terreno o los acabados elegidos, y el plazo exacto queda fijado en el contrato.",
+  },
   { pregunta: "¿Quién se encarga de los permisos de construcción?", respuesta: textoPermisos },
 ];
