@@ -14,7 +14,7 @@ type Etiquetas<T extends readonly string[]> = Record<T[number], string>;
 
 export const modalidades: Etiquetas<typeof MODALIDADES_OBRA> = {
   compra: "Compra de casa",
-  construccion_terreno: "Construcción en tu terreno",
+  construccion_terreno: "Casa a pedido",
   inversionista: "Proyecto de inversionista",
 };
 
@@ -36,6 +36,7 @@ export const tiposDocumento: Etiquetas<typeof TIPOS_DOCUMENTO> = {
   plano: "Plano",
   permiso: "Permiso",
   otro: "Documento",
+  factura: "Factura",
 };
 
 const formatoFecha = new Intl.DateTimeFormat("es-SV", {

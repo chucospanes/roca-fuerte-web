@@ -35,11 +35,11 @@ export const ESTADOS_CASA = ["en_construccion", "terminada", "reservada", "vendi
 export const TIPOS_IMAGEN_CASA = ["foto", "plano"] as const;
 export const AGUAS_NEGRAS = ["alcantarillado", "fosa_septica"] as const;
 
-// Portal de clientes: deben coincidir con los CHECK de 004_portal_obras.sql
+// Portal de clientes: deben coincidir con los CHECK de 004_portal_obras.sql (`factura`: 007)
 export const MODALIDADES_OBRA = ["compra", "construccion_terreno", "inversionista"] as const;
 export const ESTADOS_OBRA = ["por_iniciar", "en_obra", "pausada", "entregada"] as const;
 export const ESTADOS_ETAPA = ["por_iniciar", "en_proceso", "terminada"] as const;
-export const TIPOS_DOCUMENTO = ["contrato", "plano", "permiso", "otro"] as const;
+export const TIPOS_DOCUMENTO = ["contrato", "plano", "permiso", "otro", "factura"] as const;
 
 /** Los 14 departamentos de El Salvador. */
 export const DEPARTAMENTOS = [

@@ -4,10 +4,34 @@ import { connection } from "next/server";
 import { Salir } from "@/components/premium/Salir";
 import { VideoLazy } from "@/components/VideoLazy";
 import { estadosEtapa, estadosObra, fecha, modalidades, tiposDocumento } from "@/content/portal";
-import { leerObra } from "@/lib/portal";
+import { leerObra, type DocumentoListado } from "@/lib/portal";
 import { sesionVerificada } from "@/lib/supabase/servidor";
 
 const tituloBloque = "font-display text-2xl font-extrabold";
+
+function ListaDocumentos({ documentos }: { documentos: DocumentoListado[] }) {
+  return (
+    <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+      {documentos.map((d) => (
+        <li key={d.id}>
+          {/* La ruta firma una URL de 60 s al tocar el enlace */}
+          <a
+            href={`/portal/documentos/${d.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex h-full flex-col rounded-lg border-2 border-piedra-900 bg-blanco p-4 hover:border-terracota"
+          >
+            <span className="text-sm font-semibold text-terracota">
+              {tiposDocumento[d.tipo] ?? tiposDocumento.otro}
+            </span>
+            <span className="font-display text-lg font-bold">{d.titulo}</span>
+            <span className="mt-2 font-semibold text-terracota">Abrir ↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 /**
  * Detalle de una obra. Lee `params` y la sesión dentro de <Suspense> (cacheComponents).
@@ -23,6 +47,9 @@ export async function DetalleObra({ params }: { params: Promise<{ id: string }> 
   if (!detalle) notFound();
   const { obra, etapas, avances, materiales, documentos } = detalle;
   const nombreEtapa = new Map(etapas.map((e) => [e.id, e.nombre]));
+  // Las facturas van en su propio apartado; sin facturas (o antes de la 007), no aparece
+  const facturas = documentos.filter((d) => d.tipo === "factura");
+  const otrosDocumentos = documentos.filter((d) => d.tipo !== "factura");
 
   return (
     <div className="space-y-12">
@@ -164,28 +191,19 @@ export async function DetalleObra({ params }: { params: Promise<{ id: string }> 
 
       <section>
         <h2 className={tituloBloque}>Documentos</h2>
-        {documentos.length === 0 ? (
+        {otrosDocumentos.length === 0 ? (
           <p className="mt-3 text-piedra-600">Todavía no hay documentos cargados.</p>
         ) : (
-          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-            {documentos.map((d) => (
-              <li key={d.id}>
-                {/* La ruta firma una URL de 60 s al tocar el enlace */}
-                <a
-                  href={`/portal/documentos/${d.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-full flex-col rounded-lg border-2 border-piedra-900 bg-blanco p-4 hover:border-terracota"
-                >
-                  <span className="text-sm font-semibold text-terracota">{tiposDocumento[d.tipo]}</span>
-                  <span className="font-display text-lg font-bold">{d.titulo}</span>
-                  <span className="mt-2 font-semibold text-terracota">Abrir ↗</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <ListaDocumentos documentos={otrosDocumentos} />
         )}
       </section>
+
+      {facturas.length > 0 && (
+        <section>
+          <h2 className={tituloBloque}>Facturas</h2>
+          <ListaDocumentos documentos={facturas} />
+        </section>
+      )}
 
       <Salir />
     </div>

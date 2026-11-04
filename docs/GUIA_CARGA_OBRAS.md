@@ -96,7 +96,7 @@ datos as materialized (
     '<Marca>'::text                                           as material_marca,
     '<Cantidad con unidad>'::text                             as material_cantidad,
     -- Documento (opcional): con los tres en null no se crea
-    '<contrato | plano | permiso | otro>'::text               as documento_tipo,
+    '<contrato | plano | permiso | factura | otro>'::text     as documento_tipo,
     '<Título del documento>'::text                            as documento_titulo,
     '<contrato.pdf>'::text                                    as documento_archivo
 ),
@@ -230,7 +230,7 @@ returning orden, nombre, estado;
 | Columna | Qué poner |
 |---|---|
 | `nombre` | Cómo la verá el cliente, por ejemplo "Casa Esparta — Santa Tecla". |
-| `modalidad` | `compra`, `construccion_terreno` o `inversionista`. |
+| `modalidad` | `compra` (casa del catálogo, ya construida o en obra), `construccion_terreno` (el portal la muestra como "Casa a pedido": toda casa que se vende antes de construirse, en terreno nuestro o del cliente) o `inversionista`. |
 | `modelo` | Opcional, por ejemplo "Casa Modelo Esparta" o "Esparta adaptada". |
 | `ubicacion` | Opcional, por ejemplo "Santa Tecla, La Libertad". |
 | `estado` | `por_iniciar`, `en_obra`, `pausada` o `entregada`. |
@@ -308,7 +308,7 @@ Reglas:
 `material`, y opcionales `especificacion`, `marca` y `cantidad` (texto con unidad, por
 ejemplo "1,200 unidades").
 
-## 8. Documentos (contrato, planos, permisos)
+## 8. Documentos (contrato, planos, permisos, facturas)
 1. **Storage → bucket `obras`** → carpeta `{obra_id}` → carpeta **`documentos`** → sube el PDF
    (hasta 10 MB). Ruta en el bucket "obras" (sin prefijo obras/):
    ```
@@ -317,7 +317,10 @@ ejemplo "1,200 unidades").
    donde `archivo` es el nombre del PDF (por ejemplo `contrato.pdf`).
 2. **Table Editor → `documentos` → Insert row:**
    - `obra_id`: el de la obra.
-   - `tipo`: `contrato`, `plano`, `permiso` u `otro`.
+   - `tipo`: `contrato`, `plano`, `permiso`, `factura` u `otro`. Las facturas salen en su
+     propio apartado ("Facturas"), debajo de "Documentos"; si la obra no tiene facturas, ese
+     apartado no aparece. `factura` solo se acepta con la migración
+     `007_documentos_factura.sql` aplicada (antes, la base la rechaza).
    - `titulo`: por ejemplo "Contrato de construcción firmado".
    - `ruta`: **la ruta exacta del archivo**, con el formato `{obra_id}/documentos/archivo`
      (sin prefijo obras/; mayúsculas y minúsculas cuentan). Copia el `obra_id` real y el
