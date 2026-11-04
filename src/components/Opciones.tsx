@@ -38,8 +38,8 @@ export async function Opciones() {
           </p>
           <h3 className="mt-1 font-display text-2xl font-extrabold">Comprar una casa</h3>
           <p className="mt-2 text-piedra-600">
-            Casas que construimos para vender, con su terreno. Cada una con su ubicación, su lote,
-            su precio y lo que incluye.
+            Casas nuestras con el modelo estándar, construidas para vender con su terreno. Cada
+            una con su ubicación, su lote, su precio y lo que incluye.
           </p>
           <div className="mt-auto pt-6">
             {destino ? (
@@ -58,14 +58,15 @@ export async function Opciones() {
           <p className="font-display text-xs font-semibold tracking-[0.15em] text-terracota uppercase">
             Opción 2
           </p>
-          <h3 className="mt-1 font-display text-2xl font-extrabold">Construir en tu terreno</h3>
+          <h3 className="mt-1 font-display text-2xl font-extrabold">Construir a pedido</h3>
           <p className="mt-2 text-piedra-600">
-            Construimos el modelo Esparta en tu terreno, en {site.pais}, documentado etapa por etapa.
+            Una casa Esparta que se vende antes de construirse, en un terreno nuestro o en el tuyo,
+            en {site.pais}, documentada etapa por etapa.
           </p>
           <div className="mt-5">
-            <Precio precio={site.precios.construirEnTerreno} />
+            <Precio precio={site.precios.construirAPedido} />
           </div>
-          <h4 className="mt-6 font-semibold">Condiciones del precio</h4>
+          <h4 className="mt-6 font-semibold">Condiciones del precio, si va en tu terreno</h4>
           <ul className="mt-2 space-y-1 text-piedra-700">
             {site.condicionesConstruccion.map((c) => (
               <li key={c}>— {c}</li>
@@ -73,7 +74,7 @@ export async function Opciones() {
           </ul>
           <div className="mt-auto pt-6">
             <BotonWhatsApp opcion="construir" ubicacion="precios" variante="secundario" className="w-full">
-              Construir Esparta en mi terreno
+              Construir a pedido
             </BotonWhatsApp>
           </div>
         </article>

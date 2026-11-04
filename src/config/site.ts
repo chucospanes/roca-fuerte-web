@@ -36,15 +36,16 @@ export const site = {
   whatsapp: "50378216321",
 
   /**
-   * Precio "desde" de construir el modelo en el terreno del cliente. El precio de cada casa a
-   * la venta vive en `casas_venta` (catálogo `/casas`), no aquí.
+   * Precio "desde" de construir a pedido: toda casa que se vende antes de construirse, en
+   * terreno nuestro o del cliente. El precio de cada casa a la venta vive en `casas_venta`
+   * (catálogo `/casas`), no aquí.
    */
   precios: {
-    /** "Construir Esparta en mi terreno": precio desde, sujeto a condiciones. */
-    construirEnTerreno: PENDIENTE as Precio,
+    /** "Construir a pedido": precio desde, sujeto a condiciones. */
+    construirAPedido: PENDIENTE as Precio,
   },
 
-  /** Condiciones del precio "desde" de construir en el terreno del cliente. */
+  /** Condiciones del precio "desde" cuando la casa a pedido va en el terreno del cliente. */
   condicionesConstruccion: [
     "Terreno plano.",
     "Terreno escriturado.",

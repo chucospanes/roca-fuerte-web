@@ -14,7 +14,7 @@ export function Contacto() {
       <div className="grid gap-4 sm:grid-cols-2">
         <BotonWhatsApp opcion="general" ubicacion="contacto">Quiero más información</BotonWhatsApp>
         <BotonWhatsApp opcion="construir" ubicacion="contacto" variante="secundario">
-          Construir Esparta en mi terreno
+          Construir a pedido
         </BotonWhatsApp>
       </div>
 

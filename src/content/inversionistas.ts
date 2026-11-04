@@ -33,15 +33,15 @@ export const inversionistas = {
     },
     {
       titulo: "Materiales con especificación visible",
-      texto: `Cada material con su especificación y su marca, igual que en la ${site.modelo}.`,
+      texto: `Cada material con su especificación, igual que en la ${site.modelo}.`,
     },
     {
-      titulo: "Avance documentado en video y fotos",
-      texto: "Cada etapa queda registrada con su fecha, sus fotos y sus videos.",
+      titulo: "Avance documentado etapa por etapa",
+      texto: "Cada etapa queda registrada con su fecha y sus fotos.",
     },
     {
       titulo: "Portal privado para seguir tu obra",
-      texto: "Entras con tu correo y ves solo tu obra: etapas, fotos, videos, materiales y documentos.",
+      texto: "Entras con tu correo y ves solo tu obra: etapas, fotos, materiales y documentos.",
     },
     {
       titulo: "Entrega lista para vender o rentar",

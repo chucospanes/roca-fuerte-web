@@ -3,15 +3,41 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-02
-**Versión:** v1.1.1 — catálogo de casas con la primera casa publicada; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Última actualización:** 2026-11-04
+**Versión:** v1.2.0 — hero en 3 pantallas, "Lo que nos diferencia", casas a pedido y facturas en el portal; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
 https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo con
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
-quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+quitar de `.env.local`). Lo que fal### Diferenciadores (`v1.2.0`, 2026-11-04)
+- Hero en 3 pantallas con avance solo manual (deslizar con scroll-snap nativo, flechas, puntos
+  y flechas del teclado; pantallas ocultas `inert`; sin avance automático; sin dependencias).
+  Pantalla 1: foto del trazo de San José Villanueva (`public/hero/`, los trabajadores dieron
+  permiso), en AVIF calidad 60, carga inmediata y prioridad alta. Pantallas 2 y 3: color de
+  la marca (la 2, hasta tener una foto horizontal). "Lo que nos diferencia" reemplaza "Por qué
+  construimos así". "Construir a pedido" reemplaza "Construir en tu terreno" (WhatsApp: "Hola,
+  quiero una casa Esparta a pedido."; `construir` sin cambio en la base). Sin promesa de video.
+  Sin marcas de materiales en lo público (en el portal se quedan). Ver DECISIONES.md
+  (2026-11-03 y 2026-11-04).
+- Probado con el build de producción (simulación local con una casa y sin casas, y build final
+  con la configuración real): lint, typecheck y build pasan; flechas, puntos y teclado cambian
+  de pantalla, la visible es la única sin `inert` y su punto lleva `aria-current`; sin
+  desborde a 390 ni 1280 px; mensajes de WhatsApp revisados en el HTML.
+- **Lighthouse 13.5.0, celular, build de producción en el puerto 3100** (3 corridas válidas; la
+  primera tras arrancar sale siempre baja): Performance 78/80/85, Accesibilidad 100, Buenas
+  prácticas 100, SEO 69 (solo por el `noindex` de sitio sin lanzar). LCP 3.4–3.5 s (la foto
+  del hero; antes 2.9 s con el párrafo), FCP 1.2–1.7 s, CLS 0, TBT 200–330 ms, peso 406 KB. La
+  foto baja en 37 KB (AVIF a 750 px) en unos 100 ms; casi todo el LCP es retraso de pintado
+  bajo la CPU simulada, no la descarga. Corregido en la medición: el carrusel usaba `li` con
+  `role="group"` (lista inválida, Accesibilidad 96); ahora usa `div`.
+- Portal: tipo de documento `factura` con su apartado "Facturas" (solo aparece si hay
+  facturas). Migración 007 **aplicada por el usuario (2026-11-04)**: el CHECK era
+  `documentos_tipo_check`, "Success". No verificable con lecturas por la API (no expone el
+  catálogo de Postgres) y no probado en pantalla (requiere sesión y una obra con factura).
+
+ntos'::regclass and contype = 'c';`
 
 ### Catálogo de casas en venta (`v1.1.0`, en `main` y desplegado el 2026-11-02)
 - **Verificado con lecturas en https://constructorarocafuerte.com (2026-11-02):** `/` y `/casas`
@@ -336,8 +362,10 @@ sección 6):
    conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
    quitar el aviso de "borrador" de `/privacidad`.
 4. Decidir qué PENDIENTE se aceptan visibles el día del lanzamiento (redes, preguntas
-   frecuentes, video del hero, materiales, profesional que firma).
-5. Publicar los primeros videos de materiales y refuerzo (lo promete el hero).
+   frecuentes, materiales, profesional que firma).
+5. Documentar las primeras etapas en la bitácora (fecha, avance y fotos; video cuando lo
+   haya): el hero promete construcción documentada etapa por etapa. Y respaldo de
+   "estándares de seguridad internacionales" con el ingeniero responsable.
 6. Borrar los datos de prueba (`leads` y luego sus usuarios de Auth; lo hace el usuario) y
    verificar con lecturas.
 7. Vercel en plan Pro.
@@ -390,12 +418,11 @@ sin portal).
   responsable: razón social, correo de contacto y plazo de conservación.
 - Precio "desde" de construir en tu terreno → `site.precios`.
 - URLs de redes sociales → `site.redes`.
-- Especificaciones y marcas de materiales → `esparta.materiales`.
+- Especificaciones de materiales → `esparta.materiales` (sin marcas en lo público).
 - Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
 - Respuestas de preguntas frecuentes → `src/content/landing.ts`.
 - Casas a la venta (ubicación, lote, precio y qué incluye de cada una) → `casas_venta`, con
   `docs/GUIA_CARGA_CASAS.md`. Pasaron aquí los pendientes 1, 3, 4 y 5 del inventario.
-- Video o foto principal para el hero.
 - Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
   del profesional que firma el plano → `calidad` en `src/content/landing.ts`.
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el

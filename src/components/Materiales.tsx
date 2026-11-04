@@ -6,8 +6,8 @@ function Valor({ valor }: { valor: string }) {
   return esPendiente(valor) ? <Pendiente /> : <>{valor}</>;
 }
 
-const todoPendiente = (mat: { especificacion: string; marca: string; porQue: string }) =>
-  esPendiente(mat.especificacion) && esPendiente(mat.marca) && esPendiente(mat.porQue);
+const todoPendiente = (mat: { especificacion: string; porQue: string }) =>
+  esPendiente(mat.especificacion) && esPendiente(mat.porQue);
 
 export function Materiales() {
   const materiales = esparta.materiales;
@@ -18,7 +18,7 @@ export function Materiales() {
       etiqueta="Especificaciones"
       titulo="Materiales y especificaciones"
       fondo="blanco"
-      intro="Qué material se usa, con qué especificación, de qué marca y por qué. Lo que aún no está confirmado aparece como pendiente."
+      intro="Qué material se usa, con qué especificación y por qué. Lo que aún no está confirmado aparece como pendiente."
     >
       {/* Móvil: tarjetas */}
       <ul className="divide-y divide-piedra-200 rounded-lg border border-piedra-200 bg-blanco md:hidden">
@@ -43,10 +43,6 @@ export function Materiales() {
               <dd>
                 <Valor valor={mat.especificacion} />
               </dd>
-              <dt className="text-piedra-600">Marca</dt>
-              <dd>
-                <Valor valor={mat.marca} />
-              </dd>
               <dt className="text-piedra-600">Por qué</dt>
               <dd>
                 <Valor valor={mat.porQue} />
@@ -64,7 +60,6 @@ export function Materiales() {
             <tr>
               <th scope="col" className="px-4 py-3">Material</th>
               <th scope="col" className="px-4 py-3">Especificación</th>
-              <th scope="col" className="px-4 py-3">Marca</th>
               <th scope="col" className="px-4 py-3">Por qué</th>
             </tr>
           </thead>
@@ -79,9 +74,6 @@ export function Materiales() {
                 </th>
                 <td className="px-4 py-3">
                   <Valor valor={mat.especificacion} />
-                </td>
-                <td className="px-4 py-3">
-                  <Valor valor={mat.marca} />
                 </td>
                 <td className="px-4 py-3">
                   <Valor valor={mat.porQue} />

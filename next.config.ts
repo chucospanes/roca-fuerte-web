@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   // Fotos y planos del catálogo de casas: solo el bucket PÚBLICO `casas` de Supabase (nunca
   // el privado `obras`: el portal no usa next/image para no guardar copias en caché).
   images: {
+    // AVIF primero (más liviano), WebP de respaldo. 60: foto del hero, que va bajo un velo oscuro
+    formats: ["image/avif", "image/webp"],
+    qualities: [60, 75],
     remotePatterns: process.env.NEXT_PUBLIC_SUPABASE_URL
       ? [new URL(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/casas/**`)]
       : [],

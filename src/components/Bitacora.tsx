@@ -38,7 +38,7 @@ export function Bitacora() {
       numero="05"
       etiqueta="Obra en vivo"
       titulo="Bitácora de obra"
-      intro="Cada etapa de la Casa Esparta con su fecha, su avance y los videos donde se ve el trabajo. Los videos cargan solo cuando los tocas."
+      intro="Cada etapa de la Casa Esparta, documentada con su fecha y su avance. Cuando una etapa tiene video, carga solo cuando lo tocas."
     >
       <ol className="relative space-y-8 border-l-2 border-piedra-200 pl-6 sm:pl-8">
         {bitacora.map((etapa) => {
@@ -95,7 +95,7 @@ export function Bitacora() {
                 </p>
               )}
 
-              {etapa.videos.length > 0 ? (
+              {etapa.videos.length > 0 && (
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   {etapa.videos.map((video) => {
                     const embed = videoEmbed(video);
@@ -121,12 +121,6 @@ export function Bitacora() {
                     );
                   })}
                 </div>
-              ) : (
-                etapa.estado !== "pendiente" && (
-                  <p className="mt-3 text-sm text-piedra-600">
-                    Videos: <Pendiente texto="Próximamente" />
-                  </p>
-                )
               )}
             </li>
           );

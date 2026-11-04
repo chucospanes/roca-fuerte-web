@@ -11,7 +11,7 @@ import { LaCasa } from "@/components/LaCasa";
 import { Materiales } from "@/components/Materiales";
 import { Opciones } from "@/components/Opciones";
 import { Pie } from "@/components/Pie";
-import { PorQue } from "@/components/PorQue";
+import { Diferencias } from "@/components/Diferencias";
 import { Preguntas } from "@/components/Preguntas";
 import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
 
@@ -23,7 +23,7 @@ export default function Home() {
       <main>
         <Hero />
         <CasasDisponibles />
-        <PorQue />
+        <Diferencias />
         <LaCasa />
         <Calidad />
         <Materiales />

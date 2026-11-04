@@ -10,7 +10,9 @@
 
 ## Qué vende el portal
 1. **Esta casa** (la Esparta en construcción, con terreno).
-2. **El servicio de construir el modelo Esparta** en el terreno del cliente, en El Salvador.
+2. **Casas a pedido** (desde 2026-11-03): toda casa Esparta que se vende antes de construirse,
+   en terreno nuestro o del cliente, en El Salvador. Las casas del catálogo (`/casas`) son
+   casas nuestras con el modelo estándar.
 3. **Construcción para inversionistas** (desde v1.0.0): el inversionista aporta terreno y
    capital para SU proyecto de vivienda (venta o renta); Roca Fuerte construye el modelo
    Esparta, varias unidades o adaptaciones del modelo, tramita permisos y segregación ante
@@ -20,7 +22,7 @@
 ## Portal privado de clientes (encendido desde el 2026-10-31)
 Compradores, clientes de "construir en tu terreno" e inversionistas entran a `/portal` con
 un código por correo (cuentas creadas por el constructor, sin autoregistro) y ven solo sus
-obras: etapas, avances con fotos y videos, materiales y documentos.
+obras: etapas, avances con fotos (y video cuando lo hay), materiales, documentos y facturas.
 
 ## Público objetivo
 - Familias que buscan vivienda económica pero bien construida (primera vivienda).
@@ -77,6 +79,6 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
 - Búsqueda de marca "Roca Fuerte" en el CNR (clases 36, 37 y 19). Existe la sociedad
   ROCA FUERTE 5 DESIGN & CONSTRUCTION, S.A. de C.V. (mismo giro).
 - Precio "desde" de construir en tu terreno, y precio de cada casa a la venta (catálogo).
-- Especificaciones y marcas de materiales.
+- Especificaciones de materiales (las marcas no se publican; solo en el portal de cada obra).
 - Número de WhatsApp Business.
 - Fotos y videos de la obra.

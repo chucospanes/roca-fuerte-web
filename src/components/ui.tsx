@@ -58,7 +58,7 @@ export function Seccion({
 }
 
 /**
- * Cuadrícula de puntos numerados (Por qué construimos así, Calidad y resistencia).
+ * Cuadrícula de puntos numerados (Calidad y resistencia, Para inversionistas).
  * `columnas={3}` para tres puntos (con 2 columnas quedaría una celda vacía); `encabezado`
  * baja el nivel del título cuando los puntos van dentro de un subtítulo (pilares).
  */
@@ -110,6 +110,8 @@ const estilosBoton = {
     "bg-terracota text-blanco hover:bg-terracota-oscuro focus-visible:outline-terracota",
   secundario:
     "border-2 border-piedra-900 bg-blanco text-piedra-900 hover:bg-piedra-900 hover:text-blanco focus-visible:outline-piedra-900",
+  /** Sobre fondo de color (pantalla del hero en terracota). */
+  claro: "bg-blanco text-piedra-900 hover:bg-piedra-100 focus-visible:outline-blanco",
 } as const;
 
 export function Boton({

@@ -16,8 +16,7 @@ export type UbicacionVenta = (typeof UBICACIONES_VENTA)[number];
 
 export const mensajesVenta: Record<OpcionMensajeFijo, string> = {
   comprar: `Hola, me interesa comprar la ${site.modelo} que están construyendo. ¿Me pueden dar más información?`,
-  construir:
-    "Hola, quiero construir el modelo Esparta en mi terreno. Mi terreno está en (municipio y departamento): ",
+  construir: "Hola, quiero una casa Esparta a pedido.",
   general: `Hola, me interesa la ${site.modelo}.`,
   inversionista: `Soy inversionista y quiero construir un proyecto con ${site.marca}.`,
 };
@@ -34,7 +33,7 @@ export function mensajeCalificacion(nombre: string, datos: DatosCalificacion): s
     partes.push(`Me interesa comprar la ${site.modelo}.`);
   } else {
     const lugar = [datos.municipio, datos.departamento].filter(Boolean).join(", ");
-    partes.push(`Quiero construir el modelo Esparta en mi terreno${lugar ? `, en ${lugar}` : ""}.`);
+    partes.push(`Quiero una casa Esparta a pedido${lugar ? `, en ${lugar}` : ""}.`);
   }
   partes.push(`Forma de pago: ${formasPago[datos.forma_pago]}.`);
   partes.push(`Cuándo quiero iniciar: ${inicios[datos.inicio]}.`);

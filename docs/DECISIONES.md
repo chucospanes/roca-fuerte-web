@@ -585,3 +585,46 @@ Reemplaza "La tarjeta de Precios no cambia" de la entrada anterior. Decisión de
 1 o más casas disponibles, la tarjeta lleva al catálogo (o a la casa, si hay una sola); con 0
 o si Supabase no responde, su botón es "Quiero esta casa" con el WhatsApp de comprar (opción
 `comprar`, ubicación `precios`). Misma lectura en caché, sin consulta nueva.
+
+## 2026-11-03 — Cambio de alcance: hero en 3 pantallas, "Lo que nos diferencia", "Construir a pedido", sin promesa de video y facturas en el portal
+Decisión del usuario, en la rama `feat/diferenciadores` (se une a `main` con su visto bueno
+sobre capturas a 390 y 1280 px).
+- **Hero en 3 pantallas, avance solo manual** (deslizar, flechas y puntos; sin avance
+  automático). Pantalla 1: "Casas que duran." / "Construcción reforzada." con el botón dinámico
+  (casa, catálogo o WhatsApp). Pantalla 2: "Construcción documentada." / "Etapa por etapa." con
+  "Ver la bitácora". Pantalla 3: "No es una casa más, es tu hogar." / "Tu lugar seguro." con
+  "Construir a pedido". Fondos: fotos reales de la obra de San José Villanueva (las mismas de
+  su ficha en el catálogo), y color de la marca donde no hay foto. Sin fotos de stock.
+  **"Construcción reforzada" reemplaza a "Y te lo demostramos"** (y a la bajada "documentados en
+  video"); matiza la entrada del 2026-11-02 sobre el hero. Sigue la regla: nada de
+  "antisísmica", "resiste terremotos" ni garantías.
+- **"Lo que nos diferencia" reemplaza "Por qué construimos así" y sus dos pilares.** En todas
+  las casas: construcción documentada etapa por etapa; estándares de seguridad internacionales,
+  documentados; materiales que cumplen la norma y sus especificaciones; portal privado de
+  seguimiento; mano de obra de la zona. En casas a pedido: transparencia en el costo de los
+  materiales (no vendemos materiales: el costo lo pone el mercado) y acabados a elección (lo
+  que sale del estándar se cotiza aparte; la instalación puede variar ligeramente). Sin
+  marcas de materiales en esos textos. El lema sigue en el pie.
+- **"Construir a pedido"** = toda casa que se vende antes de construirse, en terreno nuestro o
+  del cliente. Reemplaza "Construir en tu terreno" / "Construir Esparta en mi terreno" en
+  botones, la tarjeta de Precios y los textos. Mensaje de WhatsApp: "Hola, quiero una casa
+  Esparta a pedido." Los valores internos no cambian (`construir` en `clics_venta` y `leads`,
+  `construccion_terreno` en `obras`). Las casas del catálogo son casas nuestras con el modelo
+  estándar.
+- **El video deja de ser promesa:** será ocasional. Todo texto que prometía video en cada etapa
+  pasa a "documentado etapa por etapa". Donde haya videos reales se siguen mostrando; la
+  bitácora deja de mostrar "Videos: Próximamente" en las etapas sin video.
+- **Portal: tipo de documento `factura`** (migración 007, la aplica el usuario), con su propio
+  apartado en la obra. El código no depende de que la 007 esté aplicada: sin facturas, el
+  apartado no aparece.
+
+## 2026-11-04 — Sin marcas de materiales en el sitio público (reemplaza la del 2026-10-24 para lo público)
+Decisión del usuario. Reemplaza "La marca de cada material es pública; premium son las
+cantidades" (2026-10-24) en todo lo público: sale la columna "Marca" de la tabla de materiales
+(y de la ficha premium, que lee los mismos datos) y las menciones en Calidad e Inversionistas.
+El campo `marca` sale de `esparta.materiales`. En el portal privado de clientes se queda
+(`obra_materiales.marca`, cargado por obra). Junto con esto, con el visto bueno sobre las
+capturas: "estándares de seguridad internacionales" se queda tal cual; la foto del trazo sigue
+en la pantalla 1 del hero (los trabajadores dieron permiso); la pantalla 2 pasa a color de la
+marca hasta tener una foto horizontal. La foto del hero se sirve en AVIF (WebP de respaldo),
+calidad 60 (va bajo un velo oscuro), con carga inmediata y prioridad alta.

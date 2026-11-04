@@ -54,6 +54,14 @@ body {
   background-size: 24px 24px;
 }
 
+/* La misma cuadrícula, en claro, sobre el color de fondo que ya tenga (pantalla del hero) */
+.cuadricula-clara {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
 details > summary {
   list-style: none;
 }

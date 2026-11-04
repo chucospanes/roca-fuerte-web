@@ -22,7 +22,6 @@ export type Material = {
   /** Qué datos debe incluir la especificación cuando se confirme. */
   seEspecifica?: string;
   especificacion: string | Pendiente;
-  marca: string | Pendiente;
   porQue: string | Pendiente;
   /**
    * Cantidad para la casa completa, con unidad (por ejemplo "1,200 unidades", "35 bolsas").
@@ -174,11 +173,11 @@ export const esparta = {
   },
 
   /**
-   * Qué incluye el precio de construir en tu terreno, partida por partida. Solo en el área
+   * Qué incluye el precio de una casa a pedido, partida por partida. Solo en el área
    * premium. Lo que incluye cada casa a la venta vive en `casas_venta` (catálogo).
    */
   desglosePrecio: {
-    construirEnTerreno: PENDIENTE as Desglose,
+    construirAPedido: PENDIENTE as Desglose,
   },
 
   avisoPlanos:
@@ -188,43 +187,38 @@ export const esparta = {
     {
       material: "Bloque de concreto",
       especificacion: "Muros exteriores de 0.15 m e interiores de 0.10 m (según el plano).",
-      marca: PENDIENTE,
       porQue: PENDIENTE,
     },
-    { material: "Cemento", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
+    { material: "Cemento", especificacion: PENDIENTE, porQue: PENDIENTE },
     {
       material: "Concreto",
       seEspecifica: "Resistencia f'c y proporción de mezcla.",
       especificacion: PENDIENTE,
-      marca: PENDIENTE,
       porQue: PENDIENTE,
     },
     {
       material: "Agregados",
       seEspecifica: "Arena y grava.",
       especificacion: PENDIENTE,
-      marca: PENDIENTE,
       porQue: PENDIENTE,
     },
-    { material: "Acero de refuerzo", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
+    { material: "Acero de refuerzo", especificacion: PENDIENTE, porQue: PENDIENTE },
     {
       material: "Estructura de techo",
       seEspecifica: "Polines: calibre y separación.",
       especificacion: PENDIENTE,
-      marca: PENDIENTE,
       porQue: PENDIENTE,
     },
     {
       material: "Cubierta de techo",
       seEspecifica: "Lámina: tipo y calibre; pendiente mínima según el fabricante (diseño: 15 %).",
       especificacion: PENDIENTE,
-      marca: PENDIENTE,
       porQue: PENDIENTE,
     },
-    { material: "Piso", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
-    { material: "Puertas y ventanas", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
-    { material: "Instalación eléctrica", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
-    { material: "Tubería y accesorios hidráulicos", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
-    { material: "Pintura", especificacion: PENDIENTE, marca: PENDIENTE, porQue: PENDIENTE },
+    { material: "Piso", especificacion: PENDIENTE, porQue: PENDIENTE },
+    { material: "Puertas y ventanas", especificacion: PENDIENTE, porQue: PENDIENTE },
+    { material: "Instalación eléctrica", especificacion: PENDIENTE, porQue: PENDIENTE },
+    { material: "Tubería y accesorios hidráulicos", especificacion: PENDIENTE, porQue: PENDIENTE },
+    { material: "Pintura", especificacion: PENDIENTE, porQue: PENDIENTE },
   ] satisfies Material[],
 };
