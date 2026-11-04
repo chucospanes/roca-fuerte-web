@@ -26,8 +26,8 @@ quitar de `.env.local`). Lo que fal### Pendientes del sitio llenados (2026-11-04
   confirmar"; techo sin porcentaje; Calidad sin RTS ni profesional; aviso de privacidad con
   responsable, domicilio, correo, WhatsApp, plazos y conservación, y sección del portal. Ver
   DECISIONES.md (2026-11-04).
-- **Falta que el usuario corra** el `update` de `etapa_actual = 'Trazo y zanjeado'` de la casa
-  del catálogo (archivo fuera del repo, en la carpeta temporal de Claude).
+- Casa del catálogo con `etapa_actual = 'Trazo y zanjeado'`: `update` corrido por el usuario
+  (2026-11-04); verificado con lecturas en Supabase y en la ficha del dominio.
 - **Pendientes anotados:**
   - Ingeniero responsable: al tenerlo, volver a mostrar en Calidad la norma (RTS 91.01.02:21) y
     el profesional que firma, con nombre y registro (`calidadConIngeniero` en
