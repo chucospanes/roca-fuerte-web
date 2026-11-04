@@ -40,7 +40,7 @@ export const paisesResidencia: Etiquetas<typeof PAISES_RESIDENCIA> = {
 
 export const intereses: Etiquetas<typeof INTERESES> = {
   comprar: "Comprar esta casa",
-  construir: "Construir Esparta en mi terreno",
+  construir: "Construir a pedido",
 };
 
 export const terrenoEscriturado: Etiquetas<typeof TERRENO_ESCRITURADO> = {

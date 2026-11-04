@@ -174,11 +174,11 @@ export const esparta = {
   },
 
   /**
-   * Qué incluye el precio de construir en tu terreno, partida por partida. Solo en el área
+   * Qué incluye el precio de una casa a pedido, partida por partida. Solo en el área
    * premium. Lo que incluye cada casa a la venta vive en `casas_venta` (catálogo).
    */
   desglosePrecio: {
-    construirEnTerreno: PENDIENTE as Desglose,
+    construirAPedido: PENDIENTE as Desglose,
   },
 
   avisoPlanos:

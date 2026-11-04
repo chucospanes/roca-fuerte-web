@@ -170,8 +170,8 @@ export function ContenidoPremium() {
         {/* Lo que incluye cada casa a la venta vive en el catálogo (/casas), no aquí */}
         <div className="grid gap-4 sm:grid-cols-2">
           <ListaDesglose
-            titulo="Construir en tu terreno"
-            desglose={esparta.desglosePrecio.construirEnTerreno}
+            titulo="Construir a pedido"
+            desglose={esparta.desglosePrecio.construirAPedido}
           />
         </div>
       </Bloque>
