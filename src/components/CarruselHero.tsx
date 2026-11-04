@@ -13,7 +13,7 @@ const sinSuscripcion = () => () => {};
  * y la pista avisa el cambio de pantalla (`aria-live="polite"`).
  */
 export function CarruselHero({ etiquetas, children }: { etiquetas: string[]; children: ReactNode }) {
-  const pista = useRef<HTMLUListElement>(null);
+  const pista = useRef<HTMLDivElement>(null);
   const [actual, setActual] = useState(0);
   const hidratado = useSyncExternalStore(sinSuscripcion, () => true, () => false);
   const pantallas = Children.toArray(children);
@@ -54,13 +54,14 @@ export function CarruselHero({ etiquetas, children }: { etiquetas: string[]; chi
         else if (e.key === "ArrowRight") ir(actual + 1);
       }}
     >
-      <ul
+      {/* div y no ul: con role="group" los li dejan de ser elementos de lista y la lista queda inválida */}
+      <div
         ref={pista}
         aria-live="polite"
         className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] motion-safe:scroll-smooth [&::-webkit-scrollbar]:hidden"
       >
         {pantallas.map((pantalla, i) => (
-          <li
+          <div
             key={i}
             role="group"
             aria-roledescription="pantalla"
@@ -69,9 +70,9 @@ export function CarruselHero({ etiquetas, children }: { etiquetas: string[]; chi
             className="w-full shrink-0 snap-start snap-always"
           >
             {pantalla}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <div className="absolute inset-x-0 bottom-5 flex items-center justify-center gap-4">
         <button

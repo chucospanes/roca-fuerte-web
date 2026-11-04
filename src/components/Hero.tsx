@@ -8,22 +8,30 @@ import { BotonWhatsApp } from "./BotonWhatsApp";
 import { CarruselHero } from "./CarruselHero";
 import { Boton } from "./ui";
 
+const fondos = {
+  foto: "bg-piedra-900",
+  oscuro: "cuadricula-clara bg-piedra-900",
+  terracota: "cuadricula-clara bg-terracota",
+};
+
 /**
- * Una pantalla del hero: foto real de la obra de fondo (con un velo para leer el texto) o el
- * color de la marca. Solo la foto de la primera pantalla carga de inmediato.
+ * Una pantalla del hero: foto real de la obra de fondo (con un velo para leer el texto) o un
+ * color de la marca. La foto de la primera pantalla carga de inmediato y con prioridad alta.
  */
 function Pantalla({
   foto,
+  fondo = "terracota",
   primera = false,
   children,
 }: {
   foto?: { src: string; alt: string };
+  fondo?: "oscuro" | "terracota";
   primera?: boolean;
   children: ReactNode;
 }) {
   return (
     <div
-      className={`relative flex min-h-[34rem] items-end sm:min-h-[36rem] md:items-center ${foto ? "bg-piedra-900" : "cuadricula-clara bg-terracota"}`}
+      className={`relative flex min-h-[34rem] items-end sm:min-h-[36rem] md:items-center ${fondos[foto ? "foto" : fondo]}`}
     >
       {foto && (
         <>
@@ -32,6 +40,7 @@ function Pantalla({
             alt={foto.alt}
             fill
             sizes="100vw"
+            quality={60}
             {...(primera ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
             className="object-cover"
           />
@@ -95,7 +104,7 @@ export async function Hero() {
           </div>
         </Pantalla>
 
-        <Pantalla foto={documentada.foto}>
+        <Pantalla fondo="oscuro">
           <h2 className={estiloTitulo}>{documentada.titulo}</h2>
           <p className={estiloSubtitulo}>{documentada.subtitulo}</p>
           <div className="mt-8">
