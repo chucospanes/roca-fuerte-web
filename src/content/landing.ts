@@ -23,7 +23,8 @@ export type Punto = {
 /**
  * Hero en 3 pantallas, avance solo manual (ver DECISIONES.md, 2026-11-03). La primera lleva
  * el botón dinámico (casa, catálogo o WhatsApp); su título es el h1 de la página.
- * Fondos: fotos reales de la obra (las de la casa de San José Villanueva del catálogo).
+ * Fondos: foto real de la obra en la primera (la de la casa de San José Villanueva del
+ * catálogo); las otras, color de la marca hasta tener fotos horizontales.
  */
 export const heroPantallas = {
   reforzada: {
@@ -38,10 +39,6 @@ export const heroPantallas = {
     titulo: "Construcción documentada.",
     subtitulo: "Etapa por etapa.",
     boton: { href: "#bitacora", texto: "Ver la bitácora" },
-    foto: {
-      src: "/hero/obra-sjv-terraceria.jpg",
-      alt: "Terreno de una casa en obra después de la terracería, con la tierra nivelada y el corte del talud al fondo",
-    },
   },
   hogar: {
     titulo: "No es una casa más, es tu hogar.",
@@ -98,7 +95,7 @@ export const calidad: Punto[] = [
   },
   {
     titulo: "Cada material con su especificación",
-    texto: "Qué material se usa, con qué especificación, de qué marca y por qué, a la vista en la tabla de materiales.",
+    texto: "Qué material se usa, con qué especificación y por qué, a la vista en la tabla de materiales.",
     enlace: { href: "#materiales", texto: "Ver los materiales" },
   },
 ];

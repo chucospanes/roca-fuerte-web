@@ -152,10 +152,6 @@ export function ContenidoPremium() {
                 <dd>
                   <Valor valor={mat.especificacion} />
                 </dd>
-                <dt className="text-piedra-600">Marca</dt>
-                <dd>
-                  <Valor valor={mat.marca} />
-                </dd>
                 <dt className="text-piedra-600">Cantidad</dt>
                 <dd>
                   <Valor valor={"cantidad" in mat ? (mat.cantidad as string) : undefined} />

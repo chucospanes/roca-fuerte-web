@@ -33,7 +33,7 @@ export const inversionistas = {
     },
     {
       titulo: "Materiales con especificación visible",
-      texto: `Cada material con su especificación y su marca, igual que en la ${site.modelo}.`,
+      texto: `Cada material con su especificación, igual que en la ${site.modelo}.`,
     },
     {
       titulo: "Avance documentado etapa por etapa",
