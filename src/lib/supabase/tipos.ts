@@ -1,5 +1,5 @@
 /**
- * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–005).
+ * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–008).
  * Si cambia la migración, actualizar aquí (o regenerar con `supabase gen types`).
  */
 
@@ -192,6 +192,20 @@ export type CasaVentaImagen = {
   created_at: string;
 };
 
+/** Avance público de una casa del catálogo (008). Separado de las etapas privadas del portal. */
+export type CasaVentaEtapa = {
+  id: string;
+  casa_id: string;
+  orden: number;
+  nombre: string;
+  estado: Uno<typeof ESTADOS_ETAPA>;
+  fecha_inicio: string | null;
+  descripcion: string | null;
+  video_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 type SoloLectura<Fila> ={ Row: Fila; Insert: never; Update: never; Relationships: [] };
 
 export type BaseDeDatos = {
@@ -217,6 +231,7 @@ export type BaseDeDatos = {
       documentos: SoloLectura<Documento>;
       casas_venta: SoloLectura<CasaVenta>;
       casas_venta_imagenes: SoloLectura<CasaVentaImagen>;
+      casas_venta_etapas: SoloLectura<CasaVentaEtapa>;
     };
     Views: Record<never, never>;
     Functions: Record<never, never>;

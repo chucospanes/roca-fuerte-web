@@ -8,7 +8,8 @@ import { catalogo, muestraPrecio, nombresAguasNegras, ubicacionCasa } from "@/co
 import { esparta } from "@/content/esparta";
 import type { DetalleCasa as Casa } from "@/lib/casas";
 import { BotonWhatsAppCasa } from "./BotonWhatsAppCasa";
-import { EtiquetaEstado } from "./TarjetaCasa";
+import { AvanceObra } from "./AvanceObra";
+import { EtiquetaEstado, EtiquetaPropia } from "./TarjetaCasa";
 
 const m = (n: number) => `${n.toFixed(2)} m`;
 const m2 = (n: number) => `${n.toFixed(2)} m²`;
@@ -57,6 +58,9 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
     : casa.planta_esparta
       ? esparta.planoCasa
       : null;
+  // Etapa actual: la que está en proceso en su avance (una sola fuente); sin avance cargado,
+  // la columna etapa_actual de la casa.
+  const etapaActual = casa.etapas.find((e) => e.estado === "en_proceso")?.nombre ?? casa.etapa_actual;
   const [portada, ...otrasFotos] = casa.portada
     ? [casa.portada, ...casa.fotos.filter((f) => f.id !== casa.portada?.id)]
     : casa.fotos;
@@ -71,11 +75,22 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
       </Link>
 
       <header className="mt-4">
-        <EtiquetaEstado estado={casa.estado} />
+        <p className="flex flex-wrap gap-2">
+          <EtiquetaEstado estado={casa.estado} />
+          <EtiquetaPropia estado={casa.estado} />
+        </p>
         <h1 className="mt-3 font-display text-4xl leading-tight font-extrabold tracking-tight text-balance sm:text-5xl">
           {casa.nombre}
         </h1>
         <p className="mt-2 text-lg text-piedra-700">{ubicacionCasa(casa, true)}</p>
+        {casa.etapas.length > 0 && (
+          <a
+            href="#avance"
+            className="mt-1 inline-flex min-h-11 items-center font-semibold text-terracota underline-offset-4 hover:underline"
+          >
+            {catalogo.verAvance} ↓
+          </a>
+        )}
         {muestraPrecio(casa.estado) && (
           <p className="mt-4 font-display text-3xl font-extrabold">
             {casa.precio_usd === null ? "Precio: consultar" : precioUSD(casa.precio_usd)}
@@ -128,7 +143,7 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
           { nombre: "Parqueos", valor: casa.parqueos ?? porConfirmar },
           casa.estado === "en_construccion" && {
             nombre: "Etapa actual",
-            valor: casa.etapa_actual ?? porConfirmar,
+            valor: etapaActual ?? porConfirmar,
           },
         ]}
       />
@@ -164,6 +179,15 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
         <p className="mt-3">
           <Pendiente texto="Detalle pendiente" />
         </p>
+      )}
+
+      {casa.etapas.length > 0 && (
+        <section id="avance" className="mt-10 scroll-mt-20">
+          <h2 className="font-display text-2xl font-extrabold">Avance de la obra</h2>
+          <div className="mt-6">
+            <AvanceObra etapas={casa.etapas} />
+          </div>
+        </section>
       )}
 
       {casa.video && (

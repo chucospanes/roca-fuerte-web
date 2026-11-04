@@ -11,7 +11,24 @@
 https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo con
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
-quitar de `.env.local`). Lo que fal### Pendientes del sitio llenados (2026-11-04, en `main`)
+quitar de `.env.local`). Lo que fal### Avance de las casas en Supabase y casa propia (rama `feat/etapas-casas`, sin unir a `main`)
+- Bitácora y avance de la ficha desde `casas_venta_etapas` (migración 008, una sola fuente);
+  sale `src/content/bitacora.ts`. "Obra en curso: {nombre}" con la línea según el estado de la
+  casa, "Ver la casa" y la nota del portal; etiqueta "Casa Roca Fuerte · En venta" en las
+  disponibles; "Ver el avance de esta casa" en la ficha. Ver DECISIONES.md (2026-11-04).
+- Probado con el build de producción contra la simulación local (sin tocar Supabase): casa en
+  construcción (8 etapas, video, etapa actual desde la etapa en proceso), reservada, vendida
+  (avance congelado), sin etapas y Supabase caído; capturas a 390 px.
+- **Orden para unir a `main`:** el usuario aplica la 008 y corre su prueba, después la carga
+  inicial de las 8 etapas (archivo fuera del repo); se verifica con lecturas y recién entonces
+  el merge (sin la tabla, la bitácora diría que no pudo cargar el avance).
+- **Portal (2026-11-04):** obra "Casa Modelo Esparta en San José Villanueva" creada por el
+  usuario (modalidad compra, en obra desde el 2026-10-25), con el usuario como único miembro,
+  la etapa 1 "Terracería" (terminada) y un avance; sin material ni documento. Verificado con
+  lecturas (clave secreta, solo lectura). **Falta la etapa 2 "Trazo y zanjeado"**: no existe
+  (hay que correr su SQL). El día de la venta se agrega al comprador como miembro.
+
+### Pendientes del sitio llenados (2026-11-04, en `main`)
 - **Desplegado y verificado con lecturas en el dominio (2026-11-04):** "A consultar", la
   bitácora (sin porcentajes), el paso 1, las 5 respuestas, ASTM C90 y A615, "Techo de lámina a dos aguas" y
   el aviso con responsable, domicilio, correo, WhatsApp, plazos, conservación y la sección del

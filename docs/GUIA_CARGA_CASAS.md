@@ -316,6 +316,92 @@ select
   (select publicada from cambio)                as publicada;
 ```
 
+## Avance de la obra (bitácora)
+Requiere la migración `008_casas_venta_etapas.sql`. Cada casa puede tener su avance público,
+etapa por etapa, en `casas_venta_etapas`: es **la única fuente** de la bitácora de la portada y
+de la sección "Avance de la obra" de su ficha. Solo se ve si la casa está publicada.
+
+- **Es público y es aparte del portal.** Las etapas del portal de clientes (`etapas`) son
+  privadas y se cargan por separado (`docs/GUIA_CARGA_OBRAS.md`). Aquí va solo lo que se
+  puede publicar: nombre, estado, fecha de inicio, descripción y, si hay, un video.
+- **Sin porcentajes**: solo el estado (`por_iniciar`, `en_proceso`, `terminada`). Una etapa
+  por iniciar va **sin fecha**; la fecha real se pone cuando arranca (la base rechaza una etapa
+  por iniciar con fecha).
+- **Video**: solo YouTube o Vimeo, como el resto del catálogo.
+- **La portada** muestra la primera casa del catálogo (vendidas al final) que tenga etapas.
+- **Etapa actual de la ficha**: sale de la etapa `en_proceso`; la columna `etapa_actual` de la
+  casa solo se usa si la casa no tiene etapas cargadas.
+- **Al venderse la casa, su avance público se congela**: no se carga nada más aquí y el avance
+  sigue solo en el portal del comprador. La bitácora dice "ya vendida" y que el avance sigue
+  en el portal privado de su dueño.
+
+### Plantilla 4: carga inicial de las etapas
+Una sola instrucción: si algo falla, no se crea nada. Candados (`ALTO`): la casa no existe, o
+ya tiene etapas cargadas. Una fila por etapa en `etapas`; la fecha va en `null` mientras la
+etapa esté por iniciar.
+
+```sql
+with
+datos as materialized (
+  select '<casa-esparta-ejemplo-1>'::text as slug
+),
+etapas (orden, nombre, estado, fecha_inicio, descripcion) as materialized (
+  values
+    (1::smallint, '<Terracería>'::text,  '<terminada>'::text,   '<AAAA-MM-DD>'::date, '<Descripción>'::text),
+    (2,           '<Trazo y zanjeado>',   '<en_proceso>',        '<AAAA-MM-DD>',       '<Descripción>'),
+    (3,           '<Fundaciones>',        'por_iniciar',         null,                 '<Descripción>')
+),
+-- ===== Debajo de esta línea no se edita nada =====
+casa as (
+  select c.id from public.casas_venta c, datos d where c.slug = d.slug
+),
+candado as materialized (
+  select case
+    when exists (select 1 from datos d, jsonb_each_text(to_jsonb(d)) where value like '%<%')
+      or exists (select 1 from etapas e, jsonb_each_text(to_jsonb(e)) where value like '%<%') then
+      'ALTO: quedan valores sin reemplazar (con "<"). No se creó nada.'
+    when not exists (select 1 from casa) then
+      format('ALTO: no existe una casa con el slug "%s". No se creó nada.', d.slug)
+    when exists (select 1 from public.casas_venta_etapas e, casa c where e.casa_id = c.id) then
+      'ALTO: esta casa ya tiene etapas cargadas. No se creó nada.'
+  end as error
+  from datos d
+),
+nuevas as (
+  insert into public.casas_venta_etapas (casa_id, orden, nombre, estado, fecha_inicio, descripcion)
+  select c.id, e.orden, e.nombre, e.estado, e.fecha_inicio, e.descripcion
+  from etapas e, casa c, candado k
+  where coalesce(k.error::int, 0) = 0
+  returning orden, nombre, estado
+)
+select
+  (select coalesce(error::int, 0) from candado)                                  as candado,
+  (select count(*) from nuevas)                                                  as etapas_creadas,
+  (select string_agg(orden || '. ' || nombre || ' (' || estado || ')', ' | ' order by orden)
+   from nuevas)                                                                  as etapas;
+```
+
+### Cuando avanza la obra
+Se cambia la etapa por su número de orden. La base rechaza valores fuera de lo permitido; cada
+`update` devuelve la fila cambiada (si no devuelve nada, el slug o el orden no existen).
+
+```sql
+-- Arranca una etapa (con su fecha real de inicio)
+update public.casas_venta_etapas set estado = 'en_proceso', fecha_inicio = '<AAAA-MM-DD>'
+where casa_id = (select id from public.casas_venta where slug = '<slug>') and orden = <n>
+returning orden, nombre, estado, fecha_inicio;
+
+-- Termina una etapa
+update public.casas_venta_etapas set estado = 'terminada'
+where casa_id = (select id from public.casas_venta where slug = '<slug>') and orden = <n>
+returning orden, nombre, estado;
+
+-- Video de una etapa (solo YouTube o Vimeo)
+update public.casas_venta_etapas set video_url = 'https://youtu.be/<id>'
+where casa_id = (select id from public.casas_venta where slug = '<slug>') and orden = <n>
+returning orden, nombre, video_url;
+```
+
 ## Cambios del día a día (Table Editor o SQL)
 Se hacen editando la fila de la casa en *Table Editor → `casas_venta`* (o con un `update`
 en el SQL Editor). La base rechaza los valores fuera de lo permitido. Ejemplos:
