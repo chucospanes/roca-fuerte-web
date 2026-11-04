@@ -628,3 +628,29 @@ capturas: "estándares de seguridad internacionales" se queda tal cual; la foto 
 en la pantalla 1 del hero (los trabajadores dieron permiso); la pantalla 2 pasa a color de la
 marca hasta tener una foto horizontal. La foto del hero se sirve en AVIF (WebP de respaldo),
 calidad 60 (va bajo un velo oscuro), con carga inmediata y prioridad alta.
+
+## 2026-11-04 — Pendientes del sitio llenados por el usuario
+Decisión del usuario (textos, en `main`):
+- **Precio de construir a pedido: "A consultar"** (`A_CONSULTAR` en `site.ts`; no es un dato
+  pendiente: se publica así).
+- **Bitácora sin porcentajes de avance**, solo el estado. Es la obra de San José Villanueva:
+  Terracería terminada; "Trazo y zanjeado" en proceso desde el 2026-10-25; las demás "Por
+  iniciar", sin fecha (la fecha real se pone cuando arranque cada una). Reemplaza "Avance de
+  Terreno y trazo como PENDIENTE" (2026-10-23).
+- **Redes sociales fuera del pie** hasta que existan; se agregan una por una en `site.redes`.
+- **Preguntas frecuentes respondidas** (contado 30 % al firmar y el resto por etapas, FSV,
+  banco, desde el exterior con poder, 60–90 días de obra) y sin la pregunta de la garantía.
+- **Materiales:** bloque (ASTM C90) y acero (grado 40, ASTM A615) con especificación; los
+  demás "Por confirmar", se llenan conforme se compran. Techo: "Techo de lámina a dos aguas",
+  sin porcentaje de pendiente en el sitio (el plano dibujado sí lo trae).
+- **Calidad sin la norma RTS ni el profesional que firma** hasta que haya ingeniero
+  responsable (quedan en `calidadConIngeniero`, sin mostrarse).
+- **Aviso de privacidad:** responsable Patricio Posada (persona natural; pasa a "Roca Fuerte,
+  S.A.S." al quedar inscrita en el CNR), domicilio La Libertad Este, correo
+  privacidad@constructorarocafuerte.com y WhatsApp; acuse en 24 horas hábiles y respuesta en
+  10 días hábiles; contactos que no son clientes, 6 meses desde el último contacto; clientes,
+  lo que exija la ley. Nueva sección del portal (contratos, documentos y facturas). El
+  párrafo de píxeles (Meta y TikTok) queda en las notas para el abogado, sin publicar: el
+  píxel no está instalado y el aviso publicado sigue diciendo "No usamos cookies de
+  publicidad". Se mantienen la franja de borrador, la fecha de publicación pendiente y la
+  nota de la IP.

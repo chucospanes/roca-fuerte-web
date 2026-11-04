@@ -11,7 +11,31 @@
 https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo con
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
-quitar de `.env.local`). Lo que fal### Diferenciadores (`v1.2.0`, 2026-11-04)
+quitar de `.env.local`). Lo que fal### Pendientes del sitio llenados (2026-11-04, en `main`)
+- Precio a pedido "A consultar"; bitácora sin porcentajes (Terracería terminada, "Trazo y
+  zanjeado" en proceso desde el 25 de octubre de 2026, el resto "Por iniciar" sin fecha); pie
+  sin redes; Cómo trabajamos paso 1 solo por WhatsApp; 5 preguntas frecuentes respondidas y
+  sin la de garantía; bloque y acero con especificación, los otros 9 materiales "Por
+  confirmar"; techo sin porcentaje; Calidad sin RTS ni profesional; aviso de privacidad con
+  responsable, domicilio, correo, WhatsApp, plazos y conservación, y sección del portal. Ver
+  DECISIONES.md (2026-11-04).
+- **Falta que el usuario corra** el `update` de `etapa_actual = 'Trazo y zanjeado'` de la casa
+  del catálogo (archivo fuera del repo, en la carpeta temporal de Claude).
+- **Pendientes anotados:**
+  - Ingeniero responsable: al tenerlo, volver a mostrar en Calidad la norma (RTS 91.01.02:21) y
+    el profesional que firma, con nombre y registro (`calidadConIngeniero` en
+    `src/content/landing.ts`).
+  - Aviso de privacidad: cambiar el titular a "Roca Fuerte, S.A.S." cuando quede inscrita en
+    el CNR (`site.privacidad.titular`); el abogado precisa el plazo legal de los datos de
+    clientes.
+  - **Técnico:** borrado automático de los leads a los 6 meses del último contacto (el aviso
+    ya lo promete; hoy no existe: hasta implementarlo, borrar a mano). Antes del lanzamiento.
+  - **Técnico:** preparar la instalación del píxel de Meta y TikTok cuando el abogado apruebe
+    el aviso (el párrafo está en las notas del aviso, sin publicar).
+  - Fecha de inicio de la Terracería: no se publica (no se dio); si se quiere, agregarla en
+    `src/content/bitacora.ts`.
+
+### Diferenciadores (`v1.2.0`, 2026-11-04)
 - **En `main` y desplegado; verificado con lecturas en https://constructorarocafuerte.com
   (2026-11-04):** `/` 200 con `noindex`; h1 "Casas que duran." y los textos de las 3
   pantallas, "Lo que nos diferencia" y "Construir a pedido"; sin "Y te lo demostramos", "en
@@ -364,7 +388,7 @@ sección 6):
 1. ~~Prueba real del conteo de clics~~ **hecha (2026-11-02):** clics del usuario desde su
    celular con el número real (`+503 7821-6321`), verificados con lecturas en `clics_venta`
    (botón de la casa, con su `casa_id`).
-2. Precio "desde" de construir en tu terreno en `site.precios`; el precio de cada casa a la
+2. ~~Precio de construir a pedido~~ "A consultar" (2026-11-04); el precio de cada casa a la
    venta va en su fila de `casas_venta`.
 3. Aviso de privacidad revisado por un abogado (razón social, domicilio, correo y plazo de
    conservación), incluidos los datos del portal (contratos y documentos); al aprobarlo,
@@ -422,17 +446,18 @@ sin portal).
 - **Bloqueos para activar `site.accesoPremium` en producción** (los dos son obligatorios):
   - La ficha técnica completa y las cantidades de materiales tienen datos reales.
   - Cloudflare Turnstile (captcha) puesto en el paso 1 del desbloqueo.
-- Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`) y datos del
-  responsable: razón social, correo de contacto y plazo de conservación.
-- Precio "desde" de construir en tu terreno → `site.precios`.
-- URLs de redes sociales → `site.redes`.
-- Especificaciones de materiales → `esparta.materiales` (sin marcas en lo público).
-- Fecha de inicio y avance de "Terreno y trazo" → `bitacora.ts`.
-- Respuestas de preguntas frecuentes → `src/content/landing.ts`.
+- Revisión legal del aviso de privacidad (`docs/AVISO_PRIVACIDAD.md`): fecha de
+  publicación, mención de la IP, plazo legal de los datos de clientes y sección del portal.
+  Titular "Roca Fuerte, S.A.S." al quedar inscrita en el CNR.
+- URLs de redes sociales → `site.redes` (el pie las muestra solo cuando existen).
+- Especificaciones de los 9 materiales "Por confirmar" → `esparta.materiales` (sin marcas
+  en lo público), conforme se compran.
+- Fecha de inicio de cada etapa de la bitácora cuando arranque → `bitacora.ts`.
 - Casas a la venta (ubicación, lote, precio y qué incluye de cada una) → `casas_venta`, con
   `docs/GUIA_CARGA_CASAS.md`. Pasaron aquí los pendientes 1, 3, 4 y 5 del inventario.
-- Confirmar con el ingeniero responsable la referencia RTS 91.01.02:21; nombre y registro
-  del profesional que firma el plano → `calidad` en `src/content/landing.ts`.
+- Ingeniero responsable: confirmar la referencia RTS 91.01.02:21 y el nombre y registro del
+  profesional que firma el plano; hoy ocultos en Calidad → `calidadConIngeniero` en
+  `src/content/landing.ts`.
 - Confirmar con quien tramite el permiso de construcción que los muros de colindancia y el
   corredor hasta el lindero cumplen la normativa.
 - Diseño estructural de la columna del corredor y ficha de la lámina (pendiente mínima).

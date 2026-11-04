@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { EncabezadoSimple } from "@/components/EncabezadoSimple";
 import { Pie } from "@/components/Pie";
 import { Pendiente } from "@/components/ui";
-import { site } from "@/config/site";
+import { site, whatsappVisible } from "@/config/site";
 
 export const metadata: Metadata = {
   title: `Aviso de privacidad · ${site.marca}`,
@@ -17,8 +17,9 @@ export const metadata: Metadata = {
 /**
  * Aviso de privacidad. Una sola fuente: `docs/AVISO_PRIVACIDAD.md`, el mismo texto que
  * revisa el abogado. Se lee al compilar (página estática). Lo que va antes de la primera
- * línea `---` son notas para el abogado y no se publica. En el texto: `{marca}` se
- * reemplaza por `site.marca`, `[PENDIENTE: …]` se muestra con el sello de pendiente.
+ * línea `---` son notas para el abogado y no se publica. En el texto: `{marca}`, `{titular}`,
+ * `{domicilio}`, `{correo}` y `{whatsapp}` salen de `site.ts`; `[PENDIENTE: …]` se muestra con
+ * el sello de pendiente.
  * Formato admitido: `## título`, párrafos, listas con `- ` y `**negrita**`.
  */
 const fuente = await readFile(join(process.cwd(), "docs", "AVISO_PRIVACIDAD.md"), "utf8");
@@ -53,10 +54,14 @@ function leerBloques(markdown: string): Bloque[] {
   return bloques.filter((b) => b.tipo !== "parrafo" || b.texto);
 }
 
-/** `{marca}`, `**negrita**` y `[PENDIENTE: …]` dentro de una línea. */
+/** Datos de `site.ts`, `**negrita**` y `[PENDIENTE: …]` dentro de una línea. */
 function enLinea(texto: string): ReactNode[] {
   return texto
     .replaceAll("{marca}", site.marca)
+    .replaceAll("{titular}", site.privacidad.titular)
+    .replaceAll("{domicilio}", site.privacidad.domicilio)
+    .replaceAll("{correo}", site.privacidad.correo)
+    .replaceAll("{whatsapp}", whatsappVisible())
     .split(/(\*\*[^*]+\*\*|\[PENDIENTE:[^\]]+\])/)
     .filter(Boolean)
     .map((parte, i) => {
