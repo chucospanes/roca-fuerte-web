@@ -12,6 +12,11 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que fal### Pendientes del sitio llenados (2026-11-04, en `main`)
+- **Desplegado y verificado con lecturas en el dominio (2026-11-04):** "A consultar", la
+  bitácora (Terracería terminada, "Trazo y zanjeado" desde el 25 de octubre de 2026, sin
+  porcentajes), el paso 1, las 5 respuestas, ASTM C90 y A615, "Techo de lámina a dos aguas" y
+  el aviso con responsable, domicilio, correo, WhatsApp, plazos, conservación y la sección del
+  portal. Sin garantía, redes, RTS, profesional, "15 %" ni párrafo de píxeles publicado.
 - Precio a pedido "A consultar"; bitácora sin porcentajes (Terracería terminada, "Trazo y
   zanjeado" en proceso desde el 25 de octubre de 2026, el resto "Por iniciar" sin fecha); pie
   sin redes; Cómo trabajamos paso 1 solo por WhatsApp; 5 preguntas frecuentes respondidas y
