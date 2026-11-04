@@ -7,8 +7,8 @@ function Valor({ valor }: { valor: string }) {
   return esPendiente(valor) ? <Pendiente texto="Por confirmar" /> : <>{valor}</>;
 }
 
-const todoPendiente = (mat: { especificacion: string; porQue: string }) =>
-  esPendiente(mat.especificacion) && esPendiente(mat.porQue);
+// La columna "Por qué" está oculta hasta tener las razones (decisión del 2026-11-04); el dato
+// sigue en `esparta.materiales` (`porQue`).
 
 export function Materiales() {
   const materiales = esparta.materiales;
@@ -19,7 +19,7 @@ export function Materiales() {
       etiqueta="Especificaciones"
       titulo="Materiales y especificaciones"
       fondo="blanco"
-      intro="Qué material se usa, con qué especificación y por qué. Lo que aún no está confirmado aparece como «Por confirmar» y se llena conforme se compran los materiales."
+      intro="Qué material se usa y con qué especificación. Lo que aún no está confirmado aparece como «Por confirmar» y se llena conforme se compran los materiales."
     >
       {/* Móvil: tarjetas */}
       <ul className="divide-y divide-piedra-200 rounded-lg border border-piedra-200 bg-blanco md:hidden">
@@ -32,23 +32,17 @@ export function Materiales() {
                   <p className="text-sm text-piedra-600">{mat.seEspecifica}</p>
                 )}
               </div>
-              {todoPendiente(mat) && (
+              {esPendiente(mat.especificacion) && (
                 <span className="shrink-0 pt-1">
                   <Pendiente texto="Por confirmar" />
                 </span>
               )}
             </div>
-            {!todoPendiente(mat) && (
-            <dl className="mt-3 grid grid-cols-[6.5rem_1fr] gap-x-3 gap-y-2 text-sm">
-              <dt className="text-piedra-600">Especificación</dt>
-              <dd>
-                <Valor valor={mat.especificacion} />
-              </dd>
-              <dt className="text-piedra-600">Por qué</dt>
-              <dd>
-                <Valor valor={mat.porQue} />
-              </dd>
-            </dl>
+            {!esPendiente(mat.especificacion) && (
+              <dl className="mt-3 grid grid-cols-[6.5rem_1fr] gap-x-3 gap-y-2 text-sm">
+                <dt className="text-piedra-600">Especificación</dt>
+                <dd>{mat.especificacion}</dd>
+              </dl>
             )}
           </li>
         ))}
@@ -61,7 +55,6 @@ export function Materiales() {
             <tr>
               <th scope="col" className="px-4 py-3">Material</th>
               <th scope="col" className="px-4 py-3">Especificación</th>
-              <th scope="col" className="px-4 py-3">Por qué</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-piedra-200">
@@ -75,9 +68,6 @@ export function Materiales() {
                 </th>
                 <td className="px-4 py-3">
                   <Valor valor={mat.especificacion} />
-                </td>
-                <td className="px-4 py-3">
-                  <Valor valor={mat.porQue} />
                 </td>
               </tr>
             ))}

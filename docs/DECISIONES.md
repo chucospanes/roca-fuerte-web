@@ -654,3 +654,13 @@ Decisión del usuario (textos, en `main`):
   píxel no está instalado y el aviso publicado sigue diciendo "No usamos cookies de
   publicidad". Se mantienen la franja de borrador, la fecha de publicación pendiente y la
   nota de la IP.
+
+## 2026-11-04 — Ajustes finales de pendientes
+Decisión del usuario. Precios: la introducción pasa a "Cotización clara y cerrada antes de
+empezar." (la anterior prometía publicar el precio, y ahora dice "A consultar"). Materiales:
+la columna "Por qué" se oculta (celular y escritorio) hasta tener las razones; el dato sigue en
+`esparta.materiales`. Bitácora: Terracería del 25 de octubre de 2026 (terminada) y "Trazo y
+zanjeado" del 3 de noviembre de 2026 (en proceso), con sus descripciones aprobadas. Aprobados
+como quedaron: el párrafo de píxeles sin publicar, "el tiempo que exija la ley" sin sello, el
+borrado a 6 meses como pendiente técnico, el titular en `site.privacidad` y las fechas que no
+se dieron, sin publicar.

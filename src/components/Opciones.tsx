@@ -29,7 +29,7 @@ export async function Opciones() {
       etiqueta="Precios"
       fondo="blanco"
       titulo="Dos formas de tener tu casa"
-      intro="Publicamos el precio desde el inicio, para que decidas con la información completa."
+      intro="Cotización clara y cerrada antes de empezar."
     >
       <div className="grid gap-6 md:grid-cols-2">
         <article className="flex flex-col rounded-lg border-2 border-piedra-900 bg-blanco p-6">

@@ -32,6 +32,7 @@ export const bitacora: Etapa[] = [
   {
     id: "terraceria",
     titulo: "Terracería",
+    fecha: "2026-10-25",
     estado: "terminada",
     descripcion: "Limpieza y nivelación del terreno.",
     materiales: [],
@@ -40,7 +41,7 @@ export const bitacora: Etapa[] = [
   {
     id: "trazo-y-zanjeado",
     titulo: "Trazo y zanjeado",
-    fecha: "2026-10-25",
+    fecha: "2026-11-03",
     estado: "en proceso",
     descripcion: "Trazo de la casa según el plano y zanjas para las fundaciones.",
     materiales: [],
