@@ -13,6 +13,30 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Diario de obra en la ficha de la casa (rama `feat/avances-publicos`, sin unir a `main`)
+- **Migración 010 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada.
+  Verificado con lecturas: `casas_venta_avances` en 0, ningún avance con publicación, sin
+  usuarios de prueba, `registro_admin` con 1 fila (el avance real), bucket `casas` solo con las 2
+  fotos de la casa; con la publishable, las funciones nuevas responden 401.
+- Ficha: bloque "Diario de obra" dentro de "Avance de la obra" (orden cronológico, fotos del
+  bucket `casas` con `next/image`, video vertical para Shorts); sin publicaciones no aparece.
+- Panel: "Publicar en la ficha" / "Quitar de la ficha" / "Terminar publicación" (a medias) en cada
+  avance de una obra con casa ligada, con confirmación; casa vendida: sin botones (congelado).
+  En "Avance nuevo", casilla "Publicar también en la ficha de la casa" **marcada por defecto**
+  (solo con casa ligada no vendida); se publica solo si subieron todas las fotos. Las fotos se
+  copian una por una del bucket `obras` a `casas` con la sesión del usuario; el servidor rechaza
+  las que traen EXIF/GPS o no son JPG (probado: acepta la foto real del panel, rechaza EXIF, GPS
+  y PNG).
+- Probado: lint, typecheck y build; capturas a 390 px con páginas temporales de simulación (sin
+  desborde; casilla marcada por defecto); build contra Supabase real: la ficha responde 200 sin
+  el bloque (no hay publicaciones).
+- **Falta antes de unir a `main`:** visto bueno de las capturas; prueba de peticiones
+  manipuladas de la 010 con una cuenta de cliente de prueba (requiere aprobación). Después:
+  publicar desde el celular el avance del zanjeado y verificarlo en el dominio.
+- Prueba real de `/admin` (2026-11-05): avance "Zanjeado para las fundaciones" con 1 foto
+  (01.jpg, 674 KB, 1506 × 2000, sin EXIF, XMP ni GPS, orientación correcta) y su fila en
+  `registro_admin`. Cuenta de prueba del cliente quitada de la obra y borrada (verificado).
+
 ### Panel de administración `/admin` v1 (`v1.4.0`, en `main`, 2026-11-05)
 - **Migración 009 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada
   (cliente sin escritura en 16 intentos, admin solo escribe con funciones, Storage solo fotos en
@@ -40,8 +64,8 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   (42501), inserts en 9 tablas, updates en 7, deletes en 6, lectura de `administradores` y
   `registro_admin`, y 4 subidas a Storage (carpeta de un avance real, documentos, otra obra y
   sobrescribir). La cuenta veía solo su obra y `es_admin` = false. Verificado con lecturas que no
-  quedó nada escrito. **Falta:** quitar su membresía (SQL fuera del repo) y borrar la cuenta (lo
-  hace el usuario); prueba real del usuario desde el celular (avance con fotos y cambiar etapa).
+  quedó nada escrito. Membresía quitada y cuenta borrada por el usuario (verificado). Prueba real desde el celular:
+  ver el Diario de obra arriba.
 
 ### Portal: fotos, documentos y materiales de la obra propia (en `main`, 2026-11-05)
 - Plantillas en `docs/GUIA_CARGA_OBRAS.md`, con candados ALTO: **avance nuevo** (reescrita: etapa
