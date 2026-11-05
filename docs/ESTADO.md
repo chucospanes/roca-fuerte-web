@@ -13,13 +13,15 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Portal: fotos, documentos y materiales de la obra propia (rama `feat/portal-documentos-plantillas`, sin unir a `main`)
+### Portal: fotos, documentos y materiales de la obra propia (en `main`, 2026-11-05)
 - Plantillas en `docs/GUIA_CARGA_OBRAS.md`, con candados ALTO: **avance nuevo** (reescrita: etapa
   por número, no duplica fecha y título, devuelve la carpeta de fotos), **documento nuevo**
   (comprueba que el archivo esté subido en `{obra_id}/documentos/`; PDF, JPG, PNG o WebP) y
   **materiales** (varias filas, marca opcional, sin repetidos). Prueba con rollback
   `supabase/pruebas/004_plantillas_avance_documento_materiales.sql` (24 casos, armada desde la
-  guía): **falta que la corra el usuario**. Copias llenas para la obra de San José Villanueva
+  guía): **superada (2026-11-05, la corrió el usuario)**; confirmado con lecturas que no dejó
+  nada (solo la obra real, con sus 2 etapas y 1 avance; 0 documentos y 0 materiales; bucket
+  `obras` vacío). Copias llenas para la obra de San José Villanueva
   en `C:\Proyectos\roca-fuerte-sql\` (7, 8 y 9), fuera del repo.
 - Documentos en foto: el portal ya los abría (la ruta firma la URL y el navegador muestra la
   imagen); sin cambios en la base. Nuevo: la tarjeta dice "PDF" o "Imagen" (por la extensión
