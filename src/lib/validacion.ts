@@ -248,6 +248,52 @@ export const esquemaVideoObra = z
   .max(300)
   .refine((url) => videoObra(url) !== null, { error: "Solo videos de YouTube o Vimeo." });
 
+// ---------------------------------------------------------------------------------------
+// Panel de administración (/admin). La base vuelve a revisar todo (funciones admin_* de 009):
+// esto solo da mensajes claros antes de llamar.
+// ---------------------------------------------------------------------------------------
+
+/** Fecha `AAAA-MM-DD` (campo date del navegador). */
+const fechaDia = z.iso.date({ error: "Pon una fecha válida." });
+/** Texto opcional para la base: vacío o solo espacios queda en null. */
+const textoNulo = (max: number, error: string) =>
+  z
+    .string()
+    .trim()
+    .max(max, { error })
+    .nullable()
+    .optional()
+    .transform((t) => t || null);
+
+export const esquemaCambioEtapa = z
+  .object({
+    etapaId: z.uuid(),
+    estado: z.enum(ESTADOS_ETAPA, { error: "Estado no válido." }),
+    fecha: fechaDia.nullable(),
+  })
+  .refine((d) => d.estado !== "por_iniciar" || d.fecha === null, {
+    error: "Una etapa por iniciar va sin fecha.",
+    path: ["fecha"],
+  });
+
+export const esquemaAvanceNuevo = z.object({
+  obraId: z.uuid(),
+  etapaOrden: z.number().int().min(1).max(99).nullable(),
+  fecha: fechaDia,
+  titulo: z
+    .string()
+    .trim()
+    .min(2, { error: "Escribe un título (al menos 2 letras)." })
+    .max(160, { error: "El título es muy largo (máximo 160 caracteres)." }),
+  descripcion: textoNulo(4000, "La descripción es muy larga (máximo 4000 caracteres)."),
+  video: textoNulo(300, "El enlace del video es muy largo.").refine((t) => t === null || (t.length <= 300 && videoObra(t) !== null), {
+      error: "El video tiene que ser un enlace de YouTube (también Shorts) o de Vimeo.",
+    }),
+});
+
+export type DatosCambioEtapa = z.infer<typeof esquemaCambioEtapa>;
+export type DatosAvanceNuevo = z.infer<typeof esquemaAvanceNuevo>;
+
 export type DatosClic = z.infer<typeof esquemaClic>;
 export type DatosDesbloqueo = z.infer<typeof esquemaDesbloqueo>;
 export type DatosRegistroLead = z.infer<typeof esquemaRegistroLead>;

@@ -23,7 +23,7 @@ type Resultado = "enviado" | "espera" | "sin_conexion";
  * pero la pantalla dice lo mismo que cuando sí la tiene ("si tu correo tiene acceso, te
  * llegó un código"). Solo se distingue el límite de envíos (429) y la falta de conexión.
  */
-export function AccesoPortal() {
+export function AccesoPortal({ para = "portal" }: { para?: "portal" | "admin" }) {
   const router = useRouter();
   const hidratado = useHidratado();
   const [paso, setPaso] = useState<"correo" | "codigo">("correo");
@@ -134,8 +134,9 @@ export function AccesoPortal() {
     return (
       <form method="post" onSubmit={enviarCodigo} noValidate className="max-w-md">
         <p className="text-piedra-700">
-          Si <strong className="break-all">{correo}</strong> tiene acceso al portal, te llegó un
-          código. Escríbelo aquí, en esta misma página.
+          Si <strong className="break-all">{correo}</strong> tiene acceso
+          {para === "portal" && " al portal"}, te llegó un código. Escríbelo aquí, en esta misma
+          página.
         </p>
         <label htmlFor="codigo" className={`${e.etiqueta} mt-6`}>
           {campos.codigo}
@@ -225,7 +226,8 @@ export function AccesoPortal() {
         </p>
       )}
       <p className="mt-2 text-sm text-piedra-600">
-        Usa el correo que nos diste al firmar. Te enviaremos un código para entrar.
+        {para === "portal" && "Usa el correo que nos diste al firmar. "}Te enviaremos un código
+        para entrar.
       </p>
       <button
         type="submit"
