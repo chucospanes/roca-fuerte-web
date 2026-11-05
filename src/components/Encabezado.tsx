@@ -6,6 +6,7 @@ import { MenuMovil, type EnlaceMenu } from "./MenuMovil";
 // Rutas absolutas ("/#..."): el encabezado también se usa en /casas
 const secciones: EnlaceMenu[] = [
   { href: "/casas", texto: "Casas" },
+  { href: "/#hermanos", texto: "Hermano cercano" },
   { href: "/#la-casa", texto: "La casa" },
   { href: "/#calidad", texto: "Calidad" },
   { href: "/#materiales", texto: "Materiales" },
@@ -25,13 +26,14 @@ export async function Encabezado() {
   const enlaces = site.portalClientes ? [...visibles, accesoClientes] : visibles;
   return (
     <header className="sticky top-0 z-30 border-b border-piedra-200 bg-concreto/95 backdrop-blur">
-      <div className="relative mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">
-        <Link href="/#inicio" className="flex min-h-11 items-center gap-2 font-display text-lg font-extrabold tracking-tight">
+      {/* Con 10 enlaces, el menú en línea solo cabe desde 1280 px; antes, el menú desplegable */}
+      <div className="relative mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 xl:max-w-6xl">
+        <Link href="/#inicio" className="flex min-h-11 items-center gap-2 font-display text-lg font-extrabold tracking-tight whitespace-nowrap">
           <span aria-hidden className="block size-3 bg-terracota" />
           {site.marca}
         </Link>
-        <nav aria-label="Secciones" className="hidden lg:block">
-          <ul className="flex gap-5 text-sm font-semibold text-piedra-700">
+        <nav aria-label="Secciones" className="hidden xl:block">
+          <ul className="flex gap-4 text-sm font-semibold whitespace-nowrap text-piedra-700">
             {enlaces.map((e) => (
               <li key={e.href}>
                 <Link href={e.href} className="hover:text-terracota">
