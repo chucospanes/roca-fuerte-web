@@ -3,6 +3,7 @@
  * coinciden con los CHECK de 004_portal_obras.sql.
  */
 
+import type { FormatoDocumento } from "@/lib/portal";
 import type {
   ESTADOS_ETAPA,
   ESTADOS_OBRA,
@@ -37,6 +38,12 @@ export const tiposDocumento: Etiquetas<typeof TIPOS_DOCUMENTO> = {
   permiso: "Permiso",
   otro: "Documento",
   factura: "Factura",
+};
+
+/** Etiqueta del formato en la tarjeta de cada documento. */
+export const formatosDocumento: Record<FormatoDocumento, string> = {
+  pdf: "PDF",
+  imagen: "Imagen",
 };
 
 const formatoFecha = new Intl.DateTimeFormat("es-SV", {

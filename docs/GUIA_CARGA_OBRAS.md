@@ -36,7 +36,8 @@ bucket "obras"
     │       ├── 01.jpg         nivel 4: las fotos de ese avance (JPG, PNG o WebP, hasta 10 MB).
     │       └── 02.jpg
     └── documentos/            nivel 2: carpeta fija, siempre se llama "documentos".
-        └── contrato.pdf       nivel 3: el PDF. Su ruta completa va en documentos.ruta.
+        ├── contrato.pdf       nivel 3: los documentos, en PDF o en foto (JPG, PNG o WebP).
+        └── factura-001.jpg    Su ruta completa va en documentos.ruta.
 ```
 
 - Fotos: `{obra_id}/avances/{avance_id}/archivo`
@@ -190,7 +191,8 @@ select
 Después de correrla:
 1. Revisa que `membresias_creadas` sea 1 y anota `obra_id`, `etapa_id` y `avance_id`.
 2. En **Storage → `obras`**, crea las carpetas de `carpeta_fotos` y sube ahí las fotos.
-3. Si cargaste documento, sube el PDF de modo que su ruta sea exactamente `ruta_documento`.
+3. Si cargaste documento, sube el archivo (PDF o foto) de modo que su ruta sea exactamente
+   `ruta_documento`.
 4. Lo que no tengas todavía (video, material o documento) se deja en `null` en `datos`; no se
    borra ningún bloque. Se agrega después con los pasos 5, 7 u 8.
 
@@ -199,19 +201,208 @@ repetida y opcionales en `null`, todo revertido) está en
 `supabase/pruebas/004_plantilla_obra_nueva.sql`.
 
 ### Plantilla: avance nuevo en una obra existente
+Llena solo el bloque `datos`, igual que en la plantilla de obra nueva (`null` sin comillas si
+no lo tienes). La etapa se indica por su **número de orden** (1, 2, 3…), no por su id; `null`
+si el avance no es de ninguna etapa. Devuelve la carpeta exacta donde van sus fotos. Es una
+sola instrucción: si algo falla, no crea nada. En las tres plantillas de esta sección, un id,
+número o fecha que quede como `'<...>'` falla antes del candado con el error de Postgres
+`invalid input syntax for type ...`; tampoco crea nada.
+
+Candados (`ALTO`): quedan valores con `<`; no existe una obra con ese id; falta la fecha o el
+título; la obra no tiene etapa con ese número; la obra ya tiene un avance con la misma fecha y
+el mismo título (sin importar mayúsculas ni espacios: así no se duplica si la corres dos
+veces). El video, si lo hay, solo YouTube o Vimeo (la base rechaza otros).
+
 ```sql
-insert into public.avances (obra_id, etapa_id, fecha, titulo, descripcion, video_url)
-values ('<obra_id>', '<etapa_id o null>', '<AAAA-MM-DD>', '<Título del avance>',
-        '<Descripción>', '<URL de YouTube o Vimeo, o null>')
-returning id as avance_id,
-          obra_id::text || '/avances/' || id::text || '/' as carpeta_fotos;
+with
+datos as materialized (
+  select '<obra_id>'::uuid                             as obra_id,
+         '<1>'::smallint                               as etapa_orden,
+         '<AAAA-MM-DD>'::date                          as fecha,
+         '<Título del avance>'::text                   as titulo,
+         '<Descripción del avance>'::text              as descripcion,
+         '<https://www.youtube.com/watch?v=...>'::text as video_url
+),
+-- ===== Debajo de esta línea no se edita nada =====
+obra as (
+  select o.id from public.obras o, datos d where o.id = d.obra_id
+),
+etapa as (
+  select e.id from public.etapas e, datos d where e.obra_id = d.obra_id and e.orden = d.etapa_orden
+),
+candado as materialized (
+  select case
+    when exists (select 1 from jsonb_each_text(to_jsonb(d)) where value like '%<%') then
+      format('ALTO: quedan valores sin reemplazar (con "<") en: %s. No se creó nada.',
+             (select string_agg(key, ', ' order by key)
+              from jsonb_each_text(to_jsonb(d)) where value like '%<%'))
+    when not exists (select 1 from obra) then
+      format('ALTO: no existe una obra con el id "%s". No se creó nada.', d.obra_id)
+    when d.fecha is null or d.titulo is null then
+      'ALTO: la fecha y el título del avance son obligatorios. No se creó nada.'
+    when d.etapa_orden is not null and not exists (select 1 from etapa) then
+      format('ALTO: la obra no tiene etapa de orden %s (o pon etapa_orden en null). No se creó nada.',
+             d.etapa_orden)
+    when exists (select 1 from public.avances a
+                 where a.obra_id = d.obra_id and a.fecha = d.fecha
+                   and lower(trim(a.titulo)) = lower(trim(d.titulo))) then
+      'ALTO: esta obra ya tiene un avance con esa fecha y ese título. No se creó nada.'
+  end as error
+  from datos d
+),
+nuevo as (
+  insert into public.avances (obra_id, etapa_id, fecha, titulo, descripcion, video_url)
+  select d.obra_id, (select id from etapa), d.fecha, trim(d.titulo), d.descripcion, d.video_url
+  from datos d, candado k
+  where coalesce(k.error::int, 0) = 0
+  returning id, obra_id
+)
+select
+  (select coalesce(error::int, 0) from candado)                          as candado,
+  (select id from nuevo)                                                 as avance_id,
+  (select obra_id::text || '/avances/' || id::text || '/' from nuevo)    as carpeta_fotos;
 ```
-Sube las fotos del avance a `carpeta_fotos`. Para cambiar el estado de una etapa:
+
+Después: en **Storage → `obras`**, crea la carpeta de `carpeta_fotos` (un nivel a la vez) y
+sube ahí las fotos (paso 6).
+
+Para cambiar el estado de una etapa de una obra **sin** avance público (las obras de clientes):
 ```sql
 update public.etapas set estado = '<en_proceso | terminada>', fecha_fin = '<AAAA-MM-DD>'
 where id = '<etapa_id>'
 returning orden, nombre, estado;
 ```
+Si la obra es una casa propia del catálogo, usa la plantilla 5 de `docs/GUIA_CARGA_CASAS.md`:
+cambia lo público y el portal a la vez.
+
+### Plantilla: documento nuevo
+**Primero sube el archivo** a `{obra_id}/documentos/` en Storage → `obras` (paso 8); la
+plantilla comprueba que esté ahí. En `archivo` va solo el nombre, tal cual lo subiste (por
+ejemplo `factura-001.jpg`): la ruta la arma la plantilla. Se aceptan PDF y fotos (JPG, PNG o
+WebP), hasta 10 MB.
+
+Candados (`ALTO`): quedan valores con `<`; no existe una obra con ese id; tipo fuera de la
+lista; falta el título; el nombre del archivo tiene carpetas, espacios o `..`, o no termina en
+.pdf, .jpg, .jpeg, .png o .webp; **el archivo no está subido en esa ruta**; ya hay un documento
+con esa ruta.
+
+```sql
+with
+datos as materialized (
+  select '<obra_id>'::uuid                                    as obra_id,
+         '<contrato | plano | permiso | factura | otro>'::text as tipo,
+         '<Título del documento>'::text                       as titulo,
+         '<archivo.pdf>'::text                                as archivo
+),
+-- ===== Debajo de esta línea no se edita nada =====
+ruta as (
+  select d.obra_id::text || '/documentos/' || d.archivo as ruta from datos d
+),
+candado as materialized (
+  select case
+    when exists (select 1 from jsonb_each_text(to_jsonb(d)) where value like '%<%') then
+      format('ALTO: quedan valores sin reemplazar (con "<") en: %s. No se creó nada.',
+             (select string_agg(key, ', ' order by key)
+              from jsonb_each_text(to_jsonb(d)) where value like '%<%'))
+    when not exists (select 1 from public.obras o where o.id = d.obra_id) then
+      format('ALTO: no existe una obra con el id "%s". No se creó nada.', d.obra_id)
+    when d.tipo is null or d.tipo not in ('contrato', 'plano', 'permiso', 'factura', 'otro') then
+      'ALTO: tipo va en contrato, plano, permiso, factura u otro. No se creó nada.'
+    when d.titulo is null then
+      'ALTO: el título del documento es obligatorio. No se creó nada.'
+    when d.archivo is null or d.archivo !~* '^[a-z0-9._-]+\.(pdf|jpe?g|png|webp)$'
+         or position('..' in d.archivo) > 0 then
+      'ALTO: archivo es solo el nombre (sin carpetas ni espacios), terminado en .pdf, .jpg, .jpeg, .png o .webp. No se creó nada.'
+    when not exists (select 1 from storage.objects o, ruta r
+                     where o.bucket_id = 'obras' and o.name = r.ruta) then
+      format('ALTO: falta subir a Storage → obras: %s. Sube primero el archivo. No se creó nada.',
+             (select ruta from ruta))
+    when exists (select 1 from public.documentos x, ruta r where x.ruta = r.ruta) then
+      format('ALTO: ya hay un documento con la ruta %s. No se creó nada.', (select ruta from ruta))
+  end as error
+  from datos d
+),
+nuevo as (
+  insert into public.documentos (obra_id, tipo, titulo, ruta)
+  select d.obra_id, d.tipo, trim(d.titulo), r.ruta
+  from datos d, ruta r, candado k
+  where coalesce(k.error::int, 0) = 0
+  returning id, tipo, titulo, ruta
+)
+select
+  (select coalesce(error::int, 0) from candado) as candado,
+  (select id from nuevo)                        as documento_id,
+  (select tipo || ' · ' || titulo from nuevo)   as documento,
+  (select ruta from nuevo)                      as ruta;
+```
+
+### Plantilla: materiales (varias filas a la vez)
+Llena `datos` (la obra) y una fila por material en `materiales`. Especificación, cantidad y
+marca son opcionales (`null` sin comillas); la marca solo se ve en el portal, nunca en el sitio
+público. Los materiales se agregan en el orden de la lista, después de los que ya tiene la
+obra.
+
+Candados (`ALTO`): quedan valores con `<`; no existe una obra con ese id; una fila sin
+material; un material repetido en la lista o que la obra ya tiene (sin importar mayúsculas ni
+espacios).
+
+```sql
+with
+datos as materialized (
+  select '<obra_id>'::uuid as obra_id
+),
+materiales (material, especificacion, cantidad, marca) as materialized (
+  values
+    ('<Bloque de concreto>'::text, '<15 x 20 x 40 cm, ASTM C90>'::text, '<1,200 unidades>'::text, null::text),
+    ('<Hierro corrugado>',         '<Grado 40, ASTM A615>',             '<120 varillas>',           null)
+),
+-- ===== Debajo de esta línea no se edita nada =====
+filas as materialized (
+  select row_number() over () as n, nullif(trim(m.material), '') as material,
+         m.especificacion, m.cantidad, m.marca
+  from materiales m
+),
+candado as materialized (
+  select case
+    when exists (select 1 from jsonb_each_text(to_jsonb(d)) where value like '%<%')
+      or exists (select 1 from materiales m, jsonb_each_text(to_jsonb(m)) where value like '%<%') then
+      'ALTO: quedan valores sin reemplazar (con "<"). No se creó nada.'
+    when not exists (select 1 from public.obras o where o.id = d.obra_id) then
+      format('ALTO: no existe una obra con el id "%s". No se creó nada.', d.obra_id)
+    when exists (select 1 from filas f where f.material is null) then
+      'ALTO: cada fila necesita el nombre del material. No se creó nada.'
+    when exists (select 1 from filas f group by lower(f.material) having count(*) > 1) then
+      format('ALTO: material repetido en la lista: %s. No se creó nada.',
+             (select string_agg(distinct f.material, ', ') from filas f
+              where lower(f.material) in (select lower(g.material) from filas g
+                                          group by lower(g.material) having count(*) > 1)))
+    when exists (select 1 from public.obra_materiales x, filas f
+                 where x.obra_id = d.obra_id and lower(trim(x.material)) = lower(f.material)) then
+      format('ALTO: la obra ya tiene: %s. Quítalo de la lista (o cámbialo en su fila). No se creó nada.',
+             (select string_agg(distinct f.material, ', ')
+              from public.obra_materiales x, filas f
+              where x.obra_id = d.obra_id and lower(trim(x.material)) = lower(f.material)))
+  end as error
+  from datos d
+),
+nuevos as (
+  insert into public.obra_materiales (obra_id, orden, material, especificacion, cantidad, marca)
+  select d.obra_id,
+         coalesce((select max(x.orden) from public.obra_materiales x where x.obra_id = d.obra_id), 0) + f.n,
+         f.material, f.especificacion, f.cantidad, f.marca
+  from datos d, filas f, candado k
+  where coalesce(k.error::int, 0) = 0
+  returning orden, material
+)
+select
+  (select coalesce(error::int, 0) from candado)                                as candado,
+  (select count(*) from nuevos)                                                as materiales_creados,
+  (select string_agg(orden || '. ' || material, ' | ' order by orden) from nuevos) as materiales;
+```
+
+La prueba de estas tres plantillas (cada candado, sin crear nada en los ALTO, y los casos que
+sí crean, todo revertido) está en
+`supabase/pruebas/004_plantillas_avance_documento_materiales.sql`.
 
 ## 1. Crear la cuenta del cliente (una vez por cliente)
 1. **Authentication → Users → Add user → Create new user.**
@@ -304,17 +495,21 @@ Reglas:
 - Si la carpeta tiene un nombre equivocado, las fotos no aparecen (y nadie más las ve).
 
 ## 7. Materiales usados
-**Table Editor → `obra_materiales` → Insert row:** `obra_id`, `orden` (1, 2, 3…),
+Varios a la vez: plantilla "materiales" (arriba). Uno por uno: **Table Editor → `obra_materiales` → Insert row:** `obra_id`, `orden` (1, 2, 3…),
 `material`, y opcionales `especificacion`, `marca` y `cantidad` (texto con unidad, por
 ejemplo "1,200 unidades").
 
 ## 8. Documentos (contrato, planos, permisos, facturas)
-1. **Storage → bucket `obras`** → carpeta `{obra_id}` → carpeta **`documentos`** → sube el PDF
-   (hasta 10 MB). Ruta en el bucket "obras" (sin prefijo obras/):
+Lo más seguro es subir el archivo (punto 1) y después correr la plantilla "documento nuevo"
+(arriba), que comprueba que el archivo esté subido. Con el Table Editor:
+
+1. **Storage → bucket `obras`** → carpeta `{obra_id}` → carpeta **`documentos`** → sube el
+   archivo: **PDF o foto (JPG, PNG o WebP)**, hasta 10 MB. Las facturas y permisos en foto
+   sirven igual; las fotos HEIC del iPhone no se aceptan (ver paso 6). Ruta en el bucket "obras" (sin prefijo obras/):
    ```
    {obra_id}/documentos/archivo
    ```
-   donde `archivo` es el nombre del PDF (por ejemplo `contrato.pdf`).
+   donde `archivo` es el nombre del archivo (por ejemplo `contrato.pdf` o `factura-001.jpg`).
 2. **Table Editor → `documentos` → Insert row:**
    - `obra_id`: el de la obra.
    - `tipo`: `contrato`, `plano`, `permiso`, `factura` u `otro`. Las facturas salen en su
@@ -324,11 +519,11 @@ ejemplo "1,200 unidades").
    - `titulo`: por ejemplo "Contrato de construcción firmado".
    - `ruta`: **la ruta exacta del archivo**, con el formato `{obra_id}/documentos/archivo`
      (sin prefijo obras/; mayúsculas y minúsculas cuentan). Copia el `obra_id` real y el
-     nombre del PDF tal cual lo subiste. La base rechaza una ruta que no esté en la carpeta
+     nombre del archivo tal cual lo subiste. La base rechaza una ruta que no esté en la carpeta
      de documentos de esa misma obra.
 
-El cliente abre el documento desde el portal; el enlace dura 60 segundos y se genera cada
-vez que lo toca.
+El cliente abre el documento desde el portal (la tarjeta dice si es PDF o imagen); el enlace
+dura 60 segundos y se genera cada vez que lo toca.
 
 ## 9. Revisar lo que ve el cliente
 La forma más segura es agregarte a ti mismo como miembro (paso 3, con tu propio usuario),

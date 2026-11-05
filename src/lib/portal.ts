@@ -21,6 +21,7 @@ const SEGUNDOS_FOTO = 600;
 /** Documentos: se firman al tocarlos (`/portal/documentos/[id]`) y duran 60 segundos. */
 const SEGUNDOS_DOCUMENTO = 60;
 const EXTENSIONES_FOTO = /\.(jpe?g|png|webp)$/i;
+const EXTENSION_PDF = /\.pdf$/i;
 const MAX_FOTOS_POR_AVANCE = 50;
 
 /** Carpeta de las fotos de un avance (coincide con la política de Storage). */
@@ -30,7 +31,11 @@ export function carpetaFotos(obraId: string, avanceId: string): string {
 
 export type Foto = { url: string; nombre: string };
 export type AvanceConMedios = Avance & { fotos: Foto[]; video: VideoObra | null };
-export type DocumentoListado = Pick<Documento, "id" | "tipo" | "titulo" | "created_at">;
+/** Formato del archivo, por su extensión: la tarjeta dice si abre un PDF o una imagen. */
+export type FormatoDocumento = "pdf" | "imagen";
+export type DocumentoListado = Pick<Documento, "id" | "tipo" | "titulo" | "created_at"> & {
+  formato: FormatoDocumento | null;
+};
 
 export type DetalleObra = {
   obra: Obra;
@@ -92,10 +97,10 @@ export async function leerObra(id: string): Promise<DetalleObra | null> {
       .returns<ObraMaterial[]>(),
     supabase
       .from("documentos")
-      .select("id, tipo, titulo, created_at")
+      .select("id, tipo, titulo, created_at, ruta")
       .eq("obra_id", id)
       .order("created_at", { ascending: false })
-      .returns<DocumentoListado[]>(),
+      .returns<Pick<Documento, "id" | "tipo" | "titulo" | "created_at" | "ruta">[]>(),
   ]);
   for (const r of [etapas, avances, materiales, documentos]) {
     if (r.error) {
@@ -120,8 +125,16 @@ export async function leerObra(id: string): Promise<DetalleObra | null> {
     etapas: etapas.data ?? [],
     avances: avancesConMedios,
     materiales: materiales.data ?? [],
-    documentos: documentos.data ?? [],
+    // La ruta no sale de aquí: solo su formato
+    documentos: (documentos.data ?? []).map(({ ruta, ...d }) => ({ ...d, formato: formatoDocumento(ruta) })),
   };
+}
+
+/** "pdf", "imagen" o `null` (extensión desconocida) según el nombre del archivo. */
+function formatoDocumento(ruta: string): FormatoDocumento | null {
+  if (EXTENSION_PDF.test(ruta)) return "pdf";
+  if (EXTENSIONES_FOTO.test(ruta)) return "imagen";
+  return null;
 }
 
 /** Fotos de la carpeta del avance, con URL firmada de 10 minutos. Si falla, sin fotos. */

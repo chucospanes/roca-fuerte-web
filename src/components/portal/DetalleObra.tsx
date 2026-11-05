@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Salir } from "@/components/premium/Salir";
 import { VideoLazy } from "@/components/VideoLazy";
-import { estadosEtapa, estadosObra, fecha, modalidades, tiposDocumento } from "@/content/portal";
+import { estadosEtapa, estadosObra, fecha, formatosDocumento, modalidades, tiposDocumento } from "@/content/portal";
 import { leerObra, type DocumentoListado } from "@/lib/portal";
 import { sesionVerificada } from "@/lib/supabase/servidor";
 
@@ -21,8 +21,15 @@ function ListaDocumentos({ documentos }: { documentos: DocumentoListado[] }) {
             rel="noopener noreferrer"
             className="flex h-full flex-col rounded-lg border-2 border-piedra-900 bg-blanco p-4 hover:border-terracota"
           >
-            <span className="text-sm font-semibold text-terracota">
-              {tiposDocumento[d.tipo] ?? tiposDocumento.otro}
+            <span className="flex items-center justify-between gap-2">
+              <span className="text-sm font-semibold text-terracota">
+                {tiposDocumento[d.tipo] ?? tiposDocumento.otro}
+              </span>
+              {d.formato && (
+                <span className="rounded bg-piedra-100 px-2 py-0.5 text-xs font-semibold text-piedra-700 uppercase">
+                  {formatosDocumento[d.formato]}
+                </span>
+              )}
             </span>
             <span className="font-display text-lg font-bold">{d.titulo}</span>
             <span className="mt-2 font-semibold text-terracota">Abrir ↗</span>
