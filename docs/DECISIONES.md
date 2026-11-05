@@ -698,3 +698,28 @@ documentos y materiales pasan a plantillas SQL con candados ALTO (como las del c
 avance indica la etapa por su número y no se duplica (misma fecha y título), el documento exige
 el archivo ya subido en la carpeta de documentos de su obra, y los materiales van varios a la
 vez, sin repetidos y con marca opcional (la marca solo se ve en el portal).
+
+## 2026-11-05 — Cambio de alcance: panel de administración `/admin` (v1)
+Decisión del usuario, en la rama `feat/admin`. Un panel para cargar contenido desde el celular,
+sin SQL, solo para cuentas administradoras (al inicio, solo la del usuario), con el mismo
+inicio de sesión con código por correo. Para lo que cubre, reemplaza la carga con las plantillas
+SQL de `docs/GUIA_CARGA_OBRAS.md` y la plantilla 5 de `docs/GUIA_CARGA_CASAS.md` (siguen
+sirviendo).
+- **El permiso vive en la base, no en el código.** Tabla `administradores` (nadie la lee ni la
+  escribe desde la web; el usuario se da de alta por SQL) y función `es_admin()`. Clientes y
+  administradores siguen **sin permisos de escritura en las tablas**: el panel escribe solo con
+  funciones de la base (`security definer`) que revisan `es_admin()`, con los mismos candados que
+  las plantillas. Los administradores leen todo con políticas extra (se suman a las de los
+  miembros). Storage: subida solo para administradores y solo en la carpeta de un avance que
+  exista en esa obra; **sin borrar ni sobrescribir** archivos.
+- `obras.casa_id` liga una obra con su casa del catálogo: "cambiar etapa" actualiza la etapa del
+  portal y la pública de la casa (mismo orden y nombre) en una sola transacción; si la casa está
+  vendida, solo el portal.
+- `registro_admin`: quién hizo qué y cuándo, escrito por las mismas funciones.
+- `/admin`: `noindex` y `X-Robots-Tag` siempre, sin `Disallow` y sin enlaces públicos; a quien
+  no es administrador le responde 404.
+- **v1:** avance nuevo con fotos (comprimidas en el navegador a JPG de 2000 px, nombradas en
+  orden y subidas directo del celular a Storage), cambiar etapa y agregar fotos a un avance. Sin
+  borrar nada. **v2:** documentos, materiales, segundo factor para `/admin` y avance en borrador.
+  **v3:** agregar comprador y casas del catálogo. Migración 009 (la aplica el usuario), con prueba
+  con rollback y prueba de peticiones manipuladas con una cuenta de cliente.

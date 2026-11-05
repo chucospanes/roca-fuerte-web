@@ -29,10 +29,16 @@ const nextConfig: NextConfig = {
   // Interruptor de lanzamiento (site.lanzado): apagado, todas las rutas (páginas, PDF,
   // imagen Open Graph, API) responden con noindex. Se lee de site.ts, no de una variable.
   // El portal de clientes lleva noindex SIEMPRE, también con el sitio lanzado (sin
-  // Disallow en robots.txt, para que Google pueda leerlo; ver DECISIONES.md).
+  // Disallow en robots.txt, para que Google pueda leerlo; ver DECISIONES.md). Igual el panel
+  // de administración (/admin).
   async headers() {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow" }];
-    if (site.lanzado) return [{ source: "/portal/:path*", headers: noindex }];
+    if (site.lanzado) {
+      return [
+        { source: "/portal/:path*", headers: noindex },
+        { source: "/admin/:path*", headers: noindex },
+      ];
+    }
     return [{ source: "/:path*", headers: noindex }];
   },
   turbopack: {

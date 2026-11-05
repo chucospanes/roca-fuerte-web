@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createClient } from "@supabase/supabase-js";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { supabasePublishableKey, supabaseUrl } from "@/lib/supabase/entorno";
 import type { CasaVenta, CasaVentaEtapa, CasaVentaImagen, BaseDeDatos } from "@/lib/supabase/tipos";
 import { esquemaSlugCasa, esquemaVideoObra } from "@/lib/validacion";
@@ -82,10 +82,14 @@ function ordenCatalogo(a: FilaCasa, b: FilaCasa): number {
   return va - vb || a.orden - b.orden;
 }
 
+/** Etiqueta de la caché del catálogo y la bitácora: el panel /admin la refresca al cambiar una etapa. */
+export const TAG_CASAS = "casas";
+
 /** Casas publicadas con su foto de portada (foto de orden 1), vendidas al final. */
 export async function listarCasas(): Promise<Resultado<CasaListada[]>> {
   "use cache";
   cacheLife("minutes");
+  cacheTag(TAG_CASAS);
 
   try {
     const supabase = clientePublico();
@@ -138,6 +142,7 @@ export async function listarCasas(): Promise<Resultado<CasaListada[]>> {
 export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | null>> {
   "use cache";
   cacheLife("minutes");
+  cacheTag(TAG_CASAS);
 
   if (!esquemaSlugCasa.safeParse(slug).success) return { ok: true, datos: null };
   try {
@@ -207,6 +212,7 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
 export async function leerObraEnCurso(): Promise<Resultado<ObraEnCurso | null>> {
   "use cache";
   cacheLife("minutes");
+  cacheTag(TAG_CASAS);
 
   const casas = await listarCasas();
   if (!casas.ok) return { ok: false };

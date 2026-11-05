@@ -1,5 +1,5 @@
 /**
- * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–008).
+ * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–009).
  * Si cambia la migración, actualizar aquí (o regenerar con `supabase gen types`).
  */
 
@@ -90,6 +90,8 @@ export type Obra = {
   estado: Uno<typeof ESTADOS_OBRA>;
   fecha_inicio: string | null;
   fecha_entrega_estimada: string | null;
+  /** Casa del catálogo que es esta obra (009), o null. */
+  casa_id: string | null;
   created_at: string;
   updated_at: string;
 };

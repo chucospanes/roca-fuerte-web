@@ -40,9 +40,13 @@ async function revisarCasa(request: NextRequest, slug: string) {
   return respuesta404(request);
 }
 
+/** 404 del panel de administración: igual que una ruta que no existe. */
+const HTML_404_ADMIN = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Página no encontrada</title></head><body style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1rem"><h1>Página no encontrada</h1><p><a href="/">Volver al inicio</a></p></body></html>`;
+
 /**
- * Renueva la sesión de Supabase (Next 16: `proxy.ts` reemplaza a `middleware.ts`), y revisa
- * que exista la casa del catálogo pedida.
+ * Renueva la sesión de Supabase (Next 16: `proxy.ts` reemplaza a `middleware.ts`), revisa
+ * que exista la casa del catálogo pedida y, en `/admin`, responde 404 a quien tiene sesión
+ * pero no es administrador (lo decide la base con `es_admin()`; sin sesión se ve el acceso).
  *
  * Solo corre en las rutas de `config.matcher`: la landing no pasa por aquí y sigue siendo
  * estática. Esto NO es la autorización: cada página, Server Action y ruta de descargas
@@ -76,12 +80,24 @@ export async function proxy(request: NextRequest) {
   });
 
   // Renueva el token si venció. No poner código entre crear el cliente y esta llamada.
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+
+  // /admin con sesión: si la base dice que no es administrador, 404 real. Si la consulta
+  // falla, sigue: la página vuelve a revisar y no muestra nada sin permiso.
+  if (data?.claims && /^\/admin(\/|$)/.test(request.nextUrl.pathname)) {
+    const { data: esAdmin, error } = await supabase.rpc("es_admin");
+    if (!error && esAdmin !== true) {
+      return new NextResponse(HTML_404_ADMIN, {
+        status: 404,
+        headers: { ...NOINDEX, "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" },
+      });
+    }
+  }
 
   // Devolver la respuesta que armó `setAll`: si se devuelve otra, se pierden las cookies
   return respuesta;
 }
 
 export const config = {
-  matcher: ["/esparta/ficha/:path*", "/descargas/:path*", "/portal/:path*", "/casas/:slug"],
+  matcher: ["/esparta/ficha/:path*", "/descargas/:path*", "/portal/:path*", "/admin/:path*", "/casas/:slug"],
 };
