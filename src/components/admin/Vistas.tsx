@@ -16,7 +16,7 @@ const accionGrande =
 /** Qué más cambia al cambiar una etapa de esta obra. */
 export function alcanceCasa(casa: CasaLigada | null): string {
   if (!casa) return "Cambia solo el portal: esta obra no está ligada a una casa del catálogo.";
-  if (casa.estado === "vendida") return "Casa vendida: cambia solo el portal (el avance público quedó congelado).";
+  if (casa.estado === "vendida") return "Casa vendida: cambia solo el portal (la casa ya no se ve en lo público).";
   return `También cambia en la bitácora pública de «${casa.nombre}».`;
 }
 
@@ -62,7 +62,7 @@ export function VistaObraAdmin({ detalle, hoy }: { detalle: ObraAdminDetalle; ho
         <p className="mt-2 text-sm text-piedra-700">
           {casa
             ? casa.estado === "vendida"
-              ? `Casa del catálogo: ${casa.nombre} (vendida).`
+              ? `Casa del catálogo: ${casa.nombre} (vendida: no se ve en lo público).`
               : `Ligada a la casa del catálogo «${casa.nombre}» ✓`
             : "Sin casa del catálogo ligada."}
         </p>

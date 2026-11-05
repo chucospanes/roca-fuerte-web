@@ -11,7 +11,8 @@ type Accion = "publicar" | "quitar";
 
 /**
  * Estado de un avance en la ficha de su casa, con "Publicar en la ficha" o "Quitar de la
- * ficha" (con confirmación). Con la casa vendida, lo publicado queda congelado: sin botones.
+ * ficha" (con confirmación). Con la casa vendida nada se ve en lo público (011): no se publica,
+ * pero sí se puede quitar de la ficha (borra las copias públicas de sus fotos).
  */
 export function PublicacionAvance({
   avanceId,
@@ -60,8 +61,13 @@ export function PublicacionAvance({
     router.refresh();
   }
 
+  // Casa vendida sin nada publicado: nada que mostrar ni hacer
+  if (casa.vendida && !publicacion) return null;
+
   const estado = publicacion
-    ? publicacion.visible
+    ? casa.vendida
+      ? `Publicado, pero no se ve: casa vendida · ${publicacion.fotos} ${publicacion.fotos === 1 ? "foto" : "fotos"}`
+      : publicacion.visible
       ? `En la ficha de la casa ✓ · ${publicacion.fotos} ${publicacion.fotos === 1 ? "foto" : "fotos"}`
       : "Publicación a medias: todavía no se ve en la ficha."
     : null;
@@ -69,9 +75,7 @@ export function PublicacionAvance({
   return (
     <div className="mt-2 border-t border-piedra-200 pt-2">
       {estado && <p className="text-sm font-semibold text-piedra-800">{estado}</p>}
-      {casa.vendida ? (
-        publicacion && <p className="text-sm text-piedra-600">Casa vendida: lo publicado quedó congelado.</p>
-      ) : trabajando ? (
+      {trabajando ? (
         <p role="status" className="min-h-11 py-2 text-sm font-semibold text-piedra-800">
           {trabajando} No cierres esta página.
         </p>
@@ -93,7 +97,7 @@ export function PublicacionAvance({
         </div>
       ) : (
         <div className="flex flex-wrap gap-x-5">
-          {(!publicacion || !publicacion.visible) && (
+          {!casa.vendida && (!publicacion || !publicacion.visible) && (
             <button
               type="button"
               onClick={() => setConfirmar("publicar")}
