@@ -664,3 +664,27 @@ zanjeado" del 3 de noviembre de 2026 (en proceso), con sus descripciones aprobad
 como quedaron: el párrafo de píxeles sin publicar, "el tiempo que exija la ley" sin sello, el
 borrado a 6 meses como pendiente técnico, el titular en `site.privacidad` y las fechas que no
 se dieron, sin publicar.
+
+## 2026-11-04 — Avance público de las casas en Supabase (`casas_venta_etapas`) y la casa como obra propia
+Decisión del usuario (propuesta aprobada). Reemplaza `src/content/bitacora.ts` (la bitácora en
+el código) y "Bitácora sin porcentajes" queda igual (sin porcentajes, solo estado).
+- **Una sola fuente** para la bitácora de la portada y el avance de la ficha: la tabla pública
+  `casas_venta_etapas` (migración 008), ligada a cada casa del catálogo, con la misma seguridad
+  que sus imágenes (lectura solo si la casa está publicada; nadie escribe desde la web). La
+  etapa actual de la ficha sale de la etapa en proceso.
+- **El portal no se toca**: sus etapas siguen privadas y se cargan aparte. Se descartó una
+  vista pública sobre las tablas del portal: abriría una puerta desde la web anónima hacia los
+  datos privados por ahorrar una carga.
+- **La casa de San José Villanueva es nuestra y está a la venta.** La bitácora muestra "Obra en
+  curso: {nombre}" y, según el estado de la casa: "Casa propia de Roca Fuerte, a la venta." /
+  "…, reservada." / "Casa construida por Roca Fuerte, ya vendida. El avance sigue en el portal
+  privado de su dueño.", con "Ver la casa" y la nota "Las obras de nuestros clientes se siguen
+  en su portal privado." Sin obra con etapas, "Bitácora de obra"; si Supabase falla, lo dice.
+  Etiqueta "Casa Roca Fuerte · En venta" en las casas disponibles (tarjeta, portada y ficha).
+  En la ficha, "Ver el avance de esta casa" lleva a su propia sección de avance (así sirve para
+  cualquier casa, no solo la de la portada).
+- **Al venderse, el avance público se congela** en la fecha de la venta y sigue solo en el
+  portal. La misma casa ya está en el portal como obra (modalidad compra) con el usuario como
+  miembro; el día de la venta se agrega al comprador.
+- **Videos de etapas: solo YouTube y Vimeo**, como el resto de la base (antes el código
+  aceptaba TikTok e Instagram como enlaces). Sale `videoEmbed` de `lib/video.ts`.

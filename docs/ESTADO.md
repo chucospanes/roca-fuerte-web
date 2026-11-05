@@ -3,15 +3,41 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-04
-**Versión:** v1.2.0 — hero en 3 pantallas, "Lo que nos diferencia", casas a pedido y facturas en el portal; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Última actualización:** 2026-11-05
+**Versión:** v1.3.0 — avance público de las casas desde Supabase (bitácora y ficha) y la casa de San José Villanueva como casa propia a la venta; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
 https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo con
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
-quitar de `.env.local`). Lo que fal### Pendientes del sitio llenados (2026-11-04, en `main`)
+quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Avance de las casas en Supabase y casa propia (`v1.3.0`, 2026-11-05)
+- Bitácora y avance de la ficha desde `casas_venta_etapas` (migración 008, una sola fuente);
+  sale `src/content/bitacora.ts`. "Obra en curso: {nombre}" con la línea según el estado de la
+  casa, "Ver la casa" y la nota del portal; etiqueta "Casa Roca Fuerte · En venta" en las
+  disponibles; "Ver el avance de esta casa" en la ficha (baja a su sección "Avance de la
+  obra"). Etapa actual de la ficha desde la etapa en proceso. Ver DECISIONES.md (2026-11-04).
+- **Migración 008 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada
+  ("PRUEBA SUPERADA: 5 candados…"). Carga inicial corrida por el usuario: `etapas_creadas = 8`.
+  Verificado con lecturas: 8 etapas de la casa `esparta-san-jose-villanueva` (Terracería
+  terminada desde el 2026-10-25, "Trazo y zanjeado" en proceso desde el 2026-11-03, las otras 6
+  por iniciar sin fecha, sin videos), descripciones idénticas al SQL aprobado; la publishable
+  lee las 8 (casa publicada) y sigue con 401 en `obras`, `etapas`, `obra_miembros` y
+  `avances`.
+- Probado con el build de producción contra la simulación local (casa en construcción con
+  video, reservada, vendida con el avance congelado, sin etapas y Supabase caído) y con el
+  build final contra Supabase real (lint, typecheck y build pasan; capturas a 390 y 1280 px).
+- **Portal (2026-11-05):** obra "Casa Modelo Esparta en San José Villanueva" (modalidad compra,
+  en obra desde el 2026-10-25), con el usuario como único miembro, etapas 1 "Terracería"
+  (terminada) y 2 "Trazo y zanjeado" (en proceso desde el 2026-11-03) y un avance; sin
+  material ni documento. Verificado con lecturas (clave secreta, solo lectura).
+- **Cada cambio de etapa se carga dos veces:** en `casas_venta_etapas` (público, guía
+  `docs/GUIA_CARGA_CASAS.md`) y en `etapas` del portal. Al venderse la casa, el público se
+  deja de actualizar y se agrega al comprador como miembro de la obra.
+
+### Pendientes del sitio llenados (2026-11-04, en `main`)
 - **Desplegado y verificado con lecturas en el dominio (2026-11-04):** "A consultar", la
   bitácora (sin porcentajes), el paso 1, las 5 respuestas, ASTM C90 y A615, "Techo de lámina a dos aguas" y
   el aviso con responsable, domicilio, correo, WhatsApp, plazos, conservación y la sección del
@@ -76,7 +102,6 @@ quitar de `.env.local`). Lo que fal### Pendientes del sitio llenados (2026-11-04
   `documentos_tipo_check`, "Success". No verificable con lecturas por la API (no expone el
   catálogo de Postgres) y no probado en pantalla (requiere sesión y una obra con factura).
 
-ntos'::regclass and contype = 'c';`
 
 ### Catálogo de casas en venta (`v1.1.0`, en `main` y desplegado el 2026-11-02)
 - **Verificado con lecturas en https://constructorarocafuerte.com (2026-11-02):** `/` y `/casas`
@@ -459,7 +484,7 @@ sin portal).
 - URLs de redes sociales → `site.redes` (el pie las muestra solo cuando existen).
 - Especificaciones de los 9 materiales "Por confirmar" → `esparta.materiales` (sin marcas
   en lo público), conforme se compran.
-- Fecha de inicio de cada etapa de la bitácora cuando arranque → `bitacora.ts`.
+- Fecha de inicio de cada etapa cuando arranque → `casas_venta_etapas` (y `etapas` del portal).
 - Casas a la venta (ubicación, lote, precio y qué incluye de cada una) → `casas_venta`, con
   `docs/GUIA_CARGA_CASAS.md`. Pasaron aquí los pendientes 1, 3, 4 y 5 del inventario.
 - Ingeniero responsable: confirmar la referencia RTS 91.01.02:21 y el nombre y registro del
