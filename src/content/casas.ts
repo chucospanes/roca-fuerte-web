@@ -24,6 +24,8 @@ export const catalogo = {
     titulo: "Casas vendidas",
     tarjeta: (modelo: string, departamento: string) => `${modelo} · Vendida · ${departamento}`,
     altFachada: (modelo: string) => `Ilustración de la fachada del modelo ${modelo}`,
+    /** Elevación del modelo sin cotas ni notas (SVG liviano, dibujado aparte de la lámina). */
+    fachadaLimpia: "/fachada-esparta-limpia.svg",
   },
 };
 

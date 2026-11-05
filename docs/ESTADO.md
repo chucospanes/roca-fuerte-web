@@ -32,8 +32,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   Supabase real: bitácora de la casa de San José Villanueva, sin vendidas, Diario de obra con el
   zanjeado.
 - **Falta antes de unir a `main`:** visto bueno de las capturas.
-- Pendiente anotado: el texto del punto 1 de Calidad dice "queda documentado en la bitácora de
-  obra" aunque no haya bitácora visible.
+- Ajustes del usuario sobre las capturas: la tarjeta de vendida usa una elevación limpia
+  dibujada aparte (`public/fachada-esparta-limpia.svg`, sin cotas, notas ni textos) y el punto 1
+  de Calidad dice "queda documentado etapa por etapa".
 
 ### Diario de obra en la ficha de la casa (`v1.5.0`, en `main`, 2026-11-05)
 - **Migración 010 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada.

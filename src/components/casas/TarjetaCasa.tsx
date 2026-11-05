@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { precioUSD } from "@/config/site";
 import { catalogo, muestraPrecio, nombresEstado, ubicacionCasa } from "@/content/casas";
-import { esparta } from "@/content/esparta";
 import { casaDisponible, type CasaListada, type CasaVendida } from "@/lib/casas";
 
 /** Etiqueta del estado de una casa; "Vendida" en oscuro, el resto en terracota. */
@@ -84,11 +83,11 @@ export function TarjetaVendida({ casa }: { casa: CasaVendida }) {
       <div className="relative aspect-[4/3] bg-blanco">
         {esEsparta ? (
           <Image
-            src={esparta.fachada.src}
+            src={catalogo.vendidas.fachadaLimpia}
             alt={catalogo.vendidas.altFachada(casa.modelo)}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 330px"
-            className="object-contain p-4 opacity-80 grayscale-[30%]"
+            unoptimized
+            className="object-contain p-4"
           />
         ) : (
           <span className="absolute inset-0 flex items-center justify-center text-sm text-piedra-600">
