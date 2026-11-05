@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-05
-**Versión:** v1.3.0 — avance público de las casas desde Supabase (bitácora y ficha) y la casa de San José Villanueva como casa propia a la venta; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.4.0 — panel de administración `/admin` (avance con fotos y cambiar etapa desde el celular, permisos en la base); desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,7 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Panel de administración `/admin` v1 (rama `feat/admin`, sin unir a `main`)
+### Panel de administración `/admin` v1 (`v1.4.0`, en `main`, 2026-11-05)
 - **Migración 009 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada
   (cliente sin escritura en 16 intentos, admin solo escribe con funciones, Storage solo fotos en
   la carpeta de un avance, registro). Alta del usuario como administrador, obra ligada a la casa
@@ -34,9 +34,14 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   ~730 KB; orientación 6 → vertical; archivo ilegible rechazado); TikTok rechazado y Short
   aceptado. Con el build contra Supabase real: `/admin` sin sesión muestra el acceso con
   noindex; una obra sin sesión no filtra datos y redirige a `/admin`.
-- **Falta antes de unir a `main`:** visto bueno de las capturas; prueba de peticiones
-  manipuladas con una cuenta de cliente de prueba (requiere aprobación); prueba real del usuario
-  desde el celular (avance con fotos y cambiar etapa).
+- Capturas aprobadas por el usuario. **Prueba de peticiones manipuladas superada (2026-11-05):**
+  con la sesión real de una cuenta de cliente de prueba (miembro de la obra; sesión obtenida con
+  un enlace generado por la clave secreta, sin correo), 30 intentos rechazados: las 2 funciones
+  (42501), inserts en 9 tablas, updates en 7, deletes en 6, lectura de `administradores` y
+  `registro_admin`, y 4 subidas a Storage (carpeta de un avance real, documentos, otra obra y
+  sobrescribir). La cuenta veía solo su obra y `es_admin` = false. Verificado con lecturas que no
+  quedó nada escrito. **Falta:** quitar su membresía (SQL fuera del repo) y borrar la cuenta (lo
+  hace el usuario); prueba real del usuario desde el celular (avance con fotos y cambiar etapa).
 
 ### Portal: fotos, documentos y materiales de la obra propia (en `main`, 2026-11-05)
 - Plantillas en `docs/GUIA_CARGA_OBRAS.md`, con candados ALTO: **avance nuevo** (reescrita: etapa
