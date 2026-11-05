@@ -28,7 +28,7 @@ export function Seccion({
    */
   numerada?: boolean;
   etiqueta: string;
-  titulo: string;
+  titulo: ReactNode;
   intro?: ReactNode;
   fondo?: "claro" | "blanco" | "oscuro";
   children: ReactNode;

@@ -16,18 +16,21 @@ export function BotonWhatsApp({
   opcion,
   ubicacion,
   variante = "primario",
+  mensaje,
   className,
   children,
 }: {
   opcion: OpcionMensajeFijo;
   ubicacion: UbicacionVenta;
+  /** Mensaje propio de una sección (por ejemplo, "Hermano cercano"); si no, el de la opción. */
+  mensaje?: string;
   variante?: "primario" | "secundario" | "claro";
   className?: string;
   children: ReactNode;
 }) {
   return (
     <Boton
-      href={whatsappHref(mensajesVenta[opcion])}
+      href={whatsappHref(mensaje ?? mensajesVenta[opcion])}
       externo
       variante={variante}
       className={className}

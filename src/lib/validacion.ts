@@ -17,7 +17,7 @@ export const TERRENO_ESCRITURADO = ["si", "no", "en_tramite"] as const;
 export const FORMAS_PAGO = ["contado", "fsv", "banco", "otro"] as const;
 export const INICIOS = ["inmediato", "3_meses", "6_meses", "mas_6_meses"] as const;
 export const ESTADOS_LEAD = ["nuevo", "contactado", "calificado", "descartado", "cliente"] as const;
-// Deben coincidir con los CHECK de clics_venta (006_clics_casas.sql)
+// Deben coincidir con los CHECK de clics_venta (006_clics_casas.sql y 012_clics_hermanos.sql)
 export const OPCIONES_VENTA = ["comprar", "construir", "general", "inversionista", "casa"] as const;
 export const UBICACIONES_VENTA = [
   "hero",
@@ -28,6 +28,7 @@ export const UBICACIONES_VENTA = [
   "inversionistas",
   "casa",
   "catalogo",
+  "hermanos",
 ] as const;
 
 // Catálogo de casas en venta: deben coincidir con los CHECK de 005_casas_venta.sql
