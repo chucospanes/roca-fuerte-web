@@ -70,6 +70,7 @@ El detalle está en `docs/CONFIGURACION_EXTERNA.md`. En resumen y en orden:
    9. `supabase/migrations/009_administradores.sql` (prueba: `supabase/pruebas/009_administradores.sql`)
    10. `supabase/migrations/010_casas_venta_avances.sql` (prueba: `supabase/pruebas/010_casas_venta_avances.sql`)
    11. `supabase/migrations/011_casas_vendidas_ocultas.sql` (prueba: `supabase/pruebas/011_casas_vendidas_ocultas.sql`)
+   12. `supabase/migrations/012_clics_hermanos.sql`
 3. Verificar cada migración: RLS activo, triggers y vista con `security_invoker`, y que el
    rol `anon` no puede escribir con la prueba con `rollback` (sección "Verificación segura
    de permisos" de `CONFIGURACION_EXTERNA.md`). Esa prueba no deja datos.

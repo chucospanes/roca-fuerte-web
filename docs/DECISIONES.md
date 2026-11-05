@@ -768,3 +768,17 @@ público se congela" (2026-11-04, `casas_venta_etapas`) y "Casa vendida: lo publ
 - **Panel:** con la casa vendida no se publica, pero sí se puede "Quitar de la ficha" y borrar las
   copias públicas de sus fotos (`admin_despublicar_avance` y la política de borrado del bucket
   `casas` dejan de exigir que no esté vendida).
+
+## 2026-11-05 — Cambio de alcance: sección "Hermano cercano" (salvadoreños en el exterior)
+Decisión del usuario, en la rama `feat/hermanos`. Sección nueva en la portada, después de "Lo que
+nos diferencia" (`id="hermanos"`), para quien vive fuera de El Salvador: título "Hermano
+~~lejano~~ cercano." ("lejano" tachado y oculto al lector de pantalla, que lee "Hermano
+cercano"), subtítulo, cuatro puntos (comprar sin viajar con un poder, pagos por etapas por
+transferencia, la obra en el portal desde cualquier país, construir a pedido en terreno nuestro o
+de la familia) y botón de WhatsApp con su propio mensaje ("Hola, vivo fuera de El Salvador y
+quiero información para tener mi casa."). Fondo: mapamundi simplificado en trazo fino, muy
+tenue, con líneas punteadas curvas desde Los Ángeles, Houston, Washington, Nueva York, Canadá,
+España, Italia y Australia hasta El Salvador (punto terracota); SVG en línea, decorativo
+(`aria-hidden`), sin imágenes ni dependencias; la animación de las líneas se apaga con
+`prefers-reduced-motion`. Enlace "Hermano cercano" en el menú. Conteo: opción `general` (ya
+existe) y ubicación nueva `hermanos` (migración 012, la aplica el usuario).

@@ -82,3 +82,19 @@ dialog::backdrop {
   counter-increment: seccion;
   content: counter(seccion, decimal-leading-zero) " — ";
 }
+
+/* Líneas de "Hermano cercano": los puntos avanzan despacio hacia El Salvador. Sin animación si
+   la persona pidió reducir el movimiento. */
+@keyframes hermanos-flujo {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+.lineas-hermanos path {
+  animation: hermanos-flujo 3s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lineas-hermanos path {
+    animation: none;
+  }
+}
