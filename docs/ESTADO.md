@@ -37,8 +37,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   portal): la **plantilla 5 "cambiar etapa"** de `docs/GUIA_CARGA_CASAS.md` los cambia a la vez
   (slug, obra, correo, orden, estado y fecha; candados ALTO si no encuentra exactamente una
   etapa de cada lado, si los nombres no coinciden o si la casa está vendida). Su prueba con
-  rollback, `supabase/pruebas/008_plantilla_cambiar_etapa.sql` (16 casos), **falta que la
-  corra el usuario**. Al venderse la casa, el público se deja de actualizar y se agrega al
+  rollback, `supabase/pruebas/008_plantilla_cambiar_etapa.sql` (16 casos), **superada
+  (2026-11-05, la corrió el usuario)**; confirmado con lecturas que no dejó filas (8 etapas
+  públicas, 2 del portal, sin casas, obras ni usuarios de prueba). Candados aprobados. Al venderse la casa, el público se deja de actualizar y se agrega al
   comprador como miembro de la obra.
 
 ### Pendientes del sitio llenados (2026-11-04, en `main`)
