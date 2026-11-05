@@ -723,3 +723,24 @@ sirviendo).
   borrar nada. **v2:** documentos, materiales, segundo factor para `/admin` y avance en borrador.
   **v3:** agregar comprador y casas del catálogo. Migración 009 (la aplica el usuario), con prueba
   con rollback y prueba de peticiones manipuladas con una cuenta de cliente.
+
+## 2026-11-05 — Avances del portal publicados en la ficha de la casa ("Diario de obra")
+Decisión del usuario, en la rama `feat/avances-publicos`. Desde el panel, un avance de una obra
+ligada a una casa del catálogo (no vendida) se puede publicar en la ficha de esa casa: fecha,
+título, descripción, video y fotos, en orden cronológico, en el bloque "Diario de obra" dentro de
+"Avance de la obra". En "Avance nuevo", la casilla "Publicar también en la ficha de la casa" va
+**marcada por defecto** y solo aparece en obras ligadas a una casa no vendida. Un avance ya
+existente se publica o se quita de la ficha desde la página de la obra.
+- **Copia, no puerta al portal** (opción aprobada): tabla pública `casas_venta_avances` (migración
+  010) con una COPIA de los campos publicados, sin ninguna referencia a las tablas del portal; las
+  fotos se copian al bucket público `casas` en `{casa_id}/avances/{publicacion_id}/NN.jpg`. La
+  liga vive del lado privado (`avances.publicacion_id`). Se descartó servir las fotos del bucket
+  privado con una ruta del servidor (abriría una puerta desde la web anónima hacia `obras`).
+- La publicación se crea oculta y se hace visible recién al terminar de copiar las fotos: nunca
+  se ve a medias. Antes de copiar, el servidor revisa que la foto no tenga EXIF ni GPS (las del
+  panel nunca los tienen; una subida a mano podría).
+- **Quitar de la ficha** borra la fila pública y las copias del bucket `casas`; el avance y sus
+  fotos del portal no se tocan.
+- **Casa vendida:** lo publicado se congela, como la bitácora (no se publica ni se quita nada).
+- Mismo modelo de seguridad que la 009: escritura solo con funciones que revisan `es_admin()`,
+  Storage solo para administradores y solo en la carpeta de una publicación de esa casa.

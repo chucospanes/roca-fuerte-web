@@ -29,6 +29,7 @@ async function NuevoAvance({ params }: { params: Promise<{ id: string }> }) {
         etapaPorDefecto={enProceso?.orden ?? null}
         hoy={hoyElSalvador()}
         maximoFotos={MAX_FOTOS_AVANCE}
+        casaPublicable={detalle.casa && detalle.casa.estado !== "vendida" ? detalle.casa.nombre : null}
       />
     </>
   );

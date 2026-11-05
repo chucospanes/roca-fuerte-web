@@ -2,7 +2,7 @@ import "server-only";
 
 import { BUCKET_OBRAS, carpetaFotos } from "@/lib/portal";
 import { crearClienteServidor } from "@/lib/supabase/servidor";
-import type { Avance, CasaVenta, Etapa, Obra } from "@/lib/supabase/tipos";
+import type { Avance, CasaVenta, CasaVentaAvance, Etapa, Obra } from "@/lib/supabase/tipos";
 import { esquemaIdPortal } from "@/lib/validacion";
 
 /**
@@ -58,9 +58,16 @@ export async function listarObrasAdmin(): Promise<ObraAdmin[] | null> {
   }));
 }
 
+/** Estado de la publicación de un avance en la ficha de su casa (010). */
+export type PublicacionAdmin = { id: string; visible: boolean; fotos: number };
+
 export type AvanceAdmin = Pick<Avance, "id" | "fecha" | "titulo" | "etapa_id" | "video_url"> & {
   fotos: string[];
+  publicacion: PublicacionAdmin | null;
 };
+
+type FilaAvanceAdmin = Pick<Avance, "id" | "fecha" | "titulo" | "etapa_id" | "video_url" | "publicacion_id">;
+const COLUMNAS_AVANCE_ADMIN = "id, fecha, titulo, etapa_id, video_url, publicacion_id";
 
 export type ObraAdminDetalle = {
   obra: Obra;
@@ -85,12 +92,12 @@ export async function leerObraAdmin(id: string): Promise<ObraAdminDetalle | null
     supabase.from("etapas").select("*").eq("obra_id", id).order("orden").returns<Etapa[]>(),
     supabase
       .from("avances")
-      .select("id, fecha, titulo, etapa_id, video_url")
+      .select(COLUMNAS_AVANCE_ADMIN)
       .eq("obra_id", id)
       .order("fecha", { ascending: false })
       .order("created_at", { ascending: false })
       .limit(AVANCES_RECIENTES)
-      .returns<Omit<AvanceAdmin, "fotos">[]>(),
+      .returns<FilaAvanceAdmin[]>(),
     obra.casa_id
       ? supabase
           .from("casas_venta")
@@ -106,12 +113,17 @@ export async function leerObraAdmin(id: string): Promise<ObraAdminDetalle | null
     }
   }
 
+  const publicaciones = await leerPublicaciones((avances.data ?? []).flatMap((a) => a.publicacion_id ?? []));
   return {
     obra,
     casa: casa.data,
     etapas: etapas.data ?? [],
     avances: await Promise.all(
-      (avances.data ?? []).map(async (a) => ({ ...a, fotos: (await fotosDeAvance(id, a.id)) ?? [] })),
+      (avances.data ?? []).map(async ({ publicacion_id, ...a }) => ({
+        ...a,
+        fotos: (await fotosDeAvance(id, a.id)) ?? [],
+        publicacion: publicacion_id ? (publicaciones.get(publicacion_id) ?? null) : null,
+      })),
     ),
   };
 }
@@ -122,17 +134,36 @@ export async function leerAvanceAdmin(obraId: string, avanceId: string): Promise
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase
     .from("avances")
-    .select("id, fecha, titulo, etapa_id, video_url")
+    .select(COLUMNAS_AVANCE_ADMIN)
     .eq("id", avanceId)
     .eq("obra_id", obraId)
-    .maybeSingle<Omit<AvanceAdmin, "fotos">>();
+    .maybeSingle<FilaAvanceAdmin>();
   if (error) {
     console.error("[admin] leer avance falló", { codigo: error.code, mensaje: error.message });
     return null;
   }
   if (!data) return null;
   const fotos = await fotosDeAvance(obraId, avanceId);
-  return fotos === null ? null : { ...data, fotos };
+  if (fotos === null) return null;
+  const { publicacion_id, ...avance } = data;
+  const publicaciones = await leerPublicaciones(publicacion_id ? [publicacion_id] : []);
+  return { ...avance, fotos, publicacion: publicacion_id ? (publicaciones.get(publicacion_id) ?? null) : null };
+}
+
+/** Publicaciones en la ficha (la RLS de administrador deja ver también las ocultas). */
+async function leerPublicaciones(ids: string[]): Promise<Map<string, PublicacionAdmin>> {
+  if (ids.length === 0) return new Map();
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase
+    .from("casas_venta_avances")
+    .select("id, visible, fotos")
+    .in("id", ids)
+    .returns<Pick<CasaVentaAvance, "id" | "visible" | "fotos">[]>();
+  if (error) {
+    console.error("[admin] leer publicaciones falló", { codigo: error.code, mensaje: error.message });
+    return new Map();
+  }
+  return new Map(data.map((p) => [p.id, { id: p.id, visible: p.visible, fotos: p.fotos.length }]));
 }
 
 /** Nombres de los archivos de la carpeta del avance, en orden. `null` si falla. */
