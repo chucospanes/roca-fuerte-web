@@ -12,7 +12,7 @@ export function Pendiente({ texto = "Pendiente" }: { texto?: string }) {
 
 export function Seccion({
   id,
-  numero,
+  numerada = false,
   etiqueta,
   titulo,
   intro,
@@ -20,8 +20,13 @@ export function Seccion({
   children,
 }: {
   id: string;
-  /** Número de sección de la landing; las páginas sueltas (catálogo) van sin número. */
-  numero?: string;
+  /**
+   * Sección numerada de la landing (01, 02…). El número lo pone CSS con un contador
+   * (`.seccion-numerada` en globals.css): cuenta solo las secciones que están en la página, así
+   * que si una no aparece (la bitácora sin casa en obra), las siguientes se corren solas. Las
+   * páginas sueltas (catálogo) van sin número.
+   */
+  numerada?: boolean;
   etiqueta: string;
   titulo: string;
   intro?: ReactNode;
@@ -38,9 +43,8 @@ export function Seccion({
     <section id={id} className={`${fondos[fondo]} py-16 sm:py-20`}>
       <div className="mx-auto max-w-5xl px-4">
         <p
-          className={`font-display text-xs font-semibold tracking-[0.2em] uppercase ${oscuro ? "text-terracota-claro" : "text-terracota"}`}
+          className={`font-display text-xs font-semibold tracking-[0.2em] uppercase ${numerada ? "seccion-numerada" : ""} ${oscuro ? "text-terracota-claro" : "text-terracota"}`}
         >
-          {numero && `${numero} — `}
           {etiqueta}
         </p>
         <h2 className="mt-2 font-display text-3xl leading-tight font-extrabold tracking-tight text-balance sm:text-4xl">

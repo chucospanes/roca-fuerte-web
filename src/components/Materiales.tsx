@@ -15,7 +15,7 @@ export function Materiales() {
   return (
     <Seccion
       id="materiales"
-      numero="04"
+      numerada
       etiqueta="Especificaciones"
       titulo="Materiales y especificaciones"
       fondo="blanco"

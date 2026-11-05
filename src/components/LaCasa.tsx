@@ -9,7 +9,7 @@ export function LaCasa() {
   return (
     <Seccion
       id="la-casa"
-      numero="02"
+      numerada
       etiqueta="La casa"
       titulo="Modelo Esparta"
       intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}

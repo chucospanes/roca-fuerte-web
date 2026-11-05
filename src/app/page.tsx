@@ -20,7 +20,7 @@ export default function Home() {
     <>
       <DatosEstructurados />
       <Encabezado />
-      <main>
+      <main className="secciones-numeradas">
         <Hero />
         <CasasDisponibles />
         <Diferencias />

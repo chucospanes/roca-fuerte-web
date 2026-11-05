@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { site } from "@/config/site";
 import { esparta } from "@/content/esparta";
 import { heroPantallas } from "@/content/landing";
-import { casasDisponibles, destinoCompra } from "@/lib/casas";
+import { casasDisponibles, destinoCompra, hayBitacora } from "@/lib/casas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 import { CarruselHero } from "./CarruselHero";
 import { Boton } from "./ui";
@@ -68,7 +68,7 @@ const estiloSubtitulo = "mt-3 font-display text-2xl font-bold text-terracota-cla
  * vacío.
  */
 export async function Hero() {
-  const disponibles = await casasDisponibles();
+  const [disponibles, conBitacora] = await Promise.all([casasDisponibles(), hayBitacora()]);
   const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
   const { reforzada, documentada, hogar } = heroPantallas;
 
@@ -107,9 +107,12 @@ export async function Hero() {
         <Pantalla fondo="oscuro">
           <h2 className={estiloTitulo}>{documentada.titulo}</h2>
           <p className={estiloSubtitulo}>{documentada.subtitulo}</p>
-          <div className="mt-8">
-            <Boton href={documentada.boton.href}>{documentada.boton.texto}</Boton>
-          </div>
+          {/* Sin casa en obra no hay bitácora: la pantalla queda sin botón */}
+          {conBitacora && (
+            <div className="mt-8">
+              <Boton href={documentada.boton.href}>{documentada.boton.texto}</Boton>
+            </div>
+          )}
         </Pantalla>
 
         <Pantalla>
