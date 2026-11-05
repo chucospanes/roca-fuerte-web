@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CambiarEtapa } from "@/components/admin/CambiarEtapa";
+import { PublicacionAvance } from "@/components/admin/PublicacionAvance";
 import { estadosObra, fecha, modalidades } from "@/content/portal";
 import type { CasaLigada, ObraAdmin, ObraAdminDetalle } from "@/lib/admin";
 
@@ -113,6 +114,14 @@ export function VistaObraAdmin({ detalle, hoy }: { detalle: ObraAdminDetalle; ho
                 >
                   Agregar fotos →
                 </Link>
+                {casa && (
+                  <PublicacionAvance
+                    avanceId={a.id}
+                    fotos={a.fotos.length}
+                    publicacion={a.publicacion}
+                    casa={{ nombre: casa.nombre, vendida: casa.estado === "vendida" }}
+                  />
+                )}
               </li>
             ))}
           </ul>
