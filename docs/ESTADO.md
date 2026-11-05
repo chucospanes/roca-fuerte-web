@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-05
-**Versión:** v1.5.0 — Diario de obra en la ficha de la casa (avances publicados desde `/admin`) y panel de administración; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.6.0 — casas vendidas ocultas en lo público (tarjeta mínima, ficha 404, bitácora con la casa en obra), Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,7 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Casas vendidas ocultas en lo público (rama `feat/vendidas-ocultas`, sin unir a `main`)
+### Casas vendidas ocultas en lo público (`v1.6.0`, en `main`, 2026-11-05)
 - **Migración 011 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada. La
   política pública de `casas_venta` excluye las vendidas y, en cascada, sus fotos, etapas y
   diario (nada se borra); `casas_vendidas()` da solo modelo y departamento; candado
@@ -31,7 +31,7 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   y vendida, solo vendida, ninguna, solo reservada con etapas); capturas a 390 px; build contra
   Supabase real: bitácora de la casa de San José Villanueva, sin vendidas, Diario de obra con el
   zanjeado.
-- **Falta antes de unir a `main`:** visto bueno de las capturas.
+- Capturas aprobadas por el usuario (con los dos ajustes de abajo).
 - Ajustes del usuario sobre las capturas: la tarjeta de vendida usa una elevación limpia
   dibujada aparte (`public/fachada-esparta-limpia.svg`, sin cotas, notas ni textos) y el punto 1
   de Calidad dice "queda documentado etapa por etapa".
