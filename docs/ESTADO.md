@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-05
-**Versión:** v1.4.0 — panel de administración `/admin` (avance con fotos y cambiar etapa desde el celular, permisos en la base); desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.5.0 — Diario de obra en la ficha de la casa (avances publicados desde `/admin`) y panel de administración; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,7 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Diario de obra en la ficha de la casa (rama `feat/avances-publicos`, sin unir a `main`)
+### Diario de obra en la ficha de la casa (`v1.5.0`, en `main`, 2026-11-05)
 - **Migración 010 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada.
   Verificado con lecturas: `casas_venta_avances` en 0, ningún avance con publicación, sin
   usuarios de prueba, `registro_admin` con 1 fila (el avance real), bucket `casas` solo con las 2
@@ -30,9 +30,12 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 - Probado: lint, typecheck y build; capturas a 390 px con páginas temporales de simulación (sin
   desborde; casilla marcada por defecto); build contra Supabase real: la ficha responde 200 sin
   el bloque (no hay publicaciones).
-- **Falta antes de unir a `main`:** visto bueno de las capturas; prueba de peticiones
-  manipuladas de la 010 con una cuenta de cliente de prueba (requiere aprobación). Después:
-  publicar desde el celular el avance del zanjeado y verificarlo en el dominio.
+- Capturas aprobadas. **Prueba de peticiones manipuladas de la 010 superada (2026-11-05)** con la
+  sesión real de la cuenta de cliente de prueba: 3 funciones, insert/update/delete en
+  `casas_venta_avances`, cambiar `avances.publicacion_id` y 3 subidas al bucket `casas`
+  rechazadas; no lista copias ni ve publicaciones; borrar en `casas` no borra nada. Verificado
+  con lecturas que no quedó nada escrito. **Falta:** quitar la cuenta de prueba (lo hace el
+  usuario) y publicar desde el celular el avance del zanjeado (verificarlo en el dominio).
 - Prueba real de `/admin` (2026-11-05): avance "Zanjeado para las fundaciones" con 1 foto
   (01.jpg, 674 KB, 1506 × 2000, sin EXIF, XMP ni GPS, orientación correcta) y su fila en
   `registro_admin`. Cuenta de prueba del cliente quitada de la obra y borrada (verificado).
