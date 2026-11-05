@@ -382,8 +382,10 @@ select
 ```
 
 ### Cuando avanza la obra
-Se cambia la etapa por su número de orden. La base rechaza valores fuera de lo permitido; cada
-`update` devuelve la fila cambiada (si no devuelve nada, el slug o el orden no existen).
+Para cambiar el estado o la fecha de una etapa usa la **plantilla 5**: cambia lo público y el
+portal a la vez. Los `update` de abajo cambian solo lo público (por ejemplo, el video). La base
+rechaza valores fuera de lo permitido; cada `update` devuelve la fila cambiada (si no devuelve
+nada, el slug o el orden no existen).
 
 ```sql
 -- Arranca una etapa (con su fecha real de inicio)
@@ -401,6 +403,127 @@ update public.casas_venta_etapas set video_url = 'https://youtu.be/<id>'
 where casa_id = (select id from public.casas_venta where slug = '<slug>') and orden = <n>
 returning orden, nombre, video_url;
 ```
+
+### Plantilla 5: cambiar etapa (lo público y el portal a la vez)
+Cambia el estado y la fecha de inicio de **una** etapa en los dos lugares donde vive: el
+avance público de la casa (`casas_venta_etapas`) y las etapas privadas de su obra en el portal
+(`etapas`). La obra del portal se busca por su nombre exacto y por tu correo (tienes que ser
+miembro de esa obra). Las dos etapas se buscan por el mismo número de orden. Es una sola
+instrucción: si algo falla, no cambia ninguna de las dos.
+
+- **Arrancar una etapa:** `en_proceso` con su fecha real de inicio.
+- **Terminarla:** `terminada` con la fecha en `null`: conserva la fecha de inicio que tiene.
+- **Volverla a "Por iniciar"** (si se marcó por error): `por_iniciar` con la fecha en `null`;
+  borra la fecha en los dos lados.
+- Al pasar de una etapa a la siguiente, corre la plantilla dos veces: primero termina la
+  anterior y después arranca la nueva (la ficha muestra como etapa actual la que está en
+  proceso).
+- No toca la descripción, el video ni la fecha de fin del portal (`fecha_fin`), ni el estado
+  de la obra (`obras.estado`). La fecha de fin del portal se llena aparte, si se usa.
+
+Candados (`ALTO`): quedan valores con `<`; orden fuera de 1–99; estado fuera de la lista;
+`por_iniciar` con fecha; la casa no existe o está vendida (su avance público se congeló: el
+cambio va solo en el portal, con `docs/GUIA_CARGA_OBRAS.md`); la casa no tiene etapa pública
+con ese orden; no hay **exactamente una** obra con ese nombre de la que tu correo sea miembro;
+esa obra no tiene etapa con ese orden; la etapa se llama distinto en lo público y en el portal
+(el orden no es el mismo en los dos lados); `en_proceso` sin fecha en un lado que todavía no
+la tiene.
+
+```sql
+with
+datos as materialized (
+  select '<casa-esparta-ejemplo-1>'::text                as slug,
+         '<Nombre exacto de la obra en el portal>'::text as obra,
+         '<tu-correo>'::text                             as correo,
+         '<2>'::smallint                                 as orden,
+         '<en_proceso | terminada | por_iniciar>'::text  as estado,
+         '<AAAA-MM-DD>'::date                            as fecha_inicio
+),
+-- ===== Debajo de esta línea no se edita nada =====
+casa as (
+  select c.id, c.estado from public.casas_venta c, datos d where c.slug = d.slug
+),
+publica as (
+  select e.id, e.nombre, e.fecha_inicio
+  from public.casas_venta_etapas e, casa c, datos d
+  where e.casa_id = c.id and e.orden = d.orden
+),
+obra as (
+  select distinct o.id
+  from public.obras o
+  join public.obra_miembros m on m.obra_id = o.id
+  join auth.users u on u.id = m.user_id
+  cross join datos d
+  where o.nombre = d.obra and u.email = lower(trim(d.correo))
+),
+portal as (
+  select e.id, e.nombre, e.fecha_inicio
+  from public.etapas e, obra o, datos d
+  where e.obra_id = o.id and e.orden = d.orden
+),
+-- Revisa todo antes de cambiar nada (mensaje "ALTO: ...", como en las demás plantillas)
+candado as materialized (
+  select case
+    when exists (select 1 from jsonb_each_text(to_jsonb(d)) where value like '%<%') then
+      format('ALTO: quedan valores sin reemplazar (con "<") en: %s. No se cambió nada.',
+             (select string_agg(key, ', ' order by key)
+              from jsonb_each_text(to_jsonb(d)) where value like '%<%'))
+    when d.orden is null or d.orden not between 1 and 99 then
+      'ALTO: orden va de 1 a 99 (el número de la etapa). No se cambió nada.'
+    when d.estado is null or d.estado not in ('por_iniciar', 'en_proceso', 'terminada') then
+      'ALTO: estado va en por_iniciar, en_proceso o terminada. No se cambió nada.'
+    when d.estado = 'por_iniciar' and d.fecha_inicio is not null then
+      'ALTO: una etapa por iniciar va sin fecha (fecha_inicio en null). No se cambió nada.'
+    when not exists (select 1 from casa) then
+      format('ALTO: no existe una casa con el slug "%s". No se cambió nada.', d.slug)
+    when (select estado from casa) = 'vendida' then
+      'ALTO: la casa está vendida: su avance público se congeló. Carga el cambio solo en el portal (docs/GUIA_CARGA_OBRAS.md). No se cambió nada.'
+    when not exists (select 1 from publica) then
+      format('ALTO: la casa no tiene etapa pública de orden %s. No se cambió nada.', d.orden)
+    when (select count(*) from obra) <> 1 then
+      format('ALTO: hay %s obras llamadas "%s" de las que el correo "%s" es miembro; tiene que haber exactamente una. No se cambió nada.',
+             (select count(*) from obra), d.obra, d.correo)
+    when not exists (select 1 from portal) then
+      format('ALTO: la obra del portal no tiene etapa de orden %s. No se cambió nada.', d.orden)
+    when lower(trim((select nombre from publica))) <> lower(trim((select nombre from portal))) then
+      format('ALTO: la etapa %s se llama "%s" en lo público y "%s" en el portal. Revisa el orden. No se cambió nada.',
+             d.orden, (select nombre from publica), (select nombre from portal))
+    when d.estado = 'en_proceso' and d.fecha_inicio is null
+         and ((select fecha_inicio from publica) is null or (select fecha_inicio from portal) is null) then
+      'ALTO: una etapa en proceso necesita su fecha de inicio (fecha_inicio). No se cambió nada.'
+  end as error
+  from datos d
+),
+cambio_publica as (
+  update public.casas_venta_etapas e
+  set estado       = d.estado,
+      fecha_inicio = case when d.estado = 'por_iniciar' then null
+                          else coalesce(d.fecha_inicio, e.fecha_inicio) end
+  from datos d, publica p, candado k
+  where e.id = p.id and coalesce(k.error::int, 0) = 0
+  returning e.orden, e.nombre, e.estado, e.fecha_inicio
+),
+cambio_portal as (
+  update public.etapas e
+  set estado       = d.estado,
+      fecha_inicio = case when d.estado = 'por_iniciar' then null
+                          else coalesce(d.fecha_inicio, e.fecha_inicio) end
+  from datos d, portal p, candado k
+  where e.id = p.id and coalesce(k.error::int, 0) = 0
+  returning e.orden, e.nombre, e.estado, e.fecha_inicio
+)
+select
+  (select coalesce(error::int, 0) from candado)                                  as candado,
+  (select orden || '. ' || nombre || ' · ' || estado || ' · '
+          || coalesce(fecha_inicio::text, 'sin fecha') from cambio_publica)     as etapa_publica,
+  (select orden || '. ' || nombre || ' · ' || estado || ' · '
+          || coalesce(fecha_inicio::text, 'sin fecha') from cambio_portal)      as etapa_portal;
+```
+
+Resultado esperado: `candado = 0` y las dos columnas con la misma etapa, estado y fecha. Si
+alguna sale vacía, algo no cuadró y no se cambió nada. La prueba de esta plantilla (cada
+candado, arrancar, terminar y volver a por iniciar, todo revertido) está en
+`supabase/pruebas/008_plantilla_cambiar_etapa.sql`.
 
 ## Cambios del día a día (Table Editor o SQL)
 Se hacen editando la fila de la casa en *Table Editor → `casas_venta`* (o con un `update`

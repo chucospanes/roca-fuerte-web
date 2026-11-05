@@ -33,9 +33,13 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   en obra desde el 2026-10-25), con el usuario como único miembro, etapas 1 "Terracería"
   (terminada) y 2 "Trazo y zanjeado" (en proceso desde el 2026-11-03) y un avance; sin
   material ni documento. Verificado con lecturas (clave secreta, solo lectura).
-- **Cada cambio de etapa se carga dos veces:** en `casas_venta_etapas` (público, guía
-  `docs/GUIA_CARGA_CASAS.md`) y en `etapas` del portal. Al venderse la casa, el público se
-  deja de actualizar y se agrega al comprador como miembro de la obra.
+- **Cada cambio de etapa vive en dos lugares** (`casas_venta_etapas`, público, y `etapas` del
+  portal): la **plantilla 5 "cambiar etapa"** de `docs/GUIA_CARGA_CASAS.md` los cambia a la vez
+  (slug, obra, correo, orden, estado y fecha; candados ALTO si no encuentra exactamente una
+  etapa de cada lado, si los nombres no coinciden o si la casa está vendida). Su prueba con
+  rollback, `supabase/pruebas/008_plantilla_cambiar_etapa.sql` (16 casos), **falta que la
+  corra el usuario**. Al venderse la casa, el público se deja de actualizar y se agrega al
+  comprador como miembro de la obra.
 
 ### Pendientes del sitio llenados (2026-11-04, en `main`)
 - **Desplegado y verificado con lecturas en el dominio (2026-11-04):** "A consultar", la
