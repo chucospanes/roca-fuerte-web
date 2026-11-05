@@ -32,8 +32,8 @@
 2. **Subir los archivos** en *Storage → `casas`*, dentro de esa carpeta.
 3. **Fotos y plano** (plantilla 2): registra los archivos subidos. La foto de orden 1 es la
    portada.
-4. **Publicar** (plantilla 3): la casa aparece en `/casas` y, si no está vendida, en la
-   portada.
+4. **Publicar** (plantilla 3): la casa aparece en `/casas` y en la portada. Una casa vendida
+   no se ve en ningún lado público: solo queda su tarjeta mínima en el catálogo (ver abajo).
 
 ### Estructura del bucket `casas`
 Las rutas **no** llevan "casas/" al inicio: "casas" es el nombre del bucket.
@@ -272,7 +272,8 @@ select
 ```
 
 ### Plantilla 3: publicar u ocultar
-`true` publica la casa (aparece en `/casas` y, si no está vendida, en la portada); `false`
+`true` publica la casa (aparece en `/casas` y en la portada; si está vendida, solo su tarjeta
+mínima en el catálogo); `false`
 la oculta. Para publicar, la casa necesita su foto de portada (foto de orden 1).
 
 Candados (`ALTO`): el slug todavía tiene `<` o no existe; publicar una casa sin foto de
@@ -328,12 +329,14 @@ de la sección "Avance de la obra" de su ficha. Solo se ve si la casa está publ
   por iniciar va **sin fecha**; la fecha real se pone cuando arranca (la base rechaza una etapa
   por iniciar con fecha).
 - **Video**: solo YouTube o Vimeo, como el resto del catálogo.
-- **La portada** muestra la primera casa del catálogo (vendidas al final) que tenga etapas.
+- **La portada** muestra la primera casa en construcción que tenga etapas; si no hay, la primera
+  terminada o reservada con etapas. Si no hay ninguna, la sección no aparece (ni sus enlaces en
+  el menú, el hero y Calidad).
 - **Etapa actual de la ficha**: sale de la etapa `en_proceso`; la columna `etapa_actual` de la
   casa solo se usa si la casa no tiene etapas cargadas.
-- **Al venderse la casa, su avance público se congela**: no se carga nada más aquí y el avance
-  sigue solo en el portal del comprador. La bitácora dice "ya vendida" y que el avance sigue
-  en el portal privado de su dueño.
+- **Al venderse la casa, deja de verse en lo público** (migración 011): su ficha da 404 y no se
+  ven sus fotos, etapas ni diario de obra (nada se borra en la base). El avance sigue solo en el
+  portal del comprador.
 
 ### Plantilla 4: carga inicial de las etapas
 Una sola instrucción: si algo falla, no se crea nada. Candados (`ALTO`): la casa no existe, o
@@ -422,8 +425,8 @@ instrucción: si algo falla, no cambia ninguna de las dos.
   de la obra (`obras.estado`). La fecha de fin del portal se llena aparte, si se usa.
 
 Candados (`ALTO`): quedan valores con `<`; orden fuera de 1–99; estado fuera de la lista;
-`por_iniciar` con fecha; la casa no existe o está vendida (su avance público se congeló: el
-cambio va solo en el portal, con `docs/GUIA_CARGA_OBRAS.md`); la casa no tiene etapa pública
+`por_iniciar` con fecha; la casa no existe o está vendida (ya no se ve en lo público: el cambio
+va solo en el portal, con `docs/GUIA_CARGA_OBRAS.md` o el panel `/admin`); la casa no tiene etapa pública
 con ese orden; no hay **exactamente una** obra con ese nombre de la que tu correo sea miembro;
 esa obra no tiene etapa con ese orden; la etapa se llama distinto en lo público y en el portal
 (el orden no es el mismo en los dos lados); `en_proceso` sin fecha en un lado que todavía no
@@ -477,7 +480,7 @@ candado as materialized (
     when not exists (select 1 from casa) then
       format('ALTO: no existe una casa con el slug "%s". No se cambió nada.', d.slug)
     when (select estado from casa) = 'vendida' then
-      'ALTO: la casa está vendida: su avance público se congeló. Carga el cambio solo en el portal (docs/GUIA_CARGA_OBRAS.md). No se cambió nada.'
+      'ALTO: la casa está vendida: ya no se ve en lo público. Carga el cambio solo en el portal (docs/GUIA_CARGA_OBRAS.md o /admin). No se cambió nada.'
     when not exists (select 1 from publica) then
       format('ALTO: la casa no tiene etapa pública de orden %s. No se cambió nada.', d.orden)
     when (select count(*) from obra) <> 1 then
@@ -540,8 +543,11 @@ update public.casas_venta set etapa_actual = 'Techo', estado = 'en_construccion'
 
 - **Reservada:** `estado = 'reservada'`. Se ve con la etiqueta "Reservada", sin precio y con
   el botón de WhatsApp.
-- **Vendida:** `estado = 'vendida'`. Se ve al final del catálogo con la etiqueta "Vendida",
-  sin precio ni botón, y sale de la portada. Para que no se vea, ocúltala con la plantilla 3.
+- **Vendida:** `estado = 'vendida'`. Deja de verse en lo público (migración 011): en el
+  catálogo queda solo una tarjeta mínima "{modelo} · Vendida · {departamento}" con la
+  ilustración de la fachada del modelo, sin enlace, precio ni ubicación; su ficha da 404; sale
+  de la portada y de la bitácora. Nada se borra. Para que ni la tarjeta mínima aparezca,
+  ocúltala con la plantilla 3. Lo público tarda hasta 1 minuto en cambiar (caché).
 - **Quitar una foto:** borra su fila en `casas_venta_imagenes` y después el archivo en
   Storage. Si era la de orden 1, otra foto debe pasar a orden 1 (o la casa queda sin
   portada).

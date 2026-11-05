@@ -13,6 +13,28 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Casas vendidas ocultas en lo público (rama `feat/vendidas-ocultas`, sin unir a `main`)
+- **Migración 011 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada. La
+  política pública de `casas_venta` excluye las vendidas y, en cascada, sus fotos, etapas y
+  diario (nada se borra); `casas_vendidas()` da solo modelo y departamento; candado
+  `obras_casa_solo_compra`; con la casa vendida, el administrador puede quitar de la ficha (y
+  borrar las copias), no publicar. Ver DECISIONES.md (2026-11-05).
+- Código: `/casas` con la sección "Casas vendidas" (tarjeta mínima "{modelo} · Vendida ·
+  {departamento}" con la ilustración de la fachada, sin enlace); la ficha de una vendida da 404
+  con noindex (el proxy ya lo hacía al no encontrarla); bitácora con la casa en construcción con
+  etapas (si no hay, terminada o reservada); sin ninguna, la sección no aparece y se ocultan sus
+  enlaces (menú, pantalla 2 del hero sin botón y Calidad). Numeración de secciones con un
+  contador CSS: sin bitácora, Precios pasa a 05 sin hueco. Panel: "Publicado, pero no se ve: casa
+  vendida" y solo "Quitar de la ficha". Guía de casas y plantilla 5 actualizadas (su prueba,
+  regenerada: solo cambió el texto del ALTO de casa vendida).
+- Probado: lint, typecheck y build; build contra una simulación local de la 011 en 4 casos (obra
+  y vendida, solo vendida, ninguna, solo reservada con etapas); capturas a 390 px; build contra
+  Supabase real: bitácora de la casa de San José Villanueva, sin vendidas, Diario de obra con el
+  zanjeado.
+- **Falta antes de unir a `main`:** visto bueno de las capturas.
+- Pendiente anotado: el texto del punto 1 de Calidad dice "queda documentado en la bitácora de
+  obra" aunque no haya bitácora visible.
+
 ### Diario de obra en la ficha de la casa (`v1.5.0`, en `main`, 2026-11-05)
 - **Migración 010 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada.
   Verificado con lecturas: `casas_venta_avances` en 0, ningún avance con publicación, sin
@@ -34,8 +56,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   sesión real de la cuenta de cliente de prueba: 3 funciones, insert/update/delete en
   `casas_venta_avances`, cambiar `avances.publicacion_id` y 3 subidas al bucket `casas`
   rechazadas; no lista copias ni ve publicaciones; borrar en `casas` no borra nada. Verificado
-  con lecturas que no quedó nada escrito. **Falta:** quitar la cuenta de prueba (lo hace el
-  usuario) y publicar desde el celular el avance del zanjeado (verificarlo en el dominio).
+  con lecturas que no quedó nada escrito. Cuenta de prueba quitada y borrada (verificado). **Zanjeado publicado
+  desde el celular (2026-11-05):** visible, con su copia `01.jpg` en `casas` (674 KB, sin EXIF) y
+  el original en `obras`; verificado con lecturas y en la ficha.
 - Prueba real de `/admin` (2026-11-05): avance "Zanjeado para las fundaciones" con 1 foto
   (01.jpg, 674 KB, 1506 × 2000, sin EXIF, XMP ni GPS, orientación correcta) y su fila en
   `registro_admin`. Cuenta de prueba del cliente quitada de la obra y borrada (verificado).
