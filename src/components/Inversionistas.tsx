@@ -7,7 +7,7 @@ export function Inversionistas() {
   return (
     <Seccion
       id="inversionistas"
-      numero="07"
+      numerada
       etiqueta="Para inversionistas"
       titulo={inversionistas.titulo}
       intro={inversionistas.intro}

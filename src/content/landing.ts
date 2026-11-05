@@ -79,7 +79,7 @@ export const calidad: Punto[] = [
   {
     titulo: "Control de calidad en obra, documentado",
     texto:
-      "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda documentado en la bitácora de obra.",
+      "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda documentado etapa por etapa.",
     enlace: { href: "#bitacora", texto: "Ver la bitácora" },
   },
   {

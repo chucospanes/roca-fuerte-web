@@ -87,7 +87,7 @@ candado as materialized (
     when not exists (select 1 from casa) then
       format('ALTO: no existe una casa con el slug "%s". No se cambió nada.', d.slug)
     when (select estado from casa) = 'vendida' then
-      'ALTO: la casa está vendida: su avance público se congeló. Carga el cambio solo en el portal (docs/GUIA_CARGA_OBRAS.md). No se cambió nada.'
+      'ALTO: la casa está vendida: ya no se ve en lo público. Carga el cambio solo en el portal (docs/GUIA_CARGA_OBRAS.md o /admin). No se cambió nada.'
     when not exists (select 1 from publica) then
       format('ALTO: la casa no tiene etapa pública de orden %s. No se cambió nada.', d.orden)
     when (select count(*) from obra) <> 1 then

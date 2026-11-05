@@ -25,7 +25,7 @@ export async function Opciones() {
   return (
     <Seccion
       id="opciones"
-      numero="06"
+      numerada
       etiqueta="Precios"
       fondo="blanco"
       titulo="Dos formas de tener tu casa"

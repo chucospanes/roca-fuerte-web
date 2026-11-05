@@ -16,23 +16,34 @@ export const catalogo = {
   /** Etiqueta de las casas disponibles (en construcción o terminadas). */
   propiaEnVenta: `Casa ${site.marca} · En venta`,
   verAvance: "Ver el avance de esta casa",
+  /**
+   * Casas vendidas: tarjeta mínima, sin enlace ni datos de la casa (ver DECISIONES.md,
+   * 2026-11-05). La foto es la ilustración de la fachada del modelo, nunca una foto real.
+   */
+  vendidas: {
+    titulo: "Casas vendidas",
+    tarjeta: (modelo: string, departamento: string) => `${modelo} · Vendida · ${departamento}`,
+    altFachada: (modelo: string) => `Ilustración de la fachada del modelo ${modelo}`,
+    /** Elevación del modelo sin cotas ni notas (SVG liviano, dibujado aparte de la lámina). */
+    fachadaLimpia: "/fachada-esparta-limpia.svg",
+  },
 };
 
 /**
- * Bitácora de la portada (ver DECISIONES.md, 2026-11-04). El nombre y el enlace salen de la
- * casa del catálogo; al venderse, su avance público se congela y sigue solo en el portal.
+ * Bitácora de la portada (ver DECISIONES.md, 2026-11-04 y 2026-11-05). El nombre y el enlace
+ * salen de la casa del catálogo en obra. Las vendidas no se muestran; sin casa en obra, la
+ * sección no aparece.
  */
 export const bitacoraCasa = {
   titulo: (nombre: string) => `Obra en curso: ${nombre}`,
-  tituloSinObra: "Bitácora de obra",
-  sinObra: "Todavía no hay una obra publicada.",
+  /** Solo si Supabase no respondió (sin casa en obra, la sección no aparece). */
+  tituloSinDatos: "Bitácora de obra",
   error: "No pudimos cargar el avance de la obra en este momento.",
   linea: {
     en_construccion: `Casa propia de ${site.marca}, a la venta.`,
     terminada: `Casa propia de ${site.marca}, a la venta.`,
     reservada: `Casa propia de ${site.marca}, reservada.`,
-    vendida: `Casa construida por ${site.marca}, ya vendida. El avance sigue en el portal privado de su dueño.`,
-  } satisfies Record<CasaVenta["estado"], string>,
+  } satisfies Record<Exclude<CasaVenta["estado"], "vendida">, string>,
   verCasa: "Ver la casa",
   nota: "Las obras de nuestros clientes se siguen en su portal privado.",
 };

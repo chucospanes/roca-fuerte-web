@@ -744,3 +744,27 @@ existente se publica o se quita de la ficha desde la página de la obra.
 - **Casa vendida:** lo publicado se congela, como la bitácora (no se publica ni se quita nada).
 - Mismo modelo de seguridad que la 009: escritura solo con funciones que revisan `es_admin()`,
   Storage solo para administradores y solo en la carpeta de una publicación de esa casa.
+
+## 2026-11-05 — Lo público muestra solo casas nuestras no vendidas; la vendida se oculta (reemplaza tres decisiones anteriores)
+Decisión del usuario, en la rama `feat/vendidas-ocultas`. **Reemplaza:** "Vendida se muestra al
+final, sin precio ni botón" (2026-11-02, catálogo de casas), "Al venderse la casa, el avance
+público se congela" (2026-11-04, `casas_venta_etapas`) y "Casa vendida: lo publicado se congela"
+(2026-11-05, Diario de obra).
+- **Lo público muestra solo casas nuestras** (`casas_venta`) en construcción, terminadas o
+  reservadas (la reservada sigue con etiqueta y sin precio). Las obras a pedido de clientes o
+  inversionistas nunca son públicas: solo existen en el portal. Candado en la base: solo una obra
+  de modalidad `compra` puede ligarse a una casa del catálogo (`obras_casa_solo_compra`).
+- **Casa vendida**, oculta en la BASE (migración 011), no solo en el código: la política pública
+  de `casas_venta` excluye las vendidas y, en cascada, sus imágenes, etapas públicas y diario de
+  obra (nada se borra). Lo único que sale de una vendida es modelo y departamento, con la función
+  `casas_vendidas()`, para la tarjeta mínima del catálogo: "{modelo} · Vendida · {departamento}",
+  con la ilustración de la fachada del modelo, sin enlace, precio, distrito, municipio, foto real
+  ni diario. Su ficha responde 404 con noindex (el proxy ya lo hace cuando no la encuentra). No
+  aparece en "Casas disponibles". Riesgo aceptado: las fotos ya subidas al bucket público siguen
+  accesibles para quien tenga su URL exacta (no se listan; la ruta lleva un uuid).
+- **Bitácora de la portada:** la siguiente casa nuestra en obra (en construcción con etapas; si no
+  hay, terminada o reservada con etapas). Si no hay ninguna, la sección no aparece y se ocultan los
+  tres enlaces a `#bitacora` (menú, pantalla 2 del hero y "Lo que nos diferencia").
+- **Panel:** con la casa vendida no se publica, pero sí se puede "Quitar de la ficha" y borrar las
+  copias públicas de sus fotos (`admin_despublicar_avance` y la política de borrado del bucket
+  `casas` dejan de exigir que no esté vendida).

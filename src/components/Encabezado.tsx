@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/config/site";
+import { hayBitacora } from "@/lib/casas";
 import { MenuMovil, type EnlaceMenu } from "./MenuMovil";
 
 // Rutas absolutas ("/#..."): el encabezado también se usa en /casas
@@ -17,8 +18,11 @@ const secciones: EnlaceMenu[] = [
 /** "Acceso clientes" solo aparece con el portal encendido (`site.portalClientes`). */
 const accesoClientes: EnlaceMenu = { href: "/portal", texto: "Acceso clientes" };
 
-export function Encabezado() {
-  const enlaces = site.portalClientes ? [...secciones, accesoClientes] : secciones;
+/** Sin casa en obra no hay bitácora en la portada: el menú no la enlaza. */
+export async function Encabezado() {
+  const conBitacora = await hayBitacora();
+  const visibles = conBitacora ? secciones : secciones.filter((e) => e.href !== "/#bitacora");
+  const enlaces = site.portalClientes ? [...visibles, accesoClientes] : visibles;
   return (
     <header className="sticky top-0 z-30 border-b border-piedra-200 bg-concreto/95 backdrop-blur">
       <div className="relative mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4">

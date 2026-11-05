@@ -17,7 +17,7 @@ function Lista({ puntos }: { puntos: string[] }) {
 /** Lo que nos diferencia: lo que va en todas las casas y lo propio de las casas a pedido. */
 export function Diferencias() {
   return (
-    <Seccion id="diferencias" numero="01" etiqueta="Nuestra forma de construir" titulo="Lo que nos diferencia">
+    <Seccion id="diferencias" numerada etiqueta="Nuestra forma de construir" titulo="Lo que nos diferencia">
       <div className="grid gap-6 md:grid-cols-[3fr_2fr]">
         <div className="rounded-lg border border-piedra-200 bg-blanco p-6">
           <h3 className="font-display text-2xl font-extrabold">{diferencias.todas.titulo}</h3>

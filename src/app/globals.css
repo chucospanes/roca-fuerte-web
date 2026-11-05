@@ -72,3 +72,13 @@ details > summary::-webkit-details-marker {
 dialog::backdrop {
   background: rgb(35 32 29 / 0.85);
 }
+
+/* Secciones numeradas de la portada (01, 02…): el número sale de un contador, así una sección
+   que no aparece (la bitácora sin casa en obra) no deja un hueco. Ver Seccion en ui.tsx. */
+.secciones-numeradas {
+  counter-reset: seccion;
+}
+.seccion-numerada::before {
+  counter-increment: seccion;
+  content: counter(seccion, decimal-leading-zero) " — ";
+}
