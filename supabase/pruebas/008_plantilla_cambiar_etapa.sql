@@ -12,6 +12,8 @@
 -- Datos de prueba: casa P (en construcción, etapas 1–5) y casa V (vendida); obra O con el
 -- usuario U como miembro (etapas 1–4; la 4 con otro nombre, sin la 5) y obra O2 con el MISMO
 -- nombre, de la que U no es miembro.
+-- Postgres muestra el ALTO dentro de "invalid input syntax for type integer: ...": por eso
+-- cada mensaje esperado se busca con % adelante.
 -- Casos (en cada ALTO se comprueba además que no cambió ninguna etapa):
 --    1. Un "<" olvidado: ALTO.                    8. Nombre de obra que no existe: ALTO.
 --    2. Orden 0: ALTO.                            9. Correo que no es miembro: ALTO.
@@ -213,7 +215,7 @@ begin
       mensaje := null;
     exception when others then mensaje := sqlerrm;
     end;
-    if mensaje is null or mensaje not like caso.esperado then
+    if mensaje is null or mensaje not like ('%' || caso.esperado) then
       raise exception 'FALLA caso %: %', caso.n, coalesce(mensaje, 'no dio error (' || row_to_json(r)::text || ')');
     end if;
     execute q_huella into despues using casa_p, casa_v, obra_o, obra_o2;
@@ -230,7 +232,7 @@ begin
     mensaje := null;
   exception when others then mensaje := sqlerrm;
   end;
-  if mensaje is null or mensaje not like 'ALTO: hay 2 obras llamadas%' then
+  if mensaje is null or mensaje not like '%ALTO: hay 2 obras llamadas%' then
     raise exception 'FALLA caso 10: %', coalesce(mensaje, 'no dio error');
   end if;
   execute q_huella into despues using casa_p, casa_v, obra_o, obra_o2;
