@@ -13,6 +13,24 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Sección "Hermano cercano" (rama `feat/hermanos`, sin unir a `main`)
+- Sección 02 de la portada (`id="hermanos"`, después de "Lo que nos diferencia"): título "Hermano
+  ~~lejano~~ cercano." (el lector de pantalla lee "Hermano cercano."), subtítulo, 4 puntos y botón
+  de WhatsApp (opción `general`, ubicación `hermanos`, mensaje propio). Mapa SVG en línea,
+  decorativo, con líneas punteadas desde Los Ángeles, Houston, Washington, Nueva York, Toronto,
+  Madrid, Roma y Melbourne hasta El Salvador; animación sutil apagada con
+  `prefers-reduced-motion`. El mapa no va detrás del texto (no le resta contraste): columna
+  derecha en escritorio; franja centrada en El Salvador en el celular. "Hermano cercano" en el
+  menú; con 10 enlaces, el menú en línea pasa a 1280 px (antes 1024) y debajo se usa el
+  desplegable.
+- Migración `012_clics_hermanos.sql` escrita (ubicación `hermanos` en el CHECK de
+  `clics_venta`, sin "if exists"). **Falta que la aplique el usuario**; sin ella, los clics de
+  este botón se descartan (la ruta responde 204 y lo registra).
+- Probado: lint, typecheck y build; capturas a 390 y 1280 px (sin desborde).
+- **Falta antes de unir a `main`:** aplicar la 012 y verificarla; visto bueno de las capturas;
+  decidir el texto del punto "Pagos por etapas" ("No pagas por lo que no se ha construido"
+  contradice la pregunta frecuente publicada: "30 % al firmar el contrato").
+
 ### Casas vendidas ocultas en lo público (`v1.6.0`, en `main`, 2026-11-05)
 - **Migración 011 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada. La
   política pública de `casas_venta` excluye las vendidas y, en cascada, sus fotos, etapas y
