@@ -16,6 +16,9 @@ import { videoObra, type VideoObra } from "@/lib/video";
  * Caché `minutes` (Next: se regenera cada minuto, el navegador lo reusa hasta 5 min): un
  * cambio en la fila (por ejemplo, el lote) se ve en unos minutos sin desplegar.
  * Si Supabase falla, se devuelve `{ ok: false }` y la página lo dice; nunca rompe la landing.
+ *
+ * Las casas VENDIDAS no se ven desde la web (011): la RLS las oculta con sus fotos, etapas y
+ * diario. Lo único público de una vendida es modelo y departamento (`listarVendidas`).
  */
 
 export const BUCKET_CASAS = "casas";
@@ -91,20 +94,10 @@ function avancePublico({ id, casa_id, fecha, titulo, descripcion, video_url, fot
   };
 }
 
-/**
- * Vendidas al final; dentro de cada grupo, por `orden`. El orden es estable: a igual `orden`
- * queda el de la consulta (la más nueva primero).
- */
-function ordenCatalogo(a: FilaCasa, b: FilaCasa): number {
-  const va = a.estado === "vendida" ? 1 : 0;
-  const vb = b.estado === "vendida" ? 1 : 0;
-  return va - vb || a.orden - b.orden;
-}
-
 /** Etiqueta de la caché del catálogo y la bitácora: el panel /admin la refresca al cambiar una etapa. */
 export const TAG_CASAS = "casas";
 
-/** Casas publicadas con su foto de portada (foto de orden 1), vendidas al final. */
+/** Casas publicadas y no vendidas (la RLS oculta las vendidas) con su foto de portada (foto de orden 1). */
 export async function listarCasas(): Promise<Resultado<CasaListada[]>> {
   "use cache";
   cacheLife("minutes");
@@ -146,7 +139,7 @@ export async function listarCasas(): Promise<Resultado<CasaListada[]>> {
     const porCasa = new Map(portadas.map((p) => [p.casa_id, imagen(p)]));
     return {
       ok: true,
-      datos: [...casas].sort(ordenCatalogo).map((c) => ({ ...c, portada: porCasa.get(c.id) ?? null })),
+      datos: casas.map((c) => ({ ...c, portada: porCasa.get(c.id) ?? null })),
     };
   } catch (e) {
     console.error("[casas] listar falló", { mensaje: e instanceof Error ? e.message : String(e) });
@@ -238,9 +231,10 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
 }
 
 /**
- * La obra de la bitácora de la portada: la primera casa del catálogo (vendidas al final) que
- * tenga etapas cargadas, con su avance. `datos: null` si ninguna tiene. Las casas salen de
- * `listarCasas` (misma lectura en caché); las etapas, de una consulta más.
+ * La obra de la bitácora de la portada: la primera casa EN CONSTRUCCIÓN (en el orden del
+ * catálogo) que tenga etapas cargadas; si no hay, la primera terminada o reservada con etapas.
+ * `datos: null` si ninguna tiene: la portada no muestra la sección ni sus enlaces. Las casas
+ * salen de `listarCasas` (misma lectura en caché, sin vendidas); las etapas, de una consulta más.
  */
 export async function leerObraEnCurso(): Promise<Resultado<ObraEnCurso | null>> {
   "use cache";
@@ -264,12 +258,44 @@ export async function leerObraEnCurso(): Promise<Resultado<ObraEnCurso | null>> 
       console.error("[casas] bitácora falló", { codigo: error.code, mensaje: error.message });
       return { ok: false };
     }
-    const casa = casas.datos.find((c) => etapas.some((e) => e.casa_id === c.id));
+    const conEtapas = casas.datos.filter((c) => etapas.some((e) => e.casa_id === c.id));
+    const casa = conEtapas.find((c) => c.estado === "en_construccion") ?? conEtapas[0];
     if (!casa) return { ok: true, datos: null };
     return { ok: true, datos: { casa, etapas: etapas.filter((e) => e.casa_id === casa.id).map(etapa) } };
   } catch (e) {
     console.error("[casas] bitácora falló", { mensaje: e instanceof Error ? e.message : String(e) });
     return { ok: false };
+  }
+}
+
+/**
+ * ¿Hay bitácora en la portada? Sin casa en obra, la sección no aparece y se ocultan sus enlaces
+ * (menú, hero y Calidad). Si Supabase no respondió, se dejan: la sección muestra el aviso.
+ */
+export async function hayBitacora(): Promise<boolean> {
+  const resultado = await leerObraEnCurso();
+  return !resultado.ok || resultado.datos !== null;
+}
+
+/** Casa vendida en la tarjeta mínima del catálogo: solo modelo y departamento (011). */
+export type CasaVendida = { modelo: string; departamento: string };
+
+/** Casas vendidas para la tarjeta mínima (función `casas_vendidas()`). Sin ellas o si falla, lista vacía. */
+export async function listarVendidas(): Promise<CasaVendida[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(TAG_CASAS);
+
+  try {
+    const { data, error } = await clientePublico().rpc("casas_vendidas");
+    if (error) {
+      console.error("[casas] vendidas fallaron", { codigo: error.code, mensaje: error.message });
+      return [];
+    }
+    return data ?? [];
+  } catch (e) {
+    console.error("[casas] vendidas fallaron", { mensaje: e instanceof Error ? e.message : String(e) });
+    return [];
   }
 }
 

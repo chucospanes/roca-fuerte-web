@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { precioUSD } from "@/config/site";
 import { catalogo, muestraPrecio, nombresEstado, ubicacionCasa } from "@/content/casas";
-import { casaDisponible, type CasaListada } from "@/lib/casas";
+import { esparta } from "@/content/esparta";
+import { casaDisponible, type CasaListada, type CasaVendida } from "@/lib/casas";
 
 /** Etiqueta del estado de una casa; "Vendida" en oscuro, el resto en terracota. */
 export function EtiquetaEstado({ estado }: { estado: CasaListada["estado"] }) {
@@ -67,6 +68,40 @@ export function TarjetaCasa({ casa }: { casa: CasaListada }) {
           )}
         </div>
       </Link>
+    </li>
+  );
+}
+
+/**
+ * Tarjeta mínima de una casa vendida: "{modelo} · Vendida · {departamento}", con la ilustración
+ * de la fachada del modelo (nunca una foto real). Sin enlace, precio, distrito ni municipio: la
+ * base solo entrega modelo y departamento (`casas_vendidas()`, 011).
+ */
+export function TarjetaVendida({ casa }: { casa: CasaVendida }) {
+  const esEsparta = casa.modelo.trim().toLowerCase() === "esparta";
+  return (
+    <li className="flex h-full flex-col overflow-hidden rounded-lg border border-piedra-200 bg-blanco">
+      <div className="relative aspect-[4/3] bg-blanco">
+        {esEsparta ? (
+          <Image
+            src={esparta.fachada.src}
+            alt={catalogo.vendidas.altFachada(casa.modelo)}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 330px"
+            className="object-contain p-4 opacity-80 grayscale-[30%]"
+          />
+        ) : (
+          <span className="absolute inset-0 flex items-center justify-center text-sm text-piedra-600">
+            {casa.modelo}
+          </span>
+        )}
+        <span className="absolute top-3 left-3">
+          <EtiquetaEstado estado="vendida" />
+        </span>
+      </div>
+      <p className="p-5 font-display text-lg font-bold text-piedra-800">
+        {catalogo.vendidas.tarjeta(casa.modelo, casa.departamento)}
+      </p>
     </li>
   );
 }

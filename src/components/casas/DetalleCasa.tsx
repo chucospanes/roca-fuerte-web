@@ -98,7 +98,8 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
           </p>
         )}
         {/* Vendida: sin botón. Reservada: con botón (puede liberarse o haber otra parecida) */}
-        {casa.estado !== "vendida" && <BotonWhatsAppCasa casa={casa} className="mt-5 w-full sm:w-auto" />}
+        {/* Las vendidas no llegan aquí (011: la base no las entrega; el proxy responde 404) */}
+        <BotonWhatsAppCasa casa={casa} className="mt-5 w-full sm:w-auto" />
       </header>
 
       {portada && (

@@ -1,5 +1,5 @@
 /**
- * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–010).
+ * Tipos de la base de datos, escritos a mano a partir de `supabase/migrations/` (001–011).
  * Si cambia la migración, actualizar aquí (o regenerar con `supabase gen types`).
  */
 
@@ -254,7 +254,10 @@ export type BaseDeDatos = {
       casas_venta_avances: SoloLectura<CasaVentaAvance>;
     };
     Views: Record<never, never>;
-    Functions: Record<never, never>;
+    Functions: {
+      /** Lo único público de una casa vendida (011). */
+      casas_vendidas: { Args: Record<string, never>; Returns: { modelo: string; departamento: string }[] };
+    };
     Enums: Record<never, never>;
     CompositeTypes: Record<never, never>;
   };
