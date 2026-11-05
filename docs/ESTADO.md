@@ -13,7 +13,23 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Avance de las casas en Supabase y casa propia (`v1.3.0`, 2026-11-05)
+### Portal: fotos, documentos y materiales de la obra propia (rama `feat/portal-documentos-plantillas`, sin unir a `main`)
+- Plantillas en `docs/GUIA_CARGA_OBRAS.md`, con candados ALTO: **avance nuevo** (reescrita: etapa
+  por número, no duplica fecha y título, devuelve la carpeta de fotos), **documento nuevo**
+  (comprueba que el archivo esté subido en `{obra_id}/documentos/`; PDF, JPG, PNG o WebP) y
+  **materiales** (varias filas, marca opcional, sin repetidos). Prueba con rollback
+  `supabase/pruebas/004_plantillas_avance_documento_materiales.sql` (24 casos, armada desde la
+  guía): **falta que la corra el usuario**. Copias llenas para la obra de San José Villanueva
+  en `C:\Proyectos\roca-fuerte-sql\` (7, 8 y 9), fuera del repo.
+- Documentos en foto: el portal ya los abría (la ruta firma la URL y el navegador muestra la
+  imagen); sin cambios en la base. Nuevo: la tarjeta dice "PDF" o "Imagen" (por la extensión
+  de la ruta, que no sale del servidor). Lint, typecheck y build pasan; capturas a 390 y
+  1280 px con una página temporal de simulación (sin sesión ni Supabase, no commiteada). Falta
+  verlo con el primer documento real.
+- La obra (`693bc356…`) no tiene todavía fotos, documentos ni materiales; sus carpetas en
+  Storage → `obras` no existen (verificado con lecturas el 2026-11-05).
+
+ (`v1.3.0`, 2026-11-05)
 - Bitácora y avance de la ficha desde `casas_venta_etapas` (migración 008, una sola fuente);
   sale `src/content/bitacora.ts`. "Obra en curso: {nombre}" con la línea según el estado de la
   casa, "Ver la casa" y la nota del portal; etiqueta "Casa Roca Fuerte · En venta" en las

@@ -688,3 +688,13 @@ el código) y "Bitácora sin porcentajes" queda igual (sin porcentajes, solo est
   miembro; el día de la venta se agrega al comprador.
 - **Videos de etapas: solo YouTube y Vimeo**, como el resto de la base (antes el código
   aceptaba TikTok e Instagram como enlaces). Sale `videoEmbed` de `lib/video.ts`.
+
+## 2026-11-05 — Documentos del portal en foto y plantillas de avance, documento y materiales
+Decisión del usuario. Los documentos del portal (facturas, permisos…) pueden ser fotos JPG, PNG
+o WebP además de PDF: el bucket ya los aceptaba y la base no limita la extensión, así que no
+cambia la base. La tarjeta de cada documento dice "PDF" o "Imagen" según la extensión del
+archivo; la ruta se lee en el servidor y no se manda al navegador. Las cargas de avances,
+documentos y materiales pasan a plantillas SQL con candados ALTO (como las del catálogo): el
+avance indica la etapa por su número y no se duplica (misma fecha y título), el documento exige
+el archivo ya subido en la carpeta de documentos de su obra, y los materiales van varios a la
+vez, sin repetidos y con marca opcional (la marca solo se ve en el portal).
