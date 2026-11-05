@@ -3,13 +3,13 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
 import { supabasePublishableKey, supabaseUrl } from "@/lib/supabase/entorno";
-import type { CasaVenta, CasaVentaEtapa, CasaVentaImagen, BaseDeDatos } from "@/lib/supabase/tipos";
+import type { CasaVenta, CasaVentaAvance, CasaVentaEtapa, CasaVentaImagen, BaseDeDatos } from "@/lib/supabase/tipos";
 import { esquemaSlugCasa, esquemaVideoObra } from "@/lib/validacion";
 import { videoObra, type VideoObra } from "@/lib/video";
 
 /**
  * Lecturas del catálogo de casas en venta (005_casas_venta.sql) y de su avance público
- * (008_casas_venta_etapas.sql). Con la clave publishable y SIN sesión: la RLS devuelve solo
+ * (008_casas_venta_etapas.sql) y su diario de obra (010_casas_venta_avances.sql). Con la clave publishable y SIN sesión: la RLS devuelve solo
  * las casas publicadas, sus imágenes y sus etapas. Nunca con la clave
  * secreta. Los datos se cargan a mano en Supabase (docs/GUIA_CARGA_CASAS.md).
  *
@@ -28,11 +28,17 @@ export type CasaListada = Omit<CasaVenta, "publicada" | "created_at" | "updated_
 export type EtapaCasa = Pick<CasaVentaEtapa, "id" | "orden" | "nombre" | "estado" | "fecha_inicio" | "descripcion"> & {
   video: VideoObra | null;
 };
+/** Avance publicado en la ficha (diario de obra): copia pública de un avance del portal. */
+export type AvancePublico = Pick<CasaVentaAvance, "id" | "fecha" | "titulo" | "descripcion"> & {
+  video: VideoObra | null;
+  fotos: { nombre: string; url: string }[];
+};
 export type DetalleCasa = CasaListada & {
   fotos: Imagen[];
   plano: Imagen | null;
   video: VideoObra | null;
   etapas: EtapaCasa[];
+  diario: AvancePublico[];
 };
 /** La obra de la bitácora de la portada: una casa del catálogo con su avance. */
 export type ObraEnCurso = { casa: CasaListada; etapas: EtapaCasa[] };
@@ -42,10 +48,12 @@ const COLUMNAS =
   "id, slug, orden, nombre, modelo, descripcion, distrito, municipio, departamento, estado, etapa_actual, precio_usd, lote_frente_m, lote_fondo_m, lote_m2, planta_esparta, construccion_m2, dormitorios, banos, parqueos, agua, electricidad, aguas_negras, incluye, video_url";
 const COLUMNAS_IMAGEN = "id, casa_id, tipo, orden, ruta, ancho, alto, alt";
 const COLUMNAS_ETAPA = "id, casa_id, orden, nombre, estado, fecha_inicio, descripcion, video_url";
+const COLUMNAS_AVANCE = "id, casa_id, fecha, titulo, descripcion, video_url, fotos";
 
 type FilaCasa = Omit<CasaListada, "portada">;
 type FilaImagen = Omit<CasaVentaImagen, "created_at">;
 type FilaEtapa = Omit<CasaVentaEtapa, "created_at" | "updated_at">;
+type FilaAvance = Omit<CasaVentaAvance, "visible" | "created_at" | "updated_at">;
 
 function clientePublico() {
   return createClient<BaseDeDatos>(supabaseUrl(), supabasePublishableKey(), {
@@ -70,6 +78,17 @@ function videoValido(url: string | null): VideoObra | null {
 
 function etapa({ id, orden, nombre, estado, fecha_inicio, descripcion, video_url }: FilaEtapa): EtapaCasa {
   return { id, orden, nombre, estado, fecha_inicio, descripcion, video: videoValido(video_url) };
+}
+
+function avancePublico({ id, casa_id, fecha, titulo, descripcion, video_url, fotos }: FilaAvance): AvancePublico {
+  return {
+    id,
+    fecha,
+    titulo,
+    descripcion,
+    video: videoValido(video_url),
+    fotos: fotos.map((nombre) => ({ nombre, url: urlImagenCasa(`${casa_id}/avances/${id}/${nombre}`) })),
+  };
 }
 
 /**
@@ -185,6 +204,19 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
       console.error("[casas] etapas fallaron", { codigo: errorEtapas.code, mensaje: errorEtapas.message });
     }
 
+    // Diario de obra en orden cronológico (la RLS deja ver solo lo visible). Igual: sin él, la
+    // ficha se muestra.
+    const { data: avances, error: errorAvances } = await supabase
+      .from("casas_venta_avances")
+      .select(COLUMNAS_AVANCE)
+      .eq("casa_id", casa.id)
+      .order("fecha")
+      .order("created_at")
+      .returns<FilaAvance[]>();
+    if (errorAvances) {
+      console.error("[casas] diario falló", { codigo: errorAvances.code, mensaje: errorAvances.message });
+    }
+
     const fotos = imagenes.filter((i) => i.tipo === "foto").map(imagen);
     const plano = imagenes.find((i) => i.tipo === "plano");
     return {
@@ -196,6 +228,7 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
         plano: plano ? imagen(plano) : null,
         video: videoValido(casa.video_url),
         etapas: errorEtapas ? [] : etapas.map(etapa),
+        diario: errorAvances ? [] : avances.map(avancePublico),
       },
     };
   } catch (e) {

@@ -9,6 +9,7 @@ import { esparta } from "@/content/esparta";
 import type { DetalleCasa as Casa } from "@/lib/casas";
 import { BotonWhatsAppCasa } from "./BotonWhatsAppCasa";
 import { AvanceObra } from "./AvanceObra";
+import { DiarioObra } from "./DiarioObra";
 import { EtiquetaEstado, EtiquetaPropia } from "./TarjetaCasa";
 
 const m = (n: number) => `${n.toFixed(2)} m`;
@@ -83,7 +84,7 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
           {casa.nombre}
         </h1>
         <p className="mt-2 text-lg text-piedra-700">{ubicacionCasa(casa, true)}</p>
-        {casa.etapas.length > 0 && (
+        {(casa.etapas.length > 0 || casa.diario.length > 0) && (
           <a
             href="#avance"
             className="mt-1 inline-flex min-h-11 items-center font-semibold text-terracota underline-offset-4 hover:underline"
@@ -181,12 +182,22 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
         </p>
       )}
 
-      {casa.etapas.length > 0 && (
+      {(casa.etapas.length > 0 || casa.diario.length > 0) && (
         <section id="avance" className="mt-10 scroll-mt-20">
           <h2 className="font-display text-2xl font-extrabold">Avance de la obra</h2>
-          <div className="mt-6">
-            <AvanceObra etapas={casa.etapas} />
-          </div>
+          {casa.etapas.length > 0 && (
+            <div className="mt-6">
+              <AvanceObra etapas={casa.etapas} />
+            </div>
+          )}
+          {casa.diario.length > 0 && (
+            <div className="mt-10">
+              <h3 className="font-display text-xl font-extrabold">Diario de obra</h3>
+              <div className="mt-4">
+                <DiarioObra avances={casa.diario} titulo={casa.nombre} />
+              </div>
+            </div>
+          )}
         </section>
       )}
 
