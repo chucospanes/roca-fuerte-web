@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-05
-**Versión:** v1.6.0 — casas vendidas ocultas en lo público (tarjeta mínima, ficha 404, bitácora con la casa en obra), Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.7.0 — sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,7 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Sección "Hermano cercano" (rama `feat/hermanos`, sin unir a `main`)
+### Sección "Hermano cercano" (`v1.7.0`, en `main`, 2026-11-05)
 - Sección 02 de la portada (`id="hermanos"`, después de "Lo que nos diferencia"): título "Hermano
   ~~lejano~~ cercano." (el lector de pantalla lee "Hermano cercano."), subtítulo, 4 puntos y botón
   de WhatsApp (opción `general`, ubicación `hermanos`, mensaje propio). Mapa SVG en línea,
@@ -24,12 +24,12 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   menú; con 10 enlaces, el menú en línea pasa a 1280 px (antes 1024) y debajo se usa el
   desplegable.
 - Migración `012_clics_hermanos.sql` escrita (ubicación `hermanos` en el CHECK de
-  `clics_venta`, sin "if exists"). **Falta que la aplique el usuario**; sin ella, los clics de
-  este botón se descartan (la ruta responde 204 y lo registra).
+  `clics_venta`, sin "if exists"). El usuario la aplicó (2026-11-05) pero no pasó el mensaje del
+  SQL Editor, y el CHECK no se puede leer con la API: **sin confirmar**. Si no quedó aplicada,
+  los clics de este botón se descartan (la ruta responde 204 y lo registra).
 - Probado: lint, typecheck y build; capturas a 390 y 1280 px (sin desborde).
-- **Falta antes de unir a `main`:** aplicar la 012 y verificarla; visto bueno de las capturas;
-  decidir el texto del punto "Pagos por etapas" ("No pagas por lo que no se ha construido"
-  contradice la pregunta frecuente publicada: "30 % al firmar el contrato").
+- Capturas aprobadas. "Pagos por etapas" (decisión del usuario): "30 % al firmar y el resto por
+  transferencia bancaria, conforme avanza la obra.", igual que la pregunta frecuente de pagos.
 
 ### Casas vendidas ocultas en lo público (`v1.6.0`, en `main`, 2026-11-05)
 - **Migración 011 aplicada por el usuario (2026-11-05)** y su prueba con rollback superada. La

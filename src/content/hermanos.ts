@@ -14,8 +14,7 @@ export const hermanos = {
     },
     {
       titulo: "Pagos por etapas",
-      texto:
-        "Por transferencia bancaria, conforme avanza la obra. No pagas por lo que no se ha construido.",
+      texto: "30 % al firmar y el resto por transferencia bancaria, conforme avanza la obra.",
     },
     {
       titulo: "Tu obra en tu celular",
