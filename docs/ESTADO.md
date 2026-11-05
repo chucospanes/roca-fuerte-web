@@ -24,9 +24,9 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   menú; con 10 enlaces, el menú en línea pasa a 1280 px (antes 1024) y debajo se usa el
   desplegable.
 - Migración `012_clics_hermanos.sql` escrita (ubicación `hermanos` en el CHECK de
-  `clics_venta`, sin "if exists"). El usuario la aplicó (2026-11-05) pero no pasó el mensaje del
-  SQL Editor, y el CHECK no se puede leer con la API: **sin confirmar**. Si no quedó aplicada,
-  los clics de este botón se descartan (la ruta responde 204 y lo registra).
+  `clics_venta`, sin "if exists"). **Aplicada por el usuario (2026-11-05) y confirmada** con
+  `pg_get_constraintdef`: `clics_venta_ubicacion_check` incluye `hermanos` (al final de la
+  lista, después de `catalogo`). Con la publishable, `clics_venta` sigue en 401.
 - Probado: lint, typecheck y build; capturas a 390 y 1280 px (sin desborde).
 - Capturas aprobadas. "Pagos por etapas" (decisión del usuario): "30 % al firmar y el resto por
   transferencia bancaria, conforme avanza la obra.", igual que la pregunta frecuente de pagos.
