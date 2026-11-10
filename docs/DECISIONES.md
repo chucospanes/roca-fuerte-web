@@ -782,3 +782,15 @@ España, Italia y Australia hasta El Salvador (punto terracota); SVG en línea, 
 (`aria-hidden`), sin imágenes ni dependencias; la animación de las líneas se apaga con
 `prefers-reduced-motion`. Enlace "Hermano cercano" en el menú. Conteo: opción `general` (ya
 existe) y ubicación nueva `hermanos` (migración 012, la aplica el usuario).
+
+## 2026-11-10 — Foto de la pantalla 1 del hero: bastones de varilla (reemplaza la del trazo)
+Decisión del usuario. La pantalla 1 del hero ("Casas que duran. / Construcción reforzada.") pasa
+a la foto de los bastones de varilla de hierro anclados a la fundación
+(`public/hero/obra-sjv-bastones.jpg`, copia exacta del original del usuario, sin EXIF, XMP ni
+GPS), servida igual que la anterior: AVIF/WebP responsivo, calidad 60, carga inmediata y
+prioridad alta. Alt: "Bastones de varilla de hierro anclados a la fundación, donde se levantarán
+las paredes". Encuadre `object-position: 65% 50%` (en el celular, centrado en los bastones). El
+velo no cambia: contraste medido sobre el fondo real (percentil 98 del píxel más claro detrás del
+texto) de 7.9:1 o más en el título y 6.9:1 o más en el subtítulo, a 390 y 1280 px. Sale del repo
+la foto del trazo (`obra-sjv-trazo.jpg`; queda en el historial de git). Límite conocido: la foto
+mide 1109 px de ancho; en pantallas anchas el navegador la estira.

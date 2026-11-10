@@ -24,7 +24,7 @@ function Pantalla({
   primera = false,
   children,
 }: {
-  foto?: { src: string; alt: string };
+  foto?: { src: string; alt: string; posicion?: string };
   fondo?: "oscuro" | "terracota";
   primera?: boolean;
   children: ReactNode;
@@ -43,6 +43,7 @@ function Pantalla({
             quality={60}
             {...(primera ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
             className="object-cover"
+            style={foto.posicion ? { objectPosition: foto.posicion } : undefined}
           />
           <div
             aria-hidden

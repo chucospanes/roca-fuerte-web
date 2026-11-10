@@ -31,8 +31,10 @@ export const heroPantallas = {
     titulo: "Casas que duran.",
     subtitulo: "Construcción reforzada.",
     foto: {
-      src: "/hero/obra-sjv-trazo.jpg",
-      alt: "Trazo de una casa en obra: hilos, cal y niveletas de madera marcan las paredes mientras tres trabajadores abren las zanjas",
+      src: "/hero/obra-sjv-bastones.jpg",
+      alt: "Bastones de varilla de hierro anclados a la fundación, donde se levantarán las paredes",
+      /** Encuadre: en el celular la foto se recorta a lo alto; se centra en los bastones y la zanja. */
+      posicion: "65% 50%",
     },
   },
   documentada: {

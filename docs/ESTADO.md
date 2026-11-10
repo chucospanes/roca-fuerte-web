@@ -3,7 +3,7 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-05
+**Última actualización:** 2026-11-10
 **Versión:** v1.7.0 — sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
@@ -12,6 +12,13 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Foto del hero: bastones de varilla (rama `feat/hero-bastones`, sin unir a `main`)
+- Pantalla 1 con `public/hero/obra-sjv-bastones.jpg` (copia exacta, sin EXIF ni GPS; 1109 × 900),
+  alt nuevo y encuadre `65% 50%`; AVIF de 33 KB (640 px) y 86 KB (1080 px), carga inmediata y
+  prioridad alta. Contraste AA medido sobre el fondo real: título 7.9:1, subtítulo 6.9:1 en el
+  peor caso; el velo no cambia. Sale `obra-sjv-trazo.jpg`. Lint, typecheck y build pasan;
+  capturas a 390 y 1280 px. **Falta:** visto bueno del usuario. Ver DECISIONES.md (2026-11-10).
 
 ### Sección "Hermano cercano" (`v1.7.0`, en `main`, 2026-11-05)
 - Sección 02 de la portada (`id="hermanos"`, después de "Lo que nos diferencia"): título "Hermano
