@@ -109,7 +109,7 @@ datos as materialized (
     -- Planta. true = la del modelo Esparta (m², dormitorios y baños en null).
     -- false = planta propia (los tres obligatorios)
     '<true | false>'::boolean                                   as planta_esparta,
-    '<43.60>'::numeric                                          as construccion_m2,
+    '<47.50>'::numeric                                          as construccion_m2,
     '<2>'::smallint                                             as dormitorios,
     '<1>'::smallint                                             as banos,
     '<1>'::smallint                                             as parqueos,

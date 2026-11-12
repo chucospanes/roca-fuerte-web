@@ -84,6 +84,20 @@ export function loteCorto(m: { lote_frente_m: number; lote_fondo_m: number; lote
   return { medidas: `${metros(m.lote_frente_m)} × ${metros(m.lote_fondo_m)} m`, area: `${metros(m.lote_m2)} m²` };
 }
 
+/**
+ * Resumen de una casa en tarjetas y titulares, sin el área construida (ver DECISIONES.md,
+ * 2026-11-12): "Una planta" (solo con la planta Esparta) y el terreno, "Desde 100 m² de terreno"
+ * si sus modalidades tienen lotes distintos o "200 m² de terreno" si es uno solo.
+ */
+export function resumenCasa(c: { planta_esparta: boolean; modalidades: { lote_m2: number }[] }): string[] {
+  const lotes = [...new Set(c.modalidades.map((m) => m.lote_m2))];
+  const terreno =
+    lotes.length === 0
+      ? null
+      : `${lotes.length > 1 ? "Desde " : ""}${metros(Math.min(...lotes))} m² de terreno`;
+  return [c.planta_esparta ? "Una planta" : null, terreno].filter((x): x is string => x !== null);
+}
+
 /** Lote de una modalidad: "5.00 × 20.00 m (100.00 m²)". */
 export function textoLote(m: { lote_frente_m: number; lote_fondo_m: number; lote_m2: number }): string {
   return `${m.lote_frente_m.toFixed(2)} × ${m.lote_fondo_m.toFixed(2)} m (${m.lote_m2.toFixed(2)} m²)`;

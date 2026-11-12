@@ -94,9 +94,11 @@ export async function Hero() {
           <p className="flex flex-wrap gap-x-2 font-display text-sm font-semibold tracking-[0.15em] text-terracota-claro uppercase">
             <span className="whitespace-nowrap">{site.modelo}</span>
             <span aria-hidden>·</span>
+            <span className="whitespace-nowrap">{esparta.destacados.plantas}</span>
+            <span aria-hidden>·</span>
             <span className="whitespace-nowrap">{esparta.dormitorios} dormitorios</span>
             <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{esparta.areas.construidaM2.toFixed(2)} m²</span>
+            <span className="whitespace-nowrap">{esparta.destacados.terreno}</span>
           </p>
           <h1 className={`mt-4 ${estiloTitulo}`}>{reforzada.titulo}</h1>
           <p className={estiloSubtitulo}>{reforzada.subtitulo}</p>

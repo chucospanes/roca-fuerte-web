@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { catalogo, muestraPrecio, nombresEstado, textoPrecioCasa, ubicacionCasa } from "@/content/casas";
+import { catalogo, muestraPrecio, nombresEstado, resumenCasa, textoPrecioCasa, ubicacionCasa } from "@/content/casas";
 import { casaDisponible, precioDesde, type CasaListada, type CasaVendida } from "@/lib/casas";
 
 /** Etiqueta del estado de una casa; "Vendida" en oscuro, el resto en terracota. */
@@ -59,6 +59,9 @@ export function TarjetaCasa({ casa }: { casa: CasaListada }) {
           )}
           <h3 className="font-display text-xl font-bold group-hover:text-terracota">{casa.nombre}</h3>
           <p className="mt-1 text-piedra-600">{ubicacionCasa(casa)}</p>
+          {resumenCasa(casa).length > 0 && (
+            <p className="mt-2 font-semibold text-piedra-800">{resumenCasa(casa).join(" · ")}</p>
+          )}
           {muestraPrecio(casa.estado) && (
             <p className="mt-auto pt-4 font-display text-2xl font-extrabold">
               {textoPrecioCasa(precioDesde(casa.modalidades))}

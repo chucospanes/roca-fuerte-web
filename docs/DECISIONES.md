@@ -844,3 +844,25 @@ se acepta porque se declara. Mismo tratamiento que la pantalla 1 (AVIF/WebP resp
 Decisión del usuario. La foto de portada (orden 1) de `esparta-san-jose-villanueva` pasa a la de
 la fundación con los bastones; las fotos anteriores bajan un lugar. Archivo sin EXIF ni GPS,
 nombre sin espacios, subido por el usuario al bucket `casas` y registrado con SQL con candados.
+
+## 2026-11-12 — Área construida 47.50 m² con el corredor techado; el área deja de ser protagonista
+Decisión del usuario. **Corrige 43.60 m²** (decisión del 2026-10-23, "Plano del modelo", y todas
+las que la repiten): el área construida de la Esparta es **47.50 m²** (9.50 × 5.00 m), porque el
+corredor de entrada está techado (2.60 × 1.50 = 3.90 m²) y cuenta. El área útil interior sigue en
+38.07 m² (sin el corredor). El estacionamiento no cuenta. Plano de la casa v5
+(`assets/plano-casa-esparta-v5.pdf`, copia exacta del de Descargas; PNG de 1800 px generado del
+PDF, como no llegó el PNG); salen los v4 del repo.
+- **Ajuste comercial:** el área sale del hero, de las tarjetas del catálogo, del bloque de casas
+  de la portada y de las descripciones (metadata, Open Graph y schema.org del negocio y de cada
+  casa). En su lugar, "Una planta" y el terreno ("Desde 100 m² de terreno": el lote de 5 × 20 m).
+  El área queda solo en "La casa" (cuadro de áreas, sin cifras grandes), la ficha de cada casa,
+  el área premium y el plano. schema.org conserva `floorSize` (dato técnico, no descripción).
+- Supabase no guarda el área de esta casa (planta del modelo, `construccion_m2` vacío): sin SQL.
+- **Pendiente:** el plano del lote (`assets/plano-esparta.pdf` y `public/plano-esparta.png`,
+  publicado en "La casa") todavía dice "43.60 m² de construcción" en su título.
+
+## 2026-11-12 — Plano del lote v2 (resuelve el pendiente de la entrada anterior)
+El usuario pasó el plano del lote corregido ("47.50 m² de construcción (incluye corredor
+techado)"): `assets/plano-esparta-v2.pdf` y `public/plano-esparta-v2.png`, copias exactas, con
+nombres nuevos; salen `plano-esparta.pdf` y `plano-esparta.png`. La nota "incluye el corredor
+techado" se queda; el usuario confirmará con el ingeniero cómo cuenta el corredor en un avalúo.

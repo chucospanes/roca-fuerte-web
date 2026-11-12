@@ -74,4 +74,4 @@ Next.js 16.4.3 (Turbopack), React 19.3, TypeScript 5, Tailwind 4, ESLint 9.
 - `src/components/` — secciones y componentes de la landing.
 - `src/lib/` — utilidades de servidor (Supabase, validación).
 - `supabase/migrations/` — SQL de la base de datos.
-- `public/` — archivos servidos tal cual (incluye `plano-esparta.png` y `fachada-esparta.png`).
+- `public/` — archivos servidos tal cual (incluye `plano-esparta-v2.png` y `fachada-esparta-v2.png`).

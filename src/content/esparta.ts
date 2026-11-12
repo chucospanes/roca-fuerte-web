@@ -2,7 +2,7 @@
  * Contenido de la Casa Modelo Esparta.
  *
  * Fuente: planta de la casa, planta en lote de 5 × 20 m y fachada con pretil
- * (`assets/plano-casa-esparta-v4.pdf`, `assets/plano-esparta.pdf`, `assets/fachada-esparta.pdf`)
+ * (`assets/plano-casa-esparta-v5.pdf`, `assets/plano-esparta-v2.pdf`, `assets/fachada-esparta.pdf`)
  * y `docs/CONTEXTO.md`.
  * Las especificaciones de materiales son PENDIENTE hasta que el constructor las confirme.
  */
@@ -36,13 +36,26 @@ export type Desglose = string[] | Pendiente;
 export const esparta = {
   nombre: "Casa Modelo Esparta",
   version: "Planta en lote de 5 × 20 m y fachada con pretil",
+  /** Lo que va en titulares y resúmenes en vez del área construida (ver DECISIONES.md, 2026-11-12). */
+  destacados: {
+    plantas: "Una planta",
+    /** "Desde 100 m² de terreno": el lote del modelo (5 × 20 m), el más chico en venta. */
+    terreno: "Desde 100 m² de terreno",
+  },
   resumen: "Casa de una planta en forma de L, 2 dormitorios y 1 baño.",
   dormitorios: 2,
   banos: 1,
 
+  /**
+   * Construida: 9.50 × 5.00 m = 47.50 m² (cuerpo de 8.00 × 5.00 + extensión de sala de 1.50 × 2.40
+   * + corredor techado de 2.60 × 1.50 = 3.90 m²). El estacionamiento no cuenta. Útil: interior,
+   * sin el corredor. El área no es protagonista: solo va en "La casa", la ficha de cada casa, el
+   * área premium y el plano (ver DECISIONES.md, 2026-11-12). En titulares, el lote y "una planta".
+   */
   areas: {
-    construidaM2: 43.6,
+    construidaM2: 47.5,
     utilM2: 38.07,
+    corredorTechadoM2: 3.9,
   },
 
   volumetria: {
@@ -58,7 +71,8 @@ export const esparta = {
 
   /**
    * Lote real de la casa, del frente (calle) al fondo. Las franjas suman 20.00 m.
-   * Sale de segregar un terreno de 10 × 20 m en dos lotes de 5 × 20 m (ver docs/CONTEXTO.md).
+   * Sale de segregar un terreno de 10 × 20 m en dos lotes de 5 × 20 m, en trámite (ver
+   * docs/CONTEXTO.md). Su área (100 m²) es el "desde … m² de terreno" de los titulares.
    */
   lote: {
     frenteM: 5,
@@ -101,8 +115,10 @@ export const esparta = {
     "jardinera baja de bloque",
   ],
 
-  /** Fuera del área construida. La columna aún no tiene diseño estructural. */
+  /** Techado: cuenta en el área construida, no en la útil. La columna aún no tiene diseño estructural. */
   corredor: {
+    /** 2.60 × 1.50 m = 3.90 m², dentro del área construida (plano v5). */
+    frenteM: 2.6,
     fondoM: 1.5,
     descripcion: "Corredor techado frente al Dormitorio 1, con columna en la esquina.",
   },
@@ -146,8 +162,8 @@ export const esparta = {
    * colores) y protegida; la versión en alta resolución es solo el PDF de la ficha premium.
    */
   planoCasa: {
-    src: "/plano-casa-esparta-v4-1800.png",
-    alt: "Plano de la Casa Modelo Esparta, lámina A-01: planta en L de 9.50 × 5.00 m entre colindancias, con 2 dormitorios de 3.00 × 2.50 m, baño de 1.50 × 2.50 m, sala-comedor-cocina-lavado abierta de 9.20 × 2.10 m y corredor techado de acceso en la fachada principal. Debajo, cuadro de áreas (38.07 m² útiles, 43.60 m² construidos), leyenda y notas generales de construcción.",
+    src: "/plano-casa-esparta-v5-1800.png",
+    alt: "Plano de la Casa Modelo Esparta, lámina A-01: planta de 9.50 × 5.00 m entre colindancias, con 2 dormitorios de 3.00 × 2.50 m, baño de 1.50 × 2.50 m, sala-comedor-cocina-lavado abierta de 9.20 × 2.10 m y corredor techado de acceso de 2.60 × 1.50 m en la fachada principal. Debajo, cuadro de áreas (38.07 m² útiles interiores, 47.50 m² construidos con el corredor), leyenda y notas generales de construcción.",
     ancho: 1800,
     alto: 1737,
     protegida: true,
@@ -156,7 +172,7 @@ export const esparta = {
 
   /** Planta en el lote completo: muy ancha, se muestra a todo el ancho en escritorio. */
   plano: {
-    src: "/plano-esparta.png",
+    src: "/plano-esparta-v2.png",
     alt: "Plano de la Casa Modelo Esparta en un lote de 5 × 20 m: estacionamiento de 5.00 m, jardín de 3.50 m, casa de 9.50 m entre colindancias y patio de 2.00 m. La casa tiene 2 dormitorios, baño, sala-comedor-cocina-lavado abierta y corredor techado de entrada.",
     ancho: 4640,
     alto: 2032,

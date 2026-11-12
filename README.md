@@ -162,7 +162,7 @@ los registros del correo (Resend).
    curl -sI https://constructorarocafuerte.com/          # 200 y x-robots-tag: noindex, nofollow
    curl -sI https://www.constructorarocafuerte.com/      # 308 hacia el dominio sin www
    curl -s  https://constructorarocafuerte.com/robots.txt
-   curl -sI https://constructorarocafuerte.com/descargas/plano-esparta.pdf   # 404 (acceso premium apagado)
+   curl -sI https://constructorarocafuerte.com/descargas/plano-esparta-v2.pdf   # 404 (acceso premium apagado)
    ```
 
 ---
