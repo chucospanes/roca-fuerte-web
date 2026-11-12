@@ -7,8 +7,9 @@ import { esquemaClic } from "@/lib/validacion";
  *
  * Defensas básicas (los conteos son indicativos, ver DECISIONES.md): solo peticiones del
  * propio sitio (`Origin` y `Sec-Fetch-Site`), cuerpo pequeño y validado con zod. Un clic de
- * una casa (`casa_id`) solo se guarda si la casa existe y está publicada; si no, se descarta
- * como cualquier clic inválido (400), nunca con un 500.
+ * una casa (`casa_id`) solo se guarda si la casa existe y está publicada, y su modalidad
+ * (`modalidad_id`), si es de esa casa y está disponible; si no, se descarta como cualquier clic
+ * inválido (400), nunca con un 500.
  */
 const MAX_BYTES = 2_000;
 const sinContenido = () => new Response(null, { status: 204 });
@@ -50,6 +51,23 @@ export async function POST(request: Request) {
     }
     if (!casa) return new Response(null, { status: 400 });
   }
+  if (datos.data.modalidad_id) {
+    const { data: modalidad, error: errorModalidad } = await supabase
+      .from("casas_venta_modalidades")
+      .select("id")
+      .eq("id", datos.data.modalidad_id)
+      .eq("casa_id", datos.data.casa_id ?? "")
+      .eq("disponible", true)
+      .maybeSingle();
+    if (errorModalidad) {
+      console.error("[clics] revisar modalidad falló", {
+        codigo: errorModalidad.code,
+        mensaje: errorModalidad.message,
+      });
+      return sinContenido();
+    }
+    if (!modalidad) return new Response(null, { status: 400 });
+  }
 
   const { error } = await supabase
     .from("clics_venta")
@@ -57,6 +75,7 @@ export async function POST(request: Request) {
       opcion: datos.data.opcion,
       ubicacion: datos.data.ubicacion,
       casa_id: datos.data.casa_id ?? null,
+      modalidad_id: datos.data.modalidad_id ?? null,
       utm_source: datos.data.utm_source ?? null,
       utm_medium: datos.data.utm_medium ?? null,
       utm_campaign: datos.data.utm_campaign ?? null,

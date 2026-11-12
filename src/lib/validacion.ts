@@ -212,6 +212,7 @@ export const esquemaClic = z
     opcion: z.enum(OPCIONES_VENTA),
     ubicacion: z.enum(UBICACIONES_VENTA),
     casa_id: z.uuid().optional(),
+    modalidad_id: z.uuid().optional(),
     utm_source: textoOpcional(200).catch(undefined),
     utm_medium: textoOpcional(200).catch(undefined),
     utm_campaign: textoOpcional(200).catch(undefined),
@@ -227,6 +228,9 @@ export const esquemaClic = z
   })
   .refine((c) => (c.opcion === "casa") === (c.casa_id !== undefined), {
     error: "casa_id va solo y siempre con la opción casa.",
+  })
+  .refine((c) => c.modalidad_id === undefined || c.casa_id !== undefined, {
+    error: "modalidad_id va solo con casa_id.",
   });
 
 /** Id de una fila del portal (uuid). Se valida antes de consultar. */

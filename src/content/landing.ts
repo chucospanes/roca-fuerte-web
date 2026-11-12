@@ -45,6 +45,16 @@ export const heroPantallas = {
   hogar: {
     titulo: "No es una casa más, es tu hogar.",
     subtitulo: "Tu lugar seguro.",
+    /**
+     * Ilustración generada, no una foto de la obra ni la fachada exacta del modelo: va rotulada
+     * en pantalla y en el alt (ver DECISIONES.md, 2026-11-12).
+     */
+    foto: {
+      src: "/hero/ilustracion-hogar.jpg",
+      alt: "Ilustración de una casa de una planta con fachada gris y naranja, jardín con flores, grama y un camino de piedra hasta la entrada",
+      posicion: "50% 50%",
+      etiqueta: "Ilustración de referencia",
+    },
     boton: "Construir a pedido",
   },
 };

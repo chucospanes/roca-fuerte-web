@@ -1,5 +1,6 @@
 import { esPendiente, site, textoPrecio, type Precio } from "@/config/site";
-import { casasDisponibles, destinoCompra } from "@/lib/casas";
+import { textoPrecioCasa } from "@/content/casas";
+import { casaDisponible, casasDisponibles, destinoCompra, precioDesde } from "@/lib/casas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 import { Boton, Seccion } from "./ui";
 
@@ -21,6 +22,10 @@ function Precio({ precio }: { precio: Precio }) {
 export async function Opciones() {
   const disponibles = await casasDisponibles();
   const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
+  // Precio desde: el menor de las modalidades de las casas que se pueden comprar (no reservadas).
+  // Sin ninguna con precio, no se muestra (cada casa dice "Consultar" en su ficha).
+  const comprables = (disponibles ?? []).filter((c) => casaDisponible(c.estado)).flatMap((c) => c.modalidades);
+  const desde = precioDesde(comprables);
 
   return (
     <Seccion
@@ -41,6 +46,11 @@ export async function Opciones() {
             Casas nuestras con el modelo estándar, construidas para vender con su terreno. Cada
             una con su ubicación, su lote, su precio y lo que incluye.
           </p>
+          {desde && (
+            <div className="mt-5">
+              <p className="font-display text-2xl font-extrabold">{textoPrecioCasa(desde)}</p>
+            </div>
+          )}
           <div className="mt-auto pt-6">
             {destino ? (
               <Boton href={destino.href} className="w-full">

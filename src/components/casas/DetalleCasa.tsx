@@ -4,15 +4,22 @@ import { ImagenAmpliable } from "@/components/ImagenAmpliable";
 import { Pendiente } from "@/components/ui";
 import { VideoLazy } from "@/components/VideoLazy";
 import { precioUSD } from "@/config/site";
-import { catalogo, muestraPrecio, nombresAguasNegras, ubicacionCasa } from "@/content/casas";
+import {
+  catalogo,
+  modalidadesCasa,
+  muestraPrecio,
+  nombresAguasNegras,
+  textoLote,
+  textoPrecioCasa,
+  ubicacionCasa,
+} from "@/content/casas";
 import { esparta } from "@/content/esparta";
-import type { DetalleCasa as Casa } from "@/lib/casas";
+import { precioDesde, type DetalleCasa as Casa, type Modalidad } from "@/lib/casas";
 import { BotonWhatsAppCasa } from "./BotonWhatsAppCasa";
 import { AvanceObra } from "./AvanceObra";
 import { DiarioObra } from "./DiarioObra";
 import { EtiquetaEstado, EtiquetaPropia } from "./TarjetaCasa";
 
-const m = (n: number) => `${n.toFixed(2)} m`;
 const m2 = (n: number) => `${n.toFixed(2)} m²`;
 const porConfirmar = <Pendiente texto="Por confirmar" />;
 const siNo = (v: boolean | null): ReactNode => (v === null ? porConfirmar : v ? "Sí" : "No");
@@ -42,6 +49,51 @@ function Datos({ datos }: { datos: (Dato | false)[] }) {
         </div>
       ))}
     </dl>
+  );
+}
+
+/**
+ * Una modalidad de venta: lote, estacionamientos, detalles, precio (si la casa lo muestra), nota
+ * pequeña y su botón de WhatsApp (que nombra la modalidad y cuenta su clic).
+ */
+function TarjetaModalidad({ casa, modalidad, conPrecio }: { casa: Casa; modalidad: Modalidad; conPrecio: boolean }) {
+  const lote = textoLote(modalidad);
+  return (
+    <li className="flex flex-col rounded-lg border-2 border-piedra-200 bg-blanco p-5">
+      <h3 className="font-display text-xl font-extrabold">{modalidad.nombre}</h3>
+      <dl className="mt-3 space-y-2">
+        <div>
+          <dt className="text-sm text-piedra-600">{modalidadesCasa.lote}</dt>
+          <dd className="font-semibold">{lote}</dd>
+        </div>
+        <div>
+          <dt className="text-sm text-piedra-600">{modalidadesCasa.estacionamientos}</dt>
+          <dd className="font-semibold">{modalidad.estacionamientos ?? porConfirmar}</dd>
+        </div>
+      </dl>
+      {modalidad.detalles.length > 0 && (
+        <ul className="mt-3 space-y-1 text-piedra-700">
+          {modalidad.detalles.map((d) => (
+            <li key={d}>— {d}</li>
+          ))}
+        </ul>
+      )}
+      <div className="mt-auto pt-5">
+        {conPrecio && (
+          <p className="font-display text-3xl font-extrabold">
+            {modalidad.precio_usd === null ? "Consultar" : precioUSD(modalidad.precio_usd)}
+          </p>
+        )}
+        {modalidad.nota && <p className="mt-1 text-sm text-piedra-600">{modalidad.nota}</p>}
+        <BotonWhatsAppCasa
+          casa={casa}
+          modalidad={{ modalidad, lote: `${modalidad.lote_frente_m} × ${modalidad.lote_fondo_m} m` }}
+          texto={modalidadesCasa.boton}
+          variante="secundario"
+          className="mt-4 w-full"
+        />
+      </div>
+    </li>
   );
 }
 
@@ -94,7 +146,7 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
         )}
         {muestraPrecio(casa.estado) && (
           <p className="mt-4 font-display text-3xl font-extrabold">
-            {casa.precio_usd === null ? "Precio: consultar" : precioUSD(casa.precio_usd)}
+            {textoPrecioCasa(precioDesde(casa.modalidades), "Precio: consultar")}
           </p>
         )}
         {/* Vendida: sin botón. Reservada: con botón (puede liberarse o haber otra parecida) */}
@@ -131,18 +183,29 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
 
       {casa.descripcion && <p className="mt-8 max-w-2xl text-lg text-piedra-700">{casa.descripcion}</p>}
 
+      {casa.modalidades.length > 0 && (
+        <section id="modalidades" className="mt-10 scroll-mt-20">
+          <h2 className="font-display text-2xl font-extrabold">
+            {modalidadesCasa.titulo(casa.modalidades.length)}
+          </h2>
+          {casa.modalidades.length > 1 && <p className="mt-2 text-piedra-700">{modalidadesCasa.intro}</p>}
+          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+            {casa.modalidades.map((mod) => (
+              <TarjetaModalidad key={mod.id} casa={casa} modalidad={mod} conPrecio={muestraPrecio(casa.estado)} />
+            ))}
+          </ul>
+        </section>
+      )}
+
       <h2 className="mt-10 font-display text-2xl font-extrabold">La casa</h2>
       <Datos
         datos={[
           { nombre: "Modelo", valor: casa.modelo },
-          {
-            nombre: "Lote",
-            valor: `${m(casa.lote_frente_m)} × ${m(casa.lote_fondo_m)} (${m2(casa.lote_m2)})`,
-          },
+          // Sin modalidades cargadas, el lote queda por confirmar (con ellas, va en cada una)
+          casa.modalidades.length === 0 && { nombre: "Lote", valor: porConfirmar },
           { nombre: "Construcción", valor: construccion === null ? porConfirmar : m2(construccion) },
           { nombre: "Dormitorios", valor: dormitorios ?? porConfirmar },
           { nombre: "Baños", valor: banos ?? porConfirmar },
-          { nombre: "Parqueos", valor: casa.parqueos ?? porConfirmar },
           casa.estado === "en_construccion" && {
             nombre: "Etapa actual",
             valor: etapaActual ?? porConfirmar,

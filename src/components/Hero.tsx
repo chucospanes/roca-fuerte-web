@@ -15,8 +15,9 @@ const fondos = {
 };
 
 /**
- * Una pantalla del hero: foto real de la obra de fondo (con un velo para leer el texto) o un
- * color de la marca. La foto de la primera pantalla carga de inmediato y con prioridad alta.
+ * Una pantalla del hero: foto de fondo (con un velo para leer el texto) o un color de la marca.
+ * La foto de la primera pantalla carga de inmediato y con prioridad alta. Si la imagen no es una
+ * foto real (una ilustración), `etiqueta` lo dice en pantalla.
  */
 function Pantalla({
   foto,
@@ -24,7 +25,7 @@ function Pantalla({
   primera = false,
   children,
 }: {
-  foto?: { src: string; alt: string; posicion?: string };
+  foto?: { src: string; alt: string; posicion?: string; etiqueta?: string };
   fondo?: "oscuro" | "terracota";
   primera?: boolean;
   children: ReactNode;
@@ -49,6 +50,11 @@ function Pantalla({
             aria-hidden
             className="absolute inset-0 bg-gradient-to-t from-piedra-900/95 via-piedra-900/75 to-piedra-900/30 md:bg-gradient-to-r md:from-piedra-900/90 md:via-piedra-900/70 md:to-piedra-900/10"
           />
+          {foto.etiqueta && (
+            <p className="absolute top-3 right-3 rounded bg-piedra-900/80 px-2 py-1 text-xs font-semibold text-blanco">
+              {foto.etiqueta}
+            </p>
+          )}
         </>
       )}
       <div className="relative mx-auto w-full max-w-5xl px-4 pt-16 pb-28 text-blanco md:py-24">
@@ -116,7 +122,7 @@ export async function Hero() {
           )}
         </Pantalla>
 
-        <Pantalla>
+        <Pantalla foto={hogar.foto}>
           <h2 className={estiloTitulo}>{hogar.titulo}</h2>
           <p className="mt-3 font-display text-2xl font-bold text-blanco/90 sm:text-3xl">
             {hogar.subtitulo}

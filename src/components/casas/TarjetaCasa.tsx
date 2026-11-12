@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { precioUSD } from "@/config/site";
-import { catalogo, muestraPrecio, nombresEstado, ubicacionCasa } from "@/content/casas";
-import { casaDisponible, type CasaListada, type CasaVendida } from "@/lib/casas";
+import { catalogo, muestraPrecio, nombresEstado, textoPrecioCasa, ubicacionCasa } from "@/content/casas";
+import { casaDisponible, precioDesde, type CasaListada, type CasaVendida } from "@/lib/casas";
 
 /** Etiqueta del estado de una casa; "Vendida" en oscuro, el resto en terracota. */
 export function EtiquetaEstado({ estado }: { estado: CasaListada["estado"] }) {
@@ -62,7 +61,7 @@ export function TarjetaCasa({ casa }: { casa: CasaListada }) {
           <p className="mt-1 text-piedra-600">{ubicacionCasa(casa)}</p>
           {muestraPrecio(casa.estado) && (
             <p className="mt-auto pt-4 font-display text-2xl font-extrabold">
-              {casa.precio_usd === null ? "Consultar" : precioUSD(casa.precio_usd)}
+              {textoPrecioCasa(precioDesde(casa.modalidades))}
             </p>
           )}
         </div>
