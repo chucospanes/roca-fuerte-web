@@ -78,7 +78,8 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
   `assets/plano-casa-esparta-v5.pdf` (PNG a resolución media, 1800 px, generado del PDF, en
   `public/plano-casa-esparta-v5-1800.png`; la alta resolución es solo el PDF de la ficha
   premium).
-  Plano del lote: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
+  Plano del lote (v2, con 47.50 m²): `assets/plano-esparta-v2.pdf` (PNG en
+  `public/plano-esparta-v2.png`). Fachada:
   `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta-v2.png`, generado del PDF;
   la imagen al compartir es un recorte, `assets/og-fachada-v2.png`). Ambos son
   referenciales; requieren firma de arquitecto o ingeniero antes de construir. Si cambian,

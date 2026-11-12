@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-12
-**Versión:** v1.8.0 — precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.8.1 — área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,7 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Área construida 47.50 m² y el área fuera de los titulares (rama `feat/area-construida`, 2026-11-12, sin unir)
+### Área construida 47.50 m² y el área fuera de los titulares (`v1.8.1`, en `main`, 2026-11-12)
 - Área construida 47.50 m² (con el corredor techado de 3.90 m²), útil interior 38.07 m². Plano v5:
   `assets/plano-casa-esparta-v5.pdf` (copia exacta) y `public/plano-casa-esparta-v5-1800.png`
   (generado del PDF, 1800 × 1737, misma protección); salen los v4. Descarga premium y ficha
@@ -26,8 +26,11 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 - Supabase no guarda el área (planta del modelo): sin SQL. Verificado con lecturas.
 - Probado: lint, typecheck y build; capturas a 390 px sin desborde; en el build ninguna página
   tiene "43.60"; el plano v4 da 404.
-- **Bloquea unir a `main`:** el plano del lote (`assets/plano-esparta.pdf` y
-  `public/plano-esparta.png`, publicado en "La casa") dice "43.60 m² de construcción" en su título.
+- Plano del lote v2 ("47.50 m² de construcción (incluye corredor techado)"):
+  `assets/plano-esparta-v2.pdf` y `public/plano-esparta-v2.png` (4640 × 2032), copias exactas de
+  Descargas; salen los anteriores. Descarga premium y ficha premium apuntan al v2. Hero en tres
+  líneas a 390 px, aprobado. Corredor en el avalúo: lo confirma el usuario con el ingeniero (la
+  nota "incluye el corredor techado" se queda).
 
 ### Precio por modalidad, hero 3, portada y fachada corregida (`v1.8.0`, en `main`, 2026-11-12)
 - **Avance "Fundación terminada y bastones listos" verificado con lecturas (2026-11-12):** 4 fotos

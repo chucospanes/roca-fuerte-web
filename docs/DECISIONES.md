@@ -860,3 +860,9 @@ PDF, como no llegó el PNG); salen los v4 del repo.
 - Supabase no guarda el área de esta casa (planta del modelo, `construccion_m2` vacío): sin SQL.
 - **Pendiente:** el plano del lote (`assets/plano-esparta.pdf` y `public/plano-esparta.png`,
   publicado en "La casa") todavía dice "43.60 m² de construcción" en su título.
+
+## 2026-11-12 — Plano del lote v2 (resuelve el pendiente de la entrada anterior)
+El usuario pasó el plano del lote corregido ("47.50 m² de construcción (incluye corredor
+techado)"): `assets/plano-esparta-v2.pdf` y `public/plano-esparta-v2.png`, copias exactas, con
+nombres nuevos; salen `plano-esparta.pdf` y `plano-esparta.png`. La nota "incluye el corredor
+techado" se queda; el usuario confirmará con el ingeniero cómo cuenta el corredor en un avalúo.

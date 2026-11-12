@@ -2,7 +2,7 @@
  * Contenido de la Casa Modelo Esparta.
  *
  * Fuente: planta de la casa, planta en lote de 5 × 20 m y fachada con pretil
- * (`assets/plano-casa-esparta-v5.pdf`, `assets/plano-esparta.pdf`, `assets/fachada-esparta.pdf`)
+ * (`assets/plano-casa-esparta-v5.pdf`, `assets/plano-esparta-v2.pdf`, `assets/fachada-esparta.pdf`)
  * y `docs/CONTEXTO.md`.
  * Las especificaciones de materiales son PENDIENTE hasta que el constructor las confirme.
  */
@@ -172,7 +172,7 @@ export const esparta = {
 
   /** Planta en el lote completo: muy ancha, se muestra a todo el ancho en escritorio. */
   plano: {
-    src: "/plano-esparta.png",
+    src: "/plano-esparta-v2.png",
     alt: "Plano de la Casa Modelo Esparta en un lote de 5 × 20 m: estacionamiento de 5.00 m, jardín de 3.50 m, casa de 9.50 m entre colindancias y patio de 2.00 m. La casa tiene 2 dormitorios, baño, sala-comedor-cocina-lavado abierta y corredor techado de entrada.",
     ancho: 4640,
     alto: 2032,

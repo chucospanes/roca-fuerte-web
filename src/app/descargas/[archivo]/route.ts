@@ -16,7 +16,7 @@ const ARCHIVOS = {
     origen: "plano-casa-esparta-v5.pdf",
     nombre: "Casa-Modelo-Esparta-plano-casa.pdf",
   },
-  "plano-esparta.pdf": { origen: "plano-esparta.pdf", nombre: "Casa-Modelo-Esparta-plano-lote.pdf" },
+  "plano-esparta-v2.pdf": { origen: "plano-esparta-v2.pdf", nombre: "Casa-Modelo-Esparta-plano-lote.pdf" },
   "fachada-esparta.pdf": { origen: "fachada-esparta.pdf", nombre: "Casa-Modelo-Esparta-fachada.pdf" },
 } as const;
 
