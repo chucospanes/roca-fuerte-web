@@ -14,7 +14,7 @@ export function DatosEstructurados() {
     "@type": "HomeAndConstructionBusiness",
     name: site.marca,
     url: `${site.url}/`,
-    description: `${site.modelo}: casa de una planta, ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa.`,
+    description: `${site.modelo}: casa de una planta con ${esparta.dormitorios} dormitorios, en terreno desde ${esparta.lote.frenteM * esparta.lote.fondoM} m². Construcción documentada etapa por etapa.`,
     image: `${site.url}${esparta.fachada.src}`,
     areaServed: { "@type": "Country", name: site.pais },
     telephone: `+${site.whatsapp}`,

@@ -31,7 +31,8 @@ mueve los archivos al repo sin sobrescribir `CLAUDE.md`, `docs/`, `assets/` ni `
 - URLs de redes sociales (placeholders).
 
 ## Contenido del modelo — `src/content/esparta.ts`
-- Datos de `docs/CONTEXTO.md` (ambientes, medidas, áreas 43.60 m² / 38.07 m², muros).
+- Datos de `docs/CONTEXTO.md` (ambientes, medidas, áreas 47.50 m² construidos con el corredor
+  techado / 38.07 m² útiles, muros). Hasta el 2026-11-12 decía 43.60 m² (sin el corredor).
 - Especificaciones de materiales como array editable: material, especificación, marca,
   por qué. Valores `PENDIENTE`.
 
@@ -43,7 +44,8 @@ Instalaciones eléctricas e hidráulicas, Acabados, Entrega (pendientes).
 
 ## Secciones de la landing
 1. **Hero:** titular sobre construcción honesta y transparente; subtítulo "Casa Modelo
-   Esparta · 2 dormitorios · 43.60 m²"; botones "Quiero esta casa" y "Construir Esparta en
+   Esparta · 2 dormitorios · 43.60 m²" (hoy, sin el área: "Una planta · 2 dormitorios · Desde
+   100 m² de terreno", ver DECISIONES.md, 2026-11-12); botones "Quiero esta casa" y "Construir Esparta en
    mi terreno"; espacio para video o foto principal (placeholder).
 2. **Por qué construimos así:** 3–4 puntos de transparencia (cada material mostrado en
    video, cada etapa documentada, sin sorpresas en el precio).

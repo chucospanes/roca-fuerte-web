@@ -20,7 +20,8 @@ const texto = Source_Sans_3({
   subsets: ["latin"],
 });
 
-const descripcion = `${site.modelo}: ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa, en ${site.pais}.`;
+// Sin el área construida: abre con la casa de una planta y el terreno (ver DECISIONES.md, 2026-11-12)
+const descripcion = `${site.modelo}: casa de una planta con ${esparta.dormitorios} dormitorios, en terreno desde ${esparta.lote.frenteM * esparta.lote.fondoM} m². Construcción documentada etapa por etapa, en ${site.pais}.`;
 
 // La imagen para compartir la genera `opengraph-image.tsx` (fachada + modelo + marca).
 export const metadata: Metadata = {

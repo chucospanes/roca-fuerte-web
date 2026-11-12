@@ -13,6 +13,22 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
+### Área construida 47.50 m² y el área fuera de los titulares (rama `feat/area-construida`, 2026-11-12, sin unir)
+- Área construida 47.50 m² (con el corredor techado de 3.90 m²), útil interior 38.07 m². Plano v5:
+  `assets/plano-casa-esparta-v5.pdf` (copia exacta) y `public/plano-casa-esparta-v5-1800.png`
+  (generado del PDF, 1800 × 1737, misma protección); salen los v4. Descarga premium y ficha
+  premium apuntan al v5.
+- El área sale del hero ("Casa Modelo Esparta · Una planta · 2 dormitorios · Desde 100 m² de
+  terreno"), de la metadata, Open Graph y schema.org (descripciones con "una planta" y el
+  terreno). Tarjetas del catálogo y bloque de la portada: "Una planta · Desde 100 m² de terreno".
+  Queda solo en "La casa" (cuadro de áreas sin cifras grandes, con la nota del corredor), la ficha
+  de cada casa, el área premium, `floorSize` de schema.org y el plano.
+- Supabase no guarda el área (planta del modelo): sin SQL. Verificado con lecturas.
+- Probado: lint, typecheck y build; capturas a 390 px sin desborde; en el build ninguna página
+  tiene "43.60"; el plano v4 da 404.
+- **Bloquea unir a `main`:** el plano del lote (`assets/plano-esparta.pdf` y
+  `public/plano-esparta.png`, publicado en "La casa") dice "43.60 m² de construcción" en su título.
+
 ### Precio por modalidad, hero 3, portada y fachada corregida (`v1.8.0`, en `main`, 2026-11-12)
 - **Avance "Fundación terminada y bastones listos" verificado con lecturas (2026-11-12):** 4 fotos
   en `obras` y en la copia pública de `casas`, idénticas byte por byte, sin EXIF, GPS ni XMP

@@ -7,7 +7,7 @@ import { Encabezado } from "@/components/Encabezado";
 import { Pie } from "@/components/Pie";
 import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
 import { site } from "@/config/site";
-import { catalogo, muestraPrecio, textoPrecioCasa, ubicacionCasa } from "@/content/casas";
+import { catalogo, muestraPrecio, resumenCasa, textoPrecioCasa, ubicacionCasa } from "@/content/casas";
 import { leerCasa, precioDesde } from "@/lib/casas";
 
 /**
@@ -63,13 +63,10 @@ export async function generateMetadata({ params }: PageProps<"/casas/[slug]">): 
   const titulo = `${casa.nombre} · ${casa.municipio} · ${site.marca}`;
   const desde = muestraPrecio(casa.estado) ? precioDesde(casa.modalidades) : null;
   const precio = desde ? ` Precio: ${textoPrecioCasa(desde).replace(/^Desde/, "desde")}.` : "";
-  // Lote: el menor de sus modalidades ("desde" si hay varias); sin modalidades, no se menciona
-  const lotes = casa.modalidades.map((m) => m.lote_m2);
-  const lote =
-    lotes.length === 0
-      ? ""
-      : `, en un lote ${lotes.length > 1 ? "desde " : "de "}${Math.min(...lotes).toFixed(2)} m²`;
-  const descripcion = casa.descripcion ?? `Casa en venta en ${ubicacionCasa(casa, true)}${lote}.${precio}`;
+  // "Una planta" y el terreno, sin el área construida (ver DECISIONES.md, 2026-11-12)
+  const resumen = resumenCasa(casa).join(", ").toLowerCase();
+  const descripcion =
+    casa.descripcion ?? `Casa en venta en ${ubicacionCasa(casa, true)}${resumen ? `: ${resumen}` : ""}.${precio}`;
   const ruta = `/casas/${casa.slug}`;
   return {
     title: titulo,

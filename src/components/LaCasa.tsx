@@ -58,16 +58,17 @@ export function LaCasa() {
           <h3 className="font-display text-sm font-semibold tracking-[0.15em] text-terracota-claro uppercase">
             Cuadro de áreas
           </h3>
-          <dl className="mt-4 space-y-4">
-            <div>
-              <dt className="text-piedra-300">Área construida</dt>
-              <dd className="font-display text-4xl font-extrabold">{m2(esparta.areas.construidaM2)}</dd>
-            </div>
-            <div>
-              <dt className="text-piedra-300">Área útil</dt>
-              <dd className="font-display text-4xl font-extrabold">{m2(esparta.areas.utilM2)}</dd>
-            </div>
+          {/* Ficha técnica: el área va aquí, sin protagonismo (ver DECISIONES.md, 2026-11-12) */}
+          <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2">
+            <dt className="text-piedra-300">Área construida</dt>
+            <dd className="font-display text-lg font-bold">{m2(esparta.areas.construidaM2)}</dd>
+            <dt className="text-piedra-300">Área útil interior</dt>
+            <dd className="font-display text-lg font-bold">{m2(esparta.areas.utilM2)}</dd>
           </dl>
+          <p className="mt-2 text-sm text-piedra-300">
+            La construida incluye el corredor techado de entrada ({m2(esparta.areas.corredorTechadoM2)}); la
+            útil es el interior, sin el corredor. El estacionamiento no cuenta.
+          </p>
           <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-piedra-700 pt-4 text-sm">
             <dt className="text-piedra-300">Cuerpo principal</dt>
             <dd>{esparta.volumetria.cuerpoPrincipal}</dd>
@@ -92,7 +93,9 @@ export function LaCasa() {
               {m(esparta.pretil.altoM)} (hasta {m(esparta.pretil.hastaM)})
             </dd>
             <dt className="text-piedra-300">Corredor techado</dt>
-            <dd>{m(esparta.corredor.fondoM)}</dd>
+            <dd>
+              {m(esparta.corredor.frenteM)} × {m(esparta.corredor.fondoM)}
+            </dd>
           </dl>
           <p className="mt-4 border-t border-piedra-700 pt-4 text-sm text-piedra-300">
             {esparta.implantacion} {esparta.techo.desague}

@@ -65,14 +65,19 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
 - Sala-comedor-cocina-lavado abierta de 9.20 × 2.10 m (19.32 m²), con lámina traslúcida
   sobre el comedor. Cocina en L: pila y fregadero en el muro del fondo, bajo una ventana
   de 1.20 m; estufa y refrigeradora en el muro lateral.
-- Corredor techado de 1.50 m frente al Dormitorio 1, con columna en la esquina. La puerta
-  principal da a este corredor, en el costado de la sala (no se ve de frente). El corredor
-  queda fuera del área construida.
-- **Área construida: 43.60 m². Área útil: 38.07 m².** (Sin cambio con el lote ni el pretil.)
+- Corredor techado de 2.60 × 1.50 m (3.90 m²) frente al Dormitorio 1, con columna en la
+  esquina. La puerta principal da a este corredor, en el costado de la sala (no se ve de
+  frente). Por estar techado, **cuenta en el área construida** (no en la útil).
+- **Área construida: 47.50 m² (9.50 × 5.00 m, con el corredor techado). Área útil interior:
+  38.07 m² (sin el corredor).** El estacionamiento no cuenta como área construida. (Hasta el
+  2026-11-12 se publicaba 43.60 m², sin el corredor.) **El área no es protagonista:** solo va en
+  "La casa", la ficha de cada casa, el área premium y el plano; en titulares y tarjetas va
+  "Una planta" y el terreno ("Desde 100 m² de terreno").
 - Modelo económico: sin tina, jacuzzi, lavadora ni secadora.
-- Plano de la casa (lámina A-01, v4, con notas generales): `assets/plano-casa-esparta-v4.pdf`
-  (PNG a resolución media, 1800 px, en `public/plano-casa-esparta-v4-1800.png`; la alta
-  resolución es solo el PDF de la ficha premium).
+- Plano de la casa (lámina A-01, v5, con notas generales y el corredor en el cuadro de áreas):
+  `assets/plano-casa-esparta-v5.pdf` (PNG a resolución media, 1800 px, generado del PDF, en
+  `public/plano-casa-esparta-v5-1800.png`; la alta resolución es solo el PDF de la ficha
+  premium).
   Plano del lote: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
   `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta-v2.png`, generado del PDF;
   la imagen al compartir es un recorte, `assets/og-fachada-v2.png`). Ambos son
