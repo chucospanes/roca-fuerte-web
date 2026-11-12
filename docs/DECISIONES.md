@@ -794,3 +794,53 @@ velo no cambia: contraste medido sobre el fondo real (percentil 98 del píxel m�
 texto) de 7.9:1 o más en el título y 6.9:1 o más en el subtítulo, a 390 y 1280 px. Sale del repo
 la foto del trazo (`obra-sjv-trazo.jpg`; queda en el historial de git). Límite conocido: la foto
 mide 1109 px de ancho; en pantallas anchas el navegador la estira.
+
+## 2026-11-12 — El corredor de la Esparta va repellado en gris cálido, sin bloque visto (corrige 2026-10-29)
+Decisión del usuario. Corrige "bloque visto sellado en el corredor" de la entrada del 2026-10-29
+(el modelo pasa a llamarse Esparta). El corredor va repellado y pintado en gris cálido, con la
+columna oscura en la esquina; la sala, repellada y pintada en terracota. La elevación vigente es
+`assets/fachada-esparta.pdf` (igual byte por byte a `Casa_Modelo_Esparta_fachada_v2.pdf`, que ya
+decía "Corredor repellado en gris cálido"); lo viejo era el PNG del sitio y su recorte para
+compartir. `public/fachada-esparta-v2.png` se genera del PDF (3560 × 2240, render al doble y
+reducido para conservar las cotas finas) y `assets/og-fachada-v2.png` es el mismo recorte que el
+anterior (encuadre medido contra la imagen vieja); salen `fachada-esparta.png` y `og-fachada.png`.
+La ilustración de casa vendida pasa a `fachada-esparta-limpia-v2.svg` (corredor liso). Nombres
+nuevos porque la caché de imágenes va por URL.
+
+## 2026-11-12 — Precio por modalidad de venta (migraciones 013 y 014)
+Decisión del usuario, en la rama `feat/modalidades-precio`. Una casa del catálogo puede venderse
+de varias formas; cada una es una modalidad con su lote, estacionamientos, precio, detalles y una
+nota opcional (`casas_venta_modalidades`, 013). **Toda casa tiene al menos una**; el lote, los
+estacionamientos y el precio salen SOLO de ahí (una sola fuente). Las columnas viejas de
+`casas_venta` (`precio_usd`, lote y `parqueos`) quedan sin uso y se borran en una migración
+posterior, con el código nuevo ya desplegado (la 013 es aditiva para no tumbar el sitio
+desplegado). Una modalidad se retira con `disponible = false` (no se ve, no se borra).
+- **Dónde se ve:** tarjeta del catálogo y bloque de la portada, "Desde {menor precio}" (si hay una
+  sola modalidad con precio, el precio sin "Desde"); ficha, las modalidades lado a lado, cada una
+  con su botón de WhatsApp que nombra la modalidad; Precios ("Comprar una casa"), el precio desde
+  de las casas disponibles; schema.org, una oferta por modalidad con precio. Sin precio cargado,
+  "Consultar". Construir a pedido sigue en "A consultar". Sin descuentos ni precio de preventa.
+- **Clics:** `clics_venta.modalidad_id` con llave compuesta (la modalidad es de esa casa).
+  `/api/clic` exige que la modalidad sea de la casa, esté disponible y la casa publicada.
+- **014:** la prueba de la 013 encontró que borrar una casa con clics por modalidad fallaba
+  (la revisión en cola de la llave simple `modalidad_id` corría después del borrado en cascada de
+  la modalidad). Sale la llave simple; queda la compuesta, un CHECK "no hay modalidad sin casa" y
+  un trigger que vacía la modalidad cuando la casa del clic pasa a null.
+- **Casa de San José Villanueva:** el terreno hoy es un solo inmueble de 10 × 20 m. Modalidad 1,
+  casa con lote propio de 5 × 20 m, 1 estacionamiento, $69,000, con la nota "Lote de 5 × 20 m
+  sujeto a segregación en trámite" (la segregación debe quedar inscrita antes de escriturar).
+  Modalidad 2, lote completo de 10 × 20 m, 2 estacionamientos, espacio para ampliar o jardín más
+  grande, $85,000 (se vende tal cual). Se cargan con SQL fuera del repo, no desde la web.
+
+## 2026-11-12 — Pantalla 3 del hero con una ilustración, rotulada como tal
+Decisión del usuario. La pantalla 3 ("No es una casa más, es tu hogar.") lleva de fondo una
+ilustración generada (no una foto de la obra ni del modelo: el bloque terracota está del lado
+contrario y es más naranja que en la elevación), con la etiqueta visible "Ilustración de
+referencia" y un alt que dice que es una ilustración. Matiza "Sin fotos de stock" (2026-11-03):
+se acepta porque se declara. Mismo tratamiento que la pantalla 1 (AVIF/WebP responsivo, calidad
+60), sin carga prioritaria (no es la primera pantalla), y velo con contraste AA medido.
+
+## 2026-11-12 — Portada de la casa de San José Villanueva: la fundación
+Decisión del usuario. La foto de portada (orden 1) de `esparta-san-jose-villanueva` pasa a la de
+la fundación con los bastones; las fotos anteriores bajan un lugar. Archivo sin EXIF ni GPS,
+nombre sin espacios, subido por el usuario al bucket `casas` y registrado con SQL con candados.
