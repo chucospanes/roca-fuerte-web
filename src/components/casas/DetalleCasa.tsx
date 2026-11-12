@@ -6,10 +6,10 @@ import { VideoLazy } from "@/components/VideoLazy";
 import { precioUSD } from "@/config/site";
 import {
   catalogo,
+  loteCorto,
   modalidadesCasa,
   muestraPrecio,
   nombresAguasNegras,
-  textoLote,
   textoPrecioCasa,
   ubicacionCasa,
 } from "@/content/casas";
@@ -53,18 +53,23 @@ function Datos({ datos }: { datos: (Dato | false)[] }) {
 }
 
 /**
- * Una modalidad de venta: lote, estacionamientos, detalles, precio (si la casa lo muestra), nota
- * pequeña y su botón de WhatsApp (que nombra la modalidad y cuenta su clic).
+ * Una modalidad de venta: lote (con su nota pequeña, si tiene), estacionamientos, detalles, precio
+ * (si la casa lo muestra) y su botón de WhatsApp (que nombra la modalidad y cuenta su clic). Van
+ * lado a lado también en el celular, para compararlas; precio y botón alineados abajo.
  */
 function TarjetaModalidad({ casa, modalidad, conPrecio }: { casa: Casa; modalidad: Modalidad; conPrecio: boolean }) {
-  const lote = textoLote(modalidad);
+  const lote = loteCorto(modalidad);
   return (
-    <li className="flex flex-col rounded-lg border-2 border-piedra-200 bg-blanco p-5">
-      <h3 className="font-display text-xl font-extrabold">{modalidad.nombre}</h3>
+    <li className="flex flex-col rounded-lg border-2 border-piedra-200 bg-blanco p-3 sm:p-5">
+      <h3 className="font-display text-lg leading-tight font-extrabold sm:text-xl">{modalidad.nombre}</h3>
       <dl className="mt-3 space-y-2">
         <div>
           <dt className="text-sm text-piedra-600">{modalidadesCasa.lote}</dt>
-          <dd className="font-semibold">{lote}</dd>
+          <dd className="font-semibold">
+            <span className="whitespace-nowrap">{lote.medidas}</span>{" "}
+            <span className="font-normal whitespace-nowrap text-piedra-700">({lote.area})</span>
+          </dd>
+          {modalidad.nota && <dd className="mt-1 text-xs text-piedra-600 sm:text-sm">{modalidad.nota}</dd>}
         </div>
         <div>
           <dt className="text-sm text-piedra-600">{modalidadesCasa.estacionamientos}</dt>
@@ -72,22 +77,21 @@ function TarjetaModalidad({ casa, modalidad, conPrecio }: { casa: Casa; modalida
         </div>
       </dl>
       {modalidad.detalles.length > 0 && (
-        <ul className="mt-3 space-y-1 text-piedra-700">
+        <ul className="mt-3 space-y-1 text-sm text-piedra-700 sm:text-base">
           {modalidad.detalles.map((d) => (
             <li key={d}>— {d}</li>
           ))}
         </ul>
       )}
-      <div className="mt-auto pt-5">
+      <div className="mt-auto pt-4 sm:pt-5">
         {conPrecio && (
-          <p className="font-display text-3xl font-extrabold">
+          <p className="font-display text-2xl font-extrabold sm:text-3xl">
             {modalidad.precio_usd === null ? "Consultar" : precioUSD(modalidad.precio_usd)}
           </p>
         )}
-        {modalidad.nota && <p className="mt-1 text-sm text-piedra-600">{modalidad.nota}</p>}
         <BotonWhatsAppCasa
           casa={casa}
-          modalidad={{ modalidad, lote: `${modalidad.lote_frente_m} × ${modalidad.lote_fondo_m} m` }}
+          modalidad={{ modalidad, lote: lote.medidas }}
           texto={modalidadesCasa.boton}
           variante="secundario"
           className="mt-4 w-full"
@@ -189,7 +193,7 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
             {modalidadesCasa.titulo(casa.modalidades.length)}
           </h2>
           {casa.modalidades.length > 1 && <p className="mt-2 text-piedra-700">{modalidadesCasa.intro}</p>}
-          <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+          <ul className={`mt-4 grid gap-3 sm:gap-4 ${casa.modalidades.length > 1 ? "grid-cols-2" : "sm:grid-cols-2"}`}>
             {casa.modalidades.map((mod) => (
               <TarjetaModalidad key={mod.id} casa={casa} modalidad={mod} conPrecio={muestraPrecio(casa.estado)} />
             ))}
