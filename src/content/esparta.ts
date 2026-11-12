@@ -94,8 +94,8 @@ export const esparta = {
 
   /** Acabados de la fachada, según la elevación, en minúscula para ir dentro de una frase. */
   acabadosFachada: [
-    "bloque de la sala pintado en terracota",
-    "bloque visto sellado en el corredor",
+    "sala repellada y pintada en terracota",
+    "corredor repellado y pintado en gris cálido",
     "marcos claros en las ventanas",
     "columna oscura con lámpara",
     "jardinera baja de bloque",
@@ -164,8 +164,8 @@ export const esparta = {
   },
 
   fachada: {
-    src: "/fachada-esparta.png",
-    alt: "Fachada principal de la Casa Modelo Esparta: pretil de 0.60 m que oculta el techo, bloque de la sala en terracota con ventana y jardinera, y corredor de bloque visto con la ventana del Dormitorio 1, entre muros de colindancia.",
+    src: "/fachada-esparta-v2.png",
+    alt: "Fachada principal de la Casa Modelo Esparta: pretil de 0.60 m que oculta el techo, sala repellada en terracota con ventana y jardinera, y corredor repellado en gris cálido con la ventana del Dormitorio 1 y la columna oscura, entre muros de colindancia.",
     ancho: 3560,
     alto: 2240,
     texto: "Fachada principal — vista desde la calle",

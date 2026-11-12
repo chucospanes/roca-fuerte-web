@@ -26,6 +26,11 @@ export function mensajeCasa(nombre: string, municipio: string): string {
   return `Hola, me interesa la "${nombre}" en ${municipio}. ¿Me pueden dar más información?`;
 }
 
+/** Mensaje del botón de una modalidad: dice cuál le interesa (nombre y lote). */
+export function mensajeModalidad(nombre: string, municipio: string, modalidad: string, lote: string): string {
+  return `Hola, me interesa la "${nombre}" en ${municipio}, en la opción "${modalidad}" (lote de ${lote}). ¿Me pueden dar más información?`;
+}
+
 /** Mensaje al terminar la calificación (paso 2), con lo que la persona ya contó. */
 export function mensajeCalificacion(nombre: string, datos: DatosCalificacion): string {
   const partes = [nombre ? `Hola, soy ${nombre}.` : "Hola."];

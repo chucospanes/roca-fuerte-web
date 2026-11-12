@@ -3,7 +3,14 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
 import { supabasePublishableKey, supabaseUrl } from "@/lib/supabase/entorno";
-import type { CasaVenta, CasaVentaAvance, CasaVentaEtapa, CasaVentaImagen, BaseDeDatos } from "@/lib/supabase/tipos";
+import type {
+  BaseDeDatos,
+  CasaVenta,
+  CasaVentaAvance,
+  CasaVentaEtapa,
+  CasaVentaImagen,
+  CasaVentaModalidad,
+} from "@/lib/supabase/tipos";
 import { esquemaSlugCasa, esquemaVideoObra } from "@/lib/validacion";
 import { videoObra, type VideoObra } from "@/lib/video";
 
@@ -24,8 +31,15 @@ import { videoObra, type VideoObra } from "@/lib/video";
 export const BUCKET_CASAS = "casas";
 
 export type Imagen = Omit<CasaVentaImagen, "casa_id" | "created_at" | "ruta"> & { url: string };
+/** Modalidad de venta (013): lote, estacionamientos y precio. Solo las disponibles (RLS). */
+export type Modalidad = Pick<
+  CasaVentaModalidad,
+  "id" | "orden" | "nombre" | "lote_frente_m" | "lote_fondo_m" | "lote_m2" | "estacionamientos" | "precio_usd" | "detalles" | "nota"
+>;
 export type CasaListada = Omit<CasaVenta, "publicada" | "created_at" | "updated_at"> & {
   portada: Imagen | null;
+  /** En el orden de la ficha. Lote, estacionamientos y precio salen SOLO de aquí. */
+  modalidades: Modalidad[];
 };
 /** Etapa del avance público de una casa (la bitácora). */
 export type EtapaCasa = Pick<CasaVentaEtapa, "id" | "orden" | "nombre" | "estado" | "fecha_inicio" | "descripcion"> & {
@@ -48,12 +62,15 @@ export type ObraEnCurso = { casa: CasaListada; etapas: EtapaCasa[] };
 export type Resultado<T> = { ok: true; datos: T } | { ok: false };
 
 const COLUMNAS =
-  "id, slug, orden, nombre, modelo, descripcion, distrito, municipio, departamento, estado, etapa_actual, precio_usd, lote_frente_m, lote_fondo_m, lote_m2, planta_esparta, construccion_m2, dormitorios, banos, parqueos, agua, electricidad, aguas_negras, incluye, video_url";
+  "id, slug, orden, nombre, modelo, descripcion, distrito, municipio, departamento, estado, etapa_actual, planta_esparta, construccion_m2, dormitorios, banos, agua, electricidad, aguas_negras, incluye, video_url";
+const COLUMNAS_MODALIDAD =
+  "id, casa_id, orden, nombre, lote_frente_m, lote_fondo_m, lote_m2, estacionamientos, precio_usd, detalles, nota";
 const COLUMNAS_IMAGEN = "id, casa_id, tipo, orden, ruta, ancho, alto, alt";
 const COLUMNAS_ETAPA = "id, casa_id, orden, nombre, estado, fecha_inicio, descripcion, video_url";
 const COLUMNAS_AVANCE = "id, casa_id, fecha, titulo, descripcion, video_url, fotos";
 
-type FilaCasa = Omit<CasaListada, "portada">;
+type FilaCasa = Omit<CasaListada, "portada" | "modalidades">;
+type FilaModalidad = Modalidad & { casa_id: string };
 type FilaImagen = Omit<CasaVentaImagen, "created_at">;
 type FilaEtapa = Omit<CasaVentaEtapa, "created_at" | "updated_at">;
 type FilaAvance = Omit<CasaVentaAvance, "visible" | "created_at" | "updated_at">;
@@ -68,6 +85,20 @@ function clientePublico() {
 export function urlImagenCasa(ruta: string): string {
   const partes = ruta.split("/").map(encodeURIComponent).join("/");
   return `${supabaseUrl()}/storage/v1/object/public/${BUCKET_CASAS}/${partes}`;
+}
+
+function modalidad({ id, orden, nombre, lote_frente_m, lote_fondo_m, lote_m2, estacionamientos, precio_usd, detalles, nota }: FilaModalidad): Modalidad {
+  return { id, orden, nombre, lote_frente_m, lote_fondo_m, lote_m2, estacionamientos, precio_usd, detalles, nota };
+}
+
+/** Modalidades de varias casas, en su orden. La RLS deja ver solo las disponibles. */
+async function leerModalidades(supabase: ReturnType<typeof clientePublico>, casas: string[]) {
+  return supabase
+    .from("casas_venta_modalidades")
+    .select(COLUMNAS_MODALIDAD)
+    .in("casa_id", casas)
+    .order("orden")
+    .returns<FilaModalidad[]>();
 }
 
 function imagen({ id, tipo, orden, ancho, alto, alt, ruta }: FilaImagen): Imagen {
@@ -136,10 +167,28 @@ export async function listarCasas(): Promise<Resultado<CasaListada[]>> {
       return { ok: false };
     }
 
+    // Sin modalidades no hay precio ni lote: si fallan, el catálogo dice que no pudo cargar
+    // (mostrar "Consultar" por un error sería un dato falso)
+    const { data: modalidades, error: errorModalidades } = await leerModalidades(
+      supabase,
+      casas.map((c) => c.id),
+    );
+    if (errorModalidades) {
+      console.error("[casas] modalidades fallaron", {
+        codigo: errorModalidades.code,
+        mensaje: errorModalidades.message,
+      });
+      return { ok: false };
+    }
+
     const porCasa = new Map(portadas.map((p) => [p.casa_id, imagen(p)]));
     return {
       ok: true,
-      datos: casas.map((c) => ({ ...c, portada: porCasa.get(c.id) ?? null })),
+      datos: casas.map((c) => ({
+        ...c,
+        portada: porCasa.get(c.id) ?? null,
+        modalidades: modalidades.filter((m) => m.casa_id === c.id).map(modalidad),
+      })),
     };
   } catch (e) {
     console.error("[casas] listar falló", { mensaje: e instanceof Error ? e.message : String(e) });
@@ -186,6 +235,15 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
       return { ok: false };
     }
 
+    const { data: modalidades, error: errorModalidades } = await leerModalidades(supabase, [casa.id]);
+    if (errorModalidades) {
+      console.error("[casas] modalidades fallaron", {
+        codigo: errorModalidades.code,
+        mensaje: errorModalidades.message,
+      });
+      return { ok: false };
+    }
+
     const { data: etapas, error: errorEtapas } = await supabase
       .from("casas_venta_etapas")
       .select(COLUMNAS_ETAPA)
@@ -217,6 +275,7 @@ export async function leerCasa(slug: string): Promise<Resultado<DetalleCasa | nu
       datos: {
         ...casa,
         portada: fotos.find((f) => f.orden === 1) ?? null,
+        modalidades: modalidades.map(modalidad),
         fotos,
         plano: plano ? imagen(plano) : null,
         video: videoValido(casa.video_url),
@@ -319,4 +378,15 @@ export function destinoCompra(disponibles: CasaListada[]): { href: string; texto
   return disponibles.length === 1
     ? { href: `/casas/${disponibles[0].slug}`, texto: "Ver la casa" }
     : { href: "/casas", texto: "Ver casas en venta" };
+}
+
+/**
+ * Precio a mostrar de una casa: el menor de sus modalidades con precio, y si es "desde" (hay más
+ * de una modalidad). `null` si ninguna tiene precio ("Consultar"). Reservadas y vendidas no
+ * muestran precio: eso lo decide `muestraPrecio`.
+ */
+export function precioDesde(modalidades: Pick<Modalidad, "precio_usd">[]): { precio: number; desde: boolean } | null {
+  const precios = modalidades.map((m) => m.precio_usd).filter((p): p is number => p !== null);
+  if (precios.length === 0) return null;
+  return { precio: Math.min(...precios), desde: modalidades.length > 1 };
 }

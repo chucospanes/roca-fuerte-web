@@ -68,6 +68,8 @@ export type ClicVenta = {
   ubicacion: Uno<typeof UBICACIONES_VENTA>;
   /** Casa del catálogo (006): solo con la opción `casa`. */
   casa_id: string | null;
+  /** Modalidad de esa casa (013/014): solo con `casa_id`. */
+  modalidad_id: string | null;
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
@@ -164,16 +166,13 @@ export type CasaVenta = {
   departamento: string;
   estado: Uno<typeof ESTADOS_CASA>;
   etapa_actual: string | null;
-  precio_usd: number | null;
-  lote_frente_m: number;
-  lote_fondo_m: number;
-  lote_m2: number;
+  // precio_usd, lote_frente_m, lote_fondo_m, lote_m2 y parqueos siguen en la tabla, SIN USO
+  // desde 013: viven en casas_venta_modalidades. No se declaran aquí para que nadie los lea.
   /** true: m², dormitorios y baños son los del modelo Esparta (van en null aquí). */
   planta_esparta: boolean;
   construccion_m2: number | null;
   dormitorios: number | null;
   banos: number | null;
-  parqueos: number | null;
   agua: boolean | null;
   electricidad: boolean | null;
   aguas_negras: Uno<typeof AGUAS_NEGRAS> | null;
@@ -194,6 +193,29 @@ export type CasaVentaImagen = {
   alto: number;
   alt: string;
   created_at: string;
+};
+
+/**
+ * Modalidad de venta de una casa (013): lote, estacionamientos y precio. Toda casa tiene al menos
+ * una. Lectura pública solo de las `disponible` de una casa publicada y no vendida.
+ */
+export type CasaVentaModalidad = {
+  id: string;
+  casa_id: string;
+  orden: number;
+  nombre: string;
+  lote_frente_m: number;
+  lote_fondo_m: number;
+  lote_m2: number;
+  /** null = por confirmar */
+  estacionamientos: number | null;
+  /** null = "Consultar" */
+  precio_usd: number | null;
+  detalles: string[];
+  nota: string | null;
+  disponible: boolean;
+  created_at: string;
+  updated_at: string;
 };
 
 /** Avance público de una casa del catálogo (008). Separado de las etapas privadas del portal. */
@@ -250,6 +272,7 @@ export type BaseDeDatos = {
       documentos: SoloLectura<Documento>;
       casas_venta: SoloLectura<CasaVenta>;
       casas_venta_imagenes: SoloLectura<CasaVentaImagen>;
+      casas_venta_modalidades: SoloLectura<CasaVentaModalidad>;
       casas_venta_etapas: SoloLectura<CasaVentaEtapa>;
       casas_venta_avances: SoloLectura<CasaVentaAvance>;
     };

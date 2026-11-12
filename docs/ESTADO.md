@@ -3,8 +3,8 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-10
-**Versión:** v1.7.1 — foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Última actualización:** 2026-11-12
+**Versión:** v1.8.0 — precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -12,6 +12,41 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Precio por modalidad, hero 3, portada y fachada corregida (`v1.8.0`, en `main`, 2026-11-12)
+- **Avance "Fundación terminada y bastones listos" verificado con lecturas (2026-11-12):** 4 fotos
+  en `obras` y en la copia pública de `casas`, idénticas byte por byte, sin EXIF, GPS ni XMP
+  (1600 px: así venían); la ficha del dominio lo muestra en el Diario de obra.
+- **Migración 013 aplicada por el usuario** (modalidades; verificado con lecturas: tabla con la
+  modalidad inicial de la casa, `clics_venta.modalidad_id`, vista con la columna, publishable lee
+  y no escribe). **Su prueba falló** al borrar una casa con clics por modalidad (diagnóstico en la
+  014 y DECISIONES.md). **Migración 014 aplicada por el usuario (2026-11-12):** su prueba y la de
+  la 013, corrida otra vez, dieron "PRUEBA SUPERADA".
+- Código (con la 013 aplicada): "Desde $X" en la tarjeta, la portada y Precios; ficha con las
+  modalidades lado a lado (también a 390 px), nota bajo el lote y botón "Me interesa" por
+  modalidad (mensaje con la opción y el lote, clic con `modalidad_id`); schema.org con una oferta
+  por modalidad; `/api/clic` exige que la modalidad sea de la casa y esté disponible. Las
+  columnas viejas de `casas_venta` ya no se leen. Construir a pedido sigue "A consultar".
+- Pantalla 3 del hero con la ilustración (`public/hero/ilustracion-hogar.jpg`, copia sin
+  metadatos) rotulada "Ilustración de referencia"; contraste AA medido: título 7.0:1 y
+  subtítulo 6.4:1 en el peor caso (390 y 1280 px), sin cambiar el velo.
+- Fachada: corredor repellado en gris cálido, sin bloque visto. `public/fachada-esparta-v2.png`
+  generado del PDF vigente (`assets/fachada-esparta.pdf`, sin cambios), `assets/og-fachada-v2.png`
+  con el mismo encuadre que el anterior y `fachada-esparta-limpia-v2.svg`; salen los viejos.
+  Acabados, alt y CONTEXTO.md corregidos.
+- Probado: lint, typecheck y build; capturas a 390 px (y 1280 de la ficha) con una simulación
+  local de las dos modalidades (parche temporal, no commiteado), sin desborde; build final contra
+  Supabase real: con la modalidad inicial (sin precio), la ficha dice "Precio y lote" y
+  "Consultar". Validación del clic: 6 casos. Guía de casas con la plantilla 6 (modalidades), sin
+  prueba con rollback todavía.
+- **Para el usuario, fuera del repo (`C:\Proyectos\roca-fuerte-sql\`):** `14-portada-fundacion.sql`
+  (subir antes `fundacion-bastones.jpeg` a `casas/{casa_id}/`) y `15-modalidades-sjv.sql`
+  ($69,000 con la nota de segregación y $85,000), los dos con candados ALTO.
+- **Hecho (2026-11-12):** capturas aprobadas; el usuario subió la foto y corrió los SQL 14 y 15
+  sin ALTO. Verificado con lecturas: 2 modalidades ($69,000 con la nota y $85,000), visibles con
+  la publishable; portada `fundacion-bastones.jpeg` en orden 1 (idéntica a la local, sin EXIF ni
+  GPS) y las anteriores en 2 y 3; 0 usuarios de prueba; `clics_venta` en 401. **Pendiente:** migración que borre las
+  columnas viejas de `casas_venta` (precio, lote y parqueos) y ajuste la plantilla 1.
 
 ### Foto del hero: bastones de varilla (`v1.7.1`, en `main`, 2026-11-10)
 - Pantalla 1 con `public/hero/obra-sjv-bastones.jpg` (copia exacta, sin EXIF ni GPS; 1109 × 900),

@@ -72,6 +72,11 @@ plantilla es una sola instrucción: **si algo falla, no se crea ni cambia nada**
   Salvador, San Vicente, Santa Ana, Sonsonate, Usulután.
 - En `null`: estado = en construcción; precio = "Consultar"; modelo = Esparta; orden = 100;
   servicios = por confirmar (se ven con el sello de pendiente); incluye = nada.
+- **Desde la migración 013, `precio_usd`, el lote y `parqueos` de esta plantilla NO se
+  muestran** (columnas sin uso; el lote sigue siendo obligatorio en la tabla hasta que se
+  borren). Precio, lote y estacionamientos van en las **modalidades** de la casa (plantilla 6):
+  toda casa necesita al menos una; sin modalidades, la web muestra "Consultar" y el lote "Por
+  confirmar".
 
 Candados (`ALTO`):
 - algún valor de `datos` todavía tiene `<` (el mensaje dice en qué columnas);
@@ -528,15 +533,87 @@ alguna sale vacía, algo no cuadró y no se cambió nada. La prueba de esta plan
 candado, arrancar, terminar y volver a por iniciar, todo revertido) está en
 `supabase/pruebas/008_plantilla_cambiar_etapa.sql`.
 
+## Modalidades de venta (precio, lote y estacionamientos)
+Desde la migración 013, una casa se vende de una o varias formas (`casas_venta_modalidades`):
+cada modalidad tiene nombre, lote (frente × fondo; el área se calcula), estacionamientos
+(null = por confirmar), precio en USD (null = "Consultar"), detalles (una línea por elemento) y
+una nota pequeña opcional. La tarjeta del catálogo, la portada y Precios muestran "Desde {el
+menor precio}" (con una sola modalidad, el precio sin "Desde"); la ficha muestra las
+modalidades lado a lado, cada una con su botón de WhatsApp. Sin descuentos ni precio de
+preventa.
+
+### Plantilla 6: modalidades de una casa
+Una fila por modalidad en `modalidades` (separadas por coma, la última sin coma). `orden`:
+1, 2, 3… (orden en la ficha; el "Desde" sale del menor precio, no del primero). Sin detalles:
+`'{}'::text[]`; sin nota: `null`.
+
+Candados (`ALTO`):
+- algún valor todavía tiene `<`;
+- no existe una casa con ese slug;
+- dos modalidades con el mismo orden, o un orden que la casa ya usa;
+- una modalidad sin nombre o sin medidas del lote.
+La base rechaza además precio fuera de 1,000–5,000,000, estacionamientos negativos, nota de más
+de 200 letras y más de 8 detalles. **Esta plantilla todavía no tiene prueba con rollback** (la
+de la 013 prueba la tabla, no la plantilla).
+
+```sql
+with
+datos as materialized (
+  select '<casa-esparta-ejemplo-1>'::text as slug
+),
+modalidades (orden, nombre, lote_frente_m, lote_fondo_m, estacionamientos, precio_usd, detalles, nota) as materialized (
+  values
+    ('<1>'::smallint, '<Casa con lote propio>'::text, '<5>'::numeric, '<20>'::numeric, '<1>'::smallint, '<69000>'::integer, '{}'::text[], '<Nota pequeña>'::text),
+    ('<2>',           '<Casa con lote completo>',     '<10>',         '<20>',          '<2>',           '<85000>',          array['<Espacio para ampliar>'], null)
+),
+-- ===== Debajo de esta línea no se edita nada =====
+casa as (
+  select c.id from public.casas_venta c, datos d where c.slug = d.slug
+),
+candado as materialized (
+  select case
+    when exists (select 1 from datos d, jsonb_each_text(to_jsonb(d)) where value like '%<%')
+      or exists (select 1 from modalidades m, jsonb_each_text(to_jsonb(m)) where value like '%<%') then
+      'ALTO: quedan valores sin reemplazar (con "<"). No se creó nada.'
+    when not exists (select 1 from casa) then
+      format('ALTO: no existe una casa con el slug "%s". No se creó nada.', (select slug from datos))
+    when exists (select 1 from modalidades group by orden having count(*) > 1)
+      or exists (select 1 from modalidades m, public.casas_venta_modalidades x, casa c
+                 where x.casa_id = c.id and x.orden = m.orden) then
+      'ALTO: dos modalidades con el mismo orden, o la casa ya usa ese orden. No se creó nada.'
+    when exists (select 1 from modalidades
+                 where nombre is null or char_length(trim(nombre)) < 2
+                       or lote_frente_m is null or lote_fondo_m is null) then
+      'ALTO: cada modalidad necesita nombre y medidas del lote. No se creó nada.'
+  end as error
+),
+nuevas as (
+  insert into public.casas_venta_modalidades
+    (casa_id, orden, nombre, lote_frente_m, lote_fondo_m, estacionamientos, precio_usd, detalles, nota)
+  select c.id, m.orden, trim(m.nombre), m.lote_frente_m, m.lote_fondo_m, m.estacionamientos,
+         m.precio_usd, coalesce(m.detalles, '{}'), m.nota
+  from modalidades m, casa c, candado k
+  where coalesce(k.error::int, 0) = 0
+  returning orden, nombre, precio_usd
+)
+select
+  (select coalesce(error::int, 0) from candado)  as candado,
+  (select count(*) from nuevas)                  as modalidades_creadas,
+  (select string_agg(orden || ': ' || nombre || ' (' || coalesce(precio_usd::text, 'Consultar') || ')', ' | ' order by orden)
+   from nuevas)                                  as modalidades;
+```
+
 ## Cambios del día a día (Table Editor o SQL)
 Se hacen editando la fila de la casa en *Table Editor → `casas_venta`* (o con un `update`
 en el SQL Editor). La base rechaza los valores fuera de lo permitido. Ejemplos:
 
 ```sql
--- Cambiar el lote (el área se recalcula sola)
-update public.casas_venta set lote_frente_m = 10, lote_fondo_m = 20 where slug = 'casa-esparta-ejemplo-1';
--- Precio (null = "Consultar")
-update public.casas_venta set precio_usd = 45000 where slug = 'casa-esparta-ejemplo-1';
+-- Precio de una modalidad (null = "Consultar"). El lote y los estacionamientos, igual
+update public.casas_venta_modalidades set precio_usd = 70000
+where casa_id = (select id from public.casas_venta where slug = 'casa-esparta-ejemplo-1') and orden = 1;
+-- Retirar una modalidad (por ejemplo, vendido el lote de al lado): no se ve, no se borra
+update public.casas_venta_modalidades set disponible = false
+where casa_id = (select id from public.casas_venta where slug = 'casa-esparta-ejemplo-1') and orden = 2;
 -- Etapa actual y estado
 update public.casas_venta set etapa_actual = 'Techo', estado = 'en_construccion' where slug = 'casa-esparta-ejemplo-1';
 ```

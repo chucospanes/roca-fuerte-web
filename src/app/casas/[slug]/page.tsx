@@ -6,9 +6,9 @@ import { DetalleCasa } from "@/components/casas/DetalleCasa";
 import { Encabezado } from "@/components/Encabezado";
 import { Pie } from "@/components/Pie";
 import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
-import { precioUSD, site } from "@/config/site";
-import { catalogo, muestraPrecio, ubicacionCasa } from "@/content/casas";
-import { leerCasa } from "@/lib/casas";
+import { site } from "@/config/site";
+import { catalogo, muestraPrecio, textoPrecioCasa, ubicacionCasa } from "@/content/casas";
+import { leerCasa, precioDesde } from "@/lib/casas";
 
 /**
  * Detalle de una casa del catálogo. El 404 real de una casa que no existe lo da `proxy.ts`
@@ -61,13 +61,15 @@ export async function generateMetadata({ params }: PageProps<"/casas/[slug]">): 
   }
   const casa = resultado.datos;
   const titulo = `${casa.nombre} · ${casa.municipio} · ${site.marca}`;
-  const precio =
-    muestraPrecio(casa.estado) && casa.precio_usd !== null
-      ? ` Precio: ${precioUSD(casa.precio_usd)}.`
-      : "";
-  const descripcion =
-    casa.descripcion ??
-    `Casa en venta en ${ubicacionCasa(casa, true)}, en un lote de ${casa.lote_m2.toFixed(2)} m².${precio}`;
+  const desde = muestraPrecio(casa.estado) ? precioDesde(casa.modalidades) : null;
+  const precio = desde ? ` Precio: ${textoPrecioCasa(desde).replace(/^Desde/, "desde")}.` : "";
+  // Lote: el menor de sus modalidades ("desde" si hay varias); sin modalidades, no se menciona
+  const lotes = casa.modalidades.map((m) => m.lote_m2);
+  const lote =
+    lotes.length === 0
+      ? ""
+      : `, en un lote ${lotes.length > 1 ? "desde " : "de "}${Math.min(...lotes).toFixed(2)} m²`;
+  const descripcion = casa.descripcion ?? `Casa en venta en ${ubicacionCasa(casa, true)}${lote}.${precio}`;
   const ruta = `/casas/${casa.slug}`;
   return {
     title: titulo,

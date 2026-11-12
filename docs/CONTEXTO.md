@@ -37,8 +37,11 @@ Honesto, directo, sin exageraciones de marketing. Español salvadoreño neutro.
 El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTube).
 
 ## Casa Modelo Esparta (datos del plano en lote y la fachada con pretil)
-- **Lote real de la casa: 5.00 × 20.00 m.** El terreno de 10 × 20 m se segrega en dos
-  lotes de 5 × 20 m, una casa en cada uno. De la calle al fondo: estacionamiento 5.00 m (carro
+- **Lote del modelo: 5.00 × 20.00 m.** El terreno de San José Villanueva hoy es **un solo
+  inmueble de 10 × 20 m** en el CNR; la segregación en dos lotes de 5 × 20 m está en trámite
+  y debe quedar inscrita antes de escriturar una casa con lote de 5 × 20 m. Esa casa se vende
+  en dos modalidades: con lote de 5 × 20 m ($69,000, "sujeto a segregación en trámite") o
+  con el terreno completo de 10 × 20 m ($85,000, se vende tal cual). De la calle al fondo: estacionamiento 5.00 m (carro
   de 4.50 × 1.80 m), jardín 3.50 m (con jardinera y paso peatonal al corredor de entrada),
   casa 9.50 m y patio trasero 2.00 m (tendedero). Retiros por confirmar con OPAMSS o la
   alcaldía.
@@ -52,9 +55,9 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
   2.60 m, cumbrera a 3.31 m (sobre el nivel de piso terminado).
 - **Fachada con pretil de 0.60 m** (el muro del frente llega a 3.20 m): con la casa a
   8.50 m de la calle, oculta el techo desde la acera. El canal tras el pretil es el punto
-  delicado (impermeabilizar, darle pendiente y dejar rebosadero). Acabados: bloque de la
-  sala pintado en terracota, bloque visto sellado en el corredor, marcos claros en las
-  ventanas, columna oscura con lámpara, número de casa grande y jardinera baja de bloque.
+  delicado (impermeabilizar, darle pendiente y dejar rebosadero). Acabados: paredes
+  repelladas y pintadas, terracota en la sala y gris cálido en el corredor (**sin bloque
+  visto**), pretil sobre el corredor en tono claro, marcos claros en las ventanas, columna oscura con lámpara, número de casa grande y jardinera baja de bloque.
   Ventanas al frente: sala 0.80 × 1.10 m y Dormitorio 1 1.20 × 1.10 m, antepecho 1.00 m.
 - 2 dormitorios de 3.00 × 2.50 m (7.50 m² c/u), con espacio para ropero.
 - 1 baño de 1.50 × 2.50 m (3.75 m²) con ducha, sin tina; extractor y lámina traslúcida
@@ -71,7 +74,8 @@ El tráfico llega casi todo desde el celular (TikTok, Instagram, Facebook, YouTu
   (PNG a resolución media, 1800 px, en `public/plano-casa-esparta-v4-1800.png`; la alta
   resolución es solo el PDF de la ficha premium).
   Plano del lote: `assets/plano-esparta.pdf` (PNG en `public/plano-esparta.png`). Fachada:
-  `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta.png`). Ambos son
+  `assets/fachada-esparta.pdf` (PNG en `public/fachada-esparta-v2.png`, generado del PDF;
+  la imagen al compartir es un recorte, `assets/og-fachada-v2.png`). Ambos son
   referenciales; requieren firma de arquitecto o ingeniero antes de construir. Si cambian,
   usar un nombre de archivo nuevo (la caché de `next/image` va por URL).
 

@@ -15,7 +15,7 @@ export function DatosEstructurados() {
     name: site.marca,
     url: `${site.url}/`,
     description: `${site.modelo}: casa de una planta, ${esparta.dormitorios} dormitorios, ${esparta.areas.construidaM2.toFixed(2)} m² de construcción. Construcción documentada etapa por etapa.`,
-    image: `${site.url}/fachada-esparta.png`,
+    image: `${site.url}${esparta.fachada.src}`,
     areaServed: { "@type": "Country", name: site.pais },
     telephone: `+${site.whatsapp}`,
     ...(redes.length > 0 ? { sameAs: redes } : {}),

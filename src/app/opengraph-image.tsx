@@ -5,8 +5,8 @@ import { site } from "@/config/site";
 
 /**
  * Imagen para compartir el enlace (WhatsApp, Facebook, X…): fachada + modelo + marca.
- * Se genera en el build. La fachada es un recorte reducido (`assets/og-fachada.png`,
- * ~75 KB) para no pasar el límite de 500 KB de ImageResponse. Usa Archivo (la fuente de
+ * Se genera en el build. La fachada es un recorte reducido (`assets/og-fachada-v2.png`,
+ * ~95 KB) para no pasar el límite de 500 KB de ImageResponse. Usa Archivo (la fuente de
  * títulos del sitio) en TTF estático desde `assets/fonts/` (licencia SIL OFL, `OFL.txt`):
  * ImageResponse no admite WOFF2 ni fuentes variables.
  */
@@ -16,7 +16,7 @@ export const contentType = "image/png";
 
 const leerAsset = (...ruta: string[]) => readFile(join(process.cwd(), "assets", ...ruta));
 
-const fachada = `data:image/png;base64,${(await leerAsset("og-fachada.png")).toString("base64")}`;
+const fachada = `data:image/png;base64,${(await leerAsset("og-fachada-v2.png")).toString("base64")}`;
 const [archivoBold, archivoExtraBold] = await Promise.all([
   leerAsset("fonts", "Archivo-Bold.ttf"),
   leerAsset("fonts", "Archivo-ExtraBold.ttf"),
