@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-12
-**Versión:** v1.7.1 — foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.8.0 — precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,15 +13,15 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Precio por modalidad, hero 3, portada y fachada corregida (rama `feat/modalidades-precio`, 2026-11-12, sin unir)
+### Precio por modalidad, hero 3, portada y fachada corregida (`v1.8.0`, en `main`, 2026-11-12)
 - **Avance "Fundación terminada y bastones listos" verificado con lecturas (2026-11-12):** 4 fotos
   en `obras` y en la copia pública de `casas`, idénticas byte por byte, sin EXIF, GPS ni XMP
   (1600 px: así venían); la ficha del dominio lo muestra en el Diario de obra.
 - **Migración 013 aplicada por el usuario** (modalidades; verificado con lecturas: tabla con la
   modalidad inicial de la casa, `clics_venta.modalidad_id`, vista con la columna, publishable lee
   y no escribe). **Su prueba falló** al borrar una casa con clics por modalidad (diagnóstico en la
-  014 y DECISIONES.md). **Migración 014 escrita, esperando que el usuario la aplique** y corra su
-  prueba y otra vez la de la 013.
+  014 y DECISIONES.md). **Migración 014 aplicada por el usuario (2026-11-12):** su prueba y la de
+  la 013, corrida otra vez, dieron "PRUEBA SUPERADA".
 - Código (con la 013 aplicada): "Desde $X" en la tarjeta, la portada y Precios; ficha con las
   modalidades lado a lado (también a 390 px), nota bajo el lote y botón "Me interesa" por
   modalidad (mensaje con la opción y el lote, clic con `modalidad_id`); schema.org con una oferta
@@ -42,8 +42,10 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 - **Para el usuario, fuera del repo (`C:\Proyectos\roca-fuerte-sql\`):** `14-portada-fundacion.sql`
   (subir antes `fundacion-bastones.jpeg` a `casas/{casa_id}/`) y `15-modalidades-sjv.sql`
   ($69,000 con la nota de segregación y $85,000), los dos con candados ALTO.
-- **Falta antes de unir a `main`:** que el usuario apruebe las capturas, aplique la 014 y corra
-  los SQL 14 y 15; verificarlos con lecturas. **Después del despliegue:** migración que borre las
+- **Hecho (2026-11-12):** capturas aprobadas; el usuario subió la foto y corrió los SQL 14 y 15
+  sin ALTO. Verificado con lecturas: 2 modalidades ($69,000 con la nota y $85,000), visibles con
+  la publishable; portada `fundacion-bastones.jpeg` en orden 1 (idéntica a la local, sin EXIF ni
+  GPS) y las anteriores en 2 y 3; 0 usuarios de prueba; `clics_venta` en 401. **Pendiente:** migración que borre las
   columnas viejas de `casas_venta` (precio, lote y parqueos) y ajuste la plantilla 1.
 
 ### Foto del hero: bastones de varilla (`v1.7.1`, en `main`, 2026-11-10)
