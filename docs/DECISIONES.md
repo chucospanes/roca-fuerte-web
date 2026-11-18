@@ -866,3 +866,28 @@ El usuario pasó el plano del lote corregido ("47.50 m² de construcción (inclu
 techado)"): `assets/plano-esparta-v2.pdf` y `public/plano-esparta-v2.png`, copias exactas, con
 nombres nuevos; salen `plano-esparta.pdf` y `plano-esparta.png`. La nota "incluye el corredor
 techado" se queda; el usuario confirmará con el ingeniero cómo cuenta el corredor en un avalúo.
+
+## 2026-11-17 — Foto de la tarjeta desde un avance, en el panel (migración 015)
+Decisión del usuario, en la rama `feat/portada-desde-avance`. La foto de la tarjeta de una casa
+(catálogo, bloque de la portada, primera de la ficha e imagen al compartir) se elige en `/admin`
+con una foto de un avance publicado en la ficha, sin SQL. **Se reutiliza la regla de siempre:**
+portada = foto de orden 1 en `casas_venta_imagenes` (005, la que usó la plantilla 14); sin tablas ni
+columnas nuevas.
+- **Sin copiar archivos:** se registra la copia pública que ya existe
+  (`{casa_id}/avances/{publicacion_id}/NN.jpg`), con alt "Foto de la obra: {título del avance}".
+- **Solo una portada, sin huecos:** `admin_elegir_portada` (security definer, `es_admin()`) borra la
+  fila de la portada anterior si salió de un avance (el archivo sigue en el Diario de obra), renumera
+  las fotos propias 2, 3, 4… en su orden (nunca bajan dos veces) y pone la nueva en 1; al final
+  comprueba 1, 2, 3… y una sola portada. Una foto propia desplazada queda segunda.
+- **Candados:** casa vendida, publicación oculta, foto que no está publicada o falta en el bucket,
+  medidas fuera de 200–4000 px. "Quitar de la ficha" se niega si el avance tiene la portada, y fijar
+  fotos no puede dejarla fuera (la tarjeta nunca apunta a un archivo borrado).
+- **Medidas desde el servidor:** se leen del encabezado del JPG (SOF base y progresivo; con la
+  etiqueta de orientación 5–8 se intercambian), no del navegador. Las fotos del panel ya están
+  rotadas y sin EXIF.
+- **Fotos verticales:** se permiten, con el aviso "Esta foto es vertical: en la tarjeta se recortará
+  arriba y abajo".
+- Lectura extra: el administrador lee `casas_venta_imagenes` de todas las casas (para marcar la
+  portada). Escritura directa en la tabla, ninguna; un cliente no administrador recibe 42501.
+- Sin redeploy: `revalidateTag` del catálogo, como el resto del panel.
+- Volver a una foto propia de la casa (que no salió de un avance) sigue siendo con SQL.

@@ -1,5 +1,6 @@
 import "server-only";
 
+import { urlImagenCasa } from "@/lib/casas";
 import { BUCKET_OBRAS, carpetaFotos } from "@/lib/portal";
 import { crearClienteServidor } from "@/lib/supabase/servidor";
 import type { Avance, CasaVenta, CasaVentaAvance, Etapa, Obra } from "@/lib/supabase/tipos";
@@ -58,8 +59,11 @@ export async function listarObrasAdmin(): Promise<ObraAdmin[] | null> {
   }));
 }
 
-/** Estado de la publicación de un avance en la ficha de su casa (010). */
-export type PublicacionAdmin = { id: string; visible: boolean; fotos: number };
+/** Una foto publicada en la ficha: nombre (01.jpg…), URL pública y si es la foto de la tarjeta. */
+export type FotoPublicada = { nombre: string; url: string; esPortada: boolean };
+
+/** Estado de la publicación de un avance en la ficha de su casa (010) y sus fotos públicas. */
+export type PublicacionAdmin = { id: string; visible: boolean; fotos: number; publicadas: FotoPublicada[] };
 
 export type AvanceAdmin = Pick<Avance, "id" | "fecha" | "titulo" | "etapa_id" | "video_url"> & {
   fotos: string[];
@@ -113,7 +117,10 @@ export async function leerObraAdmin(id: string): Promise<ObraAdminDetalle | null
     }
   }
 
-  const publicaciones = await leerPublicaciones((avances.data ?? []).flatMap((a) => a.publicacion_id ?? []));
+  const publicaciones = await leerPublicaciones(
+    (avances.data ?? []).flatMap((a) => a.publicacion_id ?? []),
+    await rutaPortada(obra.casa_id),
+  );
   return {
     obra,
     casa: casa.data,
@@ -146,24 +153,53 @@ export async function leerAvanceAdmin(obraId: string, avanceId: string): Promise
   const fotos = await fotosDeAvance(obraId, avanceId);
   if (fotos === null) return null;
   const { publicacion_id, ...avance } = data;
-  const publicaciones = await leerPublicaciones(publicacion_id ? [publicacion_id] : []);
+  const publicaciones = await leerPublicaciones(publicacion_id ? [publicacion_id] : [], null);
   return { ...avance, fotos, publicacion: publicacion_id ? (publicaciones.get(publicacion_id) ?? null) : null };
 }
 
+/**
+ * Ruta (en el bucket `casas`) de la foto de la tarjeta de una casa: la foto de orden 1. Con 015,
+ * el administrador la lee aunque la casa esté oculta. `null` sin casa, sin fotos o si falla.
+ */
+async function rutaPortada(casaId: string | null): Promise<string | null> {
+  if (!casaId) return null;
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase
+    .from("casas_venta_imagenes")
+    .select("ruta")
+    .eq("casa_id", casaId)
+    .eq("tipo", "foto")
+    .eq("orden", 1)
+    .maybeSingle<{ ruta: string }>();
+  if (error) {
+    console.error("[admin] leer portada falló", { codigo: error.code, mensaje: error.message });
+    return null;
+  }
+  return data?.ruta ?? null;
+}
+
 /** Publicaciones en la ficha (la RLS de administrador deja ver también las ocultas). */
-async function leerPublicaciones(ids: string[]): Promise<Map<string, PublicacionAdmin>> {
+async function leerPublicaciones(ids: string[], portada: string | null): Promise<Map<string, PublicacionAdmin>> {
   if (ids.length === 0) return new Map();
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase
     .from("casas_venta_avances")
-    .select("id, visible, fotos")
+    .select("id, casa_id, visible, fotos")
     .in("id", ids)
-    .returns<Pick<CasaVentaAvance, "id" | "visible" | "fotos">[]>();
+    .returns<Pick<CasaVentaAvance, "id" | "casa_id" | "visible" | "fotos">[]>();
   if (error) {
     console.error("[admin] leer publicaciones falló", { codigo: error.code, mensaje: error.message });
     return new Map();
   }
-  return new Map(data.map((p) => [p.id, { id: p.id, visible: p.visible, fotos: p.fotos.length }]));
+  return new Map(
+    data.map((p) => {
+      const publicadas = p.fotos.map((nombre) => {
+        const ruta = `${p.casa_id}/avances/${p.id}/${nombre}`;
+        return { nombre, url: urlImagenCasa(ruta), esPortada: ruta === portada };
+      });
+      return [p.id, { id: p.id, visible: p.visible, fotos: p.fotos.length, publicadas }];
+    }),
+  );
 }
 
 /** Nombres de los archivos de la carpeta del avance, en orden. `null` si falla. */

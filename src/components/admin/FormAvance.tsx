@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { crearAvance } from "@/app/admin/acciones";
+import { crearAvance, elegirPortada } from "@/app/admin/acciones";
 import { ElegirFotos, useAvisoAlSalir, useFotos } from "@/components/admin/fotos";
 import { publicarEnFicha } from "@/components/admin/publicar";
 import * as e from "@/components/premium/estilos";
@@ -44,10 +44,12 @@ export function FormAvance({
   const [carpeta, setCarpeta] = useState<string | null>(null);
   const [avanceId, setAvanceId] = useState<string | null>(null);
   const [publicarFicha, setPublicarFicha] = useState(casaPublicable !== null);
+  /** Foto marcada como "foto de la tarjeta" (clave de la foto), solo si se publica en la ficha. */
+  const [fotoTarjeta, setFotoTarjeta] = useState<string | null>(null);
   const [publicacion, setPublicacion] = useState<{ ok: boolean; texto: string } | null>(null);
   const [progresoFicha, setProgresoFicha] = useState<string | null>(null);
   const [fallidas, setFallidas] = useState(0);
-  const { fotos, aviso, elegir, quitar, subir, resumen } = useFotos({ existentes: [], maximo: maximoFotos });
+  const { fotos, aviso, elegir, quitar, subir, resumen, actuales } = useFotos({ existentes: [], maximo: maximoFotos });
 
   const bloqueado = fase !== "editando";
   useAvisoAlSalir(
@@ -64,11 +66,25 @@ export function FormAvance({
       const r = await publicarEnFicha(id, (hechas, total) =>
         setProgresoFicha(total > 0 ? `Publicando en la ficha: ${hechas} de ${total} fotos…` : "Publicando en la ficha…"),
       );
-      setPublicacion(
-        r.ok
-          ? { ok: true, texto: `También se publicó en la ficha de «${casaPublicable}».` }
-          : { ok: false, texto: `El avance se guardó, pero no se publicó en la ficha: ${r.mensaje} Puedes publicarlo desde la obra.` },
-      );
+      if (!r.ok) {
+        setPublicacion({ ok: false, texto: `El avance se guardó, pero no se publicó en la ficha: ${r.mensaje} Puedes publicarlo desde la obra.` });
+      } else {
+        let texto = `También se publicó en la ficha de «${casaPublicable}».`;
+        let ok = true;
+        // La foto de la tarjeta: su copia pública (01.jpg…) sale de la foto subida al avance
+        const elegida = actuales().find((f) => f.clave === fotoTarjeta && f.estado === "subida");
+        const publica = elegida?.nombre ? r.publicas[elegida.nombre] : undefined;
+        if (fotoTarjeta && publica) {
+          setProgresoFicha("Cambiando la foto de la tarjeta…");
+          const p = await elegirPortada({ avanceId: id, foto: publica }).catch(() => null);
+          if (p?.ok) texto += " La foto elegida ya es la foto de la tarjeta.";
+          else {
+            ok = false;
+            texto += ` No se pudo cambiar la foto de la tarjeta${p ? `: ${p.mensaje}` : "."} Puedes elegirla desde la obra.`;
+          }
+        }
+        setPublicacion({ ok, texto });
+      }
     }
     setFase("terminado");
   }
@@ -208,7 +224,27 @@ export function FormAvance({
       <div>
         <p className={e.etiqueta}>Fotos <span className="font-normal text-piedra-600">(opcional)</span></p>
         <div className="mt-1">
-          <ElegirFotos fotos={fotos} aviso={aviso} elegir={elegir} quitar={quitar} bloqueado={bloqueado} peso={resumen.peso} />
+          <ElegirFotos
+            fotos={fotos}
+            aviso={aviso}
+            elegir={elegir}
+            quitar={(clave) => {
+              if (clave === fotoTarjeta) setFotoTarjeta(null);
+              quitar(clave);
+            }}
+            bloqueado={bloqueado}
+            peso={resumen.peso}
+            tarjeta={
+              casaPublicable
+                ? { elegida: fotoTarjeta, elegir: setFotoTarjeta, habilitada: publicarFicha }
+                : undefined
+            }
+          />
+          {casaPublicable && fotos.length > 0 && !publicarFicha && (
+            <p className="mt-2 text-sm text-piedra-600">
+              Para usar una foto como foto de la tarjeta, marca «Publicar también en la ficha de la casa».
+            </p>
+          )}
         </div>
       </div>
 

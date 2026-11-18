@@ -3,8 +3,8 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-12
-**Versión:** v1.8.1 — área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Última actualización:** 2026-11-17
+**Versión:** v1.9.0 — foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -12,6 +12,20 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Foto de la tarjeta desde un avance (`v1.9.0`, rama `feat/portada-desde-avance`, 2026-11-17)
+- Panel: "Usar como foto de la tarjeta" en cada foto de "Avance nuevo" (una sola; desactivada sin
+  "Publicar también en la ficha") y en cada foto de un avance ya publicado (la actual: "Foto de la
+  tarjeta ✓"). Aviso en fotos verticales; se pueden elegir igual. Un avance con la portada no se
+  puede quitar de la ficha. Ver DECISIONES.md (2026-11-17) y la guía de obras (paso 6 bis).
+- **Migración `015_portada_desde_avance.sql` escrita, sin aplicar** (la aplica el usuario), con su
+  prueba `supabase/pruebas/015_portada_desde_avance.sql` (cliente no administrador y anon
+  rechazados, tres cambios seguidos con orden exacto 1, 2, 3, 4, casa sin fotos, 9 candados).
+  **Hasta aplicarla, el botón responde con un error** (la función no existe); el resto del panel
+  sigue igual.
+- Lector de medidas del JPG (`src/lib/jpg.ts`): 13 casos en `node scripts/prueba-jpg.mjs` (SOF0,
+  SOF2, EXIF 1/3/5/6/7/8 en los dos órdenes de bytes, relleno, PNG y cortados). Con lecturas: da las
+  mismas medidas que las 3 fotos registradas de la casa y lee bien las 14 fotos del Diario.
 
 ### Área construida 47.50 m² y el área fuera de los titulares (`v1.8.1`, en `main`, 2026-11-12)
 - Área construida 47.50 m² (con el corredor techado de 3.90 m²), útil interior 38.07 m². Plano v5:
