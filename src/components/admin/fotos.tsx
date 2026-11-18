@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BUCKET_FOTOS_OBRAS } from "@/components/admin/constantes";
+import { AVISO_VERTICAL } from "@/components/admin/FotosTarjeta";
 import { FotoIlegible, nombresSiguientes, prepararFoto, tamano } from "@/lib/fotos-navegador";
 import { crearClienteNavegador } from "@/lib/supabase/navegador";
 
@@ -23,6 +24,9 @@ export type Foto = {
   blob: Blob | null;
   vista: string | null;
   nombre: string | null;
+  /** Medidas de la foto ya preparada (orientación aplicada), para avisar si es vertical. */
+  ancho: number | null;
+  alto: number | null;
 };
 
 let contador = 0;
@@ -76,14 +80,16 @@ export function useFotos({ existentes, maximo }: { existentes: string[]; maximo:
         blob: null,
         vista: null,
         nombre: null,
+        ancho: null,
+        alto: null,
       }));
       actualizar((lista) => [...lista, ...nuevas]);
       // De una en una (en cola), para no llenar la memoria del celular
       nuevas.forEach((foto, i) => {
         preparando.current = preparando.current.then(async () => {
           try {
-            const { blob } = await prepararFoto(elegidas[i]);
-            cambiar(foto.clave, { estado: "lista", blob, vista: URL.createObjectURL(blob) });
+            const { blob, ancho, alto } = await prepararFoto(elegidas[i]);
+            cambiar(foto.clave, { estado: "lista", blob, vista: URL.createObjectURL(blob), ancho, alto });
           } catch (e) {
             if (!(e instanceof FotoIlegible)) console.error(e);
             cambiar(foto.clave, { estado: "ilegible" });
@@ -155,7 +161,10 @@ export function useFotos({ existentes, maximo }: { existentes: string[]; maximo:
     peso: fotos.reduce((s, f) => s + (f.blob && f.estado !== "subida" ? f.blob.size : 0), 0),
   };
 
-  return { fotos, aviso, elegir, quitar, subir, resumen };
+  /** La lista al instante (con los nombres fijados al subir), para usar después de `await subir()`. */
+  const actuales = useCallback(() => fotosRef.current, []);
+
+  return { fotos, aviso, elegir, quitar, subir, resumen, actuales };
 }
 
 const etiquetaEstado: Record<EstadoFoto, string> = {
@@ -167,6 +176,15 @@ const etiquetaEstado: Record<EstadoFoto, string> = {
   fallo: "Falló",
 };
 
+/** "Usar como foto de la tarjeta" en cada foto (solo en Avance nuevo, con casa publicable). */
+export type OpcionTarjeta = {
+  /** Clave de la foto elegida, o null. Solo una por avance. */
+  elegida: string | null;
+  elegir: (clave: string | null) => void;
+  /** Falso si no se publica en la ficha: la opción se ve desactivada. */
+  habilitada: boolean;
+};
+
 /** Botón para elegir fotos y la cuadrícula con su estado. */
 export function ElegirFotos({
   fotos,
@@ -175,6 +193,7 @@ export function ElegirFotos({
   quitar,
   bloqueado,
   peso,
+  tarjeta,
 }: {
   fotos: Foto[];
   aviso: string | null;
@@ -182,6 +201,7 @@ export function ElegirFotos({
   quitar: (clave: string) => void;
   bloqueado: boolean;
   peso: number;
+  tarjeta?: OpcionTarjeta;
 }) {
   const entrada = useRef<HTMLInputElement>(null);
   return (
@@ -238,6 +258,26 @@ export function ElegirFotos({
                 >
                   {f.nombre ?? `#${i + 1}`} · {etiquetaEstado[f.estado]}
                 </span>
+                {tarjeta && f.estado !== "ilegible" && (
+                  <label
+                    className={`mt-1 flex min-h-11 items-start gap-1.5 text-xs leading-tight ${
+                      tarjeta.habilitada ? "text-piedra-800" : "text-piedra-500"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="foto-tarjeta"
+                      checked={tarjeta.habilitada && tarjeta.elegida === f.clave}
+                      disabled={!tarjeta.habilitada || bloqueado}
+                      onChange={() => tarjeta.elegir(f.clave)}
+                      className="mt-0.5 size-4 shrink-0 accent-terracota"
+                    />
+                    <span>Usar como foto de la tarjeta</span>
+                  </label>
+                )}
+                {tarjeta?.habilitada && f.ancho !== null && f.alto !== null && f.alto > f.ancho && (
+                  <span className="block text-xs leading-tight text-terracota-oscuro">{AVISO_VERTICAL}</span>
+                )}
                 {!bloqueado && (f.estado === "lista" || f.estado === "ilegible" || f.estado === "preparando") && (
                   <button
                     type="button"

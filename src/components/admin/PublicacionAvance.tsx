@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { quitarPublicacion } from "@/app/admin/acciones";
+import { FotosTarjeta } from "@/components/admin/FotosTarjeta";
 import { publicarEnFicha } from "@/components/admin/publicar";
 import * as e from "@/components/premium/estilos";
 import type { PublicacionAdmin } from "@/lib/admin";
@@ -63,6 +64,8 @@ export function PublicacionAvance({
 
   // Casa vendida sin nada publicado: nada que mostrar ni hacer
   if (casa.vendida && !publicacion) return null;
+  // Con la foto de la tarjeta, la base no deja quitarlo de la ficha (015): se avisa antes
+  const tienePortada = publicacion?.publicadas.some((f) => f.esPortada) ?? false;
 
   const estado = publicacion
     ? casa.vendida
@@ -106,7 +109,7 @@ export function PublicacionAvance({
               {publicacion ? "Terminar publicación" : "Publicar en la ficha"}
             </button>
           )}
-          {publicacion && (
+          {publicacion && !tienePortada && (
             <button
               type="button"
               onClick={() => setConfirmar("quitar")}
@@ -124,6 +127,14 @@ export function PublicacionAvance({
         >
           {resultado.texto}
         </p>
+      )}
+      {tienePortada && !trabajando && !confirmar && (
+        <p className="text-sm text-piedra-600">
+          Tiene la foto de la tarjeta: para quitarlo de la ficha, elige antes otra foto de la tarjeta.
+        </p>
+      )}
+      {publicacion?.visible && !casa.vendida && !trabajando && !confirmar && (
+        <FotosTarjeta avanceId={avanceId} fotos={publicacion.publicadas} />
       )}
     </div>
   );

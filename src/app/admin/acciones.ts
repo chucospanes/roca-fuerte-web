@@ -1,9 +1,10 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 import { TAG_CASAS } from "@/lib/casas";
 import { crearClienteServidor, sesionVerificada } from "@/lib/supabase/servidor";
 import { z } from "zod";
+import { medidasJpg } from "@/lib/jpg";
 import { esquemaAvanceNuevo, esquemaCambioEtapa } from "@/lib/validacion";
 
 /**
@@ -287,4 +288,59 @@ export async function quitarPublicacion(avanceId: unknown): Promise<ResultadoAdm
   const { data: borrados, error: errorBorrado } = await supabase.storage.from(BUCKET_PUBLICO).remove(archivos);
   if (errorBorrado) console.error("[admin] borrar copias falló", { mensaje: errorBorrado.message });
   return { ok: true, datos: { pendientes: archivos.length - (borrados?.length ?? 0) } };
+}
+
+// ---------------------------------------------------------------------------------------
+// Foto de la tarjeta (portada) desde un avance publicado (015). La base registra la copia
+// pública que ya existe; aquí solo se leen sus medidas reales del encabezado del JPG (no se
+// confía en lo que mande el navegador).
+// ---------------------------------------------------------------------------------------
+
+const esquemaPortada = z.object({
+  avanceId: z.uuid(),
+  foto: z.string().regex(/^[0-9]{2,3}\.jpg$/),
+});
+
+/** Elige como foto de la tarjeta de la casa una foto publicada de este avance. */
+export async function elegirPortada(
+  entrada: unknown,
+): Promise<ResultadoAdmin<{ ancho: number; alto: number }>> {
+  const datos = esquemaPortada.safeParse(entrada);
+  if (!datos.success) return { ok: false, mensaje: "Foto no válida." };
+  if (!(await sesionVerificada())) return { ok: false, mensaje: "Tu sesión venció. Vuelve a entrar." };
+  const supabase = await crearClienteServidor();
+
+  const avance = await leerAvance(supabase, datos.data.avanceId);
+  if (!avance?.publicacionId) return { ok: false, mensaje: "Este avance no está publicado en la ficha." };
+  const { data: pub } = await supabase
+    .from("casas_venta_avances")
+    .select("casa_id")
+    .eq("id", avance.publicacionId)
+    .maybeSingle<{ casa_id: string }>();
+  if (!pub) return { ok: false, mensaje: "No se encontró la publicación." };
+
+  const { data: archivo, error: errorDescarga } = await supabase.storage
+    .from(BUCKET_PUBLICO)
+    .download(`${pub.casa_id}/avances/${avance.publicacionId}/${datos.data.foto}`);
+  if (errorDescarga || !archivo) return { ok: false, mensaje: `No se pudo leer la foto ${datos.data.foto}.` };
+  const medidas = medidasJpg(new Uint8Array(await archivo.arrayBuffer()));
+  if (!medidas) return { ok: false, mensaje: `No se pudieron leer las medidas de la foto ${datos.data.foto}.` };
+
+  const { error } = await supabase.rpc("admin_elegir_portada", {
+    p_publicacion_id: avance.publicacionId,
+    p_foto: datos.data.foto,
+    p_ancho: medidas.ancho,
+    p_alto: medidas.alto,
+  });
+  if (error) {
+    if (!error.message?.startsWith("ALTO: ")) {
+      console.error("[admin] elegir portada falló", { codigo: error.code, mensaje: error.message });
+    }
+    return { ok: false, mensaje: mensajeDeError(error) };
+  }
+  // Tarjeta del catálogo, bloque de la portada, ficha y vista previa: se refrescan sin desplegar,
+  // ya en la primera visita (updateTag vence la caché al instante; revalidateTag serviría una vez
+  // la versión anterior mientras se regenera)
+  updateTag(TAG_CASAS);
+  return { ok: true, datos: { ancho: medidas.ancho, alto: medidas.alto } };
 }

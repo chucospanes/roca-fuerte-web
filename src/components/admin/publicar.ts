@@ -9,7 +9,7 @@ import { copiarFotoPublica, fijarPublicacion, prepararPublicacion } from "@/app/
 export async function publicarEnFicha(
   avanceId: string,
   alAvanzar?: (copiadas: number, total: number) => void,
-): Promise<{ ok: true; fotos: number } | { ok: false; mensaje: string }> {
+): Promise<{ ok: true; fotos: number; publicas: Record<string, string> } | { ok: false; mensaje: string }> {
   const sinConexion = "No se pudo publicar. Revisa la conexión y vuelve a intentarlo desde la obra.";
   const preparada = await prepararPublicacion(avanceId).catch(() => null);
   if (!preparada) return { ok: false, mensaje: sinConexion };
@@ -17,6 +17,8 @@ export async function publicarEnFicha(
 
   const { origenes } = preparada.datos;
   const nombres: string[] = [];
+  /** Foto del avance (bucket obras) → su copia en la ficha (01.jpg, 02.jpg…). */
+  const publicas: Record<string, string> = {};
   alAvanzar?.(0, origenes.length);
   for (const [indice, origen] of origenes.entries()) {
     let copia = await copiarFotoPublica({ avanceId, origen, indice }).catch(() => null);
@@ -24,11 +26,12 @@ export async function publicarEnFicha(
     if (!copia) return { ok: false, mensaje: sinConexion };
     if (!copia.ok) return copia;
     nombres.push(copia.datos.nombre);
+    publicas[origen] = copia.datos.nombre;
     alAvanzar?.(indice + 1, origenes.length);
   }
 
   const fijada = await fijarPublicacion({ avanceId, nombres }).catch(() => null);
   if (!fijada) return { ok: false, mensaje: sinConexion };
   if (!fijada.ok) return fijada;
-  return { ok: true, fotos: fijada.datos.fotos };
+  return { ok: true, fotos: fijada.datos.fotos, publicas };
 }

@@ -494,6 +494,26 @@ Reglas:
   desde el celular, a veces con datos móviles.
 - Si la carpeta tiene un nombre equivocado, las fotos no aparecen (y nadie más las ve).
 
+## 6 bis. Foto de la tarjeta de la casa (desde el panel `/admin`, sin SQL)
+La foto de la tarjeta (la que se ve en `/casas`, en el bloque "Casas disponibles" de la portada,
+primera de la ficha y al compartir el enlace) es la **foto de orden 1** de la casa en
+`casas_venta_imagenes`. Desde la versión 1.9.0 se elige en el panel con una foto de un avance
+publicado en la ficha (requiere la migración `015_portada_desde_avance.sql`):
+
+- **Avance nuevo:** debajo de cada foto, marca **"Usar como foto de la tarjeta"** (solo una). La
+  opción solo funciona con la casilla **"Publicar también en la ficha de la casa"** marcada; si la
+  desmarcas, se desactiva. Se aplica al terminar de publicar.
+- **Un avance anterior:** en la obra, cada avance publicado en la ficha muestra sus fotos con el
+  botón **"Usar como foto de la tarjeta"**; la actual dice "Foto de la tarjeta ✓".
+- Si la foto es vertical, el panel avisa: *"Esta foto es vertical: en la tarjeta se recortará
+  arriba y abajo"*. Se puede elegir igual.
+- La anterior deja de ser portada: si también salió de un avance, sale de la galería (sigue en el
+  Diario de obra); si era una foto propia de la casa, pasa a ser la segunda. Siempre hay una sola.
+- El catálogo se actualiza solo, sin desplegar (en la siguiente visita).
+- **Un avance con la foto de la tarjeta no se puede quitar de la ficha:** elige antes otra foto.
+- Para volver a una foto propia de la casa (que no salió de un avance) sigue haciendo falta SQL,
+  como la plantilla de la portada de la fundación.
+
 ## 7. Materiales usados
 Varios a la vez: plantilla "materiales" (arriba). Uno por uno: **Table Editor → `obra_materiales` → Insert row:** `obra_id`, `orden` (1, 2, 3…),
 `material`, y opcionales `especificacion`, `marca` y `cantidad` (texto con unidad, por
