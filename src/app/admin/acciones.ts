@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidateTag, updateTag } from "next/cache";
 import { TAG_CASAS } from "@/lib/casas";
 import { crearClienteServidor, sesionVerificada } from "@/lib/supabase/servidor";
 import { z } from "zod";
@@ -338,7 +338,9 @@ export async function elegirPortada(
     }
     return { ok: false, mensaje: mensajeDeError(error) };
   }
-  // Tarjeta del catálogo, bloque de la portada, ficha y vista previa: se refrescan sin desplegar
-  revalidateTag(TAG_CASAS, "max");
+  // Tarjeta del catálogo, bloque de la portada, ficha y vista previa: se refrescan sin desplegar,
+  // ya en la primera visita (updateTag vence la caché al instante; revalidateTag serviría una vez
+  // la versión anterior mientras se regenera)
+  updateTag(TAG_CASAS);
   return { ok: true, datos: { ancho: medidas.ancho, alto: medidas.alto } };
 }
