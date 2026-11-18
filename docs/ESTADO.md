@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-17
-**Versión:** v1.9.0 — foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v1.9.1 — Next.js 16.4.6 (corrige dos avisos de seguridad); v1.9.0: foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -25,10 +25,15 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   casas, usuarios ni registros de la prueba.
 - Elegir portada usa `updateTag`: el cambio se ve en la primera visita (el resto del panel sigue con
   `revalidateTag`). Capturas a 390 px aprobadas; lint, typecheck y build pasan.
-- **Aviso de Next.js:** 16.4.3 tiene dos avisos moderados de `use cache` con root params
-  (GHSA-mfr8-8qww-v76h, GHSA-vc7v-qv4w-wrv8), corregidos en 16.4.6. El sitio no usa root params;
-  actualizar queda a decisión del usuario (con checkpoint). El build se detiene una vez al
-  detectar un agente y sigue al reintentar; en CI no se detiene.
+- **Avisos de Next.js corregidos en `v1.9.1` (2026-11-17):** GHSA-mfr8-8qww-v76h y
+  GHSA-vc7v-qv4w-wrv8 (moderados, `use cache` con root params; el sitio no los usa) quedan
+  corregidos al pasar `next` y `eslint-config-next` de 16.4.3 a 16.4.6 (rama
+  `fix/next-16.4.6`, checkpoint `v1.9.0`; ningún otro paquete: el lockfile solo cambia los
+  paquetes de Next). `npm audit` ya no lista `next`. Lint, typecheck y build pasan (sin el aviso);
+  capturas a 390 px de `/`, `/casas`, la ficha y `/admin`: 200, sin desborde ni imágenes rotas.
+- Quedan avisos solo en herramientas de desarrollo (cadena de ESLint: picomatch, minimatch,
+  fast-glob), que no se despliegan. Sin cambio. Nota aparte: el título de `/casas` es un `h2` (no
+  hay `h1`); ya era así antes.
 - Lector de medidas del JPG (`src/lib/jpg.ts`): 13 casos en `node scripts/prueba-jpg.mjs` (SOF0,
   SOF2, EXIF 1/3/5/6/7/8 en los dos órdenes de bytes, relleno, PNG y cortados). Con lecturas: da las
   mismas medidas que las 3 fotos registradas de la casa y lee bien las 14 fotos del Diario.
