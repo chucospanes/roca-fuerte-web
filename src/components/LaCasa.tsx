@@ -1,19 +1,22 @@
-import { SeccionConTitulo } from "./portada/ui";
 import { esparta } from "@/content/esparta";
 import { ImagenAmpliable } from "./ImagenAmpliable";
 
 const m2 = (n: number) => `${n.toFixed(2)} m²`;
 const m = (n: number) => `${n.toFixed(2)} m`;
 
+/**
+ * El modelo Esparta en detalle (planos, lote, cuadro de áreas y ambientes). Desde la v2.0.0 vive en
+ * la ficha de cada casa con la planta Esparta (`#la-casa`), no en la portada (decisión del
+ * usuario, 2026-11-23).
+ */
 export function LaCasa() {
   return (
-    <SeccionConTitulo
-      tono="claro"
-      id="la-casa"
-      etiqueta="La casa"
-      titulo="Modelo Esparta"
-      intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`} 
-    >
+    <section id="la-casa" className="mt-12 scroll-mt-20 border-t border-line pt-10">
+      <h2 className="font-display text-2xl font-extrabold">Modelo Esparta</h2>
+      <p className="mt-2 max-w-2xl text-lg text-ink-muted">
+        {`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}
+      </p>
+      <div className="mt-6">
       {/* Móvil: casa, lote, fachada. Escritorio: casa y fachada arriba, lote a todo el ancho abajo. */}
       <div className="grid gap-6 md:grid-cols-2 md:items-end">
         {[
@@ -128,6 +131,7 @@ export function LaCasa() {
           </p>
         </div>
       </div>
-    </SeccionConTitulo>
+      </div>
+    </section>
   );
 }

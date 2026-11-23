@@ -54,8 +54,17 @@ export function Etiqueta({ children, className = "" }: { children: ReactNode; cl
 }
 
 /** Título de sección (h2): Archivo 800 en mayúsculas, `clamp(34px, 4.4vw, 60px)`. */
-export function TituloSeccion({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <h2 className={`titular titular-seccion aparecer ${className}`}>{children}</h2>;
+export function TituloSeccion({
+  children,
+  className = "",
+  nivel: Nivel = "h2",
+}: {
+  children: ReactNode;
+  className?: string;
+  /** h1 cuando la sección es la página entera (/inversionistas). */
+  nivel?: "h1" | "h2";
+}) {
+  return <Nivel className={`titular titular-seccion aparecer ${className}`}>{children}</Nivel>;
 }
 
 /** La línea de cimiento: barra de 120 × 6 px en el acento. */
@@ -71,16 +80,18 @@ export function EncabezadoSeccion({
   etiqueta,
   titulo,
   lado,
+  nivel,
 }: {
   etiqueta?: string;
   titulo: ReactNode;
   lado?: ReactNode;
+  nivel?: "h1" | "h2";
 }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
       <div>
         {etiqueta && <Etiqueta className="mb-4">{etiqueta}</Etiqueta>}
-        <TituloSeccion>{titulo}</TituloSeccion>
+        <TituloSeccion nivel={nivel}>{titulo}</TituloSeccion>
       </div>
       {lado && <div className="max-w-[34rem] text-lg text-ink-muted lg:pb-1.5">{lado}</div>}
     </div>
@@ -94,6 +105,7 @@ export function SeccionConTitulo({
   etiqueta,
   titulo,
   intro,
+  nivel,
   children,
 }: {
   id: string;
@@ -101,11 +113,12 @@ export function SeccionConTitulo({
   etiqueta?: string;
   titulo: ReactNode;
   intro?: ReactNode;
+  nivel?: "h1" | "h2";
   children: ReactNode;
 }) {
   return (
     <SeccionPortada id={id} tono={tono}>
-      <EncabezadoSeccion etiqueta={etiqueta} titulo={titulo} lado={intro} />
+      <EncabezadoSeccion etiqueta={etiqueta} titulo={titulo} lado={intro} nivel={nivel} />
       <div className="mt-12">{children}</div>
     </SeccionPortada>
   );

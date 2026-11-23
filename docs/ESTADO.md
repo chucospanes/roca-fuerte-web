@@ -18,10 +18,13 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   encabezado y pie nuevos; `/casas`, la ficha, `/portal`, `/admin` y `/privacidad` solo heredan
   encabezado, pie, fuente y colores. Sin cambios en rutas, consultas, acciones, RLS ni en la base.
 - Orden: encabezado, portada (foto de bastones, tarjeta "Obra en curso" con la etapa de la base),
-  franja, Quiénes somos, Calidad comprobable, Proyecto actual (modalidades, precios y línea de
-  avance de la base), Diario de obra (3 avances más recientes), Así trabajamos, Hermano cercano
-  (`#hermano`) y, después, La casa, Materiales, Precios (solo "Construir a pedido" si hay
-  proyecto), Inversionistas, Preguntas, Contacto y pie.
+  franja, Quiénes somos (con las condiciones y "Construir a pedido"; sin casa disponible, también la
+  tarjeta de comprar), Calidad comprobable, Proyecto actual (modalidades, precios y línea de avance
+  de la base), Diario de obra (3 avances; en el celular, fila que se desliza), Así trabajamos (2 × 2
+  en el celular), Hermano cercano (`#hermano`), Preguntas (sin la de pagos) y pie. La casa y
+  Materiales (solo filas confirmadas) pasaron a la ficha de la casa (`#la-casa`); Inversionistas, a
+  `/inversionistas`; Precios y Contacto salieron (DECISIONES.md, 2026-11-23). Portada a 390 px:
+  10,071 px de alto (antes 18,685).
 - Clics: mismas `opcion`/`ubicacion`; el WhatsApp del encabezado cuenta como `general`/`flotante`.
   "Escríbenos por WhatsApp" está en el hero (botón principal) y en "Proyecto actual", los dos con
   `comprar`/`hero` y el mismo mensaje. **En `clics_venta` no se distingue de cuál vino el clic:**

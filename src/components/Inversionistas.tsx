@@ -2,11 +2,15 @@ import { SeccionConTitulo } from "./portada/ui";
 import { inversionistas } from "@/content/inversionistas";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 
-/** Servicio de construcción para inversionistas. No es una oferta de inversión (DECISIONES.md). */
+/**
+ * Servicio de construcción para inversionistas. No es una oferta de inversión (DECISIONES.md).
+ * Desde la v2.0.0 es la página /inversionistas (su título es el h1), no una sección de la portada.
+ */
 export function Inversionistas() {
   return (
     <SeccionConTitulo
       tono="claro"
+      nivel="h1"
       id="inversionistas"
       etiqueta="Para inversionistas"
       titulo={inversionistas.titulo}

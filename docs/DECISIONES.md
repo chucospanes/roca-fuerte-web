@@ -953,3 +953,30 @@ ya lleva a Calidad comprobable). Sin casa disponible, sigue la regla de antes: s
 comprar ("Quiero esta casa", `comprar`/`hero`). Los dos botones registran lo mismo: no se pueden
 distinguir sin migración ni cambiar la validación (`esquemaClic` es estricto y `casa_id` va solo
 con la opción `casa`).
+
+## 2026-11-23 — Portada más corta: las secciones extra salen o se mudan (matiza "Orden" del rediseño)
+Decisión del usuario, antes de aprobar la v2.0.0. Matiza el punto "Orden" de "Rediseño de la
+portada (v2.0.0)": las secciones que ya existían dejan de ir después de "Hermano cercano".
+- **La casa (modelo Esparta en detalle)** pasa completa a la ficha de cada casa con la planta
+  Esparta, antes de "Avance de la obra" (y del Diario de obra), con el id `la-casa`. "Ver el modelo
+  Esparta en detalle" apunta a `#la-casa` de la misma ficha; ningún otro enlace usaba `/#la-casa`.
+  Como el plano del modelo ya sale ahí, el "Plano" del final de la ficha queda solo para el plano
+  propio de una casa.
+- **Materiales** pasa a la ficha, debajo de La casa, solo con las filas de especificación
+  confirmada (hoy: bloque y acero); las "Por confirmar" no se muestran al público. Sin ninguna
+  confirmada, la sección no aparece. Sale la frase de la introducción que hablaba de «Por confirmar».
+- **Precios** sale. Las 5 condiciones del terreno y "Construir a pedido" (`construir`/`precios`)
+  pasan a la tarjeta "02 · Constructores" de Quiénes somos. Sin casa disponible, la tarjeta de
+  comprar (`comprar`/`precios`) aparece en Quiénes somos, junto a la 02. "A consultar" (el precio
+  de construir a pedido) deja de mostrarse en la portada.
+- **Inversionistas** pasa a la página `/inversionistas` (mismo contenido, mismo botón
+  `inversionista`/`inversionistas`, título como h1, encabezado y pie nuevos, noindex heredado). El
+  pie enlaza ahí; entra en el sitemap (solo con el sitio lanzado, como las demás páginas).
+- **Preguntas** queda al final, antes del pie, sin la pregunta de pagos (la dicen "Proyecto
+  actual" y "Así trabajamos"): financiamiento (FSV y banco), compra desde el exterior, plazo y
+  permisos.
+- **Contacto** sale. La ubicación `contacto` deja de usarse; queda en la base y en la validación.
+  Con ella sale el bloque de la ficha técnica premium (solo aparecía con `site.accesoPremium`
+  encendido): al encender el acceso premium hay que darle un lugar nuevo.
+- **Celular (menos de 768 px):** el Diario de obra pasa a una fila que se desliza (scroll-snap, una
+  foto y parte de la siguiente, solo CSS) y "Así trabajamos" a una cuadrícula de 2 × 2.

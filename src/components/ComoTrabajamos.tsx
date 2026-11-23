@@ -7,14 +7,17 @@ export function ComoTrabajamos() {
   return (
     <SeccionPortada id="proceso" tono="grafito">
       <TituloSeccion>{proceso.titulo}</TituloSeccion>
-      <ol className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Celular: 2 × 2, más compacto. Desde 1024 px, los 4 en fila. */}
+      <ol className="mt-10 grid grid-cols-2 gap-x-4 gap-y-8 sm:mt-14 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-4">
         {proceso.pasos.map((paso, i) => (
-          <li key={paso.titulo} className="aparecer border-t-4 border-cemento pt-6">
-            <span aria-hidden className="block font-display text-6xl leading-none font-black text-accent">
+          <li key={paso.titulo} className="aparecer border-t-4 border-cemento pt-4 sm:pt-6">
+            <span aria-hidden className="block font-display text-4xl leading-none font-black text-accent sm:text-6xl">
               {i + 1}
             </span>
-            <h3 className="mt-6 font-display text-xl leading-tight font-extrabold uppercase">{paso.titulo}</h3>
-            <p className="mt-3 leading-relaxed text-ink-muted">{paso.texto}</p>
+            <h3 className="mt-3 font-display text-base leading-tight font-extrabold uppercase sm:mt-6 sm:text-xl">
+              {paso.titulo}
+            </h3>
+            <p className="mt-2 text-[15px] leading-snug text-ink-muted sm:mt-3 sm:text-base sm:leading-relaxed">{paso.texto}</p>
           </li>
         ))}
       </ol>

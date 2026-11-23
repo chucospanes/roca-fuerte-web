@@ -83,7 +83,7 @@ export function Pie() {
                 </Link>
               </li>
               <li>
-                <Link href="/#inversionistas" className={enlace}>
+                <Link href="/inversionistas" className={enlace}>
                   {pie.enlaces.inversionistas}
                 </Link>
               </li>

@@ -30,16 +30,18 @@ export async function DiarioPortada({ slug }: { slug: string }) {
   return (
     <SeccionPortada id="diario" tono="elevado">
       <EncabezadoSeccion titulo={portada.diario.titulo} lado={<p>{portada.diario.texto}</p>} />
-      <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      {/* Celular: una fila que se desliza (scroll-snap), con una foto y parte de la siguiente.
+          Desde 768 px, cuadrícula de 3. Solo CSS. */}
+      <ul className="aparecer -mx-4 mt-12 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-6 sm:px-6 md:mx-0 md:grid md:snap-none md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden">
         {avances.map((a) => (
-          <li key={a.id} className="aparecer">
+          <li key={a.id} className="w-[82%] shrink-0 snap-start md:w-auto">
             <Link href={`/casas/${slug}#avance`} className="group block">
               <span className="foto-marco relative block aspect-[4/3] rounded-sm bg-surface">
                 <Image
                   src={a.fotos[0].url}
                   alt={`${a.titulo}, foto 1`}
                   fill
-                  sizes="(min-width: 1024px) 24rem, (min-width: 640px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 24rem, (min-width: 768px) 33vw, 82vw"
                   className="object-cover"
                 />
               </span>

@@ -41,12 +41,11 @@ export const calidadConIngeniero: Punto[] = [
 
 export type Pregunta = { pregunta: string; respuesta: string | Pendiente };
 
+/**
+ * Solo las preguntas cuyo contenido no está en otra sección de la portada (decisión del usuario,
+ * 2026-11-23): sale la de pagos (la dicen "Proyecto actual" y "Así trabajamos").
+ */
 export const preguntas: Pregunta[] = [
-  {
-    pregunta: "¿Puedo pagar al contado?",
-    respuesta:
-      "Sí. 30% a la firma del contrato, pagos por etapas conforme avanza la obra (por transferencia bancaria) y el saldo a la entrega. Los montos y plazos quedan fijados en el contrato.",
-  },
   {
     pregunta: "¿Puedo comprar con crédito del Fondo Social para la Vivienda (FSV)?",
     respuesta:
