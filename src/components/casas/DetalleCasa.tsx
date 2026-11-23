@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ImagenAmpliable } from "@/components/ImagenAmpliable";
+import { LaCasa } from "@/components/LaCasa";
+import { Materiales } from "@/components/Materiales";
 import { Pendiente } from "@/components/ui";
 import { VideoLazy } from "@/components/VideoLazy";
 import { precioUSD } from "@/config/site";
@@ -103,18 +105,18 @@ function TarjetaModalidad({ casa, modalidad, conPrecio }: { casa: Casa; modalida
 
 /**
  * Detalle de una casa del catálogo (la página la lee con `leerCasa`). Una casa con la planta
- * del modelo toma m², dormitorios, baños y, si no tiene plano propio, el plano de `esparta.ts`.
+ * del modelo toma m², dormitorios y baños de `esparta.ts`, y muestra el modelo en detalle
+ * (`LaCasa`, con su plano) y sus materiales confirmados. Al final va solo el plano propio.
  */
 export function DetalleCasa({ casa }: { casa: Casa }) {
 
   const construccion = casa.planta_esparta ? esparta.areas.construidaM2 : casa.construccion_m2;
   const dormitorios = casa.planta_esparta ? esparta.dormitorios : casa.dormitorios;
   const banos = casa.planta_esparta ? esparta.banos : casa.banos;
+  // El plano del modelo ya sale en "Modelo Esparta" (#la-casa): al final, solo el plano propio
   const plano = casa.plano
     ? { src: casa.plano.url, alt: casa.plano.alt, ancho: casa.plano.ancho, alto: casa.plano.alto }
-    : casa.planta_esparta
-      ? esparta.planoCasa
-      : null;
+    : null;
   // Etapa actual: la que está en proceso en su avance (una sola fuente); sin avance cargado,
   // la columna etapa_actual de la casa.
   const etapaActual = casa.etapas.find((e) => e.estado === "en_proceso")?.nombre ?? casa.etapa_actual;
@@ -218,7 +220,7 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
       />
       {casa.planta_esparta && (
         <Link
-          href="/#la-casa"
+          href="#la-casa"
           className="mt-2 inline-flex min-h-11 items-center font-semibold text-terracota underline-offset-4 hover:underline"
         >
           Ver el modelo Esparta en detalle →
@@ -248,6 +250,14 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
         <p className="mt-3">
           <Pendiente texto="Detalle pendiente" />
         </p>
+      )}
+
+      {/* El modelo en detalle y sus materiales (antes en la portada; decisión del 2026-11-23) */}
+      {casa.planta_esparta && (
+        <>
+          <LaCasa />
+          <Materiales />
+        </>
       )}
 
       {(casa.etapas.length > 0 || casa.diario.length > 0) && (
@@ -297,7 +307,7 @@ export function DetalleCasa({ casa }: { casa: Casa }) {
             />
           </div>
           <figcaption className="mt-2 text-sm text-piedra-600">
-            {casa.plano ? "Plano de esta casa." : "Plano del modelo Esparta."} {esparta.avisoPlanos}
+            Plano de esta casa. {esparta.avisoPlanos}
           </figcaption>
         </figure>
       )}

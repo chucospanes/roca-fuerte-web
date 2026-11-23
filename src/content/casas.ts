@@ -29,25 +29,6 @@ export const catalogo = {
   },
 };
 
-/**
- * Bitácora de la portada (ver DECISIONES.md, 2026-11-04 y 2026-11-05). El nombre y el enlace
- * salen de la casa del catálogo en obra. Las vendidas no se muestran; sin casa en obra, la
- * sección no aparece.
- */
-export const bitacoraCasa = {
-  titulo: (nombre: string) => `Obra en curso: ${nombre}`,
-  /** Solo si Supabase no respondió (sin casa en obra, la sección no aparece). */
-  tituloSinDatos: "Bitácora de obra",
-  error: "No pudimos cargar el avance de la obra en este momento.",
-  linea: {
-    en_construccion: `Casa propia de ${site.marca}, a la venta.`,
-    terminada: `Casa propia de ${site.marca}, a la venta.`,
-    reservada: `Casa propia de ${site.marca}, reservada.`,
-  } satisfies Record<Exclude<CasaVenta["estado"], "vendida">, string>,
-  verCasa: "Ver la casa",
-  nota: "Las obras de nuestros clientes se siguen en su portal privado.",
-};
-
 export const nombresEstado: Record<CasaVenta["estado"], string> = {
   en_construccion: "En construcción",
   terminada: "Terminada",

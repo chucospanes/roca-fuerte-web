@@ -3,7 +3,7 @@ import { site } from "@/config/site";
 import { listarCasas } from "@/lib/casas";
 
 /**
- * La landing, el aviso de privacidad y el catálogo de casas (con cada casa publicada): el
+ * La landing, el aviso de privacidad, /inversionistas y el catálogo de casas (con cada casa publicada): el
  * área premium no se indexa (noindex y robots.txt). Vacío mientras `site.lanzado` esté
  * apagado. Sin `lastModified`: una fecha calculada en el build cambiaría en cada despliegue
  * aunque el contenido no cambie. Las casas salen de Supabase (caché de minutos); si la
@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
+    { url: `${site.url}/inversionistas`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${site.url}/privacidad`, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

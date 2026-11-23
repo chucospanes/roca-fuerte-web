@@ -1,55 +1,72 @@
+import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/config/site";
-import { hayBitacora } from "@/lib/casas";
+import { portada } from "@/content/portada";
+import { leerProyecto } from "@/lib/portada";
+import { mensajesVenta, whatsappHref } from "@/lib/whatsapp";
 import { MenuMovil, type EnlaceMenu } from "./MenuMovil";
 
-// Rutas absolutas ("/#..."): el encabezado también se usa en /casas
-const secciones: EnlaceMenu[] = [
-  { href: "/casas", texto: "Casas" },
-  { href: "/#hermanos", texto: "Hermano cercano" },
-  { href: "/#la-casa", texto: "La casa" },
-  { href: "/#calidad", texto: "Calidad" },
-  { href: "/#materiales", texto: "Materiales" },
-  { href: "/#bitacora", texto: "Bitácora" },
-  { href: "/#opciones", texto: "Precios" },
-  { href: "/#inversionistas", texto: "Inversionistas" },
-  { href: "/#preguntas", texto: "Preguntas" },
-];
-
-/** "Acceso clientes" solo aparece con el portal encendido (`site.portalClientes`). */
-const accesoClientes: EnlaceMenu = { href: "/portal", texto: "Acceso clientes" };
-
-/** Sin casa en obra no hay bitácora en la portada: el menú no la enlaza. */
+/**
+ * Encabezado de la v2.0.0 (5.1): oscuro, logo claro, menú y botón de WhatsApp. Rutas absolutas
+ * ("/#..."): también se usa en /casas y la ficha. Sin proyecto en la portada, "Proyectos" lleva
+ * al catálogo.
+ *
+ * El botón de WhatsApp se ve desde 768 px y cuenta como `general`/`flotante`: en el celular está
+ * el botón flotante y nunca se ven los dos a la vez ("flotante" = el WhatsApp siempre visible,
+ * ver DECISIONES.md, 2026-11-23).
+ */
 export async function Encabezado() {
-  const conBitacora = await hayBitacora();
-  const visibles = conBitacora ? secciones : secciones.filter((e) => e.href !== "/#bitacora");
-  const enlaces = site.portalClientes ? [...visibles, accesoClientes] : visibles;
+  const proyecto = await leerProyecto();
+  const { menu } = portada;
+  const enlaces: EnlaceMenu[] = [
+    { href: proyecto ? "/#proyectos" : "/casas", texto: menu.proyectos },
+    { href: "/#calidad", texto: menu.calidad },
+    { href: "/#proceso", texto: menu.proceso },
+    { href: "/#hermano", texto: menu.hermano },
+    ...(site.portalClientes ? [{ href: "/portal", texto: menu.portal, secundario: true }] : []),
+  ];
+
   return (
-    <header className="sticky top-0 z-30 border-b border-piedra-200 bg-concreto/95 backdrop-blur">
-      {/* Con 10 enlaces, el menú en línea solo cabe desde 1280 px; antes, el menú desplegable */}
-      <div className="relative mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 xl:max-w-6xl">
-        <Link href="/#inicio" className="flex min-h-11 items-center gap-2 font-display text-lg font-extrabold tracking-tight whitespace-nowrap">
-          <span aria-hidden className="block size-3 bg-terracota" />
-          {site.marca}
+    <header className="tono-oscuro sticky top-0 z-30 border-b border-line bg-surface text-ink">
+      <div className="relative mx-auto flex h-16 w-full max-w-[78rem] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex min-h-11 shrink-0 items-center" aria-label={`${site.marca}, inicio`}>
+          <Image
+            src="/brand/rf-logo-horizontal-claro.svg"
+            alt=""
+            width={651}
+            height={120}
+            unoptimized
+            loading="eager"
+            className="h-8 w-auto sm:h-9"
+          />
         </Link>
         <nav aria-label="Secciones" className="hidden xl:block">
-          <ul className="flex gap-4 text-sm font-semibold whitespace-nowrap text-piedra-700">
+          <ul className="flex items-center gap-7 text-[15px] font-semibold whitespace-nowrap">
             {enlaces.map((e) => (
               <li key={e.href}>
-                <Link href={e.href} className="hover:text-terracota">
+                <Link
+                  href={e.href}
+                  className={`flex min-h-11 items-center hover:text-accent ${e.secundario ? "text-ink-muted" : ""}`}
+                >
                   {e.texto}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <MenuMovil enlaces={enlaces} />
-        <Link
-          href="/#contacto"
-          className="flex min-h-11 items-center rounded-md bg-piedra-900 px-4 text-sm font-semibold text-blanco hover:bg-terracota"
-        >
-          Contactar
-        </Link>
+        <div className="flex items-center gap-3">
+          <MenuMovil enlaces={enlaces} />
+          <a
+            href={whatsappHref(mensajesVenta.general)}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-venta="general"
+            data-ubicacion="flotante"
+            className="hidden min-h-11 items-center rounded-xs bg-accent px-5 font-display text-[15px] font-bold text-accent-ink transition-[filter] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:inline-flex"
+          >
+            {menu.whatsapp}
+          </a>
+        </div>
       </div>
     </header>
   );

@@ -1,141 +1,88 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
-import { site } from "@/config/site";
-import { esparta } from "@/content/esparta";
-import { heroPantallas } from "@/content/landing";
-import { casasDisponibles, destinoCompra, hayBitacora } from "@/lib/casas";
+import { mensajeInformacion, portada } from "@/content/portada";
+import { etapaEnCurso, leerProyecto } from "@/lib/portada";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { CarruselHero } from "./CarruselHero";
+import { Cimiento, contenedor, Etiqueta } from "./portada/ui";
 import { Boton } from "./ui";
 
-const fondos = {
-  foto: "bg-piedra-900",
-  oscuro: "cuadricula-clara bg-piedra-900",
-  terracota: "cuadricula-clara bg-terracota",
+/** La foto real de la obra (bastones y fundación) que ya usaba la portada: es el LCP. */
+const foto = {
+  src: "/hero/obra-sjv-bastones.jpg",
+  alt: "Bastones de varilla de hierro anclados a la fundación, donde se levantarán las paredes",
+  /** En vertical se centra en los bastones y la zanja. */
+  posicion: "65% 50%",
 };
 
 /**
- * Una pantalla del hero: foto de fondo (con un velo para leer el texto) o un color de la marca.
- * La foto de la primera pantalla carga de inmediato y con prioridad alta. Si la imagen no es una
- * foto real (una ilustración), `etiqueta` lo dice en pantalla.
+ * Portada de la v2.0.0 (docs/REDISENO_PORTADA.md, 5.2): oscura, con la cuadrícula de plano. Con
+ * proyecto, el botón principal es "Escríbenos por WhatsApp" (`comprar`/`hero`, el mismo de
+ * "Proyecto actual") y el secundario baja a #proyectos. Sin proyecto (no hay casa disponible o
+ * Supabase no respondió), queda solo el WhatsApp de comprar (`comprar`/`hero`), la regla de antes. La tarjeta sobre la foto
+ * sale de la base: el lugar de la casa y su etapa en proceso.
  */
-function Pantalla({
-  foto,
-  fondo = "terracota",
-  primera = false,
-  children,
-}: {
-  foto?: { src: string; alt: string; posicion?: string; etiqueta?: string };
-  fondo?: "oscuro" | "terracota";
-  primera?: boolean;
-  children: ReactNode;
-}) {
+export async function Hero() {
+  const proyecto = await leerProyecto();
+  const { hero } = portada;
+  const etapa = proyecto ? etapaEnCurso(proyecto.etapas) : null;
+  const enObra = proyecto?.casa.estado === "en_construccion";
+
   return (
-    <div
-      className={`relative flex min-h-[34rem] items-end sm:min-h-[36rem] md:items-center ${fondos[foto ? "foto" : fondo]}`}
-    >
-      {foto && (
-        <>
+    <section id="inicio" className="tono-oscuro cuadricula-plano bg-surface text-ink">
+      <div
+        className={`${contenedor} grid gap-12 pt-14 pb-16 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-center lg:gap-12 lg:py-24 xl:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] xl:gap-14`}
+      >
+        <div className="min-w-0">
+          <Etiqueta>{hero.etiqueta}</Etiqueta>
+          <h1 className="titular titular-portada mt-6">
+            {hero.titulo.inicio} <span className="text-accent">{hero.titulo.destacado}</span>
+          </h1>
+          <Cimiento className="mt-8 sm:mt-10" />
+          <p className="mt-8 max-w-[36rem] text-lg leading-relaxed text-ink-muted sm:text-xl">{hero.texto}</p>
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            {proyecto ? (
+              <>
+                <BotonWhatsApp opcion="comprar" ubicacion="hero" mensaje={mensajeInformacion(proyecto.casa.modelo)}>
+                  {hero.whatsapp}
+                </BotonWhatsApp>
+                <Boton href="#proyectos" variante="secundario">
+                  {hero.verProyecto}
+                </Boton>
+              </>
+            ) : (
+              <BotonWhatsApp opcion="comprar" ubicacion="hero">
+                {hero.sinProyecto}
+              </BotonWhatsApp>
+            )}
+          </div>
+        </div>
+
+        <figure className="relative aspect-[4/5] w-full max-w-[28rem] overflow-hidden rounded-lg bg-surface-raised lg:max-w-none">
           <Image
             src={foto.src}
             alt={foto.alt}
             fill
-            sizes="100vw"
+            sizes="(min-width: 1280px) 26rem, (min-width: 1024px) 22rem, (min-width: 480px) 28rem, 100vw"
             quality={60}
-            {...(primera ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+            loading="eager"
+            fetchPriority="high"
             className="object-cover"
-            style={foto.posicion ? { objectPosition: foto.posicion } : undefined}
+            style={{ objectPosition: foto.posicion }}
           />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-piedra-900/95 via-piedra-900/75 to-piedra-900/30 md:bg-gradient-to-r md:from-piedra-900/90 md:via-piedra-900/70 md:to-piedra-900/10"
-          />
-          {foto.etiqueta && (
-            <p className="absolute top-3 right-3 rounded bg-piedra-900/80 px-2 py-1 text-xs font-semibold text-blanco">
-              {foto.etiqueta}
-            </p>
+          {proyecto && (
+            <figcaption className="tono-claro absolute right-4 bottom-4 left-4 rounded-sm border-l-[6px] border-accent bg-surface-raised px-5 py-4 text-ink sm:right-auto sm:min-w-[16rem]">
+              {enObra && <Etiqueta className="text-[12px]">{hero.tarjeta.etiqueta}</Etiqueta>}
+              <p className="mt-1 font-display text-xl font-extrabold uppercase leading-tight">
+                {proyecto.casa.distrito}
+              </p>
+              {etapa && (
+                <p className="mt-1 text-ink-muted">
+                  {hero.tarjeta.etapa}: <span className="font-semibold text-ink">{etapa}</span>
+                </p>
+              )}
+            </figcaption>
           )}
-        </>
-      )}
-      <div className="relative mx-auto w-full max-w-5xl px-4 pt-16 pb-28 text-blanco md:py-24">
-        <div className="max-w-xl">{children}</div>
+        </figure>
       </div>
-    </div>
-  );
-}
-
-const estiloTitulo =
-  "font-display text-4xl leading-[1.05] font-extrabold tracking-tight text-balance sm:text-5xl";
-const estiloSubtitulo = "mt-3 font-display text-2xl font-bold text-terracota-claro sm:text-3xl";
-
-/**
- * Hero en 3 pantallas, avance solo manual (ver DECISIONES.md, 2026-11-03). Botón de la
- * primera: con casas disponibles, al catálogo (o a la casa, si hay una sola). Sin casas o si
- * Supabase no responde, el WhatsApp de comprar: la acción principal nunca lleva a un catálogo
- * vacío.
- */
-export async function Hero() {
-  const [disponibles, conBitacora] = await Promise.all([casasDisponibles(), hayBitacora()]);
-  const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
-  const { reforzada, documentada, hogar } = heroPantallas;
-
-  return (
-    <section
-      id="inicio"
-      aria-roledescription="carrusel"
-      aria-label="Presentación"
-      className="border-b border-piedra-200"
-    >
-      <CarruselHero
-        etiquetas={[reforzada.titulo, documentada.titulo, hogar.titulo]}
-      >
-        <Pantalla foto={reforzada.foto} primera>
-          {/* cada dato no se parte entre líneas */}
-          <p className="flex flex-wrap gap-x-2 font-display text-sm font-semibold tracking-[0.15em] text-terracota-claro uppercase">
-            <span className="whitespace-nowrap">{site.modelo}</span>
-            <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{esparta.destacados.plantas}</span>
-            <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{esparta.dormitorios} dormitorios</span>
-            <span aria-hidden>·</span>
-            <span className="whitespace-nowrap">{esparta.destacados.terreno}</span>
-          </p>
-          <h1 className={`mt-4 ${estiloTitulo}`}>{reforzada.titulo}</h1>
-          <p className={estiloSubtitulo}>{reforzada.subtitulo}</p>
-          <div className="mt-8">
-            {destino ? (
-              <Boton href={destino.href}>{destino.texto}</Boton>
-            ) : (
-              <BotonWhatsApp opcion="comprar" ubicacion="hero">
-                Quiero esta casa
-              </BotonWhatsApp>
-            )}
-          </div>
-        </Pantalla>
-
-        <Pantalla fondo="oscuro">
-          <h2 className={estiloTitulo}>{documentada.titulo}</h2>
-          <p className={estiloSubtitulo}>{documentada.subtitulo}</p>
-          {/* Sin casa en obra no hay bitácora: la pantalla queda sin botón */}
-          {conBitacora && (
-            <div className="mt-8">
-              <Boton href={documentada.boton.href}>{documentada.boton.texto}</Boton>
-            </div>
-          )}
-        </Pantalla>
-
-        <Pantalla foto={hogar.foto}>
-          <h2 className={estiloTitulo}>{hogar.titulo}</h2>
-          <p className="mt-3 font-display text-2xl font-bold text-blanco/90 sm:text-3xl">
-            {hogar.subtitulo}
-          </p>
-          <div className="mt-8">
-            <BotonWhatsApp opcion="construir" ubicacion="hero" variante="claro">
-              {hogar.boton}
-            </BotonWhatsApp>
-          </div>
-        </Pantalla>
-      </CarruselHero>
     </section>
   );
 }

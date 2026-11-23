@@ -91,19 +91,19 @@ export function MapaHermanos({ className }: { className?: string }) {
       preserveAspectRatio="xMidYMid meet"
       className={className}
     >
-      <path d={continentes} fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" className="text-piedra-500 opacity-35" />
-      <g fill="none" strokeWidth="2" strokeLinecap="round" className="lineas-hermanos text-piedra-600">
+      <path d={continentes} fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" className="text-cemento opacity-30" />
+      <g fill="none" strokeWidth="2" strokeLinecap="round" className="lineas-hermanos text-cemento">
         {ORIGENES.map((o) => (
           <path key={o.join()} d={rutaLinea(o)} stroke="currentColor" strokeDasharray="2 7" opacity="0.7" />
         ))}
       </g>
-      <g className="fill-piedra-600 opacity-75">
+      <g className="fill-cemento opacity-90">
         {ORIGENES.map(([lon, lat]) => (
           <circle key={`${lon},${lat}`} cx={x(rel(lon))} cy={y(lat)} r="4" />
         ))}
       </g>
-      <circle cx={x(rel(EL_SALVADOR[0]))} cy={y(EL_SALVADOR[1])} r="16" className="fill-terracota opacity-20" />
-      <circle cx={x(rel(EL_SALVADOR[0]))} cy={y(EL_SALVADOR[1])} r="7" className="fill-terracota" />
+      <circle cx={x(rel(EL_SALVADOR[0]))} cy={y(EL_SALVADOR[1])} r="16" className="fill-accent opacity-25" />
+      <circle cx={x(rel(EL_SALVADOR[0]))} cy={y(EL_SALVADOR[1])} r="7" className="fill-accent" />
     </svg>
   );
 }

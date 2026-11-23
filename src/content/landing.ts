@@ -11,7 +11,7 @@ import { site, type Pendiente } from "@/config/site";
  */
 export const textoPermisos = `${site.marca} tramita los permisos de construcción y la segregación ante OPAMSS y CNR, y subcontrata los servicios que requieren licencia profesional.`;
 
-/** Punto numerado de las secciones Calidad y Para inversionistas. */
+/** Punto numerado (`PuntosNumerados`): hoy solo los de `calidadConIngeniero`, sin mostrarse. */
 export type Punto = {
   titulo: string;
   texto: string;
@@ -19,87 +19,6 @@ export type Punto = {
   pendientes?: string[];
   enlace?: { href: string; texto: string };
 };
-
-/**
- * Hero en 3 pantallas, avance solo manual (ver DECISIONES.md, 2026-11-03). La primera lleva
- * el botón dinámico (casa, catálogo o WhatsApp); su título es el h1 de la página.
- * Fondos: foto real de la obra en la primera (la de la casa de San José Villanueva del
- * catálogo); las otras, color de la marca hasta tener fotos horizontales.
- */
-export const heroPantallas = {
-  reforzada: {
-    titulo: "Casas que duran.",
-    subtitulo: "Construcción reforzada.",
-    foto: {
-      src: "/hero/obra-sjv-bastones.jpg",
-      alt: "Bastones de varilla de hierro anclados a la fundación, donde se levantarán las paredes",
-      /** Encuadre: en el celular la foto se recorta a lo alto; se centra en los bastones y la zanja. */
-      posicion: "65% 50%",
-    },
-  },
-  documentada: {
-    titulo: "Construcción documentada.",
-    subtitulo: "Etapa por etapa.",
-    boton: { href: "#bitacora", texto: "Ver la bitácora" },
-  },
-  hogar: {
-    titulo: "No es una casa más, es tu hogar.",
-    subtitulo: "Tu lugar seguro.",
-    /**
-     * Ilustración generada, no una foto de la obra ni la fachada exacta del modelo: va rotulada
-     * en pantalla y en el alt (ver DECISIONES.md, 2026-11-12).
-     */
-    foto: {
-      src: "/hero/ilustracion-hogar.jpg",
-      alt: "Ilustración de una casa de una planta con fachada gris y naranja, jardín con flores, grama y un camino de piedra hasta la entrada",
-      posicion: "50% 50%",
-      etiqueta: "Ilustración de referencia",
-    },
-    boton: "Construir a pedido",
-  },
-};
-
-/**
- * Lo que nos diferencia (reemplaza "Por qué construimos así", ver DECISIONES.md, 2026-11-03).
- * Sin marcas de materiales en estos textos.
- */
-export const diferencias = {
-  todas: {
-    titulo: "En todas nuestras casas",
-    puntos: [
-      "Construcción documentada, etapa por etapa.",
-      "Nuestras casas se construyen aplicando estándares de seguridad internacionales. Todo documentado.",
-      "Materiales que cumplen la norma y sus especificaciones.",
-      "Portal privado de seguimiento.",
-      "Mano de obra de la zona.",
-    ],
-  },
-  aPedido: {
-    titulo: "En casas a pedido",
-    puntos: [
-      "Transparencia en los costos de materiales. No vendemos materiales: el costo lo pone el mercado.",
-      "Acabados a elección: grifería, puertas, cerámica, color. Lo que sale del estándar se cotiza aparte; el costo de instalación puede variar ligeramente.",
-    ],
-  },
-};
-
-/**
- * Calidad y resistencia: solo puntos verificables. Sin superlativos ni promesas de
- * resistencia (ver DECISIONES.md). Lo no confirmado va en `pendientes`.
- */
-export const calidad: Punto[] = [
-  {
-    titulo: "Control de calidad en obra, documentado",
-    texto:
-      "Dosificación y curado del concreto, amarres del acero, plomo y nivel de los muros: cada control queda documentado etapa por etapa.",
-    enlace: { href: "#bitacora", texto: "Ver la bitácora" },
-  },
-  {
-    titulo: "Cada material con su especificación",
-    texto: "Qué material se usa, con qué especificación y por qué, a la vista en la tabla de materiales.",
-    enlace: { href: "#materiales", texto: "Ver los materiales" },
-  },
-];
 
 /**
  * Ocultos hasta que haya ingeniero responsable (decisión del 2026-11-04, pendiente en
@@ -120,23 +39,13 @@ export const calidadConIngeniero: Punto[] = [
   },
 ];
 
-export const pasos = [
-  { titulo: "Contacto", texto: "Nos cuentas qué buscas por WhatsApp." },
-  { titulo: "Evaluación del terreno", texto: "Si la casa va en tu terreno, lo revisamos para saber si cumple las condiciones." },
-  { titulo: "Cotización cerrada", texto: "Recibes el precio completo de la obra antes de comprometerte." },
-  { titulo: "Contrato", texto: "Firmamos el contrato con el alcance y el precio acordados." },
-  { titulo: "Construcción documentada", texto: "Documentamos la obra etapa por etapa para que veas el avance." },
-  { titulo: "Entrega", texto: "Recibes tu casa terminada." },
-];
-
 export type Pregunta = { pregunta: string; respuesta: string | Pendiente };
 
+/**
+ * Solo las preguntas cuyo contenido no está en otra sección de la portada (decisión del usuario,
+ * 2026-11-23): sale la de pagos (la dicen "Proyecto actual" y "Así trabajamos").
+ */
 export const preguntas: Pregunta[] = [
-  {
-    pregunta: "¿Puedo pagar al contado?",
-    respuesta:
-      "Sí. Se paga el 30 % al firmar el contrato y el resto por etapas, conforme avanza la obra, con el saldo al entregar la casa. Los montos y plazos quedan fijados en el contrato.",
-  },
   {
     pregunta: "¿Puedo comprar con crédito del Fondo Social para la Vivienda (FSV)?",
     respuesta:
