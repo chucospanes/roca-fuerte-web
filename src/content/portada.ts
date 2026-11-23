@@ -23,8 +23,9 @@ export const portada = {
     titulo: { inicio: "Casas de calidad", destacado: "comprobable." },
     texto:
       "Diseñamos, desarrollamos y construimos. Cada etapa de tu casa queda a la vista: el hierro, los materiales con factura y el avance con fotos.",
+    /** Botón principal: el mismo WhatsApp de "Proyecto actual" (`comprar`/`hero`). */
+    whatsapp: "Escríbenos por WhatsApp",
     verProyecto: "Ver el proyecto actual",
-    comoComprobamos: "Cómo lo comprobamos",
     /** Sin casa disponible, el botón principal vuelve al WhatsApp de comprar (regla de siempre). */
     sinProyecto: "Quiero esta casa",
     tarjeta: { etiqueta: "Obra en curso", etapa: "Etapa" },
@@ -98,7 +99,7 @@ export const portada = {
     lema: "No es una casa más, es tu hogar.",
     pagos: "30% a la firma, pagos por etapas y saldo a la entrega.",
     verCasa: "Ver la casa",
-    agendar: "Agendar visita a la obra",
+    whatsapp: "Escríbenos por WhatsApp",
     sinPrecio: "A consultar",
     lote: "Lote",
     estacionamientos: "Estacionamientos",
@@ -146,7 +147,10 @@ export const portada = {
   },
 };
 
-/** Mensaje del botón "Agendar visita a la obra", con la casa y el municipio de la base. */
-export function mensajeVisita(casa: string, municipio: string): string {
-  return `Hola, quiero agendar una visita a la obra de la ${casa} en ${municipio}.`;
+/**
+ * Mensaje de "Escríbenos por WhatsApp" (hero y "Proyecto actual"), con el modelo de la base:
+ * "Hola, quiero información de la Casa Modelo Esparta."
+ */
+export function mensajeInformacion(modelo: string): string {
+  return `Hola, quiero información de la Casa Modelo ${modelo}.`;
 }

@@ -22,8 +22,10 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   avance de la base), Diario de obra (3 avances más recientes), Así trabajamos, Hermano cercano
   (`#hermano`) y, después, La casa, Materiales, Precios (solo "Construir a pedido" si hay
   proyecto), Inversionistas, Preguntas, Contacto y pie.
-- Clics: mismas `opcion`/`ubicacion`; el WhatsApp del encabezado cuenta como `general`/`flotante`
-  y "Agendar visita a la obra" como `comprar`/`hero`. Verificado en el HTML a 390 y 1440 px.
+- Clics: mismas `opcion`/`ubicacion`; el WhatsApp del encabezado cuenta como `general`/`flotante`.
+  "Escríbenos por WhatsApp" está en el hero (botón principal) y en "Proyecto actual", los dos con
+  `comprar`/`hero` y el mismo mensaje. **En `clics_venta` no se distingue de cuál vino el clic:**
+  separarlos exigiría una migración o cambiar `esquemaClic`. Verificado en el HTML a 390 y 1440 px.
 - Probado: lint, typecheck y build; capturas a 390 y 1440 px de la portada y a 390 de `/casas`, la
   ficha, `/portal`, `/admin` y `/privacidad`: 200, sin desborde, sin imágenes rotas, sin texto bajo
   4.5:1 (3:1 en grandes) ni objetivos táctiles bajo 44 px (revisión automática).

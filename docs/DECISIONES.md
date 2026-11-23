@@ -942,3 +942,14 @@ cambia ninguna funcionalidad (rutas, consultas, acciones, RLS, panel ni portal).
 - **Movimiento solo con CSS:** franja en bucle, aparición con `animation-timeline: view()` dentro
   de `@supports`, brillo en botones y zoom de 1.03 en fotos; todo apagado con
   `prefers-reduced-motion`. Sin dependencias nuevas.
+
+## 2026-11-23 — "Escríbenos por WhatsApp" en el hero y en "Proyecto actual" (reemplaza "Agendar visita a la obra")
+Decisión del usuario, antes de aprobar la v2.0.0. Reemplaza el punto "Agendar visita a la obra" de
+la entrada anterior. En "Proyecto actual", el botón pasa a "Escríbenos por WhatsApp" con el mensaje
+"Hola, quiero información de la Casa Modelo {modelo}." (el modelo sale de la base, no el nombre de
+la casa) y el registro `comprar`/`hero`. En el hero, ese mismo botón es el principal (acento) y
+"Ver el proyecto actual" (borde, a `#proyectos`) el secundario; sale "Cómo lo comprobamos" (el menú
+ya lleva a Calidad comprobable). Sin casa disponible, sigue la regla de antes: solo el WhatsApp de
+comprar ("Quiero esta casa", `comprar`/`hero`). Los dos botones registran lo mismo: no se pueden
+distinguir sin migración ni cambiar la validación (`esquemaClic` es estricto y `casa_id` va solo
+con la opción `casa`).

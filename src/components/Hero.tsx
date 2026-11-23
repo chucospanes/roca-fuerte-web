@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { portada } from "@/content/portada";
+import { mensajeInformacion, portada } from "@/content/portada";
 import { etapaEnCurso, leerProyecto } from "@/lib/portada";
 import { BotonWhatsApp } from "./BotonWhatsApp";
 import { Cimiento, contenedor, Etiqueta } from "./portada/ui";
@@ -14,9 +14,10 @@ const foto = {
 };
 
 /**
- * Portada de la v2.0.0 (docs/REDISENO_PORTADA.md, 5.2): oscura, con la cuadrícula de plano. Sin
- * proyecto (no hay casa disponible o Supabase no respondió), el botón principal vuelve al
- * WhatsApp de comprar (`comprar`/`hero`), la misma regla de antes. La tarjeta sobre la foto
+ * Portada de la v2.0.0 (docs/REDISENO_PORTADA.md, 5.2): oscura, con la cuadrícula de plano. Con
+ * proyecto, el botón principal es "Escríbenos por WhatsApp" (`comprar`/`hero`, el mismo de
+ * "Proyecto actual") y el secundario baja a #proyectos. Sin proyecto (no hay casa disponible o
+ * Supabase no respondió), queda solo el WhatsApp de comprar (`comprar`/`hero`), la regla de antes. La tarjeta sobre la foto
  * sale de la base: el lugar de la casa y su etapa en proceso.
  */
 export async function Hero() {
@@ -39,15 +40,19 @@ export async function Hero() {
           <p className="mt-8 max-w-[36rem] text-lg leading-relaxed text-ink-muted sm:text-xl">{hero.texto}</p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             {proyecto ? (
-              <Boton href="#proyectos">{hero.verProyecto}</Boton>
+              <>
+                <BotonWhatsApp opcion="comprar" ubicacion="hero" mensaje={mensajeInformacion(proyecto.casa.modelo)}>
+                  {hero.whatsapp}
+                </BotonWhatsApp>
+                <Boton href="#proyectos" variante="secundario">
+                  {hero.verProyecto}
+                </Boton>
+              </>
             ) : (
               <BotonWhatsApp opcion="comprar" ubicacion="hero">
                 {hero.sinProyecto}
               </BotonWhatsApp>
             )}
-            <Boton href="#calidad" variante="secundario">
-              {hero.comoComprobamos}
-            </Boton>
           </div>
         </div>
 

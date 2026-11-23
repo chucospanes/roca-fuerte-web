@@ -4,7 +4,7 @@ import { Boton } from "@/components/ui";
 import { precioUSD } from "@/config/site";
 import { loteCorto, muestraPrecio, resumenCasa } from "@/content/casas";
 import { esparta } from "@/content/esparta";
-import { mensajeVisita, portada } from "@/content/portada";
+import { mensajeInformacion, portada } from "@/content/portada";
 import type { EtapaCasa, Modalidad } from "@/lib/casas";
 import type { Proyecto } from "@/lib/portada";
 import { EncabezadoSeccion, SeccionPortada } from "./ui";
@@ -90,8 +90,8 @@ function LineaAvance({ etapas }: { etapas: EtapaCasa[] }) {
 
 /**
  * Proyecto actual (5.6): la casa en obra, con sus modalidades y su avance desde la base. Los
- * botones: "Ver la casa" (enlace, no cuenta) y "Agendar visita a la obra" (`comprar`/`hero`,
- * heredero del "Quiero esta casa" del hero anterior; ver DECISIONES.md, 2026-11-23).
+ * botones: "Ver la casa" (enlace, no cuenta) y "Escríbenos por WhatsApp" (`comprar`/`hero`, el
+ * mismo registro que el botón principal del hero; ver DECISIONES.md, 2026-11-23).
  */
 export function ProyectoActual({ proyecto }: { proyecto: Proyecto }) {
   const { casa, etapas } = proyecto;
@@ -145,10 +145,10 @@ export function ProyectoActual({ proyecto }: { proyecto: Proyecto }) {
             <BotonWhatsApp
               opcion="comprar"
               ubicacion="hero"
-              mensaje={mensajeVisita(casa.nombre, casa.municipio)}
+              mensaje={mensajeInformacion(casa.modelo)}
               variante="secundario"
             >
-              {textos.agendar}
+              {textos.whatsapp}
             </BotonWhatsApp>
           </div>
         </div>
