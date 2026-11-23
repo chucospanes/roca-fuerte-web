@@ -32,6 +32,14 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   pesa más que antes (unos 90 KB): se carga con `display: optional` y no bloquea el titular.
 - El pie muestra el dominio desde `site.url` (`NEXT_PUBLIC_SITE_URL`): en local dice
   `localhost:3000`; en producción, el dominio.
+- **Lighthouse 13.5.0, celular, build de producción (2026-11-23):** Performance 61/78/79 (la primera
+  tras arrancar sale siempre baja), Accesibilidad 100, Buenas prácticas 100, SEO 69 (solo por el
+  `noindex`). LCP 3.3–3.4 s (la foto del hero), TBT 480–560 ms (2,280 en la primera), CLS 0. **No
+  llega a 85.** Referencia medida el mismo día en `main` (v1.9.1): 60/81/75/81, LCP 3.4–3.7 s, TBT
+  360–1,460 ms; tampoco llega. Lo que frena: el LCP espera ~0.6–1 s a que el hilo principal se
+  libere (JavaScript de Next y React al hidratar, ~70 KB, ~750 ms con la CPU simulada) y la fuente
+  Archivo variable con el eje de ancho (90 KB, el archivo más pesado de la página). Las animaciones
+  no pesan (con movimiento reducido, TBT 600–680 ms). Sin corregir: el usuario decide.
 - **Falta:** aprobación de las capturas por el usuario; después, merge a `main`, tag `v2.0.0` y push.
 
 ### Foto de la tarjeta desde un avance (`v1.9.0`, en `main`, 2026-11-17)
