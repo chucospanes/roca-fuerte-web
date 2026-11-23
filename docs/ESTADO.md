@@ -4,7 +4,7 @@
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
 **Última actualización:** 2026-11-23
-**Versión:** v1.9.1 en `main`; **v2.0.0 en la rama `feat/rediseno-portada`, esperando la aprobación de las capturas** (rediseño de la portada). v1.9.1: Next.js 16.4.6 (corrige dos avisos de seguridad); v1.9.0: foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Versión:** v2.0.0 en `main` (tag puesto, rediseño de la portada); **despliegue en Vercel por confirmar** (ver "Despliegue"). v1.9.1: Next.js 16.4.6 (corrige dos avisos de seguridad); v1.9.0: foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -13,7 +13,7 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 
-### Rediseño de la portada (`v2.0.0`, rama `feat/rediseno-portada`, 2026-11-23)
+### Rediseño de la portada (`v2.0.0`, en `main`, 2026-11-23)
 - Brief aprobado: `docs/REDISENO_PORTADA.md`; decisiones en DECISIONES.md (2026-11-23). Portada,
   encabezado y pie nuevos; `/casas`, la ficha, `/portal`, `/admin` y `/privacidad` solo heredan
   encabezado, pie, fuente y colores. Sin cambios en rutas, consultas, acciones, RLS ni en la base.
@@ -45,7 +45,10 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
   libere (JavaScript de Next y React al hidratar, ~70 KB, ~750 ms con la CPU simulada) y la fuente
   Archivo variable con el eje de ancho (90 KB, el archivo más pesado de la página). Las animaciones
   no pesan (con movimiento reducido, TBT 600–680 ms). Sin corregir: el usuario decide.
-- **Falta:** aprobación de las capturas por el usuario; después, merge a `main`, tag `v2.0.0` y push.
+- Capturas aprobadas; merge `55e01ea`, tag `v2.0.0` y push (2026-11-23). **Vercel bloqueó los
+  despliegues de `69cc82c` (v1.9.1) y `55e01ea` (v2.0.0)** porque el push salió con otra cuenta de
+  GitHub: el último desplegado es `17ca2b6` (v1.9.0). Commit vacío `0e36cbb` empujado con la
+  cuenta fijada; falta confirmar el despliegue y las comprobaciones en el dominio.
 
 ### Foto de la tarjeta desde un avance (`v1.9.0`, en `main`, 2026-11-17)
 - Panel: "Usar como foto de la tarjeta" en cada foto de "Avance nuevo" (una sola; desactivada sin
@@ -446,6 +449,11 @@ quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
 ### Despliegue (verificado con lecturas el 2026-10-31)
 - **Vercel** (cuenta chucospanes-9163, plan Hobby hasta el lanzamiento) despliega cada push a
   `main`; autor de los commits: la cuenta chucospanes (ver DECISIONES.md).
+- **Los pushes deben salir con la cuenta chucospanes; está fijada en
+  credential.https://github.com.username del repositorio. Si Vercel bloquea un despliegue,
+  revisar primero con qué cuenta se hizo el push.** (2026-11-23: en este equipo Git Credential
+  Manager guarda varias cuentas de GitHub; los pushes de la v1.9.1 y la v2.0.0 salieron con otra
+  y Vercel los bloqueó aunque autor y committer eran chucospanes.)
 - **Dominio:** `constructorarocafuerte.com` con registro A a Vercel y `www` por CNAME (DNS en
   Namecheap; los registros de Resend no se tocaron). HTTPS activo en los dos. `https://www`
   → 308 al dominio sin www conservando ruta y parámetros; `http://` → 308 a `https://`.
