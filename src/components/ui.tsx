@@ -10,9 +10,13 @@ export function Pendiente({ texto = "Pendiente" }: { texto?: string }) {
   );
 }
 
+/**
+ * Sección de las páginas que no se rediseñan en la v2.0.0 (/casas, ficha premium): mismo
+ * diseño de antes, con la fuente y los colores nuevos. La portada usa `SeccionPortada`
+ * (components/portada/ui.tsx).
+ */
 export function Seccion({
   id,
-  numerada = false,
   etiqueta,
   titulo,
   intro,
@@ -20,13 +24,6 @@ export function Seccion({
   children,
 }: {
   id: string;
-  /**
-   * Sección numerada de la landing (01, 02…). El número lo pone CSS con un contador
-   * (`.seccion-numerada` en globals.css): cuenta solo las secciones que están en la página, así
-   * que si una no aparece (la bitácora sin casa en obra), las siguientes se corren solas. Las
-   * páginas sueltas (catálogo) van sin número.
-   */
-  numerada?: boolean;
   etiqueta: string;
   titulo: ReactNode;
   intro?: ReactNode;
@@ -43,7 +40,7 @@ export function Seccion({
     <section id={id} className={`${fondos[fondo]} py-16 sm:py-20`}>
       <div className="mx-auto max-w-5xl px-4">
         <p
-          className={`font-display text-xs font-semibold tracking-[0.2em] uppercase ${numerada ? "seccion-numerada" : ""} ${oscuro ? "text-terracota-claro" : "text-terracota"}`}
+          className={`font-display text-xs font-semibold tracking-[0.2em] uppercase ${oscuro ? "text-terracota-claro" : "text-terracota"}`}
         >
           {etiqueta}
         </p>
@@ -109,12 +106,13 @@ export function PuntosNumerados({
   );
 }
 
+/** Esquinas casi rectas (2 px). El acento es la acción principal; los colores salen del tono de la sección. */
 const estilosBoton = {
-  primario:
-    "bg-terracota text-blanco hover:bg-terracota-oscuro focus-visible:outline-terracota",
+  primario: "bg-accent text-accent-ink hover:brightness-110 focus-visible:outline-accent",
+  /** Borde del color del texto: oscuro en una sección clara, claro en una oscura. */
   secundario:
-    "border-2 border-piedra-900 bg-blanco text-piedra-900 hover:bg-piedra-900 hover:text-blanco focus-visible:outline-piedra-900",
-  /** Sobre fondo de color (pantalla del hero en terracota). */
+    "border-2 border-ink bg-transparent text-ink hover:bg-ink hover:text-surface focus-visible:outline-ink",
+  /** Sobre fondo de color. */
   claro: "bg-blanco text-piedra-900 hover:bg-piedra-100 focus-visible:outline-blanco",
 } as const;
 
@@ -140,7 +138,7 @@ export function Boton({
       href={href}
       {...(externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       {...datos}
-      className={`inline-flex min-h-12 items-center justify-center rounded-md px-6 py-3 text-center font-display text-base font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${estilosBoton[variante]} ${className}`}
+      className={`inline-flex min-h-12 items-center justify-center rounded-xs px-6 py-3 text-center font-display text-base font-bold transition-[color,background-color,filter] focus-visible:outline-2 focus-visible:outline-offset-2 ${estilosBoton[variante]} ${className}`}
     >
       {children}
     </a>

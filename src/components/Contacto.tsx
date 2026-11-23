@@ -1,12 +1,13 @@
+import { SeccionConTitulo } from "./portada/ui";
 import { site } from "@/config/site";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Boton, Seccion } from "./ui";
+import { Boton } from "./ui";
 
 export function Contacto() {
   return (
-    <Seccion
+    <SeccionConTitulo
+      tono="oscuro"
       id="contacto"
-      numerada
       etiqueta="Contacto"
       titulo="Cuéntanos qué buscas"
       intro="Elige una opción y se abre WhatsApp con el mensaje listo. No tienes que registrarte."
@@ -19,9 +20,9 @@ export function Contacto() {
       </div>
 
       {site.accesoPremium && (
-        <div className="mt-10 rounded-lg border border-piedra-200 bg-blanco p-6">
+        <div className="mt-10 rounded-sm border border-line bg-surface-raised p-6">
           <h3 className="font-display text-xl font-bold">Ficha técnica y planos en PDF</h3>
-          <p className="mt-2 max-w-2xl text-piedra-600">
+          <p className="mt-2 max-w-2xl text-ink-muted">
             Planos imprimibles, ficha técnica completa, cantidades de materiales y el
             desglose de qué incluye el precio. Te pedimos tu correo y te enviamos un código para
             darte acceso.
@@ -31,6 +32,6 @@ export function Contacto() {
           </Boton>
         </div>
       )}
-    </Seccion>
+    </SeccionConTitulo>
   );
 }

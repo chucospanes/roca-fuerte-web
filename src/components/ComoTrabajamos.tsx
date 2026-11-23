@@ -1,28 +1,23 @@
-import { pasos } from "@/content/landing";
-import { Seccion } from "./ui";
+import { portada } from "@/content/portada";
+import { SeccionPortada, TituloSeccion } from "./portada/ui";
 
+/** Así trabajamos (5.8): oscura sobre #2e3133, cuatro pasos en orden, cada uno con su línea de 4 px. */
 export function ComoTrabajamos() {
+  const { proceso } = portada;
   return (
-    <Seccion
-      id="proceso"
-      numerada
-      etiqueta="Proceso"
-      titulo="Cómo trabajamos"
-      fondo="oscuro"
-    >
-      <ol className="grid gap-px overflow-hidden rounded-lg bg-piedra-700 sm:grid-cols-2 lg:grid-cols-3">
-        {pasos.map((paso, i) => (
-          <li key={paso.titulo} className="flex gap-4 bg-piedra-900 p-5 sm:block sm:p-6">
-            <span className="w-8 shrink-0 font-display text-3xl leading-none font-extrabold text-terracota sm:text-4xl">
+    <SeccionPortada id="proceso" tono="grafito">
+      <TituloSeccion>{proceso.titulo}</TituloSeccion>
+      <ol className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {proceso.pasos.map((paso, i) => (
+          <li key={paso.titulo} className="aparecer border-t-4 border-cemento pt-6">
+            <span aria-hidden className="block font-display text-6xl leading-none font-black text-accent">
               {i + 1}
             </span>
-            <div>
-              <h3 className="font-display text-lg font-bold sm:mt-2">{paso.titulo}</h3>
-              <p className="mt-1 text-piedra-300">{paso.texto}</p>
-            </div>
+            <h3 className="mt-6 font-display text-xl leading-tight font-extrabold uppercase">{paso.titulo}</h3>
+            <p className="mt-3 leading-relaxed text-ink-muted">{paso.texto}</p>
           </li>
         ))}
       </ol>
-    </Seccion>
+    </SeccionPortada>
   );
 }

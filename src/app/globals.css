@@ -1,12 +1,31 @@
 @import "tailwindcss";
 
 /*
- * Paleta: concreto, gris cálido, acento terracota y blanco.
- * El sitio es solo en modo claro (sobrio, como una hoja de obra).
+ * Sistema de la v2.0.0 (docs/REDISENO_PORTADA.md): siete tokens que cada sección fija con su tono
+ * (`tono-claro`, `tono-oscuro`). No es un modo oscuro del sistema: la portada alterna secciones
+ * claras y oscuras, cada una con su fondo fijo. Las clases `bg-surface`, `text-ink`… leen el token
+ * del tono más cercano, así un mismo componente sirve en una sección clara o en una oscura.
  */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+}
+
 @theme {
+  /** Cemento: solo para líneas, nunca para texto. */
+  --color-cemento: #9a9a95;
+  /** Fondo de "Así trabajamos". */
+  --color-grafito: #2e3133;
+
+  /* Paleta anterior: la siguen usando /casas, la ficha, el portal y el panel (no se rediseñan en
+     esta versión). El terracota pasa al acento nuevo; el resto no cambia. */
   --color-blanco: #ffffff;
-  --color-concreto: #efece7;
+  --color-concreto: #edece8;
   --color-concreto-oscuro: #e2ddd6;
 
   --color-piedra-50: #f7f5f2;
@@ -19,7 +38,7 @@
   --color-piedra-800: #37322d;
   --color-piedra-900: #23201d;
 
-  --color-terracota: #b0502c;
+  --color-terracota: #b5462e;
   --color-terracota-oscuro: #8c3d20;
   --color-terracota-claro: #f4e3da;
 
@@ -28,6 +47,27 @@
 
   --font-sans: var(--font-texto), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-titulos), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root,
+.tono-claro {
+  --surface: #edece8;
+  --surface-raised: #f7f6f3;
+  --ink: #2e3133;
+  --ink-muted: #4a4f54;
+  --line: #c9c8c3;
+  --accent: #b5462e;
+  --accent-ink: #ffffff;
+}
+
+.tono-oscuro {
+  --surface: #1c1e1f;
+  --surface-raised: #26292b;
+  --ink: #ecebe7;
+  --ink-muted: #b4b3ae;
+  --line: #3a3e41;
+  --accent: #e08a6e;
+  --accent-ink: #1c1e1f;
 }
 
 :root {
@@ -41,24 +81,24 @@ html {
 }
 
 body {
-  background: var(--color-piedra-50);
-  color: var(--color-piedra-900);
+  background: var(--surface);
+  color: var(--ink);
 }
 
-/* Fondo de cuadrícula tipo papel de plano */
+/* Cuadrícula de plano de la portada: líneas de 1 px al 5 % cada 48 px, sobre el fondo oscuro */
+.cuadricula-plano {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Fondo de cuadrícula tipo papel de plano (páginas que no se rediseñan) */
 .fondo-plano {
   background-color: var(--color-concreto);
   background-image:
     linear-gradient(to right, rgb(35 32 29 / 0.06) 1px, transparent 1px),
     linear-gradient(to bottom, rgb(35 32 29 / 0.06) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* La misma cuadrícula, en claro, sobre el color de fondo que ya tenga (pantalla del hero) */
-.cuadricula-clara {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -73,18 +113,77 @@ dialog::backdrop {
   background: rgb(35 32 29 / 0.85);
 }
 
-/* Secciones numeradas de la portada (01, 02…): el número sale de un contador, así una sección
-   que no aparece (la bitácora sin casa en obra) no deja un hueco. Ver Seccion en ui.tsx. */
-.secciones-numeradas {
-  counter-reset: seccion;
+/* Titulares de la portada: Archivo en mayúsculas, interlineado apretado y al 85 % de ancho (eje
+   `wdth` de la misma fuente): así "COMPROBABLE." cabe a 44 px en 390 px. Si la fuente no llegó
+   (display optional), la palabra se corta antes de desbordar la página. */
+.titular {
+  font-family: var(--font-display);
+  font-stretch: 85%;
+  font-weight: 800;
+  /* al 85 % y con espaciado negativo, el espacio entre palabras de Archivo queda muy corto */
+  word-spacing: 0.12em;
+  overflow-wrap: break-word;
+  text-transform: uppercase;
+  line-height: 0.96;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
-.seccion-numerada::before {
-  counter-increment: seccion;
-  content: counter(seccion, decimal-leading-zero) " — ";
+.titular-portada {
+  font-size: clamp(44px, 6.4vw, 92px);
+  font-weight: 900;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+}
+.titular-seccion {
+  font-size: clamp(34px, 4.4vw, 60px);
+  letter-spacing: -0.02em;
 }
 
-/* Líneas de "Hermano cercano": los puntos avanzan despacio hacia El Salvador. Sin animación si
-   la persona pidió reducir el movimiento. */
+/* Fotos que se acercan un poco al pasar el cursor, dentro de su marco */
+.foto-marco {
+  overflow: hidden;
+}
+.foto-marco img {
+  transition: scale 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (hover: hover) {
+  .foto-marco:hover img,
+  a:hover .foto-marco img {
+    scale: 1.03;
+  }
+}
+
+/* Franja en movimiento: dos copias del texto; la pista se corre media vuelta y vuelve a empezar */
+@keyframes franja-avance {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.franja-pista {
+  animation: franja-avance 60s linear infinite;
+}
+
+/* Aparición al hacer scroll (titulares y tarjetas): solo donde el navegador la soporta; sin
+   soporte, todo se ve normal */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@supports (animation-timeline: view()) {
+  .aparecer {
+    animation: aparecer linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+}
+
+/* Líneas de "Hermano cercano": los puntos avanzan despacio hacia El Salvador */
 @keyframes hermanos-flujo {
   to {
     stroke-dashoffset: -18;
@@ -93,8 +192,19 @@ dialog::backdrop {
 .lineas-hermanos path {
   animation: hermanos-flujo 3s linear infinite;
 }
+
+/* Todo el movimiento se apaga si la persona pidió reducirlo */
 @media (prefers-reduced-motion: reduce) {
-  .lineas-hermanos path {
+  .lineas-hermanos path,
+  .franja-pista,
+  .aparecer {
     animation: none;
+  }
+  .foto-marco img {
+    transition: none;
+  }
+  .foto-marco:hover img,
+  a:hover .foto-marco img {
+    scale: none;
   }
 }

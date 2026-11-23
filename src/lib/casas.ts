@@ -327,15 +327,6 @@ export async function leerObraEnCurso(): Promise<Resultado<ObraEnCurso | null>> 
   }
 }
 
-/**
- * ¿Hay bitácora en la portada? Sin casa en obra, la sección no aparece y se ocultan sus enlaces
- * (menú, hero y Calidad). Si Supabase no respondió, se dejan: la sección muestra el aviso.
- */
-export async function hayBitacora(): Promise<boolean> {
-  const resultado = await leerObraEnCurso();
-  return !resultado.ok || resultado.datos !== null;
-}
-
 /** Casa vendida en la tarjeta mínima del catálogo: solo modelo y departamento (011). */
 export type CasaVendida = { modelo: string; departamento: string };
 

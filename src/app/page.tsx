@@ -1,5 +1,3 @@
-import { Bitacora } from "@/components/Bitacora";
-import { CasasDisponibles } from "@/components/casas/CasasDisponibles";
 import { Calidad } from "@/components/Calidad";
 import { ComoTrabajamos } from "@/components/ComoTrabajamos";
 import { Contacto } from "@/components/Contacto";
@@ -12,27 +10,39 @@ import { LaCasa } from "@/components/LaCasa";
 import { Materiales } from "@/components/Materiales";
 import { Opciones } from "@/components/Opciones";
 import { Pie } from "@/components/Pie";
-import { Diferencias } from "@/components/Diferencias";
+import { DiarioPortada } from "@/components/portada/DiarioPortada";
+import { Franja } from "@/components/portada/Franja";
+import { ProyectoActual } from "@/components/portada/ProyectoActual";
+import { QuienesSomos } from "@/components/portada/QuienesSomos";
 import { Preguntas } from "@/components/Preguntas";
 import { WhatsAppFlotante } from "@/components/WhatsAppFlotante";
+import { leerProyecto } from "@/lib/portada";
 
-export default function Home() {
+/**
+ * Portada v2.0.0 (docs/REDISENO_PORTADA.md): el orden del brief (5.1 a 5.10) y, después de
+ * "Hermano cercano", las secciones que ya existían (decisión del usuario, 2026-11-23). Sin
+ * proyecto (no hay casa disponible o Supabase no respondió), "Proyecto actual" y el Diario no
+ * aparecen y Precios vuelve a mostrar la tarjeta de comprar.
+ */
+export default async function Home() {
+  const proyecto = await leerProyecto();
   return (
     <>
       <DatosEstructurados />
       <Encabezado />
-      <main className="secciones-numeradas">
+      <main>
         <Hero />
-        <CasasDisponibles />
-        <Diferencias />
+        <Franja />
+        <QuienesSomos />
+        <Calidad />
+        {proyecto && <ProyectoActual proyecto={proyecto} />}
+        {proyecto && <DiarioPortada slug={proyecto.casa.slug} />}
+        <ComoTrabajamos />
         <Hermanos />
         <LaCasa />
-        <Calidad />
         <Materiales />
-        <Bitacora />
-        <Opciones />
+        <Opciones conProyecto={proyecto !== null} />
         <Inversionistas />
-        <ComoTrabajamos />
         <Preguntas />
         <Contacto />
       </main>

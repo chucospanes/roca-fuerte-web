@@ -1,28 +1,29 @@
+import { SeccionConTitulo } from "./portada/ui";
 import { esPendiente } from "@/config/site";
 import { preguntas } from "@/content/landing";
-import { Pendiente, Seccion } from "./ui";
+import { Pendiente } from "./ui";
 
 export function Preguntas() {
   return (
-    <Seccion id="preguntas" numerada etiqueta="Dudas" titulo="Preguntas frecuentes" fondo="blanco">
-      <div className="divide-y divide-piedra-200 border-y border-piedra-200">
+    <SeccionConTitulo tono="elevado" id="preguntas" etiqueta="Dudas" titulo="Preguntas frecuentes">
+      <div className="divide-y divide-line border-y border-line">
         {preguntas.map((p) => (
           <details key={p.pregunta} className="group py-1">
             <summary className="flex min-h-12 cursor-pointer items-center justify-between gap-4 py-3 font-semibold">
               {p.pregunta}
               <span
                 aria-hidden
-                className="font-display text-2xl leading-none text-terracota transition-transform group-open:rotate-45"
+                className="font-display text-2xl leading-none text-accent transition-transform group-open:rotate-45"
               >
                 +
               </span>
             </summary>
-            <div className="pb-4 text-piedra-700">
+            <div className="pb-4 text-ink-muted">
               {esPendiente(p.respuesta) ? <Pendiente texto="Respuesta pendiente" /> : p.respuesta}
             </div>
           </details>
         ))}
       </div>
-    </Seccion>
+    </SeccionConTitulo>
   );
 }

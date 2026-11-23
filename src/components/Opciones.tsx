@@ -1,94 +1,83 @@
-import { esPendiente, site, textoPrecio, type Precio } from "@/config/site";
-import { textoPrecioCasa } from "@/content/casas";
-import { casaDisponible, casasDisponibles, destinoCompra, precioDesde } from "@/lib/casas";
+import { esPendiente, site, textoPrecio } from "@/config/site";
 import { BotonWhatsApp } from "./BotonWhatsApp";
-import { Boton, Seccion } from "./ui";
+import { SeccionConTitulo } from "./portada/ui";
 
-function Precio({ precio }: { precio: Precio }) {
+const estiloTarjeta = "flex flex-col rounded-sm border border-line bg-surface-raised p-6 sm:p-8";
+
+/** "Comprar una casa": solo sin proyecto en la portada, con el WhatsApp de comprar (`comprar`/`precios`). */
+function TarjetaComprar() {
   return (
-    <p
-      className={`font-display text-2xl font-extrabold ${esPendiente(precio) ? "text-piedra-600" : ""}`}
-    >
-      {textoPrecio(precio)}
-    </p>
+    <article className={`aparecer ${estiloTarjeta}`}>
+      <h3 className="font-display text-2xl font-extrabold uppercase">Comprar una casa</h3>
+      <p className="mt-3 text-ink-muted">
+        Casas nuestras con el modelo estándar, construidas para vender con su terreno. Cada una con
+        su ubicación, su lote, su precio y lo que incluye.
+      </p>
+      <div className="mt-auto pt-8">
+        <BotonWhatsApp opcion="comprar" ubicacion="precios" className="w-full">
+          Quiero esta casa
+        </BotonWhatsApp>
+      </div>
+    </article>
+  );
+}
+
+/** "Construir a pedido", con su clic `construir`/`precios`. `titulo`: false si la sección ya lo dice. */
+function TarjetaConstruir({ titulo }: { titulo: boolean }) {
+  const precio = site.precios.construirAPedido;
+  // Sin el título de la tarjeta, las condiciones van justo después del h2 de la sección
+  const Subtitulo = titulo ? "h4" : "h3";
+  return (
+    <article className={`aparecer ${estiloTarjeta}`}>
+      {titulo && <h3 className="font-display text-2xl font-extrabold uppercase">Construir a pedido</h3>}
+      <p className={`${titulo ? "mt-3" : ""} text-ink-muted`}>
+        Una casa Esparta que se vende antes de construirse, en un terreno nuestro o en el tuyo, en{" "}
+        {site.pais}, documentada etapa por etapa.
+      </p>
+      <p
+        className={`mt-6 font-display text-[clamp(2rem,3.4vw,2.5rem)] leading-none font-black ${esPendiente(precio) ? "text-ink-muted" : ""}`}
+      >
+        {textoPrecio(precio)}
+      </p>
+      <Subtitulo className="mt-8 font-semibold">Condiciones del precio, si va en tu terreno</Subtitulo>
+      <ul className="mt-2 space-y-1 text-ink-muted">
+        {site.condicionesConstruccion.map((c) => (
+          <li key={c}>— {c}</li>
+        ))}
+      </ul>
+      <div className="mt-auto pt-8">
+        <BotonWhatsApp opcion="construir" ubicacion="precios" variante="secundario" className="w-full sm:w-auto">
+          Construir a pedido
+        </BotonWhatsApp>
+      </div>
+    </article>
   );
 }
 
 /**
- * "Comprar una casa" no tiene datos propios: lleva al catálogo, o directo a la casa si hay una
- * sola disponible (las vendidas no cuentan). Precio, ubicación y qué incluye viven en cada casa.
- * Sin casas o si Supabase no responde, el WhatsApp de comprar (misma regla que el hero).
+ * Precios. Con proyecto en la portada, el precio de la casa vive solo en "Proyecto actual": aquí
+ * queda únicamente "Construir a pedido". Sin proyecto (no hay casa disponible o Supabase no
+ * respondió), vuelve la tarjeta de comprar como antes (decisión del usuario, 2026-11-23).
  */
-export async function Opciones() {
-  const disponibles = await casasDisponibles();
-  const destino = disponibles && disponibles.length > 0 ? destinoCompra(disponibles) : null;
-  // Precio desde: el menor de las modalidades de las casas que se pueden comprar (no reservadas).
-  // Sin ninguna con precio, no se muestra (cada casa dice "Consultar" en su ficha).
-  const comprables = (disponibles ?? []).filter((c) => casaDisponible(c.estado)).flatMap((c) => c.modalidades);
-  const desde = precioDesde(comprables);
-
+export function Opciones({ conProyecto }: { conProyecto: boolean }) {
   return (
-    <Seccion
+    <SeccionConTitulo
+      tono="oscuro"
       id="opciones"
-      numerada
       etiqueta="Precios"
-      fondo="blanco"
-      titulo="Dos formas de tener tu casa"
+      titulo={conProyecto ? "Construir a pedido" : "Dos formas de tener tu casa"}
       intro="Cotización clara y cerrada antes de empezar."
     >
-      <div className="grid gap-6 md:grid-cols-2">
-        <article className="flex flex-col rounded-lg border-2 border-piedra-900 bg-blanco p-6">
-          <p className="font-display text-xs font-semibold tracking-[0.15em] text-terracota uppercase">
-            Opción 1
-          </p>
-          <h3 className="mt-1 font-display text-2xl font-extrabold">Comprar una casa</h3>
-          <p className="mt-2 text-piedra-600">
-            Casas nuestras con el modelo estándar, construidas para vender con su terreno. Cada
-            una con su ubicación, su lote, su precio y lo que incluye.
-          </p>
-          {desde && (
-            <div className="mt-5">
-              <p className="font-display text-2xl font-extrabold">{textoPrecioCasa(desde)}</p>
-            </div>
-          )}
-          <div className="mt-auto pt-6">
-            {destino ? (
-              <Boton href={destino.href} className="w-full">
-                {destino.texto}
-              </Boton>
-            ) : (
-              <BotonWhatsApp opcion="comprar" ubicacion="precios" className="w-full">
-                Quiero esta casa
-              </BotonWhatsApp>
-            )}
-          </div>
-        </article>
-
-        <article className="flex flex-col rounded-lg border-2 border-piedra-200 bg-blanco p-6">
-          <p className="font-display text-xs font-semibold tracking-[0.15em] text-terracota uppercase">
-            Opción 2
-          </p>
-          <h3 className="mt-1 font-display text-2xl font-extrabold">Construir a pedido</h3>
-          <p className="mt-2 text-piedra-600">
-            Una casa Esparta que se vende antes de construirse, en un terreno nuestro o en el tuyo,
-            en {site.pais}, documentada etapa por etapa.
-          </p>
-          <div className="mt-5">
-            <Precio precio={site.precios.construirAPedido} />
-          </div>
-          <h4 className="mt-6 font-semibold">Condiciones del precio, si va en tu terreno</h4>
-          <ul className="mt-2 space-y-1 text-piedra-700">
-            {site.condicionesConstruccion.map((c) => (
-              <li key={c}>— {c}</li>
-            ))}
-          </ul>
-          <div className="mt-auto pt-6">
-            <BotonWhatsApp opcion="construir" ubicacion="precios" variante="secundario" className="w-full">
-              Construir a pedido
-            </BotonWhatsApp>
-          </div>
-        </article>
-      </div>
-    </Seccion>
+      {conProyecto ? (
+        <div className="max-w-3xl">
+          <TarjetaConstruir titulo={false} />
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2">
+          <TarjetaComprar />
+          <TarjetaConstruir titulo />
+        </div>
+      )}
+    </SeccionConTitulo>
   );
 }

@@ -7,11 +7,13 @@ import "./globals.css";
 
 // "optional": si Archivo no llega en los primeros ~100 ms, esa visita se queda con la fuente
 // de respaldo y el titular del hero no cambia de alto (evita el salto de diseño, ver
-// DECISIONES.md). Queda en caché para la siguiente página.
+// DECISIONES.md). Queda en caché para la siguiente página. Fuente variable (sin `weight`): un
+// solo archivo cubre del 600 que usan las páginas internas al 900 del titular de la portada, y
+// el eje de ancho (`wdth`), con el que los titulares de la portada van al 85 % (ver globals.css).
 const titulos = Archivo({
   variable: "--font-titulos",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  axes: ["wdth"],
   display: "optional",
 });
 
@@ -45,7 +47,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#efece7",
+  themeColor: "#1c1e1f",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

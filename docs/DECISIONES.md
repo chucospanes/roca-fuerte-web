@@ -891,3 +891,54 @@ columnas nuevas.
   portada). Escritura directa en la tabla, ninguna; un cliente no administrador recibe 42501.
 - Sin redeploy: `revalidateTag` del catálogo, como el resto del panel.
 - Volver a una foto propia de la casa (que no salió de un avance) sigue siendo con SQL.
+
+## 2026-11-23 — Rediseño de la portada (v2.0.0): constructora y desarrolladora, "casas de calidad comprobable"
+Decisión del usuario, con el brief aprobado `docs/REDISENO_PORTADA.md`, en la rama
+`feat/rediseno-portada`. Cambia la imagen y el mensaje de la portada, el encabezado y el pie; no
+cambia ninguna funcionalidad (rutas, consultas, acciones, RLS, panel ni portal).
+- **Identidad:** monograma RF (`public/brand/`, texto en trazos: si la marca cambia en el CNR, se
+  cambian esos archivos además de `site.ts`); favicon, `icon.svg` y `apple-icon.png` desde el
+  monograma. Siete tokens de color por tono de sección (`tono-claro`, `tono-oscuro`); la portada
+  alterna secciones claras y oscuras, sin modo oscuro del sistema. El terracota de las páginas que
+  no se rediseñan pasa al acento `#b5462e`.
+- **Titulares en Archivo al 85 % de ancho** (eje `wdth` de la misma fuente variable). Motivo: con
+  el `clamp(44px, 6.4vw, 92px)` del brief, "COMPROBABLE." mide 369 px a 44 px (medido, aun con el
+  espaciado más apretado) y en 390 px solo hay 358: desbordaba. Al 85 % cabe sin bajar el tamaño.
+- **Orden:** el del brief (5.1 a 5.10) y, después de "Hermano cercano", las secciones que ya
+  existían: La casa, Materiales, Precios, Inversionistas, Preguntas y Contacto. El pie suma los
+  enlaces "Casas en venta", "Para inversionistas" y "Preguntas frecuentes" (el menú del brief no
+  los tiene).
+- **Salen:** el carrusel del hero, "Lo que nos diferencia", la bitácora (pasa a la línea de avance
+  de "Proyecto actual") y el bloque "Casas disponibles" (pasa a "Proyecto actual"). Los números de
+  sección (01, 02…) también: el brief trae sus propias etiquetas.
+- **Solo se afirma lo que se puede comprobar** (sección 7 del brief): sale "estándares de seguridad
+  internacionales" (estaba en "Lo que nos diferencia"). Lo cierto hoy: hierro grado 40, bloque de
+  norma, bastones de refuerzo, fotos de cada etapa, facturas de materiales, portal de cliente,
+  pagos por etapas y mano de obra local.
+- **"Proyecto actual"** sale de la base (`leerProyecto`: la casa en obra o la primera disponible,
+  sin consultas nuevas): modelo, resumen, una tarjeta por modalidad con su precio ("A consultar"
+  sin precio; reservada, sin precio), la nota de segregación y la línea de avance. Imagen: la
+  ilustración con "Ilustración de referencia" (la portada de la casa es la misma foto del hero).
+  Sin proyecto, la sección y el Diario no aparecen y el hero vuelve al WhatsApp de comprar.
+- **Etapas:** "Terminada", "En curso" y "Por iniciar" (no "Pendiente", como se decidió el
+  2026-10-23).
+- **Precios:** con proyecto, solo "Construir a pedido" (el precio de la casa vive en "Proyecto
+  actual"); sin proyecto, vuelve la tarjeta de comprar como antes (`comprar`/`precios`).
+- **Pagos:** la pregunta frecuente dice "30% a la firma del contrato, pagos por etapas conforme
+  avanza la obra (por transferencia bancaria) y el saldo a la entrega", igual que "Proyecto
+  actual" y "Así trabajamos".
+- **Ancla:** `#hermanos` pasa a `#hermano` (solo enlaces internos).
+- **Clics (`clics_venta`, sin cambios en la base):** cada botón conserva su `opcion` y
+  `ubicacion`. Dos reglas nuevas:
+  - **"flotante" pasa a significar "el WhatsApp siempre visible":** el botón WhatsApp del
+    encabezado (desde 768 px, `general`) cuenta como `flotante`; en el celular está el botón
+    flotante y nunca se ven los dos a la vez. Antes el encabezado tenía "Contactar" (a `#contacto`,
+    sin conteo).
+  - **"Agendar visita a la obra"** cuenta como `comprar`/`hero` (heredero del "Quiero esta casa"
+    del hero), con el mensaje "Hola, quiero agendar una visita a la obra de la {casa} en
+    {municipio}." armado con la base. Desde la v2.0.0, `hero` en los datos es ese botón (y el
+    WhatsApp de comprar del hero cuando no hay casa disponible). Sale `construir`/`hero` (la
+    pantalla 3 del carrusel); construir a pedido se sigue contando en precios y contacto.
+- **Movimiento solo con CSS:** franja en bucle, aparición con `animation-timeline: view()` dentro
+  de `@supports`, brillo en botones y zoom de 1.03 en fotos; todo apagado con
+  `prefers-reduced-motion`. Sin dependencias nuevas.

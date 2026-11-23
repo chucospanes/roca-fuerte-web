@@ -3,8 +3,8 @@
 > Documento vivo. Claude Code lo actualiza al terminar cada tarea o fase.
 > Mantenerlo corto: solo el presente. La historia vive en git y en DECISIONES.md.
 
-**Última actualización:** 2026-11-17
-**Versión:** v1.9.1 — Next.js 16.4.6 (corrige dos avisos de seguridad); v1.9.0: foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
+**Última actualización:** 2026-11-23
+**Versión:** v1.9.1 en `main`; **v2.0.0 en la rama `feat/rediseno-portada`, esperando la aprobación de las capturas** (rediseño de la portada). v1.9.1: Next.js 16.4.6 (corrige dos avisos de seguridad); v1.9.0: foto de la tarjeta elegida desde un avance en `/admin` (migración 015); v1.8.1: área construida 47.50 m² (con el corredor techado) fuera de los titulares; v1.8.0: precio por modalidad de venta ($69,000 y $85,000), ilustración en la pantalla 3 del hero, fachada sin bloque visto; antes: foto de los bastones en el hero, sección "Hermano cercano" (salvadoreños en el exterior), casas vendidas ocultas, Diario de obra y panel `/admin`; desplegado en el dominio, sin lanzar (noindex); portal de clientes encendido
 
 ## Fase actual
 **Fases 6 y 7 cerradas en `v1.0.0` (2026-10-31): el sitio está desplegado en
@@ -12,6 +12,27 @@ https://constructorarocafuerte.com, sin lanzar.** `site.lanzado` apagado (todo c
 `noindex`), acceso premium apagado y portal de clientes encendido (`site.portalClientes` es
 la constante `true`; la variable `NEXT_PUBLIC_PORTAL_CLIENTES` ya no existe y se puede
 quitar de `.env.local`). Lo que falta para lanzar está en "Siguiente".
+
+### Rediseño de la portada (`v2.0.0`, rama `feat/rediseno-portada`, 2026-11-23)
+- Brief aprobado: `docs/REDISENO_PORTADA.md`; decisiones en DECISIONES.md (2026-11-23). Portada,
+  encabezado y pie nuevos; `/casas`, la ficha, `/portal`, `/admin` y `/privacidad` solo heredan
+  encabezado, pie, fuente y colores. Sin cambios en rutas, consultas, acciones, RLS ni en la base.
+- Orden: encabezado, portada (foto de bastones, tarjeta "Obra en curso" con la etapa de la base),
+  franja, Quiénes somos, Calidad comprobable, Proyecto actual (modalidades, precios y línea de
+  avance de la base), Diario de obra (3 avances más recientes), Así trabajamos, Hermano cercano
+  (`#hermano`) y, después, La casa, Materiales, Precios (solo "Construir a pedido" si hay
+  proyecto), Inversionistas, Preguntas, Contacto y pie.
+- Clics: mismas `opcion`/`ubicacion`; el WhatsApp del encabezado cuenta como `general`/`flotante`
+  y "Agendar visita a la obra" como `comprar`/`hero`. Verificado en el HTML a 390 y 1440 px.
+- Probado: lint, typecheck y build; capturas a 390 y 1440 px de la portada y a 390 de `/casas`, la
+  ficha, `/portal`, `/admin` y `/privacidad`: 200, sin desborde, sin imágenes rotas, sin texto bajo
+  4.5:1 (3:1 en grandes) ni objetivos táctiles bajo 44 px (revisión automática).
+- **Riesgos anotados:** el logo trae "ROCA FUERTE" en trazos (si cambia la marca en el CNR, hay que
+  cambiar los SVG de `public/brand/` además de `site.ts`). La Archivo variable con el eje de ancho
+  pesa más que antes (unos 90 KB): se carga con `display: optional` y no bloquea el titular.
+- El pie muestra el dominio desde `site.url` (`NEXT_PUBLIC_SITE_URL`): en local dice
+  `localhost:3000`; en producción, el dominio.
+- **Falta:** aprobación de las capturas por el usuario; después, merge a `main`, tag `v2.0.0` y push.
 
 ### Foto de la tarjeta desde un avance (`v1.9.0`, en `main`, 2026-11-17)
 - Panel: "Usar como foto de la tarjeta" en cada foto de "Avance nuevo" (una sola; desactivada sin

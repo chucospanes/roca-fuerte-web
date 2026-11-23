@@ -1,19 +1,18 @@
+import { SeccionConTitulo } from "./portada/ui";
 import { esparta } from "@/content/esparta";
 import { ImagenAmpliable } from "./ImagenAmpliable";
-import { Seccion } from "./ui";
 
 const m2 = (n: number) => `${n.toFixed(2)} m²`;
 const m = (n: number) => `${n.toFixed(2)} m`;
 
 export function LaCasa() {
   return (
-    <Seccion
+    <SeccionConTitulo
+      tono="claro"
       id="la-casa"
-      numerada
       etiqueta="La casa"
       titulo="Modelo Esparta"
-      intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`}
-      fondo="blanco"
+      intro={`${esparta.resumen} Pensada para aprovechar cada metro sin gastar en lo que no hace falta. La casa está en un lote de ${m(esparta.lote.frenteM)} × ${m(esparta.lote.fondoM)}, con estacionamiento, jardín y patio.`} 
     >
       {/* Móvil: casa, lote, fachada. Escritorio: casa y fachada arriba, lote a todo el ancho abajo. */}
       <div className="grid gap-6 md:grid-cols-2 md:items-end">
@@ -31,21 +30,21 @@ export function LaCasa() {
               protegida={"protegida" in img && img.protegida}
               sizes={img.anchoCompleto ? "(max-width: 1024px) 100vw, 992px" : "(max-width: 768px) 100vw, 480px"}
             />
-            <figcaption className="mt-2 font-semibold text-piedra-800">{img.texto}</figcaption>
+            <figcaption className="mt-2 font-semibold text-ink">{img.texto}</figcaption>
           </figure>
         ))}
       </div>
-      <p className="mt-3 text-sm text-piedra-600">{esparta.avisoPlanos}</p>
+      <p className="mt-3 text-sm text-ink-muted">{esparta.avisoPlanos}</p>
 
       {/* Lote, del frente al fondo */}
       <div className="mt-8">
         <h3 className="font-display text-xl font-bold">
           Lote de {m(esparta.lote.frenteM)} × {m(esparta.lote.fondoM)}, de la calle al fondo
         </h3>
-        <ol className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-piedra-200 bg-piedra-200 sm:grid-cols-4">
+        <ol className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-4">
           {esparta.lote.franjas.map((f) => (
-            <li key={f.nombre} className="bg-blanco p-4">
-              <p className="text-sm text-piedra-600">{f.nombre}</p>
+            <li key={f.nombre} className="bg-surface-raised p-4">
+              <p className="text-sm text-ink-muted">{f.nombre}</p>
               <p className="font-display text-2xl font-bold">{m(f.fondoM)}</p>
             </li>
           ))}
@@ -54,54 +53,54 @@ export function LaCasa() {
 
       <div className="mt-10 grid gap-8 md:grid-cols-[1fr_1.4fr]">
         {/* Cuadro de áreas */}
-        <div className="rounded-lg bg-piedra-900 p-6 text-piedra-50">
-          <h3 className="font-display text-sm font-semibold tracking-[0.15em] text-terracota-claro uppercase">
+        <div className="rounded-sm tono-oscuro bg-surface p-6 text-ink">
+          <h3 className="font-display text-sm font-semibold tracking-[0.15em] text-accent uppercase">
             Cuadro de áreas
           </h3>
           {/* Ficha técnica: el área va aquí, sin protagonismo (ver DECISIONES.md, 2026-11-12) */}
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2">
-            <dt className="text-piedra-300">Área construida</dt>
+            <dt className="text-ink-muted">Área construida</dt>
             <dd className="font-display text-lg font-bold">{m2(esparta.areas.construidaM2)}</dd>
-            <dt className="text-piedra-300">Área útil interior</dt>
+            <dt className="text-ink-muted">Área útil interior</dt>
             <dd className="font-display text-lg font-bold">{m2(esparta.areas.utilM2)}</dd>
           </dl>
-          <p className="mt-2 text-sm text-piedra-300">
+          <p className="mt-2 text-sm text-ink-muted">
             La construida incluye el corredor techado de entrada ({m2(esparta.areas.corredorTechadoM2)}); la
             útil es el interior, sin el corredor. El estacionamiento no cuenta.
           </p>
-          <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-piedra-700 pt-4 text-sm">
-            <dt className="text-piedra-300">Cuerpo principal</dt>
+          <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-4 text-sm">
+            <dt className="text-ink-muted">Cuerpo principal</dt>
             <dd>{esparta.volumetria.cuerpoPrincipal}</dd>
-            <dt className="text-piedra-300">Extensión de sala</dt>
+            <dt className="text-ink-muted">Extensión de sala</dt>
             <dd>{esparta.volumetria.extensionSala}</dd>
-            <dt className="text-piedra-300">Muros</dt>
+            <dt className="text-ink-muted">Muros</dt>
             <dd>{esparta.muros.sistema}</dd>
-            <dt className="text-piedra-300">Exteriores</dt>
+            <dt className="text-ink-muted">Exteriores</dt>
             <dd>{m(esparta.muros.exterioresM)}</dd>
-            <dt className="text-piedra-300">Interiores</dt>
+            <dt className="text-ink-muted">Interiores</dt>
             <dd>{m(esparta.muros.interioresM)}</dd>
-            <dt className="text-piedra-300">Techo</dt>
+            <dt className="text-ink-muted">Techo</dt>
             <dd>
               {esparta.techo.cubierta}
             </dd>
-            <dt className="text-piedra-300">Alero / cumbrera</dt>
+            <dt className="text-ink-muted">Alero / cumbrera</dt>
             <dd>
               {m(esparta.techo.aleroM)} / {m(esparta.techo.cumbreraM)}
             </dd>
-            <dt className="text-piedra-300">Pretil de fachada</dt>
+            <dt className="text-ink-muted">Pretil de fachada</dt>
             <dd>
               {m(esparta.pretil.altoM)} (hasta {m(esparta.pretil.hastaM)})
             </dd>
-            <dt className="text-piedra-300">Corredor techado</dt>
+            <dt className="text-ink-muted">Corredor techado</dt>
             <dd>
               {m(esparta.corredor.frenteM)} × {m(esparta.corredor.fondoM)}
             </dd>
           </dl>
-          <p className="mt-4 border-t border-piedra-700 pt-4 text-sm text-piedra-300">
+          <p className="mt-4 border-t border-line pt-4 text-sm text-ink-muted">
             {esparta.implantacion} {esparta.techo.desague}
           </p>
-          <p className="mt-4 border-t border-piedra-700 pt-4 text-sm text-piedra-300">
-            <span className="font-semibold text-piedra-50">Fachada:</span> el pretil oculta el techo
+          <p className="mt-4 border-t border-line pt-4 text-sm text-ink-muted">
+            <span className="font-semibold text-ink">Fachada:</span> el pretil oculta el techo
             desde la calle. Acabados: {esparta.acabadosFachada.join(", ")}.
           </p>
         </div>
@@ -109,26 +108,26 @@ export function LaCasa() {
         {/* Ambientes */}
         <div>
           <h3 className="font-display text-xl font-bold">Ambientes</h3>
-          <ul className="mt-4 divide-y divide-piedra-200 border-y border-piedra-200">
+          <ul className="mt-4 divide-y divide-line border-y border-line">
             {esparta.ambientes.map((a) => (
               <li key={a.nombre} className="flex items-start justify-between gap-4 py-4">
                 <div>
                   <p className="font-semibold">{a.nombre}</p>
-                  <p className="text-sm text-piedra-600">{a.notas.join(" ")}</p>
+                  <p className="text-sm text-ink-muted">{a.notas.join(" ")}</p>
                 </div>
                 <div className="shrink-0 text-right">
                   <p className="font-display font-bold">{m2(a.areaM2)}</p>
-                  <p className="text-sm text-piedra-600">{a.medidas}</p>
+                  <p className="text-sm text-ink-muted">{a.medidas}</p>
                 </div>
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-sm text-piedra-600">
-            <span className="font-semibold text-piedra-800">Modelo económico, no incluye:</span>{" "}
+          <p className="mt-4 text-sm text-ink-muted">
+            <span className="font-semibold text-ink">Modelo económico, no incluye:</span>{" "}
             {esparta.noIncluye.join(", ").toLowerCase()}.
           </p>
         </div>
       </div>
-    </Seccion>
+    </SeccionConTitulo>
   );
 }
