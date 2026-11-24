@@ -22,9 +22,9 @@ next-env.d.ts
 # Vercel
 .vercel
 
-# variables de entorno (nunca se commitean)
-.env
-.env*.local
+# variables de entorno (nunca se commitean), salvo la plantilla sin valores
+.env*
+!.env.example
 
 # instrucciones personales de Claude Code
 CLAUDE.local.md
